@@ -9,3 +9,5 @@ packages:
       - name: verify
         runtime: nodejs:18
         web: true
+        environment:
+          JWT_SECRET: "${JWT_SECRET}"

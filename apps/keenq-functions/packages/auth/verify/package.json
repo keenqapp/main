@@ -1,10 +1,11 @@
 {
   "name": "verify",
   "version": "1.0.0",
-  "main": "send.js",
+  "main": "verify.js",
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
     "pg": "^8.11.0"
   }

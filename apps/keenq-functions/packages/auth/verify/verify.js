@@ -1,4 +1,5 @@
 import knex from 'knex'
+import jwt from 'jsonwebtoken'
 
 const config = {
 	client: 'pg',
@@ -11,7 +12,8 @@ const config = {
 function getDb(config) {
 	try {
 		return knex(config)
-	} catch(e) {
+	}
+	catch(e) {
 		throw { reason: 'Could not connect to database', error: e }
 	}
 }
@@ -19,39 +21,57 @@ function getDb(config) {
 async function getUser(phone, db) {
 	try {
 		return await db.table('credentials').select().where('phone', phone).first()
-	} catch(e) {
+	}
+	catch(e) {
 		throw { error: e }
 	}
 }
 
-async function ensureUser(user, phone, db) {
+async function ensureUser(user) {
+  if (!user) throw { error: 'Wrong credentials' }
+}
+
+async function checkCode(phone, code, db) {
+	if (code === '111111') {
+		await db.table('credentials').update({ verified: true }).where('phone', phone)
+		return true
+	}
+	else throw { error: 'Wrong credentials' }
+}
+
+function getPayload(user) {
+	return {
+		sub: user.uid,
+		iat: Math.floor(Date.now() / 1000),
+		aud: 'keenq-web',
+		iss: 'keenq-functions',
+		'https://hasura.io/jwt/claims': {
+			'x-hasura-default-role': "member",
+			'x-hasura-allowed-roles': ['admin', 'manager', 'member'],
+		}
+	}
+}
+
+async function generateJWT(user) {
 	try {
-	  if (!user) {
-			await db.table('credentials').insert({ phone })
-	  }
-	} catch(e) {
+		return await jwt.sign(getPayload(user), process.env.JWT_SECRET)
+	}
+	catch(e) {
 		throw { error: e }
 	}
 }
 
-async function sendSMS(phone) {
-	try {
-	} catch(e) {
-		return { reason: 'Could not send SMS', error: e }
-	}
-}
-
-export async function main(event, context) {
+export async function main({ phone, code }, context) {
 	try {
 	  const db = getDb(config)
-		const user = await getUser(event.phone, db)
-		await ensureUser(user, event.phone, db)
-		await sendSMS(event.phone)
+		const user = await getUser(phone, db)
+		await ensureUser(user)
+		await checkCode(phone, code, db)
+		const accessToken = await generateJWT(user)
 
-		return {
-			body: { success: true }
-		}
-	} catch(e) {
+		return { body: { success: true, data: { accessToken } } }
+	}
+	catch(e) {
 		return { body: { success: false, data: e } }
 	}
 }
