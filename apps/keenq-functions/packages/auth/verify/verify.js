@@ -41,12 +41,12 @@ async function sendSMS(phone) {
 	}
 }
 
-export async function main({ phone }) {
+export async function main(event, context) {
 	try {
 	  const db = getDb(config)
-		const user = await getUser(phone, db)
-		await ensureUser(user, phone, db)
-		await sendSMS(phone)
+		const user = await getUser(event.phone, db)
+		await ensureUser(user, event.phone, db)
+		await sendSMS(event.phone)
 
 		return {
 			body: { success: true }

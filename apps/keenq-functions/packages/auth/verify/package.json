@@ -1,5 +1,5 @@
 {
-  "name": "send",
+  "name": "verify",
   "version": "1.0.0",
   "main": "send.js",
   "license": "MIT",
