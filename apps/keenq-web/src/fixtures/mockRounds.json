@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "duration": {
+      "min": 8
+    },
+    "index": 1,
+    "startDate": "",
+    "members": [1,2, 3, 4,5],
+    "pairs": [1,2,3]
+  },
+  {
+    "id": 2,
+    "duration": {
+      "min": 5
+    },
+    "index": 2,
+    "startDate": "",
+    "members": [1,2, 3, 4,5],
+    "pairs": [4,5,6]
+  },
+  {
+    "id": 3,
+    "duration": {
+      "min": 3
+    },
+    "index": 3,
+    "startDate": "",
+    "members": [1,2, 3, 4,5],
+    "pairs": [7,8,9]
+  }
+]
+

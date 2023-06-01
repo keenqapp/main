@@ -1,0 +1,4 @@
+schema:
+  - ${VITE_GRAPHQL_ENDPOINT}:
+      headers:
+        x-hasura-admin-secret: ${HASURA_GRAPHQL_ADMIN_SECRET}

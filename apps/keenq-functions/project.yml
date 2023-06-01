@@ -1,0 +1,8 @@
+packages:
+  - name: auth
+    functions:
+      - name: send
+        runtime: nodejs:18
+        web: true
+        environment:
+          PG_CONNECTION_STRING: "${PG_CONNECTION_STRING}"

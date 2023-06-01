@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "John 🫐",
+    "gender": "male",
+    "avatar": "https://i.pravatar.cc/150",
+    "description": "Always silently remember the outer scholar. "
+  },
+  {
+    "id": 2,
+    "name": "Jane ❤️‍🔥",
+    "gender": "female",
+    "avatar": "https://i.pravatar.cc/150",
+    "description": "Zion is not the ultimate moonlight of the lotus."
+  },
+  {
+    "id": 3,
+    "name": "Doe Vapkovich",
+    "gender": "trans man",
+    "avatar": "https://i.pravatar.cc/150",
+    "description": "History is the only music, the only guarantee of art."
+  },
+  {
+    "id": 4,
+    "name": "Bob Altshuler",
+    "gender": "male",
+    "avatar": "https://i.pravatar.cc/150",
+    "description": "Everything we do is connected with paradox: relativity, density, milk, politics."
+  },
+  {
+    "id": 5,
+    "name": "Bob K.",
+    "gender": "female",
+    "avatar": "https://i.pravatar.cc/150",
+    "description": "Yes, there is paradise, it empowers with energy."
+  }
+]
