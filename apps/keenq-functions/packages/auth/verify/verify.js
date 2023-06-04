@@ -6,7 +6,8 @@ const config = {
 	connection: {
 		connectionString: process.env.PG_CONNECTION_STRING,
 		ssl: { rejectUnauthorized: false }
-	}
+	},
+	pool: { min: 0, max: 2 }
 }
 
 function getDb(config) {
@@ -62,16 +63,21 @@ async function generateJWT(user) {
 }
 
 export async function main({ phone, code }, context) {
+	let db
 	try {
-	  const db = getDb(config)
+	  db = getDb(config)
 		const user = await getUser(phone, db)
 		await ensureUser(user)
 		await checkCode(phone, code, db)
 		const accessToken = await generateJWT(user)
 
-		return { body: { success: true, data: { accessToken } } }
+		return { body: { success: true, data: { accessToken, uid: user.uid } } }
 	}
 	catch(e) {
+		console.error(e)
 		return { body: { success: false, data: e } }
+	}
+	finally {
+		db?.destroy()
 	}
 }

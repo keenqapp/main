@@ -4,8 +4,9 @@ const config = {
 	client: 'pg',
 	connection: {
 		connectionString: process.env.PG_CONNECTION_STRING,
-		ssl: { rejectUnauthorized: false }
-	}
+		ssl: { rejectUnauthorized: false },
+	},
+	pool: { min: 0, max: 2 }
 }
 
 function getDb(config) {
@@ -47,15 +48,20 @@ async function sendSMS(phone) {
 }
 
 export async function main({ phone }) {
+	let db
 	try {
-	  const db = getDb(config)
+	  db = getDb(config)
 		const user = await getUser(phone, db)
 		await ensureUser(user, phone, db)
 		await sendSMS(phone)
 
-		return { body: { success: true } }
+		return { body: { success: true, data: {} } }
 	}
 	catch(e) {
+		console.error(e)
 		return { body: { success: false, data: e } }
+	}
+	finally {
+		db?.destroy()
 	}
 }
