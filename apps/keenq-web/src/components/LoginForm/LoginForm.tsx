@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-
+import { useSignal } from '@preact/signals-react'
 
 import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -12,14 +12,12 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
-import { isAuthed, sendCode, setupRecaptcha, verifyCode, error } from '@/services/auth'
+import { authError, useSend, useVerify } from '@/services/auth'
 
-// import { useApi } from '@/services/api'
 import Container from '@/ui/Container'
 import Space from '@/ui/Space'
 
-import { inputsHasError, isNotEmpty,useInput } from '@/hooks/useInput'
-import { useSignal } from '@preact/signals-react'
+import { inputsHasError, isNotEmpty, useInput } from '@/hooks/useInput'
 
 const StyledCardContent = styled(CardContent)`
   transition: height 1s ease-in-out;
@@ -30,7 +28,7 @@ const StyledStack = styled(Stack)`
 `
 
 function f(s: any, prev: any) {
-  const sss = (s.length > 14 ? prev: s).replace(/\D/g, '')
+  const sss = (s.length > 14 ? prev: s).replaceAll(/\D/g, '')
   return '+' + sss
 }
 
@@ -41,9 +39,8 @@ function LoginForm() {
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    setupRecaptcha()
-  }, [])
+  const { send } = useSend()
+  const { verify } = useVerify()
 
   const phoneInput = useInput({
     label: 'Phone',
@@ -52,9 +49,8 @@ function LoginForm() {
     placeholder: 'Your phone number',
     format: f,
     validation: [isNotEmpty],
-    error: error.value,
-    onFocus: () => error.value = null
-    // disabled: api.user.isVerifying
+    error: authError.value,
+    onFocus: () => authError.value = null
   })
 
   const codeInput = useInput({
@@ -63,15 +59,14 @@ function LoginForm() {
     variant: 'outlined',
     placeholder: 'Code that was sent to your phone',
     validation: [isNotEmpty],
-    error: error.value,
-    onFocus: () => error.value = null
-    // disabled: api.user.isVerifying
+    error: authError.value,
+    onFocus: () => authError.value = null
   })
 
   const handleCodeSent = async () => {
     if (!inputsHasError(phoneInput)) {
       loading.value = true
-      await sendCode(phoneInput.value) && setCodeSent(true)
+      await send(phoneInput.value) && setCodeSent(true)
       loading.value = false
     }
   }
@@ -79,7 +74,7 @@ function LoginForm() {
   const handleVerify = async () => {
     if (!inputsHasError(codeInput)) {
       loading.value = true
-      await verifyCode(codeInput.value) && navigate('/')
+      await verify(phoneInput.value, codeInput.value) && navigate('/')
       loading.value = false
     }
   }
@@ -99,17 +94,31 @@ function LoginForm() {
                   <TextField {...phoneInput} />
                   <Space height={2} />
                   <Stack>
-                    <LoadingButton id='send-code-button' onClick={handleCodeSent} loading={loading.value}>Send code</LoadingButton>
+                    <LoadingButton
+                      id='send-code-button'
+                      onClick={handleCodeSent}
+                      loading={loading.value}
+                      variant='outlined'
+                    >Send code</LoadingButton>
                   </Stack>
                 </>
               )
               : (
                 <>
                   <TextField {...codeInput} />
-                  <Space height={1} />
+                  <Space height={2} />
                   <Stack gap={2} alignItems='center'>
-                    <LoadingButton onClick={handleVerify} loading={loading.value}>Verify code</LoadingButton>
-                    <Typography variant='caption' color='secondary' onClick={handleRetry}>Use another phone number?</Typography>
+                    <LoadingButton
+                      onClick={handleVerify}
+                      loading={loading.value}
+                      variant='outlined'
+                      fullWidth
+                    >Verify code</LoadingButton>
+                    <Button
+                      color='secondary'
+                      onClick={handleRetry}
+                      startIcon={<ChevronLeftTwoToneIcon />}
+                    >Use another phone number?</Button>
                   </Stack>
                 </>
               )}

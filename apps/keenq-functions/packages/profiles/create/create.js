@@ -47,7 +47,7 @@ async function sendSMS(phone) {
 	}
 }
 
-export async function main({ phone }) {
+export async function main({ uid }) {
 	let db
 	try {
 	  db = getDb(config)

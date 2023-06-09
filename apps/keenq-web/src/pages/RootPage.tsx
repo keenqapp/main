@@ -6,22 +6,23 @@ import { isAuthed, isReady } from '@/services/auth'
 import Loadable from '@/ui/Loadable'
 
 import Appbar from '@/core/Appbar'
+import BottomTabs from '@/core/BottomTabs'
+
 
 const Main = styled.main`
   padding-top: var(--appbar-height);
 `
 
 function RootPage() {
-  if (!isAuthed.value) return <Navigate to='/auth/login' />
-
   return (
     <div data-testid='RootPage'>
-      <Appbar />
-      <Main>
-        <Loadable loading={!isReady.value}>
+      <Loadable loading={!isReady.value}>
+        <Appbar />
+        <Main>
           <Outlet />
-        </Loadable>
-      </Main>
+        </Main>
+        <BottomTabs />
+      </Loadable>
     </div>
   )
 }

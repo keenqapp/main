@@ -1,70 +1,101 @@
-import { computed, signal } from '@preact/signals-react'
-import { AuthError, ConfirmationResult, getAuth,
-  onAuthStateChanged, RecaptchaVerifier, signInWithPhoneNumber, signOut, User } from 'firebase/auth'
+import { useEffect } from 'react'
+import { gql, useMutation } from '@apollo/client'
+import { batch, computed, effect, signal } from '@preact/signals-react'
 
-import { app } from '@/providers/firebase'
+import { client } from '@/providers/apollo'
+import { create } from '@/utils/storage'
 
-function getCode(e: unknown) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  if (e?.code) return e.code
-  return null
+
+const anonAccessToken = import.meta.env.VITE_ANON_ACCESS_TOKEN as string
+const store = create('auth')
+
+const authKeys = {
+  accessToken: 'accessToken',
+  currentUid: 'currentUid',
 }
 
 export const isReady = signal(false)
 
-export const auth = getAuth(app)
+export const accessToken = signal<string|null>(anonAccessToken)
+export const currentUid = signal<string|null>(null)
 
-export const user = signal<User|null>(null)
+export const isAuthed = computed(() => !!currentUid.value)
 
-export const accessToken = signal<string|null>(null)
+export const authError = signal<string|null>(null)
 
-export const isAuthed = computed(() => user.value?.uid && !user.value?.isAnonymous)
-
-export const error = signal<AuthError|null>(null)
-
-onAuthStateChanged(auth, async (newUser) => {
-  user.value = newUser
-  const result1 = await newUser?.getIdTokenResult(true)
-  const result2 = await newUser?.getIdToken(true)
-
-  console.log('--- auth.ts:31 ->  -> result1', result1)
-  console.log('--- auth.ts:32 ->  -> result2', result2)
-
-  accessToken.value = await newUser?.getIdToken() || null
-  isReady.value = true
+effect(() => {
+  if (isReady.value) {
+    store.setItem(authKeys.accessToken, accessToken.value)
+    store.setItem(authKeys.currentUid, currentUid.value)
+  }
 })
 
-let verifier: RecaptchaVerifier
-
-export async function setupRecaptcha() {
-  verifier = new RecaptchaVerifier('send-code-button', {
-    size: 'invisible',
-  }, auth)
+function setup() {
+  batch(() => {
+    accessToken.value = store.getItem<string>(authKeys.accessToken) || anonAccessToken
+    currentUid.value = store.getItem<string>(authKeys.currentUid) || null
+    isReady.value = true
+  })
 }
 
-let confirmationResult: ConfirmationResult
+setup()
 
-export async function sendCode(phoneNumber: string) {
-  try {
-    confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, verifier)
-    return true
-  } catch(error_: unknown) {
-    error.value = getCode(error_)
-    return false
+const sendGql = gql`
+  mutation Send($phone: String!) {
+    send(phone: $phone) {
+      success
+    }
+  }
+`
+
+export function useSend() {
+  const [send, { error }] = useMutation(sendGql)
+  useEffect(() => {
+    authError.value = error ? 'phone_error' : null
+  }, [ error ])
+  return {
+    send: async (phone: string) => {
+      const { data } = await send({ variables: { phone } })
+      return data.send?.success
+    },
   }
 }
 
-export async function verifyCode(code: string) {
-  try {
-    await confirmationResult.confirm(code)
-    return true
-  } catch(error_) {
-    error.value = getCode(error_)
-    return false
+const verifyGql = gql`
+  mutation Verify($phone: String!, $code: String!) {
+    verify(phone: $phone, code: $code) {
+      data {
+        accessToken
+        uid
+        error
+        reason
+      }
+      success
+    }
+  }
+`
+
+export function useVerify() {
+  const [verify, { error } ] = useMutation(verifyGql)
+  useEffect(() => {
+    authError.value = error ? 'code_error' : null
+  }, [ error ])
+  return {
+    verify: async (phone: string, code: string) => {
+      const { data } = await verify({ variables: { phone, code } })
+      if (data.verify?.success) {
+        accessToken.value = data.verify.data.accessToken
+        currentUid.value = data.verify.data.uid
+        return true
+      }
+      else authError.value = 'code_error'
+    }
   }
 }
 
 export async function logout() {
-  signOut(auth)
+  accessToken.value = anonAccessToken
+  currentUid.value = null
+  store.clearAll()
+  await client.resetStore()
 }

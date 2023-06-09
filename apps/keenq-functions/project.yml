@@ -1,7 +1,7 @@
 packages:
   - name: auth
     environment:
-      PG_CONNECTION_STRING: "${PG_CONNECTION_STRING}"
+      DB_CONNECTION_STRING: "${AUTH_CONNECTION_STRING}"
     functions:
       - name: send
         runtime: nodejs:18
@@ -11,3 +11,10 @@ packages:
         web: true
         environment:
           JWT_SECRET: "${JWT_SECRET}"
+  - name: profiles
+    environment:
+      DB_CONNECTION_STRING: "${KEENQ_CONNECTION_STRING}"
+    functions:
+      - name: send
+        runtime: nodejs:18
+        web: true
