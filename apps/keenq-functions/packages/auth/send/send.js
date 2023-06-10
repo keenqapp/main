@@ -1,9 +1,10 @@
 import knex from 'knex'
 
+
 const config = {
 	client: 'pg',
 	connection: {
-		connectionString: process.env.DB_CONNECTION_STRING,
+		connectionString: process.env.AUTH_CONNECTION_STRING,
 		ssl: { rejectUnauthorized: false },
 	},
 	pool: { min: 0, max: 2 }
@@ -55,7 +56,7 @@ export async function main({ phone }) {
 		await ensureUser(user, phone, db)
 		await sendSMS(phone)
 
-		return { body: { success: true, data: { db: process.env.DB_CONNECTION_STRING } } }
+		return { body: { success: true, data: {} } }
 	}
 	catch(e) {
 		console.error(e)
@@ -65,3 +66,5 @@ export async function main({ phone }) {
 		db?.destroy()
 	}
 }
+
+main({ phone: '+111' })

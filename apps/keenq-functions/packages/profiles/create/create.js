@@ -1,9 +1,10 @@
 import knex from 'knex'
 
+
 const config = {
 	client: 'pg',
 	connection: {
-		connectionString: process.env.DB_CONNECTION_STRING,
+		connectionString: process.env.KEENQ_CONNECTION_STRING,
 		ssl: { rejectUnauthorized: false },
 	},
 	pool: { min: 0, max: 2 }
