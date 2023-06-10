@@ -1,4 +1,4 @@
-import { ComponentChildren, FunctionComponent } from 'preact'
+import { ComponentChildren } from 'preact'
 
 import GlobalStyles from '@mui/material/GlobalStyles'
 import { css, Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles'
@@ -97,7 +97,7 @@ const theme = unstable_createMuiStrictModeTheme({
   }
 })
 
-const ThemeProvider: FunctionComponent<{ children: ComponentChildren }> = ({ children }) => {
+function ThemeProvider({ children }: { children: ComponentChildren }) {
   return (
     <MUIThemeProvider theme={theme}>
       <GlobalStyles styles={globalStyles} />

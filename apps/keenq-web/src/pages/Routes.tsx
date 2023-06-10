@@ -1,18 +1,15 @@
-import {
-  createBrowserRouter,
-  RouterProvider
-} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
+import Layout from '@/core/Layout.tsx'
 import AuthPage from '@/pages/AuthPage'
 import LoginPage from '@/pages/AuthPage/LoginPage'
 import HomePage from '@/pages/HomePage'
-import RootPage from '@/pages/RootPage'
 
 
 const routes = createBrowserRouter([
   {
     path: '/',
-    element: <RootPage />,
+    element: <Layout />,
     children: [
       {
         path: '/',

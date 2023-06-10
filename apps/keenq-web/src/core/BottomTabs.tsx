@@ -1,10 +1,10 @@
+import styled from '@emotion/styled'
+
 import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone'
 import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone'
 import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
-
-import styled from '@/ui/styled'
 
 
 const Nav = styled(BottomNavigation)`
