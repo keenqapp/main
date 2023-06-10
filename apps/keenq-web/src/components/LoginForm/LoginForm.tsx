@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState } from 'preact/hooks'
 import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { useSignal } from '@preact/signals-react'
+import { useSignal } from '@preact/signals'
 
 import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
 import LoadingButton from '@mui/lab/LoadingButton'

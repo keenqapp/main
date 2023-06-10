@@ -1,9 +1,11 @@
+import { useState } from 'preact/hooks'
+
 import { Box, Chip, OutlinedInput } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
-import { useState } from 'react'
+
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -26,7 +28,7 @@ interface Props {
 function MultiSelect({ value, onChange, options, closeOnChange }: Props) {
   const [ open, setOpen ] = useState(false)
   const handleChange = (event: SelectChangeEvent<string[]>) => {
-    onChange(event.target.value as string[])
+    onChange(event.target?.value as string[])
     closeOnChange && setOpen(false)
   }
   const handleClose = () => setOpen(false)

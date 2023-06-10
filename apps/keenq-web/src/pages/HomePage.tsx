@@ -12,6 +12,7 @@ export default function HomePage() {
   return (
     <Page data-testid='HomePage'>
       HomePage
+      111222
       {/*<MyEvents />*/}
       {/*<AllEvents />*/}
     </Page>

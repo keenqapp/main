@@ -18,32 +18,12 @@ function getDb(config) {
 	}
 }
 
-async function getUser(phone, db) {
+async function create(uid, db) {
 	try {
-		return await db.table('credentials').select().where('phone', phone).first()
+		await db.table('profiles').insert({ uid })
 	}
 	catch(e) {
 		throw { error: e }
-	}
-}
-
-async function ensureUser(user, phone, db) {
-	try {
-	  if (!user) {
-			await db.table('credentials').insert({ phone })
-	  }
-	}
-	catch(e) {
-		throw { error: e }
-	}
-}
-
-async function sendSMS(phone) {
-	try {
-		console.log('--- send.js:39 -> sendSMS -> phone', phone)
-	}
-	catch(e) {
-		throw { reason: 'Could not send SMS', error: e }
 	}
 }
 
@@ -51,9 +31,7 @@ export async function main({ uid }) {
 	let db
 	try {
 	  db = getDb(config)
-		const user = await getUser(phone, db)
-		await ensureUser(user, phone, db)
-		await sendSMS(phone)
+		await create(uid, db)
 
 		return { body: { success: true, data: {} } }
 	}

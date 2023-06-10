@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react'
+import { FunctionComponent, ComponentChildren } from 'preact'
 
 import GqlProvider from '@/context/GqlProvider'
 import LocalizationProvider from '@/context/LocalizationProvider'
@@ -6,7 +6,7 @@ import ThemeProvider from '@/context/ThemeProvider'
 
 interface Props {
   contexts?: any[]
-  children?: ReactNode
+  children?: ComponentChildren
 }
 
 // 1. order of context is important
@@ -18,7 +18,7 @@ const initContexts: any[] = [
   LocalizationProvider
 ]
 
-const CombinedContext: FC<Props> = ({ contexts = initContexts, children }) => {
+const CombinedContext: FunctionComponent<Props> = ({ contexts = initContexts, children }) => {
   return (
     <>
       {contexts.reduceRight((rest, Current) => <Current>{rest}</Current>, children)}

@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect } from 'preact/hooks'
 import { gql, useMutation } from '@apollo/client'
-import { batch, computed, effect, signal } from '@preact/signals-react'
+import { batch, computed, effect, signal } from '@preact/signals'
 
 import { client } from '@/providers/apollo'
 import { create } from '@/utils/storage'

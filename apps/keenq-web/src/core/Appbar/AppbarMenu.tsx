@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
+import { useNavigate } from 'react-router-dom'
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import EmojiPeopleTwoToneIcon from '@mui/icons-material/EmojiPeopleTwoTone'
@@ -17,11 +17,11 @@ import Stack from '@mui/material/Stack'
 import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 import Typography from '@mui/material/Typography'
 
-import { useApi } from '@/services/api'
 import { isAuthed, logout } from '@/services/auth'
 
 import Container from '@/ui/Container'
 import Space from '@/ui/Space'
+
 
 const StyledDrawer = styled(SwipeableDrawer)`
   min-width: 65vw; // TODO: not working
@@ -57,7 +57,6 @@ interface Props {
 function AppbarMenu({ open, toggleMenuOpen }: Props) {
 
   const navigate = useNavigate()
-  const _ = useApi()
 
   const handle = (cb: () => void) => () => {
     toggleMenuOpen(false)()

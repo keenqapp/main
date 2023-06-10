@@ -1,4 +1,3 @@
----
 env:
   browser: true
   es2021: true
@@ -13,17 +12,6 @@ plugins:
   - "@typescript-eslint"
   - simple-import-sort
   - import
-settings: {}
-overrides:
-  - files:
-      - "*.astro"
-    parser: astro-eslint-parser
-    parserOptions:
-      parser: "@typescript-eslint/parser"
-      extraFileExtensions:
-        - ".astro"
-    rules:
-      react/jsx-key: 'off'
 parser: "@typescript-eslint/parser"
 parserOptions:
   ecmaVersion: latest
@@ -51,10 +39,9 @@ rules:
     - error
     - before: false
       after: true
-  react/react-in-jsx-scope: 'off'
-  react/no-unknown-property: 'off'
-  no-multiple-empty-lines: error
-  "@typescript-eslint/no-empty-interface": 'off'
+  react/react-in-jsx-scope: off
+  react/no-unknown-property: off
+  "@typescript-eslint/no-empty-interface": off
   simple-import-sort/exports: error
   quote-props:
     - error
@@ -73,11 +60,6 @@ rules:
     - error
     - varsIgnorePattern: "^_"
       args: after-used
-  unicorn/filename-case: 'off'
-  unicorn/prevent-abbreviations: 'off'
-  unicorn/prefer-spread: 'off'
-  unicorn/no-null: 'off'
-  unicorn/no-negated-condition: 'off'
   import/newline-after-import:
     - error
     - count: 2
@@ -87,9 +69,10 @@ rules:
   simple-import-sort/imports:
     - error
     - groups:
-        - - "^react"
+        - - "^preact"
           - "^@?\\w"
         - - "^@mui"
         - - "^@/services"
         - - "^@/ui"
         - - "^@/components"
+  no-multiple-empty-lines: error

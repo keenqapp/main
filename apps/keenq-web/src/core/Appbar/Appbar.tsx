@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
@@ -15,6 +14,7 @@ import Space from '@/ui/Space'
 
 import AppbarMenu from '@/core/Appbar/AppbarMenu'
 import { useMenuOpen } from '@/hooks/useMenuOpen'
+
 
 const StyledAppBar = styled(AppBar)`
   height: var(--appbar-height);
@@ -58,7 +58,7 @@ export default function Appbar() {
     <StyledAppBar data-testid='Appbar'>
       <Toolbar>
         {isHome
-          ? <HomeButton startIcon={<EmojiEmotionsTwoToneIcon />}>FSD</HomeButton>
+          ? <HomeButton startIcon={<EmojiEmotionsTwoToneIcon />}>keenq</HomeButton>
           : <BackButton startIcon={<ArrowBackIosNewTwoToneIcon />} onClick={handleBack}>Back</BackButton>}
         <Space grow />
         <IconButton onClick={setMenuOpen(true)}>

@@ -1,4 +1,5 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState } from 'preact/hooks'
+
 
 export function useMenuOpen() {
   const [open, setOpen] = useState(false)

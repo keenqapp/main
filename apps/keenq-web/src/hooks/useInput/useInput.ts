@@ -1,8 +1,10 @@
-import { ChangeEventHandler, ReactNode, useEffect, useState } from 'react'
+import { Component } from 'preact'
+import { useEffect, useState } from 'preact/hooks'
 
 import { TextFieldProps } from '@mui/material/TextField'
 
 import { hasError, Validator } from './validation'
+
 
 export interface Dict extends Object {
   [key: string]: unknown;
@@ -12,9 +14,10 @@ export type EmptyString = '';
 
 export interface UseInputProps extends Dict {
   value?: string;
-  label?: string | ReactNode;
+  label?: string | Component<any, any>;
   caption?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  // onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onChange?: any;
   onFocus?: () => void;
   onBlur?: () => void;
   type?: string;

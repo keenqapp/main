@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 
 import Loading from '@/core/Loading'
 
+
 const fadeInLeft = keyframes`
   0% {
     opacity: 0.01;

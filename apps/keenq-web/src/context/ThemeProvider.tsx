@@ -1,9 +1,10 @@
-import { FC, ReactNode } from 'react'
+import { ComponentChildren, FunctionComponent } from 'preact'
 
 import GlobalStyles from '@mui/material/GlobalStyles'
-import { css,Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles'
+import { css, Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles'
 
 import rawTheme from '@/ui/theme'
+
 
 declare module '@emotion/react' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -96,7 +97,7 @@ const theme = unstable_createMuiStrictModeTheme({
   }
 })
 
-const ThemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const ThemeProvider: FunctionComponent<{ children: ComponentChildren }> = ({ children }) => {
   return (
     <MUIThemeProvider theme={theme}>
       <GlobalStyles styles={globalStyles} />

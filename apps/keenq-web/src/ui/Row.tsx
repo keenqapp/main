@@ -1,6 +1,7 @@
 import { FC, ReactNode } from 'react'
 import styled from '@emotion/styled'
 
+
 interface Props {
   flex?: number
   justify?: Justify
@@ -52,5 +53,6 @@ const StyledRow = styled.div<Props>`
   ${p => p.fullHeight && 'min-height: 100%'};
 `
 
-const Row: FC<Props> = ({ flex, wrap, ...props }) => <StyledRow wrap={wrap?1:0} {...props} />
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const Row: FC<Props> = ({ flex, wrap, ...props }) => <StyledRow wrap={wrap ? 1 : 0} {...props} />
 export default Row

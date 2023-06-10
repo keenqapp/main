@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect } from 'preact/hooks'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { computed, effect, signal } from '@preact/signals-react'
+import { computed, effect, signal } from '@preact/signals'
 
 import { authError } from '@/services/auth'
 

