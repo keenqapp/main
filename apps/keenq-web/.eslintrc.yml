@@ -19,7 +19,8 @@ parserOptions:
 rules:
   indent:
     - error
-    - 2
+    - tab
+    - SwitchCase: 1
   linebreak-style:
     - error
     - unix
@@ -76,3 +77,4 @@ rules:
         - - "^@/ui"
         - - "^@/components"
   no-multiple-empty-lines: error
+  react/prop-types: off

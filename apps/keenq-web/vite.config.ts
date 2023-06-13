@@ -1,18 +1,18 @@
-import { defineConfig } from 'vite'
 import preact from '@preact/preset-vite'
 import path from 'path'
+import { defineConfig } from 'vite'
+import svgr from 'vite-plugin-svgr'
 
-// https://vitejs.dev/config/
+
 export default defineConfig({
-  plugins: [preact()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-      // '@preact/signals': '@preact/signals-react',
-      "react": "preact/compat",
-      "react-dom/test-utils": "preact/test-utils",
-      "react-dom": "preact/compat",
-      "react/jsx-runtime": "preact/jsx-runtime",
-    }
-  }
+	plugins: [preact(), svgr()],
+	resolve: {
+		alias: {
+			'@': path.resolve(__dirname, './src'),
+			react: 'preact/compat',
+			'react-dom/test-utils': 'preact/test-utils',
+			'react-dom': 'preact/compat',
+			'react/jsx-runtime': 'preact/jsx-runtime',
+		}
+	}
 })

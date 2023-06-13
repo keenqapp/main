@@ -4,11 +4,11 @@ import LoginForm from '@/components/LoginForm'
 
 
 function LoginPage() {
-  return (
-    <Page data-testid='LoginPage'>
-      <LoginForm />
-    </Page>
-  )
+	return (
+		<Page data-testid='LoginPage'>
+			<LoginForm />
+		</Page>
+	)
 }
 
 export default LoginPage

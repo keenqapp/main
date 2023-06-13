@@ -4,13 +4,12 @@ import { isAuthed } from '@/services/auth'
 
 
 function AuthPage() {
-  if (isAuthed.value) return <Navigate to='/' />
-
-  return (
-    <div data-testid='AuthPage'>
-      <Outlet />
-    </div>
-  )
+	if (isAuthed.value) return <Navigate to='/' />
+	return (
+		<div data-testid='AuthPage'>
+			<Outlet />
+		</div>
+	)
 }
 
 export default AuthPage

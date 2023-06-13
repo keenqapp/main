@@ -1,22 +1,32 @@
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
+import { ReactNode } from 'react'
 
-const StyledContainer = styled.div<{ padding: number }>`
-  padding-left: ${({ theme, padding }) => theme.spacing(padding)};
-  padding-right: ${({ theme, padding }) => theme.spacing(padding)};
+
+const flex = css`
+	display: flex;
+	flex-direction: column;
+	flex: 1 0 auto;
 `
 
-interface Props {
-  children: React.ReactNode,
+const StyledContainer = styled.div<{ horizontal?: number, vertical?: number, flex?: number }>`
+  padding-left: ${p => p.horizontal ?? 1}rem;
+  padding-right: ${p => p.horizontal ?? 1}rem;
+  ${p => p.flex && flex};
+`
+
+interface ContainerProps {
+  children: ReactNode,
   'data-testid': string,
-  padding?: number,
+	flex?: number,
+	vertical?: number
+	horizontal?: number
 }
 
-function Container({ children, 'data-testid': testId, padding = 1 }: Props) {
-  return (
-    <StyledContainer data-testid={testId} padding={padding}>
-      {children}
-    </StyledContainer>
-  )
+function Container(props: ContainerProps) {
+	return (
+		<StyledContainer {...props} />
+	)
 }
 
 export default Container

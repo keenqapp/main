@@ -1,6 +1,7 @@
-import "preact/debug";
 import { render } from 'preact'
 
+import 'preact/debug'
+import '@/utils/polyfills'
 import App from '@/core/App'
 
 

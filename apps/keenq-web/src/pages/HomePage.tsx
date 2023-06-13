@@ -4,12 +4,12 @@ import Page from '@/ui/Page'
 // import MyEvents from '@/components/MyEvents'
 
 export default function HomePage() {
-  return (
-    <Page data-testid='HomePage'>
+	return (
+		<div data-testid='HomePage'>
       HomePage
       111222
-      {/*<MyEvents />*/}
-      {/*<AllEvents />*/}
-    </Page>
-  )
+			{/*<MyEvents />*/}
+			{/*<AllEvents />*/}
+		</div>
+	)
 }

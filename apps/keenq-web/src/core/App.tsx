@@ -5,11 +5,11 @@ import Router from '@/pages/Routes'
 
 
 function App() {
-  return (
-    <CombinedContext>
-      <Router />
-    </CombinedContext>
-  )
+	return (
+		<CombinedContext>
+			<Router />
+		</CombinedContext>
+	)
 }
 
 export default App

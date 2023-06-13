@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
+  "license": "proprietary",
   "scripts": {
     "dev": "vite",
     "start": "vite",
@@ -25,11 +26,14 @@
     "graphql-config": "^5.0.1",
     "normalize.css": "^8.0.1",
     "preact": "^10.15.1",
-    "react-router-dom": "^6.8.2",
-    "system-font-css": "^2.0.2"
+    "react-router-dom": "^6.12.1",
+    "scroll-snap": "^4.0.3",
+    "system-font-css": "^2.0.2",
+    "vite-plugin-svgr": "^3.2.0"
   },
   "devDependencies": {
     "@graphql-eslint/eslint-plugin": "^3.19.1",
+    "@preact/preset-vite": "^2.5.0",
     "@types/node": "^18.14.5",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
@@ -39,7 +43,6 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unicorn": "^47.0.0",
-    "@preact/preset-vite": "^2.5.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
   }

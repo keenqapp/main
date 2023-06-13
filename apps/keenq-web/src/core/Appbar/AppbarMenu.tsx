@@ -1,8 +1,6 @@
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
-import EmojiPeopleTwoToneIcon from '@mui/icons-material/EmojiPeopleTwoTone'
 import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone'
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone'
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone'
@@ -24,7 +22,9 @@ import Space from '@/ui/Space'
 
 
 const StyledDrawer = styled(SwipeableDrawer)`
-  min-width: 65vw; // TODO: not working
+	& .MuiDrawer-paper {
+		border-radius: 1rem 1rem 0 0;
+	}
 `
 
 const StyledListItemText = styled(ListItemText)<{ color: ItemProps['color'] }>`
@@ -39,14 +39,14 @@ interface ItemProps {
 }
 
 function Item({ text, icon, onClick, color }: ItemProps) {
-  return (
-    <ListItem>
-      <ListItemButton onClick={onClick}>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <StyledListItemText primary={text} color={color} />
-      </ListItemButton>
-    </ListItem>
-  )
+	return (
+		<ListItem>
+			<ListItemButton onClick={onClick}>
+				<ListItemIcon>{icon}</ListItemIcon>
+				<StyledListItemText primary={text} color={color} />
+			</ListItemButton>
+		</ListItem>
+	)
 }
 
 interface Props {
@@ -56,62 +56,59 @@ interface Props {
 
 function AppbarMenu({ open, toggleMenuOpen }: Props) {
 
-  const navigate = useNavigate()
+	const navigate = useNavigate()
 
-  const handle = (cb: () => void) => () => {
-    toggleMenuOpen(false)()
-    cb()
-  }
+	const handle = (cb: () => void) => () => {
+		toggleMenuOpen(false)()
+		cb()
+	}
 
-  const Home = () => navigate('/')
-  const Profile = () => navigate('/profile')
-  const Results = () => navigate('/results')
-  const Login = () => navigate('/auth/login')
-  const CreateEvent = () => navigate('/events/create')
-  const Logout = () => logout()
+	const Home = () => navigate('/')
+	const Profile = () => navigate('/profile')
+	const Login = () => navigate('/auth/login')
+	const Logout = () => logout()
 
-  return (
-    <StyledDrawer
-      data-testid='AppbarMenu'
-      anchor='right'
-      open={open}
-      onClose={toggleMenuOpen(false)}
-      onOpen={toggleMenuOpen(true)}
-    >
-      <List>
-        <Item icon={<HomeTwoToneIcon />} text='Home' onClick={handle(Home)} />
-        {isAuthed && <Item icon={<PersonOutlineTwoToneIcon />} text='You' onClick={handle(Profile)} />}
-        {isAuthed && <Item icon={<EmojiPeopleTwoToneIcon />} text='My connections' onClick={handle(Results)} />}
-        <Divider />
-
-      </List>
-      <Container data-testid='LogoutButton'>
-        <Stack spacing={2} flex={1}>
-          <Button variant='outlined' startIcon={<AddTwoToneIcon />} onClick={handle(CreateEvent)}>Create event</Button>
-        </Stack>
-      </Container>
-      <Space grow />
-      <Container data-testid='LogoutButton'>
-        <Stack spacing={2} flex={1}>
-          {isAuthed
-            ? (
-              <Button
-                variant='outlined'
-                color='warning'
-                startIcon={<LogoutTwoToneIcon />}
-                onClick={handle(Logout)}
-              >
+	return (
+		<StyledDrawer
+			data-testid='AppbarMenu'
+			anchor='bottom'
+			open={open}
+			onClose={toggleMenuOpen(false)}
+			onOpen={toggleMenuOpen(true)}
+		>
+			<List>
+				<Item icon={<HomeTwoToneIcon />} text='Home' onClick={handle(Home)} />
+				{isAuthed && <Item icon={<PersonOutlineTwoToneIcon />} text='You' onClick={handle(Profile)} />}
+				{/*{isAuthed && <Item icon={<EmojiPeopleTwoToneIcon />} text='My connections' onClick={handle(Results)} />}*/}
+				<Divider />
+			</List>
+			{/*<Container data-testid='LogoutButton'>*/}
+			{/*	<Stack spacing={2} flex={1}>*/}
+			{/*		<Button variant='outlined' startIcon={<AddTwoToneIcon />} onClick={handle(CreateEvent)}>Create event</Button>*/}
+			{/*	</Stack>*/}
+			{/*</Container>*/}
+			{/*<Space grow />*/}
+			<Container data-testid='LogoutButton'>
+				<Stack spacing={2} flex={1}>
+					{isAuthed
+						? (
+							<Button
+								variant='outlined'
+								color='warning'
+								startIcon={<LogoutTwoToneIcon />}
+								onClick={handle(Logout)}
+							>
                 Logout
-              </Button>
-            )
-            : <Button variant='outlined'  startIcon={<LogoutTwoToneIcon />} onClick={handle(Login)}>Sign In</Button>
-          }
-          <Typography variant='caption' color='#ccc' align='center'>{'dev 0.0.1'}</Typography>
-        </Stack>
-      </Container>
-      <Space />
-    </StyledDrawer>
-  )
+							</Button>
+						)
+						: <Button variant='outlined'  startIcon={<LogoutTwoToneIcon />} onClick={handle(Login)}>Sign In</Button>
+					}
+					<Typography variant='caption' color='#ccc' align='center'>{'dev 0.0.1'}</Typography>
+				</Stack>
+			</Container>
+			<Space />
+		</StyledDrawer>
+	)
 }
 
 export default AppbarMenu

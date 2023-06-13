@@ -1,58 +1,63 @@
-import { FC, ReactNode } from 'react'
 import styled from '@emotion/styled'
+import { ReactNode } from 'react'
 
 
-interface Props {
-  flex?: number
-  justify?: Justify
-  align?: Align
-  grow?: boolean
-  gap?: number
-  padding?: number
-  wrap?: number | boolean
-  fullHeight?: boolean
-  children: ReactNode
+interface RowProps {
+	flex?: number
+	justify?: 'start' | 'end' | 'stretch' | 'between' | 'center'
+	align?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'
+	grow?: boolean
+	gap?: number
+	padding?: number
+	wrap?: number | boolean
+	fullHeight?: boolean
+	direction?: 'row' | 'column'
+	children: ReactNode
+	self?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'
 }
 
 type Justify = 'start' | 'end' | 'stretch' | 'between' | 'center'
 type Align = 'start' | 'end' | 'center' | 'baseline' | 'stretch'
 
 const j = {
-  start: 'flex-start',
-  end: 'flex-end',
-  stretch: 'stretch',
-  between: 'space-between',
-  center: 'center'
+	start: 'flex-start',
+	end: 'flex-end',
+	stretch: 'stretch',
+	between: 'space-between',
+	center: 'center'
 }
 
 const ai = {
-  start: 'flex-start',
-  end: 'flex-end',
-  stretch: 'stretch',
-  baseline: 'baseline',
-  center: 'center'
+	start: 'flex-start',
+	end: 'flex-end',
+	stretch: 'stretch',
+	baseline: 'baseline',
+	center: 'center'
 }
 
 function f(justify: Justify) {
-  return j[justify]
+	return j[justify]
 }
 
 function a(align: Align) {
-  return ai[align]
+	return ai[align]
 }
 
-const StyledRow = styled.div<Props>`
+const StyledRow = styled.div<RowProps>`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${p => p.direction || 'row'};
   align-items: ${p => p.align ? a(p.align) : 'center'};
   justify-content: ${p => p.justify ? f(p.justify) : 'space-between'};
   flex-wrap: ${p => p.wrap ? 'wrap' : 'nowrap'};
-  ${p => p.gap && `column-gap: ${p.gap}rem`};
+  ${p => p.gap && `gap: ${p.gap}rem`};
   ${p => p.grow && 'width: 100%'};
   ${p => p.padding && `padding: ${p.padding}rem`};
   ${p => p.fullHeight && 'min-height: 100%'};
+  ${p => p.flex && `flex: ${p.flex} 0 auto`};
+  ${p => p.self && `align-self: ${a(p.self)}`};
 `
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Row: FC<Props> = ({ flex, wrap, ...props }) => <StyledRow wrap={wrap ? 1 : 0} {...props} />
+function Row({ wrap, ...props }: RowProps) {
+	return <StyledRow wrap={wrap ? 1 : 0} {...props} />
+}
 export default Row
