@@ -19,7 +19,6 @@ const fadeInLeft = keyframes`
 `
 
 const StyledPage = styled.div`
-	position: absolute;
   min-height: calc(100vh - var(--vertical-space) * 2);
   animation: ${fadeInLeft} 200ms ease-in-out 1;
   padding-bottom: var(--vertical-space);

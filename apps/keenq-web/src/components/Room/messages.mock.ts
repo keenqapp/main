@@ -14,7 +14,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [
-			{ uid: '1', type: 'image', url: 'https://picsum.photos/200/300' },
+			{ uid: '1', type: 'image', url: 'https://picsum.photos/200/300', width: 200, height: 300 },
 		],
 		author: { uid: '2', name: 'Me' }
 	},
@@ -69,6 +69,21 @@ export const messages = [
 	},
 
 	{
+		uid: '222',
+		text: '',
+		date: subDays(new Date(), 12).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: '1',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		author: { uid: '1', name: 'Patrisia' },
+		attachments: [
+			{ uid: '222_1', type: 'image', url: 'https://picsum.photos/200/200', width: 200, height: 300 },
+		],
+	},
+
+	{
 		uid: '2',
 		text: 'one',
 		date: subDays(new Date(), 11).toISOString(),
@@ -92,7 +107,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '2', name: 'Me' }
+		author: { uid: '2', name: 'Me', image: 'https://picsum.photos/40/40' }
 	},
 	{
 		uid: '6',
@@ -104,7 +119,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '2', name: 'Me' }
+		author: { uid: '2', name: 'Me', image: 'https://picsum.photos/40/40' }
 	},
 	{
 		uid: '5',
@@ -116,7 +131,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '1', name: 'Patrisia' }
+		author: { uid: '1', name: 'Patrisia', image: 'https://picsum.photos/40/40' }
 	},
 
 
@@ -168,9 +183,9 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [
-			{ uid: '3', type: 'image', url: 'https://picsum.photos/200/300' },
+			{ uid: '3', type: 'image', url: 'https://picsum.photos/200/200', width: 200, height: 300 },
 		],
-		author: { uid: '2', name: 'Me' }
+		author: { uid: '2', name: 'Me', image: '' }
 	},
 	{
 		uid: '11',
@@ -196,7 +211,21 @@ export const messages = [
 		author: { uid: '1', name: 'Patrisia' }
 	},
 	{
-		uid: '12',
+		uid: '13',
+		text: 'The enlightenment is a parallel moon.',
+		date: subSeconds(new Date(), 8).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: '1',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		author: { uid: '1', name: 'Patrisia', image: 'https://picsum.photos/40/40' },
+		attachments: [
+			{ uid: '4', type: 'image', url: 'https://picsum.photos/200/300', width: 200, height: 300 },
+		],
+	},
+	{
+		uid: '14',
 		text: '',
 		date: addSeconds(new Date(), 100).toISOString(),
 		prevDate: nullString(),
@@ -205,12 +234,12 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [
-			{ uid: '4', type: 'image', url: 'https://picsum.photos/300/200' },
+			{ uid: '4', type: 'image', url: 'https://picsum.photos/300/200', width: 300, height: 200 },
 		],
 		author: { uid: '1', name: 'Patrisia' }
 	},
 	{
-		uid: '12',
+		uid: '15',
 		text: 'me',
 		date: addSeconds(new Date(), 200).toISOString(),
 		prevDate: nullString(),

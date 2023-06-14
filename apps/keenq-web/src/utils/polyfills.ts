@@ -1,3 +1,5 @@
+import { global } from '@apollo/client/utilities/globals'
+
 export interface Dict extends Object {
   [key: string]: any
 }
@@ -80,3 +82,13 @@ Object.defineProperty(Set.prototype, 'copyDelete', {
 		return new Set(this)
 	}
 })
+
+async function checkStructureClone() {
+	if (!('structuredClone' in self || 'structuredClone' in globalThis)) {
+		const structuredClone = await import('@ungap/structured-clone')
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		globalThis.structuredClone = structuredClone
+	}
+}
+checkStructureClone()

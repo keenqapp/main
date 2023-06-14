@@ -1,13 +1,13 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { BrowserRouter, createBrowserRouter, Navigate, Route, RouterProvider, Routes, Switch } from 'react-router-dom'
 
 import Layout from '@/core/Layout'
 import AuthPage from '@/pages/AuthPage'
 import LoginPage from '@/pages/AuthPage/LoginPage'
-import RoomPage from '@/pages/RoomPage'
-import RoomsPage from '@/pages/RoomsPage'
 import EventPage from '@/pages/EventPage'
 import MatchPage from '@/pages/MatchPage'
 import ProfilePage from '@/pages/ProfilePage'
+import RoomPage from '@/pages/RoomPage'
+import RoomsPage from '@/pages/RoomsPage'
 
 
 const routes = createBrowserRouter([
@@ -53,3 +53,19 @@ const routes = createBrowserRouter([
 export default function Router() {
 	return <RouterProvider router={routes} />
 }
+
+// export default function Router() {
+// 	return (
+// 		<BrowserRouter>
+// 			<Routes>
+// 				<Route path='/' element={<Layout />} />
+// 				<Route path='/match' element={<MatchPage />} />
+//
+// 				<Route path='/auth' element={<AuthPage />} />
+// 				<Route path='/auth/login' element={<LoginPage />} />
+//
+// 				<Route path='/' element={<Navigate to='/match' />} />
+// 			</Routes>
+// 		</BrowserRouter>
+// 	)
+// }

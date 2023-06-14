@@ -1,4 +1,4 @@
-function Logo(props) {
+function Logo(props: any) {
 	return (
 		<svg
 			version="1.1"

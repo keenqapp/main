@@ -6,10 +6,8 @@ import List from '@/ui/List'
 import RoomMessage from '@/components/Room/RoomMessage'
 
 import { messages as mock } from './messages.mock'
+import type { IMessage } from '@/types/messages'
 import { pipe, reduce, sort } from '@/utils/utils'
-
-
-export type IMessage = typeof mock[number]
 
 
 function byDate(a: IMessage, b: IMessage) {

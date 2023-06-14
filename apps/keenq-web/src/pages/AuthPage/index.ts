@@ -1,7 +1,8 @@
 import AuthPage from './AuthPage'
 
+
 export {
-  AuthPage
+	AuthPage
 }
 
 export default AuthPage

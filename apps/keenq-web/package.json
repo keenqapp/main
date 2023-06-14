@@ -5,8 +5,7 @@
   "type": "module",
   "license": "proprietary",
   "scripts": {
-    "dev": "vite",
-    "start": "vite",
+    "start": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -21,6 +20,7 @@
     "@mui/material-next": "^6.0.0-alpha.77",
     "@mui/x-date-pickers": "^6.0.2",
     "@preact/signals": "^1.1.3",
+    "@ungap/structured-clone": "^1.2.0",
     "date-fns": "^2.29.3",
     "graphql": "^16.6.0",
     "graphql-config": "^5.0.1",
@@ -35,6 +35,7 @@
     "@graphql-eslint/eslint-plugin": "^3.19.1",
     "@preact/preset-vite": "^2.5.0",
     "@types/node": "^18.14.5",
+    "@types/ungap__structured-clone": "^0.3.0",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "eslint": "^8.41.0",

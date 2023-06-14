@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { useSignal } from '@preact/signals'
 import { useNavigate } from 'react-router-dom'
@@ -25,7 +25,8 @@ const StyledCardContent = styled(CardContent)`
 `
 
 const StyledStack = styled(Stack)`
-  height: 100vh;
+	height: ${p => p.height}px;
+	transition: height 300ms ease-in-out;
 `
 
 function f(s: any, prev: any) {
@@ -43,6 +44,13 @@ function LoginForm() {
 	const { send } = useSend()
 	const { verify } = useVerify()
 
+	const [ height, setHeight ] = useState(window.visualViewport?.height || window.innerHeight)
+	useEffect(() => {
+		const resize = () => setHeight(window.visualViewport?.height || window.innerHeight)
+		window.addEventListener('resize', resize)
+		return () => window.removeEventListener('resize', resize)
+	}, [])
+
 	const phoneInput = useInput({
 		label: 'Phone',
 		fullWidth: true,
@@ -54,6 +62,16 @@ function LoginForm() {
 		onFocus: () => authError.value = null
 	})
 
+	const handleChange = (e: any) => {
+		if (e.target.value.length === 6) {
+			setTimeout(() => {
+				codeInput.value = e.target.value
+				e.target.blur()
+				handleVerify(e.target.value)
+			}, 1)
+		}
+	}
+
 	const codeInput = useInput({
 		label: 'Code',
 		fullWidth: true,
@@ -61,6 +79,7 @@ function LoginForm() {
 		placeholder: 'Code that was sent to your phone',
 		validation: [isNotEmpty],
 		error: authError.value,
+		onChange: handleChange,
 		onFocus: () => authError.value = null
 	})
 
@@ -75,7 +94,7 @@ function LoginForm() {
 	const handleVerify = async () => {
 		if (!inputsHasError(codeInput)) {
 			loading.value = true
-			await verify(phoneInput.value, codeInput.value) && navigate('/')
+			await verify(phoneInput.value, codeInput.value) && navigate('/match')
 			loading.value = false
 		}
 	}
@@ -83,8 +102,8 @@ function LoginForm() {
 	const handleRetry = () => setCodeSent(false)
 
 	return (
-		<Container data-testid='LoginForm' horizontal={3}>
-			<StyledStack justifyContent='center' alignItems='stretch'>
+		<Container data-testid='LoginForm' flex={1} horizontal={3}>
+			<StyledStack justifyContent='center' alignItems='stretch' height={height}>
 				<Typography variant='h4' align='center'>Keenq</Typography>
 				<Space height={2} />
 				<Card>

@@ -19,6 +19,13 @@ const globalStyles = css`
     box-sizing: border-box;
     max-width: 100vw;
     min-height: 100vh;
+    user-select: none;
+  }
+  @media print {
+    html,
+    body {
+      display: none;
+    }
   }
   body {
     font-family: serif;

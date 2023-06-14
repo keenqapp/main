@@ -2,14 +2,17 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { differenceInCalendarDays, differenceInMinutes, isBefore, isSameDay, isToday, parseISO, startOfDay } from 'date-fns'
 
-import Typography from '@mui/material/Typography'
+import { Avatar } from '@mui/material'
 
+import Row from '@/ui/Row'
 import theme from '@/ui/theme'
 
 import RoomMessageAttachments from '@/components/Room/RoomMessage/RoomMessageAttachments'
+import RoomMessageAvatar from '@/components/Room/RoomMessage/RoomMessageAvatar'
 import RoomMessageText from '@/components/Room/RoomMessage/RoomMessageText'
-import { IMessage } from '@/components/Room/RoomMessages'
+import RoomMessageTime from '@/components/Room/RoomMessage/RoomMessageTime'
 
+import { IMessage } from '@/types/messages'
 import { formatDate } from '@/utils/formatters'
 
 
@@ -20,9 +23,12 @@ const notSelfCss = css`
     border-radius: 1rem 1rem 1rem 0;
     background: ${theme.color.secondaryVeryLight};
 	}
-	
 	& .MuiTypography-caption {
 		align-self: flex-start;
+	}
+	& img {
+    align-self: flex-start;
+    border-radius: 1rem 1rem 1rem 0;
 	}
 `
 
@@ -30,20 +36,22 @@ const selfCss = css`
   align-self: flex-end;
 	& .RoomMessageText {
     align-self: flex-end;
-    border-radius: 1rem 1rem 0 1em;
+    border-radius: 1rem 1rem 0 1rem;
     background: ${theme.color.primaryVeryLight};
 	}
-	
 	& .MuiTypography-caption {
 		align-self: flex-end;
 	}
+  & img {
+    align-self: flex-end;
+    border-radius: 1rem 1rem 0 1rem;
+  }
 `
 
 const MessageContainer = styled.div<{ isSelf: boolean }>`
 	padding: 0 1rem;
-	display: flex;
-	flex-direction: column;
-	gap: 0.1rem;
+	//display: flex;
+	//flex-direction: column;
   max-width: calc(100vw - 4rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;
@@ -51,22 +59,10 @@ const MessageContainer = styled.div<{ isSelf: boolean }>`
 	${p => p.isSelf ? selfCss : notSelfCss}
 `
 
-const StyledDatetime = styled(Typography)`
-	margin-top: 0.5rem;
-`
-
 const SeparateDate = styled.div`
 	align-self: center;
 `
 
-function checkCollapse({ date, nextDate, authorUid, nextAuthorUid }: IMessage) {
-	if (authorUid !== nextAuthorUid) return true
-	if (!nextDate) return true
-	const current = parseISO(date)
-	const next = parseISO(nextDate)
-	if (!isSameDay(current, next)) return true
-	return differenceInMinutes(next, current) >= 1
-}
 
 // TODO TTD for this
 function DateSeparator({ date, prevDate }: IMessage) {
@@ -82,23 +78,21 @@ function DateSeparator({ date, prevDate }: IMessage) {
 	return null
 }
 
-function Datetime({ date, shouldCollapse }: IMessage & { shouldCollapse: boolean }) {
-	if (!shouldCollapse) return null
-	return <StyledDatetime variant='caption'>{formatDate(parseISO(date), { to: 'HH:mm' })}</StyledDatetime>
-}
-
 function RoomMessage(message: IMessage) {
-	const { uid, text,  date, authorUid, attachments } = message
+	const { authorUid } = message
 	const isSelf = authorUid === 'me'
-	const shouldCollapse = checkCollapse(message)
 	return (
 		<>
 			<DateSeparator {...message} />
 			<MessageContainer data-testid='RoomMessage' isSelf={isSelf}>
-				<RoomMessageAttachments {...message} />
-				<RoomMessageText {...message} />
-				{/* TODO Move it to separate component */}
-				<Datetime shouldCollapse={shouldCollapse} {...message} />
+				<Row gap={0.5} align='end'>
+					<RoomMessageAvatar {...message} />
+					<Row direction='column' gap={0.2}>
+						<RoomMessageAttachments {...message} />
+						<RoomMessageText {...message} />
+						<RoomMessageTime {...message} />
+					</Row>
+				</Row>
 			</MessageContainer>
 		</>
 	)
