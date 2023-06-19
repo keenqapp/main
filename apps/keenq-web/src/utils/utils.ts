@@ -1,6 +1,4 @@
 import { ID } from '@/types/types'
-import { Output } from '@mui/icons-material'
-import { IMessage } from '@/components/Room/RoomMessages'
 
 
 export function toId(i: string | number) {
@@ -38,4 +36,24 @@ export function sort<Input>(fn: (a: Input, b: Input) => number) {
 
 export function reduce<Input, Output>(fn: (previousValue: Output, currentValue: Input, currentIndex: number, array: Input[]) => Output, init: Output) {
 	return (input: Input[]) => input.reduce(fn, init)
+}
+
+export function equals(left: any, right: any) {
+	return left === right
+}
+
+// function resolve<T extends (...args: any[]) => ReturnType<T>>(fn: T): Promise<ReturnType<T>> {
+// 	return new Promise((resolve, reject) => { fn(resolve, reject) })
+// }
+
+export function loadScript(src: string, position: HTMLElement | null, id: string) {
+	if (!position) {
+		return
+	}
+
+	const script = document.createElement('script')
+	script.setAttribute('async', '')
+	script.setAttribute('id', id)
+	script.src = src
+	position.appendChild(script)
 }

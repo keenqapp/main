@@ -1,15 +1,41 @@
-import { global } from '@apollo/client/utilities/globals'
+import $equals from 'fast-deep-equal'
+
+
+interface Equals {
+	(value: unknown, equals: unknown): boolean
+	any(value: unknown, equals: unknown[]): boolean
+}
+const equals: Equals = function equals(value: unknown, equals: unknown): boolean {
+	return $equals(value, equals)
+}
+function any(value: unknown, equals: unknown[]) {
+	return equals.some((item) => $equals(value, item))
+}
+
+equals.any = any
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+globalThis.equals = equals
 
 export interface Dict extends Object {
   [key: string]: any
 }
 
 declare global {
-  interface Array<T> {
-    uniq(property?: string, flat?: boolean): Array<T>;
-    last(): T | undefined
-    csort(compareFn?: (a: T, b: T) => number): Array<T>
-  }
+
+	const equals: Equals
+
+	interface ArrayConstructor {
+		create(length: number): Array<number>;
+	}
+
+	interface Array<T>{
+		create(length: number): Array<number>
+		uniq(property?: string, flat?: boolean): Array<T>;
+		last(): T | undefined
+		csort(compareFn?: (a: T, b: T) => number): Array<T>
+	}
 
   interface String {
     capitalize(): string
@@ -24,7 +50,7 @@ declare global {
 }
 
 Object.defineProperty(Array.prototype, 'uniq', {
-	value: function(property?: string, flat?: boolean) {
+	value: function(property?: string) {
 		if (property) {
 			const cache = new Set()
 			return this.filter((item: Dict) => {
@@ -35,6 +61,12 @@ Object.defineProperty(Array.prototype, 'uniq', {
 		} else {
 			return [...new Set(this)]
 		}
+	}
+})
+
+Object.defineProperty(Array, 'create', {
+	value: function(length: number) {
+		return [...Array(length).keys()]
 	}
 })
 

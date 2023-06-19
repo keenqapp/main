@@ -1,5 +1,7 @@
 import knex from 'knex'
-
+import { customAlphabet } from 'nanoid'
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+const nanoid = customAlphabet(alphabet, 8)
 
 const config = {
 	client: 'pg',
@@ -22,6 +24,7 @@ function getDb(config) {
 async function create(uid, db) {
 	try {
 		await db.table('profiles').insert({ uid })
+		await db.table('links').insert({ euid: uid, type: 'member', link: nanoid() })
 	}
 	catch(e) {
 		throw { error: e }

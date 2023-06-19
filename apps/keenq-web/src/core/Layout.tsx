@@ -7,13 +7,14 @@ import Loadable from '@/ui/Loadable'
 
 import Appbar from '@/core/Appbar'
 import BottomTabs from '@/core/BottomTabs'
+import Modals from '@/modals/Modals'
 
 
 const Main = styled.main`
-  padding-top: var(--vertical-space);
+  padding-top: var(--appbar-height);
 	position: relative;
 	overflow-x: hidden;
-  min-height: calc(100vh - var(--vertical-space));
+  min-height: calc(100vh - var(--appbar-height));
 `
 
 function Layout() {
@@ -31,6 +32,7 @@ function Layout() {
 					<Outlet />
 				</Main>
 				<BottomTabs />
+				<Modals />
 			</Loadable>
 		</div>
 	)

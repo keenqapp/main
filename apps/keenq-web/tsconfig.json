@@ -12,7 +12,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-//    "jsx": "react-jsx",
     "jsxImportSource": "preact",
 
     /* Linting */
@@ -31,11 +30,6 @@
     "jsx": "react",
     "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment",
-//    "paths": {
-//      "react": ["node_modules/preact/compat/src/index.d.ts"],
-//      "react-dom/test-utils": ["node_modules/preact/test-utils"],
-//      "react-dom": ["node_modules/preact/compat/src/index.d.ts"],
-//    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

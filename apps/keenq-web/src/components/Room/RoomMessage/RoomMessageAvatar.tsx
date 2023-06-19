@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import { Avatar } from '@mui/material'
 
-import { isAuthorCurrent, isPrivateRoom, shouldShowCheck } from '@/components/Room/RoomMessage/utils'
+import { isAuthor, isPrivateRoom, shouldShowCheck } from '@/components/Room/RoomMessage/utils'
 
 import { IMessage } from '@/types/messages'
 
@@ -23,10 +23,10 @@ function RoomMessageAvatar(message: IMessage) {
 	const { uid } = useParams()
 
 	const shouldShow = shouldShowCheck(message)
-	const isSelf = isAuthorCurrent(authorUid)
+	const isSelf = isAuthor(authorUid)
 	const isPrivate = isPrivateRoom(uid!)
 
-	if (isSelf || !isPrivate) return null
+	if (isSelf || isPrivate) return null
 	if (!shouldShow) return <EmptyAvatar />
 
 	return (

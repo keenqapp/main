@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'preact/hooks'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 import AppBar from '@mui/material/AppBar'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
@@ -12,12 +13,10 @@ import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
 import Logo from '@/assets/Logo'
-import AppbarMenu from '@/core/Appbar/AppbarMenu'
-import { useMenuOpen } from '@/hooks/useMenuOpen'
 
 
 const StyledAppBar = styled(AppBar)`
-  height: var(--vertical-space);
+  height: var(--appbar-height);
   background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(6px);
   color: ${({ theme }) => theme.palette.primary.contrastText};
@@ -54,8 +53,12 @@ const ColorLogo = styled(Logo)`
 `
 
 export default function Appbar() {
-	const { open, setMenuOpen } = useMenuOpen()
 	const [ color, setColor ] = useState('gray')
+	const navigate = useNavigate()
+	const location = useLocation()
+
+	const onClick = () => navigate('/profile')
+	const isProfile = location.pathname === '/profile'
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -70,10 +73,9 @@ export default function Appbar() {
 				<ColorLogo color={color} />
 				<HomeButton>keenq</HomeButton>
 				<Space grow />
-				<IconButton onClick={setMenuOpen(true)}>
-					<MenuTwoToneIcon />
+				<IconButton onClick={onClick} color={isProfile ? 'primary' : 'secondary'}>
+					<AccountCircleTwoToneIcon />
 				</IconButton>
-				<AppbarMenu open={open} toggleMenuOpen={setMenuOpen} />
 			</Toolbar>
 		</StyledAppBar>
 	)

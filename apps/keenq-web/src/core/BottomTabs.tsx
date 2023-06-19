@@ -20,16 +20,15 @@ const Nav = styled(BottomNavigation)`
 `
 
 function BottomTabs() {
-	const [ tab, setTab ] = useState(0)
+	const [ tab, setTab ] = useState<number|null>(null)
 	const navigate = useNavigate()
 	const { pathname } = useLocation()
 
 	useEffect(() => {
-		switch (pathname) {
-			case '/match': setTab(0); break
-			case '/room': setTab(1); break
-			case '/event': setTab(2); break
-		}
+		if (pathname.includes('/match')) setTab(0)
+		else if (pathname.includes('/room')) setTab(1)
+		else if (pathname.includes('/event')) setTab(2)
+		else setTab(null)
 	}, [ pathname ])
 
 	const handleChange = (_: any, newValue: number) => {

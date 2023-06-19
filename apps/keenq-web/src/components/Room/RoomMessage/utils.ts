@@ -3,12 +3,16 @@ import { differenceInMinutes, isSameDay, parseISO } from 'date-fns'
 import { IMessage } from '@/types/messages'
 
 
-export function isAuthorCurrent(uid: string) {
+export function isAuthor(uid: string) {
 	return uid === 'me'
 }
 
 export function isPrivateRoom(uid: string) {
-	return uid === '6'
+	return uid !== 'public'
+}
+
+export function isAdmin(memberUid: string, roomUid: string) {
+	return equals.any(memberUid, ['me', '1']) && roomUid === 'public'
 }
 
 const MAX_DIFFERENCE_IN_MINUTES = 2

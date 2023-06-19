@@ -7,33 +7,38 @@ import TextField from '@mui/material/TextField'
 
 import Row from '@/ui/Row'
 
+import { useInput } from '@/hooks/useInput'
+
 
 const RoomInputContainer = styled.div`
-	height: var(--vertical-space);
-  padding: 0 1rem;
-	position: relative;
+	min-height: var(--vertical-space);
+  padding: 0 1rem 0;
+	
+	& textarea, .MuiInputBase-root {
+		padding: 0.3rem 0.5rem;
+	}
 `
 
 const Input = styled(TextField)`
 	flex-grow: 1;
 `
 
-const Fade = styled.div`
-  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-	width: 100%;
-	position: absolute;
-	left: 0;
-	top: -1rem;
-	height: 1rem;
-`
-
 function RoomInput() {
+
+	const text = useInput({
+		variant: 'outlined',
+		fullWidth: true,
+		autocomplete: 'off',
+		dense: true,
+		multiline: true,
+		maxRows: 3,
+	})
+
 	return (
 		<RoomInputContainer data-testid='RoomInput'>
-			<Fade />
-			<Row justify='stretch' gap={1}>
+			<Row justify='stretch' gap={1} align='end'>
 				<IconButton color='secondary'><AttachFileTwoToneIcon /></IconButton>
-				<Input variant='outlined' fullwidth />
+				<Input {...text} />
 				<IconButton color='primary'><SendTwoToneIcon /></IconButton>
 			</Row>
 		</RoomInputContainer>

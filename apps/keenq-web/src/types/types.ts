@@ -1,4 +1,5 @@
-import { ComponentChildren, Element, VNode } from 'preact'
+import { VNode } from 'preact'
+import { ReactElement, ReactFragment, ReactPortal } from 'react'
 
 
 export type Entity = { uid: string }
@@ -15,16 +16,17 @@ declare module 'react-router-dom' {
   export function useLoaderData<T = unknown>(): { data: T } | undefined
 }
 
-type VNode2 = VNode<any> & { children: ComponentChildren }
-
-declare module 'preact' {
-  export type ComponentChild =
+declare module 'react' {
+  export type ReactNode =
     | VNode
     | Element
-    | object
+    | ReactElement
+    | bigint
     | string
     | number
+    | ReactFragment
+    | ReactPortal
     | boolean
     | null
-    | undefined;
+    | undefined
 }

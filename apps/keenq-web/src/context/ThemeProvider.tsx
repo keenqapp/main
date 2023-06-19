@@ -11,9 +11,28 @@ declare module '@emotion/react' {
 	export interface Theme extends MUITheme {}
 }
 
+declare module '@mui/material/Button' {
+	interface ButtonPropsColorOverrides {
+		default: true;
+	}
+}
+
+declare module '@mui/material/styles' {
+	interface Palette {
+		'primary.light': Palette['primary']
+		default: Palette['primary']
+	}
+
+	interface PaletteOptions {
+		'primary.light': PaletteOptions['primary']
+		default: Palette['primary']
+	}
+}
+
 const globalStyles = css`
   :root {
-    --vertical-space: 56px;
+		--appbar-height: 56px;
+    --vertical-space: 40px;
   }
   html {
     box-sizing: border-box;
@@ -65,6 +84,17 @@ const theme = unstable_createMuiStrictModeTheme({
 		error: {
 			light: rawTheme.color.errorLight,
 			main: rawTheme.color.error,
+		},
+		default: {
+			light: rawTheme.color.base,
+			main: rawTheme.color.base,
+			dark: rawTheme.color.base,
+			contrastText: rawTheme.color.white,
+		},
+		'primary.light' : {
+			light: rawTheme.color.primaryVeryLight,
+			main: rawTheme.color.primaryLight,
+			contrastText: rawTheme.color.base,
 		}
 	},
 	shape: {
@@ -103,6 +133,11 @@ const theme = unstable_createMuiStrictModeTheme({
 		}
 	},
 	components: {
+		MuiChip: {
+			styleOverrides: {
+				colorPrimary: rawTheme.color.primaryLight,
+			}
+		},
 		MuiCard: {
 			styleOverrides: {
 				root: {

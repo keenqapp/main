@@ -1,11 +1,12 @@
 import styled from '@emotion/styled'
+import { differenceInMinutes, isSameDay, parseISO } from 'date-fns'
 import { useParams } from 'react-router-dom'
 
 import Typography from '@mui/material/Typography'
 
 import Row from '@/ui/Row'
 
-import { isAuthorCurrent, isPrivateRoom, shouldShowCheck, toColor } from '@/components/Room/RoomMessage/utils'
+import { isAdmin, isAuthor, isPrivateRoom, toColor } from '@/components/Room/RoomMessage/utils'
 
 import { IMessage } from '@/types/messages'
 
@@ -18,18 +19,37 @@ const Text = styled(Typography)`
 	white-space: pre-wrap;
 `
 
+const MAX_DIFF_IN_MINUTES = 2
+function checkShowName({ authorUid, prevAuthorUid, date, prevDate }: IMessage, ruid: string) {
+	const isPrivate = isPrivateRoom(ruid!)
+	const isSelf = isAuthor(authorUid)
+	if (isSelf || isPrivate) return false
+
+	const isDifferentAuthor = authorUid !== prevAuthorUid
+	if (isDifferentAuthor) return true
+	if (!prevDate) return true
+
+	const current = parseISO(date)
+	const prev = parseISO(prevDate)
+	const diff = differenceInMinutes(current, prev)
+	if (!isSameDay(current, prev)) return true
+	return diff > MAX_DIFF_IN_MINUTES
+}
+
 function RoomMessageText(message: IMessage) {
 	const { text, authorUid, author: { name } } = message
 
 	const preventSelection = (e: MouseEvent) => e.preventDefault()
 
-	const { uid } = useParams()
+	const { uid: ruid } = useParams()
 
-	const isSelf = isAuthorCurrent(authorUid)
-	const isPrivate = isPrivateRoom(uid!)
-	const shouldShow = shouldShowCheck(message)
+	const isSelf = isAuthor(authorUid)
+	const isPrivate = isPrivateRoom(ruid!)
+	const shouldShowName = checkShowName(message, ruid!)
+	const admin = isAdmin(authorUid, ruid!)
 
-	if (isSelf && !text) return null
+	if ((isSelf || isPrivate) && !text) return null
+	if (!text && !shouldShowName) return null
 
 	return (
 		<MessageContainerContent
@@ -40,11 +60,17 @@ function RoomMessageText(message: IMessage) {
 			align='start'
 			gap={0.5}
 			onMouseDown={preventSelection}
-			onTouchStart={preventSelection}
 			onSelectStart={preventSelection}
 			wrap
 		>
-			{!isSelf && isPrivate && shouldShow ? <Typography color={toColor(name)} fontWeight={600}>{name}</Typography> : null}
+			{shouldShowName
+				? (
+					<Row>
+						<Typography color={toColor(name)} fontWeight={600}>{name}</Typography>
+						{admin && <Typography variant='caption'>admin</Typography>}
+					</Row>
+				)
+				: null}
 			{text ? <Text>{text}</Text> : null}
 		</MessageContainerContent>
 	)

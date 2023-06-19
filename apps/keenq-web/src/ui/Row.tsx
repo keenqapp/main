@@ -1,5 +1,5 @@
+import { ComponentChildren } from 'preact'
 import styled from '@emotion/styled'
-import { ReactNode } from 'react'
 
 
 interface RowProps {
@@ -12,8 +12,9 @@ interface RowProps {
 	wrap?: number | boolean
 	fullHeight?: boolean
 	direction?: 'row' | 'column'
-	children: ReactNode
+	children: ComponentChildren
 	self?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'
+	[key: string]: any
 }
 
 type Justify = 'start' | 'end' | 'stretch' | 'between' | 'center'

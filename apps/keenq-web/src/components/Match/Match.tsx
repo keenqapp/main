@@ -2,8 +2,13 @@ import styled from '@emotion/styled'
 
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
+import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
+import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
+import Divider from '@mui/material/Divider'
 import Typography from '@mui/material/Typography'
+
+import { useModal } from '@/services/modals'
 
 import Container from '@/ui/Container'
 import Row from '@/ui/Row'
@@ -17,18 +22,16 @@ const Content = styled(Row)`
 `
 
 const Fabs = styled(Row)`
-	//position: fixed;
-	//left: 0;
-	//right: 0;
-	//bottom: calc(4rem* 1.5);
-	//padding: 0 1.5rem;
-	
 	svg {
     filter: drop-shadow(0px 2px 8px currentColor);
     backdrop-filter: blur(1px);
 		border-radius: 4rem;
 		padding: 0.1rem;
 	}
+`
+
+const StyledDivider = styled(Divider)`
+	width: 100%;
 `
 
 const tags = ['bdsm', 'ffm', 'fwb', 'shibari', 'threeway', 'huging']
@@ -41,6 +44,12 @@ const images = [
 ]
 
 function Match() {
+	const { onOpen } = useModal('report')
+	const onReportClick = () => {
+		console.log('--- Match.tsx:47 -> onReportClick ->', 'next')
+		onOpen()
+	}
+
 	return (
 		<Container data-testid='Match'>
 			<Swiper images={images} />
@@ -69,6 +78,15 @@ function Match() {
 					{tags.map((tag) => <Chip key={tag} label={tag} />)}
 				</Row>
 				<Space height={2} />
+				<StyledDivider />
+				<Space />
+				<Button
+					startIcon={<ReportTwoToneIcon color='error' />}
+					onClick={onReportClick}
+					fullWidth
+					color='default'
+				>Report</Button>
+				<Space />
 			</Content>
 		</Container>
 	)

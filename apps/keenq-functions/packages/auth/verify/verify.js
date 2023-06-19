@@ -21,7 +21,7 @@ function getDb(config) {
 
 async function getUser(phone, db) {
 	try {
-		return await db.table('credentials').select().where('phone', phone).first()
+		return await db.table('credentials').select().where('phone', phone).whereNotNull('deletedAt').first()
 	}
 	catch(e) {
 		throw { error: e }
@@ -34,7 +34,7 @@ async function ensureUser(user) {
 
 async function checkCode(phone, code, db) {
 	if (code === '111111') {
-		await db.table('credentials').update({ verified: true }).where('phone', phone)
+		await db.table('credentials').update({ verified: true }).where('phone', phone).whereNotNull('deletedAt')
 		return true
 	}
 	else throw { error: 'Wrong credentials' }

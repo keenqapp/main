@@ -1,4 +1,4 @@
-import { useMemo } from 'preact/hooks'
+import { useEffect, useMemo, useRef } from 'preact/hooks'
 import styled from '@emotion/styled'
 
 import List from '@/ui/List'
@@ -30,24 +30,36 @@ function addPrevDate(acc: IMessage[], message: IMessage, index: number, data: IM
 	return acc
 }
 
-const RoomMessagesList = styled(List<IMessage>)`
-	padding-top: 1rem;
-  height: calc(100vh - var(--vertical-space) * 4 - 1rem);
+const RoomMessagesContainer = styled.div`
+	flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+`
+
+const RoomMessagesList = styled(List<IMessage>)<{ height: number }>`
+	gap: 1rem;
 `
 
 function RoomMessages() {
+	const ref = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		ref.current?.scrollTo(0, ref.current.scrollHeight)
+	}, [])
 	const data = mock
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	const messages = useMemo<IMessage[]>(() => pipe(sort(byDate), reduce(addPrevDate, []))(data), [data])
 
 	return (
-		<div data-testid='RoomMessages'>
+		<RoomMessagesContainer data-testid='RoomMessages'>
 			<RoomMessagesList
+				scrollRef={ref}
 				data={messages}
 				renderItem={RoomMessage}
 			/>
-		</div>
+		</RoomMessagesContainer>
 	)
 }
 

@@ -16,7 +16,7 @@ export const messages = [
 		attachments: [
 			{ uid: '1', type: 'image', url: 'https://picsum.photos/200/300', width: 200, height: 300 },
 		],
-		author: { uid: '2', name: 'Me' }
+		author: { uid: 'me', name: 'boris' }
 	},
 	{
 		uid: '-2',
@@ -28,7 +28,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '1', name: 'Patrisia' }
+		author: { uid: '1', name: 'boris' }
 	},
 	{
 		uid: '-1',
@@ -40,7 +40,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '1', name: 'Patrisia' }
+		author: { uid: '1', name: 'boris' }
 	},
 	{
 		uid: '3',
@@ -74,12 +74,12 @@ export const messages = [
 		date: subDays(new Date(), 12).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
-		authorUid: '1',
+		authorUid: '2',
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
-		author: { uid: '1', name: 'Patrisia' },
+		author: { uid: '2', name: 'Mia' },
 		attachments: [
-			{ uid: '222_1', type: 'image', url: 'https://picsum.photos/200/200', width: 200, height: 300 },
+			{ uid: '222_1', type: 'image', url: 'https://picsum.photos/300/100', width: 300, height: 100 },
 		],
 	},
 
@@ -89,29 +89,41 @@ export const messages = [
 		date: subDays(new Date(), 11).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
-		authorUid: '1',
+		authorUid: '2',
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '2', name: 'Me' }
+		author: { uid: '2', name: 'Mia' }
 	},
 
-
 	{
-		uid: '4',
-		text: 'two.',
+		uid: '444',
+		text: '',
 		date: subMinutes(new Date(), 10).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
-		authorUid: '1',
+		authorUid: '222',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		attachments: [{ uid: '333333', type: 'image', url: 'https://picsum.photos/200/300', width: 200, height: 300 },],
+		author: { uid: '222', name: 'Imagine', image: 'https://picsum.photos/40/40' }
+	},
+
+	{
+		uid: '4',
+		text: 'ONE!!!.',
+		date: subMinutes(new Date(), 10).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: '2',
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '2', name: 'Me', image: 'https://picsum.photos/40/40' }
+		author: { uid: '2', name: 'Mia', image: 'https://picsum.photos/40/40' }
 	},
 	{
 		uid: '6',
-		text: 'three',
+		text: 'THRREEE!!!.',
 		date: subMinutes(new Date(), 8).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -119,7 +131,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '2', name: 'Me', image: 'https://picsum.photos/40/40' }
+		author: { uid: '1', name: 'Mia', image: 'https://picsum.photos/40/40' }
 	},
 	{
 		uid: '5',
@@ -145,7 +157,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '1', name: 'Patrisia' }
+		author: { uid: 'me', name: 'boris' }
 	},
 	{
 		uid: '9',
@@ -157,7 +169,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '2', name: 'Me' }
+		author: { uid: 'me', name: 'boris' }
 	},
 	{
 		uid: '8',
@@ -169,7 +181,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '2', name: 'Me' }
+		author: { uid: 'me', name: 'boris' }
 	},
 
 
@@ -185,7 +197,7 @@ export const messages = [
 		attachments: [
 			{ uid: '3', type: 'image', url: 'https://picsum.photos/200/200', width: 200, height: 300 },
 		],
-		author: { uid: '2', name: 'Me', image: '' }
+		author: { uid: 'me', name: 'boris', image: '' }
 	},
 	{
 		uid: '11',
@@ -197,7 +209,7 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '1', name: 'Patrisia' }
+		author: { uid: 'me', name: 'boris' }
 	},
 	{
 		uid: '12',
@@ -208,7 +220,7 @@ export const messages = [
 		authorUid: 'me',
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
-		author: { uid: '1', name: 'Patrisia' }
+		author: { uid: 'me', name: 'boris' }
 	},
 	{
 		uid: '13',
@@ -236,7 +248,7 @@ export const messages = [
 		attachments: [
 			{ uid: '4', type: 'image', url: 'https://picsum.photos/300/200', width: 300, height: 200 },
 		],
-		author: { uid: '1', name: 'Patrisia' }
+		author: { uid: 'me', name: 'boris' }
 	},
 	{
 		uid: '15',
@@ -248,6 +260,6 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: '1', name: 'Patrisia' }
+		author: { uid: 'me', name: 'boris' }
 	},
 ]

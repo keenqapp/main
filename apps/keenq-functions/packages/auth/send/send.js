@@ -21,7 +21,7 @@ function getDb(config) {
 
 async function getUser(phone, db) {
 	try {
-		return await db.table('credentials').select().where('phone', phone).first()
+		return await db.table('credentials').select().where('phone', phone).whereNotNull('deletedAt').first()
 	}
 	catch(e) {
 		throw { error: e }

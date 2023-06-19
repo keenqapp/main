@@ -1,8 +1,8 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { differenceInCalendarDays, differenceInMinutes, isBefore, isSameDay, isToday, parseISO, startOfDay } from 'date-fns'
+import { differenceInCalendarDays, isBefore, isToday, parseISO, startOfDay } from 'date-fns'
 
-import { Avatar } from '@mui/material'
+import { useModal } from '@/services/modals'
 
 import Row from '@/ui/Row'
 import theme from '@/ui/theme'
@@ -11,7 +11,9 @@ import RoomMessageAttachments from '@/components/Room/RoomMessage/RoomMessageAtt
 import RoomMessageAvatar from '@/components/Room/RoomMessage/RoomMessageAvatar'
 import RoomMessageText from '@/components/Room/RoomMessage/RoomMessageText'
 import RoomMessageTime from '@/components/Room/RoomMessage/RoomMessageTime'
+import { isAuthor } from '@/components/Room/RoomMessage/utils'
 
+import useLongPress from '@/hooks/useLongPress'
 import { IMessage } from '@/types/messages'
 import { formatDate } from '@/utils/formatters'
 
@@ -50,8 +52,6 @@ const selfCss = css`
 
 const MessageContainer = styled.div<{ isSelf: boolean }>`
 	padding: 0 1rem;
-	//display: flex;
-	//flex-direction: column;
   max-width: calc(100vw - 4rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;
@@ -80,11 +80,14 @@ function DateSeparator({ date, prevDate }: IMessage) {
 
 function RoomMessage(message: IMessage) {
 	const { authorUid } = message
-	const isSelf = authorUid === 'me'
+	const { onOpen } = useModal('message')
+	const isSelf = isAuthor(authorUid)
+	const onLongPress = useLongPress(() => onOpen(message))
+
 	return (
 		<>
 			<DateSeparator {...message} />
-			<MessageContainer data-testid='RoomMessage' isSelf={isSelf}>
+			<MessageContainer data-testid='RoomMessage' isSelf={isSelf} {...onLongPress}>
 				<Row gap={0.5} align='end'>
 					<RoomMessageAvatar {...message} />
 					<Row direction='column' gap={0.2}>

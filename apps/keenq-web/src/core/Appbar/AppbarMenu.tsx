@@ -1,113 +1,42 @@
-import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 
-import HomeTwoToneIcon from '@mui/icons-material/HomeTwoTone'
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone'
 import PersonOutlineTwoToneIcon from '@mui/icons-material/PersonOutlineTwoTone'
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import Stack from '@mui/material/Stack'
-import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 import Typography from '@mui/material/Typography'
 
-import { isAuthed, logout } from '@/services/auth'
+import { useModal } from '@/services/modals'
 
-import Container from '@/ui/Container'
-import Space from '@/ui/Space'
+import { DrawerItem, DrawerList } from '@/ui/Drawer'
 
 
-const StyledDrawer = styled(SwipeableDrawer)`
-	& .MuiDrawer-paper {
-		border-radius: 1rem 1rem 0 0;
-	}
-`
-
-const StyledListItemText = styled(ListItemText)<{ color: ItemProps['color'] }>`
-  color: ${({ theme, color }) => color ? theme.palette[color].main : theme.palette.text.primary};
-`
-
-interface ItemProps {
-  text: string
-  icon: JSX.Element
-  onClick: () => void
-  color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
-}
-
-function Item({ text, icon, onClick, color }: ItemProps) {
-	return (
-		<ListItem>
-			<ListItemButton onClick={onClick}>
-				<ListItemIcon>{icon}</ListItemIcon>
-				<StyledListItemText primary={text} color={color} />
-			</ListItemButton>
-		</ListItem>
-	)
-}
-
-interface Props {
-  open: boolean
-  toggleMenuOpen: (open: boolean) => () => void
-}
-
-function AppbarMenu({ open, toggleMenuOpen }: Props) {
+function AppbarMenu() {
 
 	const navigate = useNavigate()
+	const { onClose } = useModal('appbar')
 
 	const handle = (cb: () => void) => () => {
-		toggleMenuOpen(false)()
+		onClose()
 		cb()
 	}
 
-	const Home = () => navigate('/')
 	const Profile = () => navigate('/profile')
-	const Login = () => navigate('/auth/login')
-	const Logout = () => logout()
 
 	return (
-		<StyledDrawer
-			data-testid='AppbarMenu'
-			anchor='bottom'
-			open={open}
-			onClose={toggleMenuOpen(false)}
-			onOpen={toggleMenuOpen(true)}
-		>
-			<List>
-				<Item icon={<HomeTwoToneIcon />} text='Home' onClick={handle(Home)} />
-				{isAuthed && <Item icon={<PersonOutlineTwoToneIcon />} text='You' onClick={handle(Profile)} />}
-				{/*{isAuthed && <Item icon={<EmojiPeopleTwoToneIcon />} text='My connections' onClick={handle(Results)} />}*/}
-				<Divider />
-			</List>
-			{/*<Container data-testid='LogoutButton'>*/}
-			{/*	<Stack spacing={2} flex={1}>*/}
-			{/*		<Button variant='outlined' startIcon={<AddTwoToneIcon />} onClick={handle(CreateEvent)}>Create event</Button>*/}
-			{/*	</Stack>*/}
-			{/*</Container>*/}
-			{/*<Space grow />*/}
-			<Container data-testid='LogoutButton'>
-				<Stack spacing={2} flex={1}>
-					{isAuthed
-						? (
-							<Button
-								variant='outlined'
-								color='warning'
-								startIcon={<LogoutTwoToneIcon />}
-								onClick={handle(Logout)}
-							>
-                Logout
-							</Button>
-						)
-						: <Button variant='outlined'  startIcon={<LogoutTwoToneIcon />} onClick={handle(Login)}>Sign In</Button>
-					}
-					<Typography variant='caption' color='#ccc' align='center'>{'dev 0.0.1'}</Typography>
-				</Stack>
-			</Container>
-			<Space />
-		</StyledDrawer>
+		<DrawerList>
+			<DrawerItem icon={<PersonOutlineTwoToneIcon />} text='You' onClick={handle(Profile)} />
+			<Divider />
+			<DrawerItem>
+				<Button
+					variant='outlined'
+					color='warning'
+					fullWidth
+					startIcon={<LogoutTwoToneIcon />}
+				>Logout</Button>
+			</DrawerItem>
+			<DrawerItem><Typography variant='caption' color='#ccc' align='center'>{'dev 0.0.1'}</Typography></DrawerItem>
+		</DrawerList>
 	)
 }
 

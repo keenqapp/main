@@ -45,6 +45,7 @@ function LoginForm() {
 	const { verify } = useVerify()
 
 	const [ height, setHeight ] = useState(window.visualViewport?.height || window.innerHeight)
+
 	useEffect(() => {
 		const resize = () => setHeight(window.visualViewport?.height || window.innerHeight)
 		window.addEventListener('resize', resize)
@@ -56,6 +57,7 @@ function LoginForm() {
 		fullWidth: true,
 		variant: 'outlined',
 		placeholder: 'Your phone number',
+		type: 'tel',
 		format: f,
 		validation: [isNotEmpty],
 		error: authError.value,
@@ -67,7 +69,7 @@ function LoginForm() {
 			setTimeout(() => {
 				codeInput.value = e.target.value
 				e.target.blur()
-				handleVerify(e.target.value)
+				onVerify(e.target.value)
 			}, 1)
 		}
 	}
@@ -76,6 +78,7 @@ function LoginForm() {
 		label: 'Code',
 		fullWidth: true,
 		variant: 'outlined',
+		type: 'number',
 		placeholder: 'Code that was sent to your phone',
 		validation: [isNotEmpty],
 		error: authError.value,
@@ -83,15 +86,16 @@ function LoginForm() {
 		onFocus: () => authError.value = null
 	})
 
-	const handleCodeSent = async () => {
+	const onCodeSent = async () => {
 		if (!inputsHasError(phoneInput)) {
 			loading.value = true
+			codeInput.value = ''
 			await send(phoneInput.value) && setCodeSent(true)
 			loading.value = false
 		}
 	}
 
-	const handleVerify = async () => {
+	const onVerify = async () => {
 		if (!inputsHasError(codeInput)) {
 			loading.value = true
 			await verify(phoneInput.value, codeInput.value) && navigate('/match')
@@ -99,7 +103,9 @@ function LoginForm() {
 		}
 	}
 
-	const handleRetry = () => setCodeSent(false)
+	const onRetry = () => {
+		setCodeSent(false)
+	}
 
 	return (
 		<Container data-testid='LoginForm' flex={1} horizontal={3}>
@@ -116,7 +122,7 @@ function LoginForm() {
 									<Stack>
 										<LoadingButton
 											id='send-code-button'
-											onClick={handleCodeSent}
+											onClick={onCodeSent}
 											loading={loading.value}
 											variant='outlined'
 										>Send code</LoadingButton>
@@ -129,15 +135,16 @@ function LoginForm() {
 									<Space height={2} />
 									<Stack gap={2} alignItems='center'>
 										<LoadingButton
-											onClick={handleVerify}
+											onClick={onVerify}
 											loading={loading.value}
 											variant='outlined'
 											fullWidth
 										>Verify code</LoadingButton>
 										<Button
 											color='secondary'
-											onClick={handleRetry}
+											onClick={onRetry}
 											startIcon={<ChevronLeftTwoToneIcon />}
+											size='small'
 										>Use another phone number?</Button>
 									</Stack>
 								</>

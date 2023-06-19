@@ -3,9 +3,9 @@ import Page from '@/ui/Page'
 
 function EventPage() {
 	return (
-		<div data-testid='EventPage'>
+		<Page data-testid='EventPage'>
       EventPage
-		</div>
+		</Page>
 	)
 }
 

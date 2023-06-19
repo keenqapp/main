@@ -10,8 +10,8 @@ const anonAccessToken = import.meta.env.VITE_ANON_ACCESS_TOKEN as string
 const store = create('auth')
 
 const authKeys = {
-  accessToken: 'accessToken',
-  currentUid: 'currentUid',
+	accessToken: 'accessToken',
+	currentUid: 'currentUid',
 }
 
 export const isReady = signal(false)
@@ -24,18 +24,18 @@ export const isAuthed = computed(() => !!currentUid.value)
 export const authError = signal<string|null>(null)
 
 effect(() => {
-  if (isReady.value) {
-    store.setItem(authKeys.accessToken, accessToken.value)
-    store.setItem(authKeys.currentUid, currentUid.value)
-  }
+	if (isReady.value) {
+		store.setItem(authKeys.accessToken, accessToken.value)
+		store.setItem(authKeys.currentUid, currentUid.value)
+	}
 })
 
 function setup() {
-  batch(() => {
-    accessToken.value = store.getItem<string>(authKeys.accessToken) || anonAccessToken
-    currentUid.value = store.getItem<string>(authKeys.currentUid) || null
-    isReady.value = true
-  })
+	batch(() => {
+		accessToken.value = store.getItem<string>(authKeys.accessToken) || anonAccessToken
+		currentUid.value = store.getItem<string>(authKeys.currentUid) || null
+		isReady.value = true
+	})
 }
 
 setup()
@@ -49,16 +49,16 @@ const sendGql = gql`
 `
 
 export function useSend() {
-  const [send, { error }] = useMutation(sendGql)
-  useEffect(() => {
-    authError.value = error ? 'phone_error' : null
-  }, [ error ])
-  return {
-    send: async (phone: string) => {
-      const { data } = await send({ variables: { phone } })
-      return data.send?.success
-    },
-  }
+	const [send, { error }] = useMutation(sendGql)
+	useEffect(() => {
+		authError.value = error ? 'phone_error' : null
+	}, [ error ])
+	return {
+		send: async (phone: string) => {
+			const { data } = await send({ variables: { phone } })
+			return data.send?.success
+		},
+	}
 }
 
 const verifyGql = gql`
@@ -76,26 +76,26 @@ const verifyGql = gql`
 `
 
 export function useVerify() {
-  const [verify, { error } ] = useMutation(verifyGql)
-  useEffect(() => {
-    authError.value = error ? 'code_error' : null
-  }, [ error ])
-  return {
-    verify: async (phone: string, code: string) => {
-      const { data } = await verify({ variables: { phone, code } })
-      if (data.verify?.success) {
-        accessToken.value = data.verify.data.accessToken
-        currentUid.value = data.verify.data.uid
-        return true
-      }
-      else authError.value = 'code_error'
-    }
-  }
+	const [verify, { error } ] = useMutation(verifyGql)
+	useEffect(() => {
+		authError.value = error ? 'code_error' : null
+	}, [ error ])
+	return {
+		verify: async (phone: string, code: string) => {
+			const { data } = await verify({ variables: { phone, code } })
+			if (data.verify?.success) {
+				accessToken.value = data.verify.data.accessToken
+				currentUid.value = data.verify.data.uid
+				return true
+			}
+			else authError.value = 'code_error'
+		}
+	}
 }
 
 export async function logout() {
-  accessToken.value = anonAccessToken
-  currentUid.value = null
-  store.clearAll()
-  await client.resetStore()
+	accessToken.value = anonAccessToken
+	currentUid.value = null
+	store.clearAll()
+	await client.resetStore()
 }

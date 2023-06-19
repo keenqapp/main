@@ -1,8 +1,5 @@
 import { useEffect } from 'preact/hooks'
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { computed, effect, signal } from '@preact/signals'
-
-import { authError } from '@/services/auth'
 
 const profilesGql = gql`
   query Profiles($uids: [String!]) {
@@ -15,6 +12,6 @@ const profilesGql = gql`
 `
 
 export function useProfiles(uids: string[]) {
-  const query = useQuery(profilesGql)
-  return query
+	const query = useQuery(profilesGql)
+	return query
 }

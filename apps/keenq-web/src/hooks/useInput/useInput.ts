@@ -1,10 +1,10 @@
 import { Component } from 'preact'
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
+import { ChangeEventHandler } from 'react'
 
 import { TextFieldProps } from '@mui/material/TextField'
 
 import { hasError, Validator } from './validation'
-import { ChangeEventHandler } from 'react'
 
 
 export interface Dict extends Object {
@@ -50,6 +50,8 @@ export function useInput(props: UseInputProps) {
 		error: externalError,
 		...rest
 	} = props
+	const ref = useRef<HTMLInputElement|undefined>(null)
+	const inputRef = useRef<HTMLInputElement|undefined>(null)
 	const [error, setError] = useState<string | undefined>()
 	const [input, setInput] = useState<string>(initValue)
 
@@ -101,6 +103,8 @@ export function useInput(props: UseInputProps) {
 		type,
 		validate: () => _validate(input),
 		value: input,
+		inputRef,
+		ref,
 		...rest,
 	}
 
