@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 const config = {
 	client: 'pg',
 	connection: {
-		connectionString: process.env.AUTH_CONNECTION_STRING,
+		connectionString: process.env.DB_CONNECTION_STRING,
 		ssl: { rejectUnauthorized: false }
 	},
 	pool: { min: 0, max: 2 }
@@ -21,7 +21,12 @@ function getDb(config) {
 
 async function getUser(phone, db) {
 	try {
-		return await db.table('credentials').select().where('phone', phone).whereNotNull('deletedAt').first()
+		return await db
+			.table('credentials')
+			.select()
+			.where('phone', phone)
+			.where('deletedAt', null)
+			.first()
 	}
 	catch(e) {
 		throw { error: e }
@@ -34,7 +39,11 @@ async function ensureUser(user) {
 
 async function checkCode(phone, code, db) {
 	if (code === '111111') {
-		await db.table('credentials').update({ verified: true }).where('phone', phone).whereNotNull('deletedAt')
+		await db
+			.table('credentials')
+			.update({ verified: true, lastLoginAt: knex.fn.now() })
+			.where('phone', phone)
+			.where('deletedAt', null)
 		return true
 	}
 	else throw { error: 'Wrong credentials' }

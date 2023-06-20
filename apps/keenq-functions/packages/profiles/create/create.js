@@ -6,7 +6,7 @@ const nanoid = customAlphabet(alphabet, 8)
 const config = {
 	client: 'pg',
 	connection: {
-		connectionString: process.env.KEENQ_CONNECTION_STRING,
+		connectionString: process.env.DB_CONNECTION_STRING,
 		ssl: { rejectUnauthorized: false },
 	},
 	pool: { min: 0, max: 2 }

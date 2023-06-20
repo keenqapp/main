@@ -1,10 +1,13 @@
 import knex from 'knex'
+import { customAlphabet } from 'nanoid'
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+const nanoid = customAlphabet(alphabet, 8)
 
 
 const config = {
 	client: 'pg',
 	connection: {
-		connectionString: process.env.AUTH_CONNECTION_STRING,
+		connectionString: process.env.DB_CONNECTION_STRING,
 		ssl: { rejectUnauthorized: false },
 	},
 	pool: { min: 0, max: 2 }
@@ -21,7 +24,12 @@ function getDb(config) {
 
 async function getUser(phone, db) {
 	try {
-		return await db.table('credentials').select().where('phone', phone).whereNotNull('deletedAt').first()
+		return await db
+			.table('credentials')
+			.select()
+			.where('phone', phone)
+			.where('deletedAt', null)
+			.first()
 	}
 	catch(e) {
 		throw { error: e }
@@ -31,7 +39,9 @@ async function getUser(phone, db) {
 async function ensureUser(user, phone, db) {
 	try {
 	  if (!user) {
-			await db.table('credentials').insert({ phone })
+			await db
+				.table('credentials')
+				.insert({ phone, uid: nanoid() })
 	  }
 	}
 	catch(e) {
