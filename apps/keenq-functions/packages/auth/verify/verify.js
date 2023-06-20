@@ -39,12 +39,16 @@ async function ensureUser(user) {
 
 async function checkCode(phone, code, db) {
 	if (code === '111111') {
-		await db
-			.table('credentials')
-			.update({ verified: true, lastLoginAt: knex.fn.now() })
-			.where('phone', phone)
-			.where('deletedAt', null)
-		return true
+		try {
+			await db
+				.table('credentials')
+				.update({ verified: true, lastLoginAt: new Date().toISOString() })
+				.where('phone', phone)
+				.where('deletedAt', null)
+			return true
+		} catch(e) {
+			throw { error: e }
+		}
 	}
 	else throw { error: 'Wrong credentials' }
 }

@@ -44,6 +44,10 @@ const sendGql = gql`
   mutation Send($phone: String!) {
     send(phone: $phone) {
       success
+			data {
+				error
+				reason
+			}
     }
   }
 `
@@ -51,7 +55,6 @@ const sendGql = gql`
 export function useSend() {
 	const [send, { error }] = useMutation(sendGql)
 	useEffect(() => {
-		authError.value = error ? 'phone_error' : null
 	}, [ error ])
 	return {
 		send: async (phone: string) => {
