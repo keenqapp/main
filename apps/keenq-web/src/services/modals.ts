@@ -15,6 +15,7 @@ const modals = {
 	report: false,
 	addMember: false,
 	message: false,
+	gender: false,
 }
 
 export type Modal = keyof typeof modals
@@ -33,11 +34,16 @@ export function useModal(name: Modal) {
 		params = undefined
 		modalsStore()[name](false)
 	}, [])
+	const on = useCallback((fn: () => void) => () => {
+		fn()
+		onClose()
+	}, [])
 	const onCloseAll = useCallback(() => modalsStore(modals), [])
 	return {
 		name,
 		open: open.value,
 		params,
+		on,
 		onOpen,
 		onClose,
 		onCloseAll

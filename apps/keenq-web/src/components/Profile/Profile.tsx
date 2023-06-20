@@ -83,6 +83,7 @@ function Profile() {
 	const { onOpen: onLocationOpen } = useModal('location')
 	const { onOpen: onTagsOpen } = useModal('tags')
 	const { onOpen: onSettingsClick } = useModal('settings')
+	const { onOpen: onGenderClick } = useModal('gender')
 
 	const nameInput = useInput({
 		value: 'Lucy',
@@ -113,15 +114,34 @@ function Profile() {
 				<AddButton startIcon={<PhotoCameraTwoToneIcon />}>Add photo</AddButton>
 			</Row>
 			<Space />
-			<Content direction='column' align='stretch' gap={0.5}>
+			<Content direction='column' align='stretch'>
 				<Row justify='between' onClick={onNameClick}>
 					<NameInput disableUnderline={true} {...nameInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
 				</Row>
-				<Row justify='between' onClick={onLocationClick}>
-					<Typography variant='overline'>Moscow</Typography>
+				<Row
+					justify='between'
+					onClick={onGenderClick}
+					gap={0.5}
+					align='baseline'
+				>
+					<Typography variant='h6'>I am</Typography>
+					<Typography variant='overline'>Hetero</Typography>
+					<Space grow />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
 				</Row>
+				<Row
+					justify='between'
+					onClick={onLocationClick}
+					gap={0.5}
+					align='baseline'
+				>
+					<Typography variant='h6'>In</Typography>
+					<Typography variant='overline'>Moscow</Typography>
+					<Space grow />
+					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
+				</Row>
+				<Space />
 				<Row justify='between' align='start' onClick={onDescClick}>
 					<Input {...descriptionInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
