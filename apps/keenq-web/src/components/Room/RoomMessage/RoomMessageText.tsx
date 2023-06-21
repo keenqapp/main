@@ -8,7 +8,7 @@ import Row from '@/ui/Row'
 
 import { isAdmin, isAuthor, isPrivateRoom, toColor } from '@/components/Room/RoomMessage/utils'
 
-import { IMessage } from '@/types/messages'
+import { IMessage, IMessageText } from '@/types/messages'
 
 
 const MessageContainerContent = styled(Row)`
@@ -37,8 +37,10 @@ function checkShowName({ authorUid, prevAuthorUid, date, prevDate }: IMessage, r
 }
 
 function RoomMessageText(message: IMessage) {
-	const { text, authorUid, author: { name } } = message
+	const { content, authorUid, author: { name } } = message
+	const textContent = content?.find((c): c is IMessageText => c.type === 'text')
 
+	const { text } = textContent?.value || {}
 	const preventSelection = (e: MouseEvent) => e.preventDefault()
 
 	const { uid: ruid } = useParams()

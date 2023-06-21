@@ -15,6 +15,8 @@ import { useInput } from '@/hooks/useInput'
 
 const StyledContainer = styled(Container)`
   height: calc(100vh - var(--vertical-space) * 4);
+	display: flex;
+	flex-direction: column;
 `
 
 const CitiesList = styled(List<typeof citiesMock[number]>)`

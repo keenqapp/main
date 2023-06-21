@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
+import FormatQuoteTwoToneIcon from '@mui/icons-material/FormatQuoteTwoTone';
 
 import { useModal } from '@/services/modals'
 
@@ -13,28 +14,29 @@ import { isAdmin, isAuthor } from '@/components/Room/RoomMessage/utils'
 
 function MessageMenu() {
 	const navigate = useNavigate()
-	const modal = useModal('message')
+	const { name, params, on } = useModal('message')
 	const { uid: ruid } = useParams()
-	const { authorUid } = modal.params?.[0] || {}
+	const { uid, authorUid } = params?.[0] || {}
 
-	const onProfileClick = () => navigate(`/match/${authorUid}`)
-	const onDeleteClick = () => {
-		console.log('--- MessageMenu.tsx:13 -> onDeleteClick ->', modal.params)
+	const profileClick = () => navigate(`/match/${authorUid}`)
+	const deleteClick = () => {
+		console.log('--- MessageMenu.tsx:23 -> deleteClick -> deleteClick', uid)
 	}
 
-	const onEditClick = () => {
-		console.log('--- MessageMenu.tsx:17 -> onEditClick ->', modal)
+	const editClick = () => {
+		console.log('--- MessageMenu.tsx:27 -> onEditClick ->', uid)
 	}
 
 	const same = isAuthor(authorUid)
 	const admin = isAdmin('me', ruid!)
 
 	return (
-		<Drawer data-testid='MessageMenu' {...modal}>
+		<Drawer data-testid='MessageMenu' name={name}>
 			<DrawerList>
-				{!same && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Профиль' onClick={onProfileClick} />}
-				{(same || admin) && <DrawerItem icon={<DeleteForeverTwoToneIcon color='warning' />} text='Delete' onClick={onDeleteClick} />}
-				{same && <DrawerItem icon={<EditTwoToneIcon color='primary' />} text='Edit' onClick={onEditClick} />}
+				{!same && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Profile' onClick={on(profileClick)} />}
+				{(same || admin) && <DrawerItem icon={<DeleteForeverTwoToneIcon color='warning' />} text='Delete' onClick={on(deleteClick)} />}
+				<DrawerItem icon={<FormatQuoteTwoToneIcon color='secondary' />} text='Reply' />
+				{same && <DrawerItem icon={<EditTwoToneIcon color='primary' />} text='Edit' onClick={on(editClick)} />}
 			</DrawerList>
 		</Drawer>
 	)

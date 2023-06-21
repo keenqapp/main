@@ -224,7 +224,6 @@ export const messages = [
 	},
 	{
 		uid: '13',
-		text: 'The enlightenment is a parallel moon.',
 		date: subSeconds(new Date(), 8).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -232,27 +231,27 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		author: { uid: '1', name: 'Patrisia', image: 'https://picsum.photos/40/40' },
-		attachments: [
-			{ uid: '4', type: 'image', url: 'https://picsum.photos/200/300', width: 200, height: 300 },
+		content: [
+			{ type: 'text', value: { text: 'The enlightenment is a parallel moon.' } },
+			{ type: 'image', value: { uid: '4', type: 'image', url: 'https://picsum.photos/200/300', width: 200, height: 300 } }
 		],
 	},
 	{
 		uid: '14',
-		text: '',
 		date: addSeconds(new Date(), 100).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
 		authorUid: 'me',
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
-		attachments: [
-			{ uid: '4', type: 'image', url: 'https://picsum.photos/300/200', width: 300, height: 200 },
+		author: { uid: 'me', name: 'boris' },
+		content: [
+			{ type: 'text', value: { text: 'The enlightenment is a parallel moon.' } },
+			{ type: 'image', value: { uid: '4', type: 'image', url: 'https://picsum.photos/200/300', width: 200, height: 300 } }
 		],
-		author: { uid: 'me', name: 'boris' }
 	},
 	{
 		uid: '15',
-		text: 'me',
 		date: addSeconds(new Date(), 200).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -260,6 +259,71 @@ export const messages = [
 		prevAuthorUid: nullString(),
 		nextAuthorUid: nullString(),
 		attachments: [],
-		author: { uid: 'me', name: 'boris' }
+		author: { uid: 'me', name: 'boris' },
+		content: [
+			{ type: 'text', value: { text: 'im with you' } },
+			{
+				type: 'reply',
+				value: {
+					uid: '13',
+					author: { name: 'Patrisia' },
+					date: subSeconds(new Date(), 8).toISOString(),
+					content: [
+						{ type: 'text', value: { text: 'The enlightenment is a parallel moon.' } },
+						{ type: 'image', value: { uid: '4', url: 'https://picsum.photos/200/300', width: 200, height: 300 } }
+					]
+				}
+			}
+		]
+	},
+	{
+		uid: '16',
+		date: addSeconds(new Date(), 1000).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: '1',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		author: { uid: '1', name: 'Patrisia' },
+		content: [
+			{ type: 'text', value: { text: 'If you sit or remain with a popular affirmation, peace experiences you..' } },
+			{
+				type: 'reply',
+				value: {
+					uid: '13',
+					author: { name: 'Patrisia' },
+					date: subSeconds(new Date(), 8).toISOString(),
+					content: [
+						{ type: 'image', value: { uid: '4', url: 'https://picsum.photos/200/300', width: 200, height: 300 } }
+					]
+				}
+			}
+		],
+	},
+	{
+		uid: '17',
+		date: addSeconds(new Date(), 2000).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: '2',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		author: { uid: '2', name: 'Mia' },
+		content: [
+			{ type: 'image', value: { uid: '4', url: 'https://picsum.photos/200/300', width: 200, height: 300 } }
+		],
+	},
+	{
+		uid: '18',
+		date: addSeconds(new Date(), 2001).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: 'me',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		author: { uid: 'me', name: 'boris' },
+		content: [
+			{ type: 'image', value: { uid: '4', url: 'https://picsum.photos/200/300', width: 200, height: 300 } }
+		],
 	},
 ]

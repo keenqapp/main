@@ -18,7 +18,7 @@ const StyledContainer = styled.div<{ horizontal?: number, vertical?: number, fle
 
 interface ContainerProps {
   children: ComponentChildren,
-  'data-testid': string,
+  'data-testid'?: string,
 	flex?: number,
 	vertical?: number
 	horizontal?: number

@@ -7,13 +7,13 @@ import { useModal } from '@/services/modals'
 import Row from '@/ui/Row'
 import theme from '@/ui/theme'
 
-import RoomMessageAttachments from '@/components/Room/RoomMessage/RoomMessageAttachments'
 import RoomMessageAvatar from '@/components/Room/RoomMessage/RoomMessageAvatar'
+import RoomMessageImages from '@/components/Room/RoomMessage/RoomMessageImages'
+import RoomMessageReply from '@/components/Room/RoomMessage/RoomMessageReply'
 import RoomMessageText from '@/components/Room/RoomMessage/RoomMessageText'
 import RoomMessageTime from '@/components/Room/RoomMessage/RoomMessageTime'
 import { isAuthor } from '@/components/Room/RoomMessage/utils'
 
-import useLongPress from '@/hooks/useLongPress'
 import { IMessage } from '@/types/messages'
 import { formatDate } from '@/utils/formatters'
 
@@ -82,16 +82,16 @@ function RoomMessage(message: IMessage) {
 	const { authorUid } = message
 	const { onOpen } = useModal('message')
 	const isSelf = isAuthor(authorUid)
-	const onLongPress = useLongPress(() => onOpen(message))
 
 	return (
 		<>
 			<DateSeparator {...message} />
-			<MessageContainer data-testid='RoomMessage' isSelf={isSelf} {...onLongPress}>
+			<MessageContainer data-testid='RoomMessage' isSelf={isSelf} onClick={() => onOpen(message)}>
 				<Row gap={0.5} align='end'>
 					<RoomMessageAvatar {...message} />
 					<Row direction='column' gap={0.2}>
-						<RoomMessageAttachments {...message} />
+						<RoomMessageReply {...message} />
+						<RoomMessageImages {...message} />
 						<RoomMessageText {...message} />
 						<RoomMessageTime {...message} />
 					</Row>

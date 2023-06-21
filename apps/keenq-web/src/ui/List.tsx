@@ -19,8 +19,6 @@ const ScrollContainer = styled.div`
 	right: 0;
 	top: 0;
   z-index: 1;
-  overflow-y: scroll;
-	overflow-x: hidden;
 `
 
 const Scroll = styled.div`
@@ -39,7 +37,7 @@ const Fade = styled.div<{ position: 'start' | 'end' }>`
 	height: 1rem;
 	z-index: 2;
   background: linear-gradient(${p => p.position === 'start' ? 0 : 180}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 75%);
-	${p => p.position === 'start' ? 'top: -1px;' : 'bottom: -1px;'}
+	${p => p.position === 'start' ? 'top: 0;' : 'bottom: 0;'}
 `
 
 const StyledAutosizer = styled.div`
@@ -64,17 +62,17 @@ interface ListProps<T extends Entity> {
 	data: T[]
 	renderItem: (item: T, index: number) => ReactNode
 	scrollRef?: any
+	className?: string
 }
 
-function List<T extends Entity>({ data, renderItem, scrollRef, ...rest }: ListProps<T>) {
+function List<T extends Entity>({ data, renderItem, scrollRef, className, ...rest }: ListProps<T>) {
 	const [ height, setHeight ] = useState(0)
-
 	return (
 		<ListContainer data-testid='List'>
 			<Autosizer setHeight={setHeight} />
 			<ScrollContainer {...rest}>
 				<Fade position='start' />
-				<Scroll ref={scrollRef} height={height}>
+				<Scroll ref={scrollRef} height={height} className={className}>
 					{data.map((item, index) => cloneElement(renderItem(item, index), { key: item.uid }))}
 				</Scroll>
 				<Fade position='end' />
