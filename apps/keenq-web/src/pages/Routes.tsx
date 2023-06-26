@@ -5,11 +5,12 @@ import AuthPage from '@/pages/AuthPage'
 import LoginPage from '@/pages/AuthPage/LoginPage'
 import EventPage from '@/pages/EventPage'
 import EventsPage from '@/pages/EventsPage'
+import IndexPage from '@/pages/IndexPage'
 import MatchPage from '@/pages/MatchPage'
 import ProfilePage from '@/pages/ProfilePage'
+import RoomInfoPage from '@/pages/RoomInfoPage'
 import RoomPage from '@/pages/RoomPage'
 import RoomsPage from '@/pages/RoomsPage'
-import RoomInfoPage from '@/pages/RoomInfoPage'
 
 
 const routes = createBrowserRouter([
@@ -19,7 +20,11 @@ const routes = createBrowserRouter([
 		errorElement: <div>404</div>,
 		children: [
 			{
-				path: '/match',
+				index: true,
+				element: <IndexPage />,
+			},
+			{
+				path: 'match',
 				element: <MatchPage />,
 			},
 			{
