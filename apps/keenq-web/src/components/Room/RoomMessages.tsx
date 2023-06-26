@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'preact/hooks'
+import { useEffect, useRef } from 'preact/hooks'
 import styled from '@emotion/styled'
 
 import List from '@/ui/List'
@@ -6,14 +6,15 @@ import List from '@/ui/List'
 import RoomMessage from '@/components/Room/RoomMessage'
 
 import { messages as mock } from './messages.mock'
-import type { IMessage } from '@/types/messages'
-import { pipe, reduce, sort } from '@/utils/utils'
+import { usePipe } from '@/hooks/usePipe'
+import type { IMessage } from '@/model/message'
+import { reduce, sort } from '@/utils/utils'
 
 
 function byDate(a: IMessage, b: IMessage) {
 	return new Date(a.date) >= new Date(b.date) ? 1 : -1
 }
-function addPrevDate(acc: IMessage[], message: IMessage, index: number, data: IMessage[]) {
+function enrich(acc: IMessage[], message: IMessage, index: number, data: IMessage[]) {
 	const prev = data[index - 1]
 	const next = data[index + 1]
 	if (!prev && !next) {
@@ -48,16 +49,14 @@ function RoomMessages() {
 		ref.current?.scrollTo(0, ref.current.scrollHeight)
 	}, [])
 	const data = mock
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	const messages = useMemo<IMessage[]>(() => pipe(sort(byDate), reduce(addPrevDate, []))(data), [data])
+	const messages = usePipe(data, sort(byDate), reduce(enrich, []))
 
 	return (
 		<RoomMessagesContainer data-testid='RoomMessages'>
 			<RoomMessagesList
 				scrollRef={ref}
 				data={messages}
-				renderItem={RoomMessage}
+				render={RoomMessage}
 			/>
 		</RoomMessagesContainer>
 	)

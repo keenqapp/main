@@ -1,4 +1,5 @@
 import styled from '@emotion/styled'
+import { useNavigate } from 'react-router-dom'
 
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
@@ -15,6 +16,7 @@ import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
 import Swiper from '@/components/Swiper'
+import IconButton from '@mui/material/IconButton'
 
 
 const Content = styled(Row)`
@@ -34,6 +36,11 @@ const StyledDivider = styled(Divider)`
 	width: 100%;
 `
 
+const Partner = styled(Typography)`
+	opacity: 0.8;
+	border-bottom: 1px solid currentColor;
+`
+
 const tags = ['bdsm', 'ffm', 'fwb', 'shibari', 'threeway', 'huging']
 const images = [
 	'https://i.pravatar.cc/400?img=1',
@@ -43,27 +50,42 @@ const images = [
 	'https://i.pravatar.cc/400?img=5',
 ]
 
+const partner = {
+	name: 'Carrol',
+	link: 'KjdoFjd5'
+}
+
 function Match() {
 	const { onOpen } = useModal('report')
+	const navigate = useNavigate()
 	const onReportClick = () => {
-		console.log('--- Match.tsx:47 -> onReportClick ->', 'next')
 		onOpen()
 	}
+
+	const onPartnerClick = () => navigate(`/match/${partner.link}`)
 
 	return (
 		<Container data-testid='Match'>
 			<Swiper images={images} />
 			<Space />
 			<Content direction='column' align='start'>
-				<Row justify='between' self='stretch'>
+				<Row self='stretch' gap={0.5} align='baseline'>
 					<Typography variant='h5'>Lucy</Typography>
-					<Typography variant='body2'>Straight</Typography>
+					{partner && (
+						<>
+							<Typography variant='overline'>and</Typography>
+							<Partner variant='h6' onClick={onPartnerClick}>{partner.name}</Partner>
+						</>
+					)}
+					<Space grow />
+					<Typography variant='body2'>Female Straight</Typography>
 				</Row>
+				<Space height={0.2} />
 				<Typography variant='overline'>8 km away</Typography>
-				<Space />
+				<Space height={0.5} />
 				<Fabs justify='between' self='stretch'>
-					<HighlightOffTwoToneIcon fontSize='large' color='secondary' />
-					<FavoriteTwoToneIcon fontSize='large' color='primary' />
+					<IconButton><HighlightOffTwoToneIcon fontSize='large' color='secondary' /></IconButton>
+					<IconButton><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
 				</Fabs>
 				<Space />
 				<Typography>

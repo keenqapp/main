@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone'
 import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
@@ -8,12 +9,15 @@ import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
 import { useConfirm, useModal } from '@/services/modals'
 
 import { Drawer, DrawerItem, DrawerList } from '@/ui/Drawer'
+import { isPrivateRoom } from '@/model/room'
+
 
 
 function RoomMenu() {
 	const navigate = useNavigate()
+	const { uid } = useParams()
 	const room = useModal('room')
-	const { onOpen: addMemberOpen } = useModal('addMember')
+	const { onOpen: addMemberOpen } = useModal('addMemberToRoom')
 	const { onOpen: reportOpen } = useModal('report')
 	const { confirm } = useConfirm()
 
@@ -23,7 +27,6 @@ function RoomMenu() {
 			text: 'Are you sure you want to leave this room?',
 			onConfirm: () => {
 				// TODO: leave room
-				// HERE
 				room.onClose()
 				navigate('/match')
 			},
@@ -32,31 +35,21 @@ function RoomMenu() {
 
 	const shareClick = () => {}
 
-	const profileClick = () => {}
+	const roomClick = () => navigate(`/roomInfo/${uid}`)
+	const profileClick = () => navigate(`/match/${uid}`)
+
+	const addMemberClick = () => addMemberOpen({ to: 'room', uid })
 
 	const on = (fn: () => void) => () => {
 		room.onClose()
 		fn()
 	}
 
+	const isPrivate = isPrivateRoom(uid!)
+
 	return (
 		<Drawer data-testid='RoomMenu' {...room}>
 			<DrawerList>
-				<DrawerItem
-					icon={<ShareTwoToneIcon color='primary' />}
-					text='Share link'
-					onClick={on(shareClick)}
-				/>
-				<DrawerItem
-					icon={<PersonAddTwoToneIcon color='primary' />}
-					text='Add member'
-					onClick={on(addMemberOpen)}
-				/>
-				<DrawerItem
-					icon={<ReportTwoToneIcon color='primary' />}
-					text='Show profile'
-					onClick={on(profileClick)}
-				/>
 				<DrawerItem
 					icon={<DeleteTwoToneIcon color='secondary' />}
 					text='Leave'
@@ -66,6 +59,29 @@ function RoomMenu() {
 					icon={<ReportTwoToneIcon color='error' />}
 					text='Report'
 					onClick={on(reportOpen)}
+				/>
+				{isPrivate ? (
+					<DrawerItem
+						icon={<ForumTwoToneIcon color='primary' />}
+						text='Profile'
+						onClick={on(profileClick)}
+					/>
+				) : (
+					<DrawerItem
+						icon={<ForumTwoToneIcon color='primary' />}
+						text='Room'
+						onClick={on(roomClick)}
+					/>
+				)}
+				<DrawerItem
+					icon={<PersonAddTwoToneIcon color='primary' />}
+					text='Add member'
+					onClick={on(addMemberClick)}
+				/>
+				<DrawerItem
+					icon={<ShareTwoToneIcon color='primary' />}
+					text='Share link'
+					onClick={on(shareClick)}
 				/>
 			</DrawerList>
 		</Drawer>

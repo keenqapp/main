@@ -1,6 +1,5 @@
 import { Component } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
-import { ChangeEventHandler } from 'react'
 
 import { TextFieldProps } from '@mui/material/TextField'
 
@@ -50,7 +49,7 @@ export function useInput(props: UseInputProps) {
 		error: externalError,
 		...rest
 	} = props
-	const ref = useRef<HTMLInputElement|undefined>(null)
+	const ref = useRef<HTMLInputElement|null>(null)
 	const inputRef = useRef<HTMLInputElement|undefined>(null)
 	const [error, setError] = useState<string | undefined>()
 	const [input, setInput] = useState<string>(initValue)
@@ -81,8 +80,9 @@ export function useInput(props: UseInputProps) {
 		setError('')
 	}
 
-	const handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
-		const parsedValue = parse(event.target.value)
+	// const handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
+	const handleChange = (event: any) => {
+		const parsedValue = parse(event.target?.value)
 		const formattedValue = format(parsedValue, input)
 		event.target.value = formattedValue
 		if (onChange) {

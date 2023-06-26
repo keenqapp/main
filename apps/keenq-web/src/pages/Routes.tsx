@@ -9,6 +9,7 @@ import MatchPage from '@/pages/MatchPage'
 import ProfilePage from '@/pages/ProfilePage'
 import RoomPage from '@/pages/RoomPage'
 import RoomsPage from '@/pages/RoomsPage'
+import RoomInfoPage from '@/pages/RoomInfoPage'
 
 
 const routes = createBrowserRouter([
@@ -22,12 +23,20 @@ const routes = createBrowserRouter([
 				element: <MatchPage />,
 			},
 			{
+				path: '/match/:uid',
+				element: <MatchPage />,
+			},
+			{
 				path: '/room',
 				element: <RoomsPage />,
 			},
 			{
 				path: '/room/:uid',
 				element: <RoomPage />,
+			},
+			{
+				path: '/roomInfo/:uid',
+				element: <RoomInfoPage />,
 			},
 			{
 				path: '/event',

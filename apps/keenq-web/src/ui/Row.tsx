@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 
 interface RowProps {
 	flex?: number
-	justify?: 'start' | 'end' | 'stretch' | 'between' | 'center'
+	justify?: 'start' | 'end' | 'stretch' | 'between' | 'center' | 'around'
 	align?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'
 	grow?: boolean
 	gap?: number
@@ -14,10 +14,11 @@ interface RowProps {
 	direction?: 'row' | 'column'
 	children: ComponentChildren
 	self?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'
+	relative?: boolean
 	[key: string]: any
 }
 
-type Justify = 'start' | 'end' | 'stretch' | 'between' | 'center'
+type Justify = 'start' | 'end' | 'stretch' | 'between' | 'center' | 'around'
 type Align = 'start' | 'end' | 'center' | 'baseline' | 'stretch'
 
 const j = {
@@ -25,6 +26,7 @@ const j = {
 	end: 'flex-end',
 	stretch: 'stretch',
 	between: 'space-between',
+	around: 'space-around',
 	center: 'center'
 }
 
@@ -56,6 +58,7 @@ const StyledRow = styled.div<RowProps>`
   ${p => p.fullHeight && 'min-height: 100%'};
   ${p => p.flex && `flex: ${p.flex} 0 auto`};
   ${p => p.self && `align-self: ${a(p.self)}`};
+	${p => p.relative && 'position: relative'};
 `
 
 function Row({ wrap, ...props }: RowProps) {

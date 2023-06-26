@@ -10,7 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 
-import { Modal, useModal } from '@/services/modals'
+import { ModalKeys, useModal } from '@/services/modals'
 
 
 const StyledDrawer = styled(SwipeableDrawer)<{ fullHeight?: boolean }>`
@@ -26,7 +26,7 @@ const StyledListItemText = styled(ListItemText)<{ color: DrawerItemProps['color'
 
 export const DrawerList = styled(List)``
 
-interface DrawerItemProps {
+export interface DrawerItemProps {
 	text?: string
 	subtext?: string
 	onClick?: () => void
@@ -34,11 +34,12 @@ interface DrawerItemProps {
 	color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
 	children?: ComponentChildren
 	action?: VNode
+	className?: string
 }
 
-export function DrawerItem({ text, icon, onClick, color, subtext, children, action }: DrawerItemProps) {
+export function DrawerItem({ text, icon, onClick, color, subtext, children, action, className }: DrawerItemProps) {
 	return (
-		<ListItem>
+		<ListItem className={className}>
 			{children ? children : (
 				<>
 					<ListItemButton onClick={onClick}>
@@ -54,7 +55,7 @@ export function DrawerItem({ text, icon, onClick, color, subtext, children, acti
 
 interface DrawerProps {
 	children: ComponentChildren
-	name: Modal
+	name: ModalKeys
 	fullHeight?: boolean
 }
 
@@ -67,6 +68,7 @@ function Drawer({ name, children, fullHeight }: DrawerProps) {
 			onOpen={onOpen}
 			onClose={onClose}
 			fullHeight={fullHeight}
+			disableSwipeToOpen
 		>
 			<IconButton><RemoveRoundedIcon /></IconButton>
 			{children}

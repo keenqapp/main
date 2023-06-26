@@ -1,12 +1,14 @@
-import { ID } from '@/types/types'
+import { cloneElement, VNode } from 'preact'
+
+import { Entity, UID } from '@/types/utility'
 
 
 export function toId(i: string | number) {
-	return String(i) as ID
+	return String(i) as UID
 }
 
 export function toIds(i: string[] | number[]) {
-	return i.map(String) as ID[]
+	return i.map(String) as UID[]
 }
 
 export function setClipboard(text: string) {
@@ -20,18 +22,28 @@ export function nullString(string: string|null = null) {
 	return string || null
 }
 
-export function pipe<Output, Input = any>(...fns: Array<(input: Input) => Output>): Output {
+export function pipe<Input, Output>(data: Input, ...fns: ((...args: any[]) => any)[]): Output {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	return (input: Input) => fns.reduce((acc, fn) => fn(acc), input)
+	return fns.reduce((acc, fn) => fn(acc), data)
 }
 
 export function map<Input, Output>(fn: (input: Input) => Output) {
 	return (input: Input[]) => input.map(fn)
 }
 
+export function toComponent<Input extends Entity>(render: (item: Input, index: number) => VNode<Input>) {
+	return (input: Input[]) => input
+		.map((item: Input, index: number) => {
+			const component = render(item, index)
+			if (!component) return null
+			return cloneElement(component, { key: item.uid })
+		})
+		.filter(Boolean)
+}
+
 export function sort<Input>(fn: (a: Input, b: Input) => number) {
-	return (input: Input[]) => input.csort(fn)
+	return (input: Input[]) => input.copySort(fn)
 }
 
 export function reduce<Input, Output>(fn: (previousValue: Output, currentValue: Input, currentIndex: number, array: Input[]) => Output, init: Output) {
@@ -40,6 +52,20 @@ export function reduce<Input, Output>(fn: (previousValue: Output, currentValue: 
 
 export function equals(left: any, right: any) {
 	return left === right
+}
+
+export function first<T>(count: number) {
+	return (input: T[]) => input.slice(0, count)
+}
+
+export function match(input: string, str: string) {
+	const pattern = '.*' + input.split('').join('.*') + '.*'
+	const re = new RegExp(pattern, 'i')
+	return re.test(str)
+}
+
+export function merge(left: object, right: object) {
+	return { ...left, ...right }
 }
 
 // function resolve<T extends (...args: any[]) => ReturnType<T>>(fn: T): Promise<ReturnType<T>> {

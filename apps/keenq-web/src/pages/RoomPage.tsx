@@ -2,8 +2,10 @@ import Page from '@/ui/Page'
 
 import Room from '@/components/Room'
 
-import AddMemberDrawer from '@/modals/AddMemberDrawer'
+import AddMemberToRoom from '@/modals/AddMemberToRoomDrawer'
+import AttachmentDrawer from '@/modals/AttachmentDrawer'
 import MessageMenu from '@/modals/MessageMenu'
+import PartnerRequestMenu from '@/modals/PartnerRequestMenu'
 import ReportMenu from '@/modals/ReportMenu'
 import RoomMenu from '@/modals/RoomMenu'
 
@@ -14,8 +16,10 @@ function RoomPage() {
 			<Room />
 			<RoomMenu />
 			<ReportMenu />
-			<AddMemberDrawer />
+			<AddMemberToRoom />
 			<MessageMenu />
+			<AttachmentDrawer />
+			<PartnerRequestMenu />
 		</Page>
 	)
 }

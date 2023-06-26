@@ -1,11 +1,10 @@
-import { cloneElement } from 'preact'
+import { cloneElement, VNode } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
-import { ReactNode } from 'react'
 
 import { column } from '@/ui/css'
 
-import { Entity } from '@/types/types'
+import { Entity } from '@/types/utility'
 
 
 const ListContainer = styled.div<{ height: number }>`
@@ -58,14 +57,14 @@ function Autosizer({ setHeight }: { setHeight: (height: number) => void }) {
 	return <StyledAutosizer ref={ref} />
 }
 
-interface ListProps<T extends Entity> {
-	data: T[]
-	renderItem: (item: T, index: number) => ReactNode
+interface ListProps<P extends Entity, > {
+	data: P[]
+	render: (item: P, index: number) => VNode<P>
 	scrollRef?: any
 	className?: string
 }
 
-function List<T extends Entity>({ data, renderItem, scrollRef, className, ...rest }: ListProps<T>) {
+function List<T extends Entity>({ data, render, scrollRef, className, ...rest }: ListProps<T>) {
 	const [ height, setHeight ] = useState(0)
 	return (
 		<ListContainer data-testid='List'>
@@ -73,7 +72,11 @@ function List<T extends Entity>({ data, renderItem, scrollRef, className, ...res
 			<ScrollContainer {...rest}>
 				<Fade position='start' />
 				<Scroll ref={scrollRef} height={height} className={className}>
-					{data.map((item, index) => cloneElement(renderItem(item, index), { key: item.uid }))}
+					{data.map((item, index) => {
+						const component = render(item, index)
+						if (!component) return null
+						return cloneElement(component, { key: item.uid })
+					})}
 				</Scroll>
 				<Fade position='end' />
 			</ScrollContainer>

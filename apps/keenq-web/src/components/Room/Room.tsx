@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 
-import RoomInfo from '@/components/Room/RoomInfo'
+import RoomHeader from '@/components/Room/RoomHeader'
 import RoomInput from '@/components/Room/RoomInput'
-import RoomMessages from '@/components/Room/RoomMessages'
+import PersonalMessages from '@/components/Room/RoomMessages'
 
 
 const StyledContainer = styled.div`
@@ -19,8 +19,8 @@ const StyledContainer = styled.div`
 function Room() {
 	return (
 		<StyledContainer data-testid='Room'>
-			<RoomInfo />
-			<RoomMessages />
+			<RoomHeader />
+			<PersonalMessages />
 			<RoomInput />
 		</StyledContainer>
 	)

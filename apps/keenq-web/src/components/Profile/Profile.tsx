@@ -1,9 +1,14 @@
 import styled from '@emotion/styled'
 
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
+import EditLocationTwoToneIcon from '@mui/icons-material/EditLocationTwoTone'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
+import GroupRemoveTwoToneIcon from '@mui/icons-material/GroupRemoveTwoTone'
+import InterestsTwoToneIcon from '@mui/icons-material/InterestsTwoTone'
 import PhotoCameraTwoToneIcon from '@mui/icons-material/PhotoCameraTwoTone'
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
+import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone'
+import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
@@ -19,7 +24,9 @@ import Space from '@/ui/Space'
 
 import Swiper from '@/components/Swiper'
 
+import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useInput } from '@/hooks/useInput'
+import { IMemberPartner } from '@/model/member'
 
 
 const Content = styled(Row)`
@@ -78,12 +85,21 @@ const desc = 'Going to the heavens of manifestation doesn’t view hypnosis anym
 
 const tags = ['bdsm', 'ffm', 'fwb', 'shibari', 'threeway', 'huging']
 
+// export function useCurrentMember() {
+// 	return { uid: 'me', partner: { uid: '1', name: 'Patrisia' } }
+// 	// return { uid: 'me', partner: undefined }
+// }
+
 function Profile() {
+
+	const { linked } = useCurrentMember()
+	const partner = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value
 
 	const { onOpen: onLocationOpen } = useModal('location')
 	const { onOpen: onTagsOpen } = useModal('tags')
 	const { onOpen: onSettingsClick } = useModal('settings')
 	const { onOpen: onGenderClick } = useModal('gender')
+	const { onOpen: onAddPartnerClick } = useModal('addPartner')
 
 	const nameInput = useInput({
 		value: 'Lucy',
@@ -100,6 +116,11 @@ function Profile() {
 	})
 
 	const onNameClick = () => nameInput.inputRef.current?.focus()
+
+	const onPartnerClick = () => {
+		if (partner) return console.log('--- Profile.tsx:118 -> onPartnerClick ->', 'unlink')
+		else onAddPartnerClick()
+	}
 
 	const onLocationClick = () => onLocationOpen()
 
@@ -119,6 +140,28 @@ function Profile() {
 					<NameInput disableUnderline={true} {...nameInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
 				</Row>
+				{partner
+					? (
+						<Row onClick={onPartnerClick} gap={0.5} align='baseline'>
+							<Typography variant='h6'>And</Typography>
+							<Typography variant='overline'>{partner.name}</Typography>
+							<Space grow />
+							<IconButton color='secondary'><GroupRemoveTwoToneIcon /></IconButton>
+						</Row>
+					)
+					: (
+						<Row
+							justify='between'
+							onClick={onPartnerClick}
+							gap={0.5}
+							align='baseline'
+						>
+							<Typography variant='h6'>Add</Typography>
+							<Typography variant='overline'>Partner</Typography>
+							<Space grow />
+							<IconButton color='primary'><SupervisedUserCircleTwoToneIcon /></IconButton>
+						</Row>
+					)}
 				<Row
 					justify='between'
 					onClick={onGenderClick}
@@ -126,9 +169,9 @@ function Profile() {
 					align='baseline'
 				>
 					<Typography variant='h6'>I am</Typography>
-					<Typography variant='overline'>Hetero</Typography>
+					<Typography variant='overline'>Female Hetero</Typography>
 					<Space grow />
-					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
+					<IconButton color='primary'><InterestsTwoToneIcon /></IconButton>
 				</Row>
 				<Row
 					justify='between'
@@ -139,7 +182,7 @@ function Profile() {
 					<Typography variant='h6'>In</Typography>
 					<Typography variant='overline'>Moscow</Typography>
 					<Space grow />
-					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
+					<IconButton color='primary'><EditLocationTwoToneIcon /></IconButton>
 				</Row>
 				<Space />
 				<Row justify='between' align='start' onClick={onDescClick}>
@@ -151,7 +194,7 @@ function Profile() {
 					<Row gap={0.5} wrap justify='start'>
 						{tags.map((tag) => <Chip key={tag} label={tag} />)}
 					</Row>
-					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
+					<IconButton color='primary'><TagTwoToneIcon /></IconButton>
 				</Row>
 				<Space />
 				<Divider />

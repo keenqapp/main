@@ -19,7 +19,7 @@ const StyledContainer = styled.div<{ horizontal?: number, vertical?: number, fle
 interface ContainerProps {
   children: ComponentChildren,
   'data-testid'?: string,
-	flex?: number,
+	flex?: number | boolean
 	vertical?: number
 	horizontal?: number
 }

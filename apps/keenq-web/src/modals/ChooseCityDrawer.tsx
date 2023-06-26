@@ -74,7 +74,7 @@ function ChooseCityDrawer() {
 				<Space />
 				<CitiesList
 					data={data}
-					renderItem={CitiesListItem}
+					render={CitiesListItem}
 				/>
 			</StyledContainer>
 		</Drawer>

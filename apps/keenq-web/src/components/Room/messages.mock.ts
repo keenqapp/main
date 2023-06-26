@@ -1,5 +1,6 @@
 import { addSeconds, subDays, subMinutes, subSeconds } from 'date-fns'
 
+import { IMessage } from '@/model/message'
 import { nullString } from '@/utils/utils'
 
 
@@ -224,6 +225,7 @@ export const messages = [
 	},
 	{
 		uid: '13',
+		type: 'personal',
 		date: subSeconds(new Date(), 8).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -238,6 +240,7 @@ export const messages = [
 	},
 	{
 		uid: '14',
+		type: 'personal',
 		date: addSeconds(new Date(), 100).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -252,6 +255,7 @@ export const messages = [
 	},
 	{
 		uid: '15',
+		type: 'personal',
 		date: addSeconds(new Date(), 200).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -261,7 +265,7 @@ export const messages = [
 		attachments: [],
 		author: { uid: 'me', name: 'boris' },
 		content: [
-			{ type: 'text', value: { text: 'im with you' } },
+			{ type: 'text', value: { text: 'i' } },
 			{
 				type: 'reply',
 				value: {
@@ -274,10 +278,19 @@ export const messages = [
 					]
 				}
 			}
+		],
+		reactionsCount: [
+			{ uid: '❤️', emoji: '❤️', count: 2 },
+			{ uid: '🔥', emoji: '🔥', count: 1 },
+			{ uid: '️👍', emoji: '️👍', count: 1 },
+			{ uid: '👎', emoji: '👎', count: 100 },
+			{ uid: '😄', emoji: '😄', count: 22 },
+			{ uid: '🥰', emoji: '🥰', count: 2 },
 		]
 	},
 	{
 		uid: '16',
+		type: 'personal',
 		date: addSeconds(new Date(), 1000).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -302,6 +315,35 @@ export const messages = [
 	},
 	{
 		uid: '17',
+		type: 'system',
+		date: addSeconds(new Date(), 990).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: 'keenq',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		author: { uid: 'keenq', name: 'keenq' },
+		content: [
+			{ type: 'text', value: { text: 'keenq shall come!' } }
+		],
+	},
+	{
+		uid: '18',
+		type: 'system',
+		date: addSeconds(new Date(), 990).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: 'keenq',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		author: { uid: 'keenq', name: 'keenq' },
+		content: [
+			{ type: 'text', value: { text: 'When one hurts thought and ascension, one is able to acquire truth. Not over there or earth, receive the courage.' } }
+		],
+	},
+	{
+		uid: '19',
+		type: 'personal',
 		date: addSeconds(new Date(), 2000).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -312,9 +354,32 @@ export const messages = [
 		content: [
 			{ type: 'image', value: { uid: '4', url: 'https://picsum.photos/200/300', width: 200, height: 300 } }
 		],
+		reactionsCount: [
+			{ uid: '1', emoji: '❤️', count: 2 },
+			{ uid: '2', emoji: '🔥', count: 1 },
+			{ uid: '3', emoji: '️👍', count: 1 },
+			{ uid: '4', emoji: '👎', count: 100 },
+			{ uid: '5', emoji: '😄', count: 22 },
+			{ uid: '6', emoji: '🥰', count: 2 },
+		]
 	},
 	{
-		uid: '18',
+		uid: '20',
+		type: 'system',
+		date: addSeconds(new Date(), 1990).toISOString(),
+		prevDate: nullString(),
+		nextDate: nullString(),
+		authorUid: 'keenq',
+		prevAuthorUid: nullString(),
+		nextAuthorUid: nullString(),
+		author: { uid: 'keenq', name: 'keenq' },
+		content: [
+			{ type: 'partnerRequest', value: { fromUid: 'me', from: { uid: 'me', name: 'boris' } } }
+		],
+	},
+	{
+		uid: '21',
+		type: 'personal',
 		date: addSeconds(new Date(), 2001).toISOString(),
 		prevDate: nullString(),
 		nextDate: nullString(),
@@ -325,5 +390,9 @@ export const messages = [
 		content: [
 			{ type: 'image', value: { uid: '4', url: 'https://picsum.photos/200/300', width: 200, height: 300 } }
 		],
-	},
-]
+		reactionsCount: [
+			{ uid: '1', emoji: '❤️', count: 2 },
+			{ uid: '2', emoji: '🔥', count: 1 },
+		]
+	}
+] as unknown as IMessage[]

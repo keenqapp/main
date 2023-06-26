@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useState } from 'preact/hooks'
 import axios from 'axios'
 
 import useAsyncEffect from '@/hooks/useAsyncEffect'
@@ -22,28 +22,28 @@ import useAsyncEffect from '@/hooks/useAsyncEffect'
 // }
 
 interface LocalityInfo {
-	LikelyLand: boolean;
-	administrative: Array<any>;
-	informative: Array<any>;
+	LikelyLand: boolean
+	administrative: Array<any>
+	informative: Array<any>
 }
 
 // Define the main interface using the properties from the provided object
 export interface Position {
-	city: string;
-	continent: string;
-	continentCode: string;
-	countryCode: string;
-	countryName: string;
-	latitude: number;
-	locality: string;
-	localityInfo: LocalityInfo;
-	localityLanguageRequested: string;
-	longitude: number;
-	lookupSource: string;
-	plusCode: string;
-	postcode: string;
-	principalSubdivision: string;
-	principalSubdivisionCode: string;
+	city: string
+	continent: string
+	continentCode: string
+	countryCode: string
+	countryName: string
+	latitude: number
+	locality: string
+	localityInfo: LocalityInfo
+	localityLanguageRequested: string
+	longitude: number
+	lookupSource: string
+	plusCode: string
+	postcode: string
+	principalSubdivision: string
+	principalSubdivisionCode: string
 }
 
 function getCurrentPosition(): Promise<GeolocationPosition> {

@@ -1,6 +1,6 @@
+import { VNode } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
-import { ReactNode } from 'react'
 
 import SwiperDots from '@/components/Swiper/SwiperDots'
 import { checkSnap } from '@/components/Swiper/utils'
@@ -36,7 +36,7 @@ const Image = styled.img`
 
 interface SwiperProps {
 	images: string[]
-	buttons?: ReactNode
+	buttons?: VNode
 }
 
 function Swiper({ images, buttons }: SwiperProps) {

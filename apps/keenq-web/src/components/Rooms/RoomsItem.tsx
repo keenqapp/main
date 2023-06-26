@@ -8,6 +8,10 @@ import Typography from '@mui/material/Typography'
 import Row from '@/ui/Row'
 
 
+const RoomItemContainer = styled.div`
+	padding: 0 2rem;
+`
+
 const NoWrap = styled(Typography)`
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -36,7 +40,7 @@ function RoomsItem({ uid, name, image, unread = 0, last }: RoomsItemProps) {
 		navigate(`/room/${uid}`)
 	}
 	return (
-		<div data-testid='RoomsItem' onClick={onClick(uid)}>
+		<RoomItemContainer data-testid='RoomsItem' onClick={onClick(uid)}>
 			<Row justify='start' gap={1}>
 				<SBadge badgeContent={unread} color='secondary'>
 					<Avatar src={image} alt={name} />
@@ -46,7 +50,7 @@ function RoomsItem({ uid, name, image, unread = 0, last }: RoomsItemProps) {
 					<NoWrap variant='body2'>{last}</NoWrap>
 				</Row>
 			</Row>
-		</div>
+		</RoomItemContainer>
 	)
 }
 

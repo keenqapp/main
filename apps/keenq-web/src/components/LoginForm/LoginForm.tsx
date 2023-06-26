@@ -69,7 +69,7 @@ function LoginForm() {
 			setTimeout(() => {
 				codeInput.value = e.target.value
 				e.target.blur()
-				onVerify(e.target.value)
+				onVerify()
 			}, 1)
 		}
 	}

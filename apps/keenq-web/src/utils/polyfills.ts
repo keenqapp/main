@@ -1,4 +1,7 @@
+import { cloneElement, VNode } from 'preact'
 import $equals from 'fast-deep-equal'
+
+import { Entity } from '@/types/types'
 
 
 interface Equals {
@@ -34,7 +37,8 @@ declare global {
 		create(length: number): Array<number>
 		uniq(property?: string, flat?: boolean): Array<T>;
 		last(): T | undefined
-		csort(compareFn?: (a: T, b: T) => number): Array<T>
+		copySort(compareFn?: (a: T, b: T) => number): Array<T>
+		toComponents<T>(render: (item: T, index: number) => VNode<T>): VNode[]
 	}
 
   interface String {
@@ -44,8 +48,9 @@ declare global {
   }
 
   interface Set<T> {
-    copyAdd(value: any): Set<T>
-    copyDelete(value: any): Set<T>
+    copyAdd(value: T): Set<T>
+    copyDelete(value: T): Set<T>
+		copyToggle(value: T): Set<T>
   }
 }
 
@@ -77,9 +82,21 @@ Object.defineProperty(Array.prototype, 'last', {
 	}
 })
 
-Object.defineProperty(Array.prototype, 'csort', {
+Object.defineProperty(Array.prototype, 'copySort', {
 	value: function(compareFn?: (a: (typeof this)[number], b: (typeof this)[number]) => number) {
 		return structuredClone(this).sort(compareFn)
+	}
+})
+
+Object.defineProperty(Array.prototype, 'toComponents', {
+	value: function<P extends Entity>(render: (item: P, index: number) => VNode<P>) {
+		return this
+			.map((item: P, index: number) => {
+				const component = render(item, index)
+				if (!component) return null
+				return cloneElement(component, { key: item.uid })
+			})
+			.filter(Boolean)
 	}
 })
 
@@ -101,15 +118,21 @@ Object.defineProperty(String.prototype, 'cut', {
 	}
 })
 
+Object.defineProperty(Set.prototype, 'copyToggle', {
+	value: function<T>(value: T) {
+		return this.has(value) ? this.copyDelete(value) : this.copyAdd(value)
+	}
+})
+
 Object.defineProperty(Set.prototype, 'copyAdd', {
-	value: function(value: any) {
+	value: function<T>(value: T) {
 		const set = this.add(value)
 		return new Set(set)
 	}
 })
 
 Object.defineProperty(Set.prototype, 'copyDelete', {
-	value: function(value: any) {
+	value: function<T>(value: T) {
 		this.delete(value)
 		return new Set(this)
 	}

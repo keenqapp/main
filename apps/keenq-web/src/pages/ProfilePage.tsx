@@ -2,6 +2,7 @@ import Page from '@/ui/Page'
 
 import Profile from '@/components/Profile'
 
+import AddPartnerDrawer from '@/modals/AddPartnerDrawer'
 import ChooseCityDrawer from '@/modals/ChooseCityDrawer'
 import GenderDrawer from '@/modals/GenderDrawer'
 import LocationDrawer from '@/modals/LocationDrawer'
@@ -18,6 +19,7 @@ function ProfilePage() {
 			<TagsDrawer />
 			<SettingsDrawer />
 			<GenderDrawer />
+			<AddPartnerDrawer />
 		</Page>
 	)
 }

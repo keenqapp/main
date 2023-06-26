@@ -1,7 +1,9 @@
-import { useCallback, useRef } from 'preact/hooks'
+import { useCallback } from 'preact/hooks'
 import { computed } from '@preact/signals'
 
+import { IRoom } from '@/model/room'
 import { signal } from '@/utils/signals'
+import { merge } from '@/utils/utils'
 
 
 const modals = {
@@ -13,36 +15,50 @@ const modals = {
 	confirm: false,
 	room: false,
 	report: false,
-	addMember: false,
+	addPartner: false,
+	addMemberToRoom: false,
 	message: false,
 	gender: false,
+	attachment: false,
+	roomInfo: false,
+	roomInfoMember: false,
+	partnerRequest: false,
 }
 
-export type Modal = keyof typeof modals
+export type ModalsState = typeof modals
+export type ModalKeys = keyof typeof modals
+export type ModalParams<N> = N extends keyof ModalParamsMap ? ModalParamsMap[N] : Record<string, never>
 
-export const modalsStore = signal<{ [key in Modal]: boolean }>(modals)
+export interface ModalParamsMap {
+	roomInfoMember: { uid: string }
+	message: { uid: string, authorUid: string }
+	report: { uid: string, entity: string }
+	addMemberToRoom: { uid?: string, to: string }
+	roomInfo: IRoom
+}
 
-let params = undefined
+export const modalsStore = signal<ModalsState>(modals)
 
-export function useModal(name: Modal) {
+let params = {} as any
+export function useModal<N extends ModalKeys>(name: N) {
 	const open = computed(() => modalsStore()[name]())
-	const onOpen = useCallback((...args: any[]) => {
-		params = args
+	const onOpen = useCallback((dto: ModalParams<N> = {} as any) => {
+		params = dto
 		modalsStore()[name](true)
 	}, [])
 	const onClose = useCallback(() => {
-		params = undefined
+		params = {} as any
 		modalsStore()[name](false)
 	}, [])
 	const on = useCallback((fn: () => void) => () => {
 		fn()
 		onClose()
 	}, [])
-	const onCloseAll = useCallback(() => modalsStore(modals), [])
+	const onCloseAll = useCallback(() => modalsStore.clear(), [])
 	return {
-		name,
+		name: name as Extract<ModalKeys, N>,
 		open: open.value,
-		params,
+		params: params as ModalParams<N>,
 		on,
 		onOpen,
 		onClose,
@@ -56,10 +72,16 @@ export interface ConfirmOptions {
 	onConfirm: () => void
 }
 
+export interface StrictConfirmOptions {
+	title: string
+	text: string
+	onConfirm: () => void
+}
+
 const defaultConfirm = {
 	title: 'Are you sure?',
 	text: 'This action cannot be undone',
-	onConfirm: () => {}
+	onConfirm: () => undefined
 }
 
 const options = signal(defaultConfirm)
@@ -70,13 +92,14 @@ export function useConfirm() {
 	const onOpen = useCallback(() => modalsStore().confirm(true), [])
 	const onClose = useCallback(() => {
 		modalsStore().confirm(false)
-		options(defaultConfirm)
+		options.clear()
 	}, [])
-	const onCloseAll = useCallback(() => modalsStore(modals), [])
-
+	const onCloseAll = useCallback(() => modalsStore.clear(), [])
 	const confirm = useCallback((newOptions: ConfirmOptions) => {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		options(merge(defaultConfirm, newOptions))
 		onOpen()
-		options(newOptions)
 	}, [])
 
 	return {
