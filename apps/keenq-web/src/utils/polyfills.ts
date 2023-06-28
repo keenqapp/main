@@ -28,6 +28,9 @@ export interface Dict extends Object {
 
 declare global {
 
+
+	function pug(template: TemplateStringsArray): VNode
+
 	const equals: Equals
 
 	interface ArrayConstructor {

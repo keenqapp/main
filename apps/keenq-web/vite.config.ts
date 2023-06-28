@@ -1,10 +1,18 @@
 import preact from '@preact/preset-vite'
 import path from 'path'
 import { defineConfig } from 'vite'
+import inspect from 'vite-plugin-inspect'
 
 
 export default defineConfig({
-	plugins: [preact()],
+	plugins: [
+		inspect(),
+		preact({
+			babel: {
+				plugins: ['babel-plugin-transform-react-pug'],
+			}
+		})
+	],
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
