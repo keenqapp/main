@@ -4,8 +4,7 @@ import { Signal as $$Signal, signal as $$signal } from '@preact/signals-core'
 export const SignalProxyType = Symbol('SignalProxy')
 export const primitives = ['string', 'number', 'boolean', 'undefined', 'symbol', 'bigint']
 
-type Unwrap<T> = T extends Signal<infer U> ? U : T
-
+type Unwrap<T> = T extends Record<any, infer U> ? Record<any, Unwrap<U>> : T extends Signal<infer C> ? Unwrap<C> : T
 
 export interface Signal<T> extends Function {
 	(input: T | Unwrap<T> | ((prev: T | Unwrap<T>) => T), nested?: boolean): void

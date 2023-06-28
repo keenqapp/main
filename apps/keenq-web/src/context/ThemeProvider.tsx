@@ -104,31 +104,36 @@ const theme = unstable_createMuiStrictModeTheme({
 		h4: {
 			fontWeight: 700,
 			padding: '8px',
-			fontFamily: 'serif'
+			fontFamily: 'keenq'
 		},
 		h5: {
 			fontWeight: 700,
-			fontFamily: 'serif'
+			fontFamily: 'keenq'
 		},
 		h6: {
 			fontWeight: 700,
 			lineHeight: 1,
-			fontFamily: 'serif'
+			fontFamily: 'keenq'
 		},
 		subtitle1: {
+			fontFamily: 'system-ui',
 			fontWeight: 700,
 			lineHeight: 1
 		},
 		body1: {
+			fontFamily: 'system-ui',
 			lineHeight: 1.15
 		},
 		body2: {
+			fontFamily: 'system-ui',
 			fontWeight: 300
 		},
 		overline: {
-			lineHeight: 1,
+			fontFamily: 'system-ui',
+			lineHeight: 1.5,
 		},
 		caption: {
+			fontFamily: 'system-ui',
 			opacity: 0.5,
 		}
 	},

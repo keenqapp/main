@@ -23,7 +23,7 @@ function RoomInfoHeader(room: IRoom) {
 	const { onOpen } = useModal('roomInfo')
 
 	const { uid: cuid } = useCurrentMember()
-	const admin = useIsAdmin(cuid)
+	const isAdmin = useIsAdmin(cuid)
 
 	const handleBack = () => navigate(-1)
 	const onClick = () => onOpen(room)
@@ -35,7 +35,7 @@ function RoomInfoHeader(room: IRoom) {
 				<Typography variant='h5'>{name}</Typography>
 				{verified && <VerifiedTwoToneIcon color='primary' />}
 			</Row>
-			{admin ? (
+			{isAdmin ? (
 				<IconButton onClick={onClick}><MoreVertTwoToneIcon /></IconButton>
 			) : (
 				<Space width={2.5} />

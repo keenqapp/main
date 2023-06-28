@@ -5,6 +5,8 @@ import styled from '@emotion/styled'
 import SwiperDots from '@/components/Swiper/SwiperDots'
 import { checkSnap } from '@/components/Swiper/utils'
 
+import { IImage } from '@/model/other'
+
 
 const SwiperContainer = styled.div`
   position: relative;
@@ -35,7 +37,7 @@ const Image = styled.img`
 `
 
 interface SwiperProps {
-	images: string[]
+	images: IImage[]
 	buttons?: VNode
 }
 

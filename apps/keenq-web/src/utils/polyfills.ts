@@ -1,7 +1,7 @@
 import { cloneElement, VNode } from 'preact'
 import $equals from 'fast-deep-equal'
 
-import { Entity } from '@/types/types'
+import { Entity } from '@/types/utility'
 
 
 interface Equals {
@@ -12,6 +12,7 @@ const equals: Equals = function equals(value: unknown, equals: unknown): boolean
 	return $equals(value, equals)
 }
 function any(value: unknown, equals: unknown[]) {
+	if (!equals?.length) return false
 	return equals.some((item) => $equals(value, item))
 }
 

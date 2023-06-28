@@ -7,6 +7,7 @@ import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
 import { useModal } from '@/services/modals'
@@ -16,7 +17,8 @@ import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
 import Swiper from '@/components/Swiper'
-import IconButton from '@mui/material/IconButton'
+
+import { useCurrentMember } from '@/hooks/useCurrentMember'
 
 
 const Content = styled(Row)`
@@ -56,13 +58,22 @@ const partner = {
 }
 
 function Match() {
-	const { onOpen } = useModal('report')
+	const { onOpen: onReportOpen } = useModal('report')
+	const { onOpen: onAcquaintanceOpen } = useModal('acquaintance')
 	const navigate = useNavigate()
-	const onReportClick = () => {
-		onOpen()
-	}
+
+	const { setupDone } = useCurrentMember()
+	const onReportClick = () => onReportOpen()
 
 	const onPartnerClick = () => navigate(`/match/${partner.link}`)
+
+	const onYesClick = () => {
+		if (!setupDone) return onAcquaintanceOpen()
+	}
+
+	const onNoClick = () => {
+		console.log('--- Match.tsx:74 -> onNoClick ->', 'next with no')
+	}
 
 	return (
 		<Container data-testid='Match'>
@@ -84,8 +95,8 @@ function Match() {
 				<Typography variant='overline'>8 km away</Typography>
 				<Space height={0.5} />
 				<Fabs justify='between' self='stretch'>
-					<IconButton><HighlightOffTwoToneIcon fontSize='large' color='secondary' /></IconButton>
-					<IconButton><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
+					<IconButton onClick={onNoClick}><HighlightOffTwoToneIcon fontSize='large' color='secondary' /></IconButton>
+					<IconButton onClick={onYesClick}><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
 				</Fabs>
 				<Space />
 				<Typography>

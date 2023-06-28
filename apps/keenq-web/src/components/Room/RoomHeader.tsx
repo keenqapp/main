@@ -3,7 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import ArrowBackIosTwoToneIcon from '@mui/icons-material/ArrowBackIosTwoTone'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
-import { Avatar } from '@mui/material'
+import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
+import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
@@ -30,10 +31,17 @@ const infoPublic = {
 	image: 'https://picsum.photos/200/200',
 }
 
+const infoChannel = {
+	uid: 'keenq',
+	name: 'keenq',
+	image: 'https://keenq.fra1.cdn.digitaloceanspaces.com/rooms/keenq_white.png',
+	verified: true,
+}
+
 function RoomHeader() {
 	const { uid } = useParams()
 	const { onOpen } = useModal('room')
-	const data = uid === 'public' ? infoPublic : infoPrivate
+	const { name, image, verified } = infoChannel
 
 	const navigate = useNavigate()
 	const onBack = () => navigate(-1)
@@ -45,9 +53,12 @@ function RoomHeader() {
 		<RoomInfoContainer gap={0.5} data-testid='RoomHeader'>
 			<IconButton color='primary' onClick={onBack}><ArrowBackIosTwoToneIcon /></IconButton>
 			<Row gap={1} onClick={onNameClick}>
-				<Avatar src={data.image} alt={data.name} />
+				<Avatar src={image} alt={name} />
 				<div>
-					<Typography variant='h6'>{data.name}</Typography>
+					<Row gap={0.5}>
+						<Typography variant='h6'>{name}</Typography>
+						{verified && <VerifiedTwoToneIcon color='primary' fontSize='small' />}
+					</Row>
 					<Typography variant='body2'>Online</Typography>
 				</div>
 			</Row>

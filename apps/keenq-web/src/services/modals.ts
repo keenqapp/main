@@ -23,6 +23,7 @@ const modals = {
 	roomInfo: false,
 	roomInfoMember: false,
 	partnerRequest: false,
+	acquaintance: false,
 }
 
 export type ModalsState = typeof modals

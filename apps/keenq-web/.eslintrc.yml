@@ -73,6 +73,7 @@ rules:
         - - "^preact"
           - "^@?\\w"
         - - "^@mui"
+        - - "^@mui/icons-material"
         - - "^@/services"
         - - "^@/ui"
         - - "^@/components"

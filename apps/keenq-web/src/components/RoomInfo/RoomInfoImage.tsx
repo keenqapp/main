@@ -36,6 +36,7 @@ const AddPhoto = styled(IconButton)`
 function RoomInfoImage({ image }: IRoom) {
 	const { uid: cuid } = useCurrentMember()
 	const admin = useIsAdmin(cuid)
+	console.log('--- RoomInfoImage.tsx:39 -> RoomInfoImage ->', admin)
 	const onChange = () => {}
 	return (
 		<RoomInfoImageContainer data-testid='RoomInfoImage' justify='center'>

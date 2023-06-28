@@ -1,8 +1,8 @@
 import { differenceInMinutes, isSameDay, parseISO } from 'date-fns'
 
-import { isAuthor } from '@/model/member'
+import { $isAuthor } from '@/model/member'
 import { IMessage, IMessageImage, IMessageReply, IMessageText, IPartnerRequest } from '@/model/message'
-import { isPrivateRoom } from '@/model/room'
+import { $isPrivate, IRoom } from '@/model/room'
 
 
 const MAX_DIFF_IN_MINUTES = 2
@@ -15,9 +15,9 @@ export function shouldShowCheck({ date, nextDate, authorUid, nextAuthorUid }: IM
 	return differenceInMinutes(next, current) >= MAX_DIFF_IN_MINUTES
 }
 
-export function checkShowName({ authorUid, prevAuthorUid, date, prevDate }: IMessage, ruid: string) {
-	const isPrivate = isPrivateRoom(ruid!)
-	const isSelf = isAuthor(authorUid)
+export function checkShowName({ authorUid, prevAuthorUid, date, prevDate }: IMessage, room: IRoom) {
+	const isPrivate = $isPrivate(room)
+	const isSelf = $isAuthor(authorUid)
 	if (isSelf || isPrivate) return false
 
 	const isDifferentAuthor = authorUid !== prevAuthorUid

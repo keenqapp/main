@@ -1,11 +1,14 @@
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 
-import { Avatar } from '@mui/material'
+import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
+import Avatar from '@mui/material/Avatar'
 import Badge from '@mui/material/Badge'
 import Typography from '@mui/material/Typography'
 
 import Row from '@/ui/Row'
+
+import { IRoom } from '@/model/room'
 
 
 const RoomItemContainer = styled.div`
@@ -26,15 +29,7 @@ const SBadge = styled(Badge)`
 	}
 `
 
-interface RoomsItemProps {
-	uid: string
-	name: string
-	image: string
-	unread: number
-	last: string
-}
-
-function RoomsItem({ uid, name, image, unread = 0, last }: RoomsItemProps) {
+function RoomsItem({ uid, name, image, unread = 0, last, verified }: IRoom) {
 	const navigate = useNavigate()
 	const onClick = (uid: string) => () => {
 		navigate(`/room/${uid}`)
@@ -46,7 +41,10 @@ function RoomsItem({ uid, name, image, unread = 0, last }: RoomsItemProps) {
 					<Avatar src={image} alt={name} />
 				</SBadge>
 				<Row direction='column' align='start'>
-					<NoWrap variant='h6'>{name}</NoWrap>
+					<Row justify='start' gap={0.5}>
+						<NoWrap variant='h6'>{name}</NoWrap>
+						{verified && <VerifiedTwoToneIcon fontSize='small' color='primary' />}
+					</Row>
 					<NoWrap variant='body2'>{last}</NoWrap>
 				</Row>
 			</Row>

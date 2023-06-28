@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
 import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone'
+import NotificationsOffTwoToneIcon from '@mui/icons-material/NotificationsOffTwoTone'
 import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
@@ -9,14 +10,14 @@ import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
 import { useConfirm, useModal } from '@/services/modals'
 
 import { Drawer, DrawerItem, DrawerList } from '@/ui/Drawer'
-import { isPrivateRoom } from '@/model/room'
 
+import { $isPrivate, getRoomById } from '@/model/room'
 
 
 function RoomMenu() {
 	const navigate = useNavigate()
 	const { uid } = useParams()
-	const room = useModal('room')
+	const { name, on } = useModal('room')
 	const { onOpen: addMemberOpen } = useModal('addMemberToRoom')
 	const { onOpen: reportOpen } = useModal('report')
 	const { confirm } = useConfirm()
@@ -25,11 +26,7 @@ function RoomMenu() {
 		confirm({
 			title: 'Leave room',
 			text: 'Are you sure you want to leave this room?',
-			onConfirm: () => {
-				// TODO: leave room
-				room.onClose()
-				navigate('/match')
-			},
+			onConfirm: on(() => navigate('/match'))
 		})
 	}
 
@@ -40,15 +37,15 @@ function RoomMenu() {
 
 	const addMemberClick = () => addMemberOpen({ to: 'room', uid })
 
-	const on = (fn: () => void) => () => {
-		room.onClose()
-		fn()
+	const muteClick = () => {
+		console.log('--- RoomMenu.tsx:44 -> muteClick ->', 'muteClick')
 	}
 
-	const isPrivate = isPrivateRoom(uid!)
+	const room = getRoomById(uid!)
+	const isPrivate = $isPrivate(room)
 
 	return (
-		<Drawer data-testid='RoomMenu' {...room}>
+		<Drawer data-testid='RoomMenu' name={name}>
 			<DrawerList>
 				<DrawerItem
 					icon={<DeleteTwoToneIcon color='secondary' />}
@@ -59,6 +56,11 @@ function RoomMenu() {
 					icon={<ReportTwoToneIcon color='error' />}
 					text='Report'
 					onClick={on(reportOpen)}
+				/>
+				<DrawerItem
+					icon={<NotificationsOffTwoToneIcon color='secondary' />}
+					text='Mute'
+					onClick={on(muteClick)}
 				/>
 				{isPrivate ? (
 					<DrawerItem

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import DoneOutlineTwoToneIcon from '@mui/icons-material/DoneOutlineTwoTone'
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
-import { Avatar } from '@mui/material'
+import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -45,7 +45,7 @@ function PartnerRequest({ from: member }: IPartnerRequest['value']) {
 			<Column gap={0.5}>
 				<Content gap={1} onClick={requestClick}>
 					<Row justify='start' gap={1}>
-						<Avatar src={image} />
+						<Avatar src={image} alt={name} />
 						<Column>
 							<Typography variant='h6'>{name}</Typography>
 						</Column>

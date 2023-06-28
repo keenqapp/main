@@ -11,7 +11,7 @@ import Row from '@/ui/Row'
 
 import { useIsAdmin } from '@/hooks/useIsAdmin'
 import { IMember } from '@/model/member'
-import { IRoom } from '@/types/room'
+import { IRoom } from '@/model/room'
 
 
 const RoomInfoMembersContainer = styled(Column)`
@@ -33,7 +33,7 @@ function Member({ uid, name, image }: IMember) {
 	const onClick = () => onOpen({ uid })
 	return (
 		<MemberContainer justify='start' gap={1} onClick={onClick}>
-			<Avatar src={image} />
+			<Avatar src={image} alt={name} />
 			<Column>
 				<Typography variant='h6'>{name}</Typography>
 				{admin && <Typography variant='body2'>admin</Typography>}

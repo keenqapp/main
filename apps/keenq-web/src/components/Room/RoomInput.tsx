@@ -1,5 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
+import { useParams } from 'react-router-dom'
 
 import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
@@ -17,10 +18,14 @@ import Space from '@/ui/Space'
 import PersonalMessageReply from '@/components/PersonalMessage/PersonalMessageReply'
 
 import { messages } from './messages.mock'
+import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useInput } from '@/hooks/useInput'
+import { $isAdmin, $isRoomMember } from '@/model/member'
 import { IMessage } from '@/model/message'
 import { getText } from '@/model/message'
+import { $isChannel, getRoomById } from '@/model/room'
 import { signal } from '@/utils/signals'
+import Button from '@mui/material/Button'
 
 
 const RoomInputContainer = styled.div`
@@ -52,7 +57,15 @@ function asReply(message?: IMessage) {
 
 function RoomInput() {
 
+	const { uid: muid } = useCurrentMember()
 	const { onOpen } = useModal('attachment')
+	const { uid } = useParams()
+
+	const room = getRoomById(uid!)
+	const isChannel = $isChannel(room)
+	const isMember = $isRoomMember(room, muid)
+	const isAdmin = $isAdmin(muid, room)
+
 	const message = getMessageByUid(messageReplyOrEditUid().uid())
 	const replay = asReply(message)
 	const text = getText(message)
@@ -78,6 +91,13 @@ function RoomInput() {
 		textInput.onClear()
 	}
 
+	const onJoinClick = () => {
+		console.log('--- RoomInput.tsx:95 -> onJoinClick ->', 'onJoinClick')
+	}
+
+	const showInput =  isAdmin || (!isChannel && isMember)
+	const showJoin = !isMember
+
 	return (
 		<RoomInputContainer data-testid='RoomInput'>
 			<Row direction='column' align='stretch' gap={0.2}>
@@ -89,11 +109,14 @@ function RoomInput() {
 						<IconButton color='secondary' onClick={onRemoveClick}><HighlightOffTwoToneIcon /></IconButton>
 					</Row>
 				)}
-				<Row justify='stretch' gap={1} align='end'>
-					<IconButton color='secondary' onClick={onOpen} ><AttachFileTwoToneIcon /></IconButton>
-					<Input {...textInput} />
-					<IconButton color='primary' onClick={onSendClick}><SendTwoToneIcon /></IconButton>
-				</Row>
+				{showInput && (
+					<Row justify='stretch' gap={1} align='end'>
+						<IconButton color='secondary' onClick={onOpen} ><AttachFileTwoToneIcon /></IconButton>
+						<Input {...textInput} />
+						<IconButton color='primary' onClick={onSendClick}><SendTwoToneIcon /></IconButton>
+					</Row>
+				)}
+				{showJoin && <Button onClick={onJoinClick} fullWidth>Join</Button>}
 			</Row>
 		</RoomInputContainer>
 	)

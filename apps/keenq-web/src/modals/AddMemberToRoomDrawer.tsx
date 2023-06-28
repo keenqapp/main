@@ -17,6 +17,8 @@ import List from '@/ui/List'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
+import EmptyMembers from '@/components/EmptyMembers'
+
 import { useInput } from '@/hooks/useInput'
 import { IMember } from '@/model/member'
 import { match } from '@/utils/utils'
@@ -58,7 +60,7 @@ function MemberItem({ uid, name, image }: IMember) {
 	const onChange = () => selected.value = selected.value.copyToggle(uid)
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={onChange}>
-			<Avatar src={image} />
+			<Avatar src={image} alt={name} />
 			<Row flex={1} >
 				<Typography variant='h6'>{name}</Typography>
 			</Row>
@@ -91,10 +93,11 @@ function AddMemberToRoom() {
 				<TextField {...nameInput} />
 				<Space />
 				<MembersList
-					data={data}
+					data={[]}
 					render={MemberItem}
+					empty={EmptyMembers}
 				/>
-				<Button onClick={on(click)} fullWidth startIcon={<CheckTwoToneIcon />}>Yeap</Button>
+				{data.length > 0 && <Button onClick={on(click)} fullWidth startIcon={<CheckTwoToneIcon />}>Yeap</Button>}
 			</StyledContainer>
 		</Drawer>
 	)

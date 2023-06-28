@@ -14,7 +14,9 @@ import Row from '@/ui/Row'
 
 import { messageReplyOrEditUid } from '@/components/Room/RoomInput'
 
-import { isAdmin, isAuthor } from '@/model/member'
+import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { $isAdmin, $isAuthor } from '@/model/member'
+import { $isChannel, getRoomById } from '@/model/room'
 
 
 const Reactions = styled(Row)`
@@ -36,14 +38,17 @@ const reactions = [
 
 function MessageMenu() {
 	const navigate = useNavigate()
+	const { uid: cuid } = useCurrentMember()
 	const { name, params, on } = useModal('message')
 	const { onOpen } = useModal('report')
 	const { uid: ruid } = useParams()
 	const { uid, authorUid } = params
+	const room = getRoomById(ruid!)
 
 	const reportClick = () => onOpen({ entity: 'message', uid })
 
 	const profileClick = () => navigate(`/match/${authorUid}`)
+	const roomClick = () => navigate(`/roomInfo/${ruid}`)
 	const deleteClick = () => {
 		console.log('--- MessageMenu.tsx:23 -> deleteClick -> deleteClick', uid)
 	}
@@ -60,17 +65,22 @@ function MessageMenu() {
 		console.log('--- MessageMenu.tsx:61 -> reactionClick ->', uid)
 	}
 
-	const same = isAuthor(authorUid)
-	const admin = isAdmin('me', ruid!)
+	const isAuthor = $isAuthor(authorUid)
+	const isAdmin = $isAdmin(cuid, room)
+	const isChannel = $isChannel(room)
+
+	const isEditable = (!isChannel && isAuthor) || (isChannel && isAdmin)
+	const isReplyable = !isChannel || (isChannel && isAdmin)
 
 	return (
 		<Drawer data-testid='MessageMenu' name={name}>
 			<DrawerList>
 				<DrawerItem icon={<ReportTwoToneIcon color='error' />} text='Report' onClick={on(reportClick)} />
-				{(same || admin) && <DrawerItem icon={<DeleteForeverTwoToneIcon color='warning' />} text='Delete' onClick={on(deleteClick)} />}
-				{!same && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Profile' onClick={on(profileClick)} />}
-				{same && <DrawerItem icon={<EditTwoToneIcon color='primary' />} text='Edit' onClick={on(editClick)} />}
-				<DrawerItem icon={<FormatQuoteTwoToneIcon color='secondary' />} text='Reply' onClick={on(replyClick)} />
+				{(isAuthor || isAdmin) && <DrawerItem icon={<DeleteForeverTwoToneIcon color='warning' />} text='Delete' onClick={on(deleteClick)} />}
+				{!isAuthor && !isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Profile' onClick={on(profileClick)} />}
+				{isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Room' onClick={on(roomClick)} />}
+				{isEditable && <DrawerItem icon={<EditTwoToneIcon color='primary' />} text='Edit' onClick={on(editClick)} />}
+				{isReplyable && <DrawerItem icon={<FormatQuoteTwoToneIcon color='secondary' />} text='Reply' onClick={on(replyClick)} />}
 				<DrawerItem>
 					<Reactions justify='between' flex={1}>
 						{reactions.map(({ uid, emoji }) => <div key={uid} onClick={on(reactionClick(uid))}>{emoji}</div>)}

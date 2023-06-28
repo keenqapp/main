@@ -14,7 +14,7 @@ import PersonalMessageReply from '@/components/PersonalMessage/PersonalMessageRe
 import PersonalMessageText from '@/components/PersonalMessage/PersonalMessageText'
 import PersonalMessageTime from '@/components/PersonalMessage/PersonalMessageTime'
 
-import { isAuthor } from '@/model/member'
+import { $isAuthor } from '@/model/member'
 import { IMessage } from '@/model/message'
 import { formatDate } from '@/utils/formatters'
 
@@ -86,7 +86,7 @@ function DateSeparator({ date, prevDate }: IMessage) {
 function PersonalMessage(message: IMessage) {
 	const { authorUid, content } = message
 	const { onOpen } = useModal('message')
-	const isSelf = isAuthor(authorUid)
+	const isSelf = $isAuthor(authorUid)
 	if (!content?.length) return null
 
 	const onMessageClick = () => onOpen(message)

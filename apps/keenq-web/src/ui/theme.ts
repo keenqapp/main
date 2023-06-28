@@ -4,6 +4,7 @@ const theme = {
 	unit: 'rem',
 	gap: isLarge ? 1.5 : 1,
 	fontFamily: 'Source sans',
+	boxShadow: 'box-shadow: 1px 3px 4px rgba(0,0,0,0.07)',
 	fontSize: {
 		text: '0.9rem',
 		sub: '0.8rem',
@@ -19,9 +20,10 @@ const theme = {
 		white: '#fff',
 		// base: 'rgb(57,67,91)', // #28344D
 		base: 'rgb(73,62,93)', // #28344D
+		baseLight: 'rgb(194,188,188)', // #FEFEFE
 		primary: 'rgb(54, 179, 126)', // #36B37E
 		primaryLight: 'rgb(220, 244, 227)', // #DCF5E3
-		primaryVeryLight: 'rgba(220,244,227,0.33)', // #DCF5E3
+		primaryVeryLight: 'rgb(242,250,244)', // #DCF5E3
 		secondary: 'rgb(206, 147, 216)', // #CE93D8
 		secondaryLight: 'rgb(240,211,245)', // #F6F7FA
 		secondaryVeryLight: 'rgba(240,211,245,0.33)', // #F6F7FA

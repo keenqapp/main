@@ -4,16 +4,17 @@ import { useParams } from 'react-router-dom'
 import Typography from '@mui/material/Typography'
 
 import Row from '@/ui/Row'
+import theme from '@/ui/theme'
 
-import { isAdmin, isAuthor } from '@/model/member'
+import { $isAdmin, $isAuthor } from '@/model/member'
 import { checkShowName, getText, IMessage } from '@/model/message'
 import { toColor } from '@/model/message'
-import { isPrivateRoom } from '@/model/room'
+import { $isPrivate, getRoomById } from '@/model/room'
 
 
 const MessageContainerContent = styled(Row)`
   padding: 0.5rem 1rem;
-  box-shadow: 1px 3px 4px rgba(0,0,0,0.07);
+  box-shadow: ${theme.boxShadow};
 `
 const Text = styled(Typography)`
 	white-space: pre-wrap;
@@ -26,11 +27,12 @@ function PersonalMessageText(message: IMessage) {
 	const preventSelection = (e: MouseEvent) => e.preventDefault()
 
 	const { uid: ruid } = useParams()
+	const room = getRoomById(ruid!)
 
-	const isSelf = isAuthor(authorUid)
-	const isPrivate = isPrivateRoom(ruid!)
-	const shouldShowName = checkShowName(message, ruid!)
-	const admin = isAdmin(authorUid, ruid!)
+	const isSelf = $isAuthor(authorUid)
+	const isPrivate = $isPrivate(room)
+	const shouldShowName = checkShowName(message, room)
+	const admin = $isAdmin(authorUid, room)
 
 	if ((isSelf || isPrivate) && !text) return null
 	if (!text && !shouldShowName) return null

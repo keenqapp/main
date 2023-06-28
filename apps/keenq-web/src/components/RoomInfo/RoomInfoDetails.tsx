@@ -9,7 +9,7 @@ import Row from '@/ui/Row'
 import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useInput } from '@/hooks/useInput'
 import { useIsAdmin } from '@/hooks/useIsAdmin'
-import { IRoom } from '@/types/room'
+import { IRoom } from '@/model/room'
 
 
 function RoomInfoDetails({ description }: IRoom) {

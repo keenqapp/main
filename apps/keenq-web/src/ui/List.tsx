@@ -60,12 +60,14 @@ function Autosizer({ setHeight }: { setHeight: (height: number) => void }) {
 interface ListProps<P extends Entity, > {
 	data: P[]
 	render: (item: P, index: number) => VNode<P>
+	empty?: () => VNode
 	scrollRef?: any
 	className?: string
 }
 
-function List<T extends Entity>({ data, render, scrollRef, className, ...rest }: ListProps<T>) {
+function List<T extends Entity>({ data, render, scrollRef, empty, className, ...rest }: ListProps<T>) {
 	const [ height, setHeight ] = useState(0)
+	if (data.length < 1 && empty) return empty()
 	return (
 		<ListContainer data-testid='List'>
 			<Autosizer setHeight={setHeight} />

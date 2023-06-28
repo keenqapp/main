@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 
 import { useModal } from '@/services/modals'
 
+import Card from '@/ui/Card'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
 import List from '@/ui/List'
@@ -19,6 +20,7 @@ import Space from '@/ui/Space'
 import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useInput } from '@/hooks/useInput'
 import { IMember } from '@/model/member'
+import EmptyMembers from '@/components/EmptyMembers'
 
 
 const StyledContainer = styled(Container)`
@@ -52,7 +54,7 @@ function MemberItem({ uid, name, image }: IMember) {
 
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={on(partnerClick)}>
-			<Avatar src={image} />
+			<Avatar src={image} alt={name} />
 			<Row flex={1}>
 				<Typography variant='h6'>{name}</Typography>
 			</Row>
@@ -60,6 +62,7 @@ function MemberItem({ uid, name, image }: IMember) {
 		</MemberItemContainer>
 	)
 }
+
 function AddPartnerDrawer() {
 	const { name } = useModal('addPartner')
 
@@ -78,8 +81,9 @@ function AddPartnerDrawer() {
 				<TextField {...nameInput} />
 				<Space />
 				<MembersList
-					data={mockData}
+					data={[]}
 					render={MemberItem}
+					empty={EmptyMembers}
 				/>
 			</StyledContainer>
 		</Drawer>

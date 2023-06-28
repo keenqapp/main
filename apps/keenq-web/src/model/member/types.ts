@@ -1,12 +1,18 @@
-import { IImage } from '@/types/image'
+import { IImage, ILocation, ITag } from '@/model/other'
 
 
 export interface IMember {
 	uid: string
 	name: string
+	description: string
+	gender: string
+	sexuality: string
 	image: string
+	location: ILocation
+	tags: ITag[]
 	images?: IImage[]
 	linked?: (IMemberPartner)[]
+	setupDone?: boolean
 
 	prefs?: IMemberPrefs
 	meta?: IMemberMeta

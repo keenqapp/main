@@ -1,5 +1,12 @@
 import styled from '@emotion/styled'
 
+import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import Input from '@mui/material/Input'
+import Typography from '@mui/material/Typography'
+
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
 import EditLocationTwoToneIcon from '@mui/icons-material/EditLocationTwoTone'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
@@ -9,19 +16,16 @@ import PhotoCameraTwoToneIcon from '@mui/icons-material/PhotoCameraTwoTone'
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
 import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone'
 import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
-import Button from '@mui/material/Button'
-import Chip from '@mui/material/Chip'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import Input from '@mui/material/Input'
-import Typography from '@mui/material/Typography'
 
 import { useModal } from '@/services/modals'
 
+import Column from '@/ui/Column'
 import Container from '@/ui/Container'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
+import Upload from '@/ui/Upload'
 
+import ProfileProgress from '@/components/Profile/ProfileProgress'
 import Swiper from '@/components/Swiper'
 
 import { useCurrentMember } from '@/hooks/useCurrentMember'
@@ -53,11 +57,40 @@ const NameInput = styled(Input)`
   line-height: 1.334;
 `
 
+const EmptyImagesContainer = styled.div`
+  width: calc(100vw - 2rem);
+  height: calc(100vw - 2rem);
+  border: 1px solid #e1dcec;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+`
+
 function Buttons() {
 	return (
 		<Fabs>
 			<CancelTwoToneIcon fontSize='large' color='error' />
 		</Fabs>
+	)
+}
+
+function EmptyImages() {
+	const onChange= (e: any) => {
+		console.log('--- Profile.tsx:80 -> onChange ->', e)
+	}
+	return (
+		<EmptyImagesContainer>
+			<Upload onChange={onChange} accept='images/*'>
+				<Column>
+					<Typography textAlign='center' variant='overline'>Upload at least three photos for better impression</Typography>
+					<Space />
+					<Button startIcon={<PhotoCameraTwoToneIcon />} component='span'>Add photo</Button>
+				</Column>
+			</Upload>
+		</EmptyImagesContainer>
 	)
 }
 
@@ -69,30 +102,19 @@ const AddButton = styled(Button)`
   backdrop-filter: blur(2px);
 `
 
-const images = [
-	'https://i.pravatar.cc/400?img=1',
-	'https://i.pravatar.cc/400?img=2',
-	'https://i.pravatar.cc/400?img=3',
-	'https://i.pravatar.cc/400?img=4',
-	'https://i.pravatar.cc/400?img=5',
-]
-
-const desc = 'Going to the heavens of manifestation doesn’t view hypnosis anymore than yearning creates synthetic meditation.\n' +
-	'Be small for whoever disappears, because each has been received with heaven.\n' +
-	'Important futilities discovers most courages. Career realizes when you receive with happiness.\n' +
-	'Control, blessing and an alchemistic body of career.\n' +
-	'All further saints praise each other, only parallel lamas have an acceptance.'
-
-const tags = ['bdsm', 'ffm', 'fwb', 'shibari', 'threeway', 'huging']
-
-// export function useCurrentMember() {
-// 	return { uid: 'me', partner: { uid: '1', name: 'Patrisia' } }
-// 	// return { uid: 'me', partner: undefined }
-// }
-
 function Profile() {
 
-	const { linked } = useCurrentMember()
+	const {
+		linked,
+		name,
+		description,
+		gender,
+		sexuality,
+		images,
+		location,
+		tags,
+		setupDone
+	} = useCurrentMember()
 	const partner = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value
 
 	const { onOpen: onLocationOpen } = useModal('location')
@@ -102,18 +124,24 @@ function Profile() {
 	const { onOpen: onAddPartnerClick } = useModal('addPartner')
 
 	const nameInput = useInput({
-		value: 'Lucy',
+		value: name,
+		placeholder: 'That is your name?',
 		disableUnderline: true,
 		onChange: (e: any) => console.log(e.target.value),
 	})
 
 	const descriptionInput = useInput({
-		value: desc,
+		value: description,
+		placeholder: 'Who you are? What you like? What you want? A few sentences to help people know you better.',
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
 		onChange: (e: any) => console.log(e.target.value),
 	})
+
+	const onUploadChange = (e: any) => {
+		console.log('--- Profile.tsx:136 -> onUploadChange ->', e)
+	}
 
 	const onNameClick = () => nameInput.inputRef.current?.focus()
 
@@ -130,10 +158,19 @@ function Profile() {
 
 	return (
 		<Container data-testid='Profile'>
-			<Swiper images={images} buttons={<Buttons />} />
-			<Row justify='end'>
-				<AddButton startIcon={<PhotoCameraTwoToneIcon />}>Add photo</AddButton>
-			</Row>
+			{!setupDone && <ProfileProgress />}
+			{images && images?.length > 0
+				? (
+					<>
+						<Swiper images={images} buttons={<Buttons />} />
+						<Row justify='end'>
+							<Upload accept='images/*' onChange={onUploadChange}>
+								<AddButton startIcon={<PhotoCameraTwoToneIcon />}>Add photo</AddButton>
+							</Upload>
+						</Row>
+					</>
+				)
+				: <EmptyImages />}
 			<Space />
 			<Content direction='column' align='stretch'>
 				<Row justify='between' onClick={onNameClick}>
@@ -168,8 +205,19 @@ function Profile() {
 					gap={0.5}
 					align='baseline'
 				>
-					<Typography variant='h6'>I am</Typography>
-					<Typography variant='overline'>Female Hetero</Typography>
+					{gender && sexuality
+						? (
+							<>
+								<Typography variant='h6'>I am</Typography>
+								<Typography variant='overline'>{gender} {sexuality}</Typography>
+							</>
+						)
+						: (
+							<>
+								<Typography variant='h6'>Your</Typography>
+								<Typography variant='overline' color='#B2ADBB'>gender and sexuality</Typography>
+							</>
+						)}
 					<Space grow />
 					<IconButton color='primary'><InterestsTwoToneIcon /></IconButton>
 				</Row>
@@ -190,9 +238,11 @@ function Profile() {
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
 				</Row>
 				<Space />
-				<Row justify='between' align='start' onClick={onTagsClick}>
+				<Row justify='between' align={tags?.length > 0 ? 'start' : 'center'} onClick={onTagsClick}>
 					<Row gap={0.5} wrap justify='start'>
-						{tags.map((tag) => <Chip key={tag} label={tag} />)}
+						{tags?.length > 0
+							? tags.map((tag) => <Chip key={tag} label={tag} />)
+							: <Typography color='#B2ADBB'>Select what you are looking for</Typography>}
 					</Row>
 					<IconButton color='primary'><TagTwoToneIcon /></IconButton>
 				</Row>

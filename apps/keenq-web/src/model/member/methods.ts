@@ -1,8 +1,17 @@
-export function isAuthor(uid: string) {
+import { $isPersonal, IRoom } from '@/model/room'
+
+
+export function $isAuthor(uid: string) {
 	return uid === 'me'
 }
 
-export function isAdmin(memberUid: string, roomUid?: string) {
-	if (!roomUid) return false
-	return equals.any(memberUid, ['me', '1']) && roomUid === 'public'
+export function $isAdmin(uid: string, room?: IRoom) {
+	return true
+	if (!room) return false
+	return !$isPersonal(room) && equals.any(uid, room.adminsUids)
+}
+
+export function $isRoomMember(room: IRoom, uid: string) {
+	if (!room) return false
+	return equals.any(uid, room.membersUids)
 }

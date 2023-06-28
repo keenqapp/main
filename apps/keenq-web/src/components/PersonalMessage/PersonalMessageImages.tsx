@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 import { getImages, IMessage } from '@/model/message'
-import { IImage } from '@/types/image'
+import { IImage } from '@/model/other'
 
 
 const StyledImage = styled.img`
