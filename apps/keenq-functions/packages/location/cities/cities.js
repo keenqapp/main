@@ -1,7 +1,7 @@
 import knex from 'knex'
-import { customAlphabet } from 'nanoid'
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-const nanoid = customAlphabet(alphabet, 8)
+// import { customAlphabet } from 'nanoid'
+// const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+// const nanoid = customAlphabet(alphabet, 8)
 
 
 const config = {
@@ -64,11 +64,11 @@ async function ensureUser(user, phone, db) {
 export async function main({ uid, input, location }) {
 	let db
 	try {
-		// db = getDb(config)
-		// const user = await getUser(uid, db)
-		// await ensureUser(user)
+		db = getDb(config)
+		const user = await getUser(uid, db)
+		await ensureUser(user)
 		// const result = await getCity(input, location)
-		// const data = result.predictions.map(({ description }) => description)
+
 		const params = {
 			key,
 			input,
@@ -77,7 +77,10 @@ export async function main({ uid, input, location }) {
 			radius: '4000',
 			rankby: 'distance'
 		}
-		return { body: { success: true, data: params } }
+		const query = (new URLSearchParams(params)).toString()
+		const result = await axios.get(url(query))
+
+		return { body: { success: true, data: result} }
 	}
 	catch(e) {
 		console.error(e)

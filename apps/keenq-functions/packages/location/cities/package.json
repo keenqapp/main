@@ -1,7 +1,7 @@
 {
   "name": "cities",
   "version": "1.0.0",
-  "main": "send.js",
+  "main": "cities.js",
   "license": "MIT",
   "type": "module",
   "dependencies": {
