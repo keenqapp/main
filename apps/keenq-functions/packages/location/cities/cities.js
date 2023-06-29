@@ -64,9 +64,9 @@ async function ensureUser(user, phone, db) {
 export async function main({ uid, input, location }) {
 	let db
 	try {
-		db = getDb(config)
-		const user = await getUser(uid, db)
-		await ensureUser(user)
+		// db = getDb(config)
+		// const user = await getUser(uid, db)
+		// await ensureUser(user)
 		// const result = await getCity(input, location)
 		// const data = result.predictions.map(({ description }) => description)
 		const params = {
