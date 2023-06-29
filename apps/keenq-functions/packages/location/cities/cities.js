@@ -1,4 +1,5 @@
 import knex from 'knex'
+import axios from 'axios'
 // import { customAlphabet } from 'nanoid'
 // const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 // const nanoid = customAlphabet(alphabet, 8)
@@ -51,7 +52,7 @@ async function getCity(input, location) {
 			rankby: 'distance'
 		}
 		const query = (new URLSearchParams(params)).toString()
-		return (await axios.get(url(query))).data
+		return (await axios.get(url(query))).data.map(({ description }) => description)
 	} catch(e) {
 		throw { error: e }
 	}
@@ -67,20 +68,9 @@ export async function main({ uid, input, location }) {
 		db = getDb(config)
 		const user = await getUser(uid, db)
 		await ensureUser(user)
-		// const result = await getCity(input, location)
+		const data = await getCity(input, location)
 
-		const params = {
-			key,
-			input,
-			location,
-			types: '(cities)',
-			radius: '4000',
-			rankby: 'distance'
-		}
-		const query = (new URLSearchParams(params)).toString()
-		const result = await axios.get(url(query))
-
-		return { body: { success: true, data: result} }
+		return { body: { success: true, data } }
 	}
 	catch(e) {
 		console.error(e)
