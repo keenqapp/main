@@ -52,7 +52,7 @@ async function getCity(input, location) {
 			rankby: 'distance'
 		}
 		const query = (new URLSearchParams(params)).toString()
-		return (await axios.get(url(query))).data
+		return (await axios.get(url(query))).data.data
 	} catch(e) {
 		throw { error: e }
 	}
