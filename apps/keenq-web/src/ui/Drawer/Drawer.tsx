@@ -35,14 +35,15 @@ export interface DrawerItemProps {
 	children?: ComponentChildren
 	action?: VNode
 	className?: string
+	disabled?: boolean
 }
 
-export function DrawerItem({ text, icon, onClick, color, subtext, children, action, className }: DrawerItemProps) {
+export function DrawerItem({ text, icon, onClick, color, subtext, children, action, className, disabled }: DrawerItemProps) {
 	return (
 		<ListItem className={className}>
 			{children ? children : (
 				<>
-					<ListItemButton onClick={onClick}>
+					<ListItemButton onClick={onClick} disabled={disabled}>
 						{icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
 						<StyledListItemText primary={text} secondary={subtext} color={color} />
 					</ListItemButton>

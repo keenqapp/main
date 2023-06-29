@@ -18,3 +18,11 @@ packages:
       - name: create
         runtime: nodejs:18
         web: true
+  - name: location
+    environment:
+      DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
+      GOOGLE_MAPS_API_KEY: "${GOOGLE_MAPS_API_KEY}"
+    functions:
+      - name: cities
+        runtime: nodejs:18
+        web: true

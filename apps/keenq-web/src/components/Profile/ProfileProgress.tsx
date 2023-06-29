@@ -14,9 +14,9 @@ import WcTwoToneIcon from '@mui/icons-material/WcTwoTone'
 import Card from '@/ui/Card'
 import Column from '@/ui/Column'
 import Row from '@/ui/Row'
+import Space from '@/ui/Space'
 
 import { useCurrentMember } from '@/hooks/useCurrentMember'
-import Space from '@/ui/Space'
 
 
 const ProfileProgressContainer = styled.div`

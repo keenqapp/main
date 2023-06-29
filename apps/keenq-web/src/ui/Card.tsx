@@ -26,12 +26,13 @@ const StyledCard = styled(MUICard)<{ color?: keyof typeof colors }>`
 interface CardProps {
 	color?: keyof typeof colors
 	align?: string
+	self?: string
 	children: ComponentChildren
 }
 
-function Card({ children, color, align }: CardProps) {
+function Card({ children, color, align, ...props }: CardProps) {
 	return (
-		<StyledCard data-testid='Card' color={color}>
+		<StyledCard data-testid='Card' color={color} {...props}>
 			<CardContent>
 				<Column align={align}>
 					{children}

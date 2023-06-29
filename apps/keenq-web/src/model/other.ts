@@ -12,4 +12,7 @@ export interface IImage {
 
 export interface ILocation {
 	uid: string
+	city: string
+	longitude: number
+	latitude: number
 }

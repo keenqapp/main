@@ -52,7 +52,7 @@ const Fabs = styled(Row)`
 
 const NameInput = styled(Input)`
   font-weight: 700;
-  font-family: serif;
+  font-family: keenq, serif;
   font-size: 1.5rem;
   line-height: 1.334;
 `
@@ -194,7 +194,7 @@ function Profile() {
 							align='baseline'
 						>
 							<Typography variant='h6'>Add</Typography>
-							<Typography variant='overline'>Partner</Typography>
+							<Typography variant='overline' color='#B2ADBB'>Partner</Typography>
 							<Space grow />
 							<IconButton color='primary'><SupervisedUserCircleTwoToneIcon /></IconButton>
 						</Row>
@@ -228,7 +228,7 @@ function Profile() {
 					align='baseline'
 				>
 					<Typography variant='h6'>In</Typography>
-					<Typography variant='overline'>Moscow</Typography>
+					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city ? location.city : 'some city'}</Typography>
 					<Space grow />
 					<IconButton color='primary'><EditLocationTwoToneIcon /></IconButton>
 				</Row>

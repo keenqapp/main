@@ -6,6 +6,7 @@ import AddPartnerDrawer from '@/modals/AddPartnerDrawer'
 import ChooseCityDrawer from '@/modals/ChooseCityDrawer'
 import GenderDrawer from '@/modals/GenderDrawer'
 import LocationDrawer from '@/modals/LocationDrawer'
+import PermissionInstructionDrawer from '@/modals/PermissionInstructionDrawer'
 import SettingsDrawer from '@/modals/SettingsDrawer'
 import TagsDrawer from '@/modals/TagsDrawer'
 
@@ -20,6 +21,7 @@ function ProfilePage() {
 			<SettingsDrawer />
 			<GenderDrawer />
 			<AddPartnerDrawer />
+			<PermissionInstructionDrawer />
 		</Page>
 	)
 }

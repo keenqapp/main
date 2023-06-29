@@ -26,6 +26,7 @@ async function getUser(phone, db) {
 			.select()
 			.where('phone', phone)
 			.where('deletedAt', null)
+			// TODO: Where clause for NOT banned
 			.first()
 	}
 	catch(e) {

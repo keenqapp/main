@@ -11,6 +11,7 @@ import List from '@/ui/List'
 import Space from '@/ui/Space'
 
 import { useInput } from '@/hooks/useInput'
+import { useCitySearch } from '@/services/location'
 
 
 const StyledContainer = styled(Container)`
@@ -64,6 +65,8 @@ function ChooseCityDrawer() {
 			endAdornment: <ClearTwoToneIcon onClick={() => cityInput.onClear()} />,
 		}
 	})
+
+	const { cities } = useCitySearch(cityInput.value)
 
 	const data = citiesMock.filter(({ name }) => name.toLowerCase().includes(cityInput.value.toLowerCase()))
 
