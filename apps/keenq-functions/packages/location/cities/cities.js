@@ -67,10 +67,17 @@ export async function main({ uid, input, location }) {
 		db = getDb(config)
 		const user = await getUser(uid, db)
 		await ensureUser(user)
-		const result = await getCity(input, location)
-		const data = result.predictions.map(({ description }) => description)
-
-		return { body: { success: true, data: data } }
+		// const result = await getCity(input, location)
+		// const data = result.predictions.map(({ description }) => description)
+		const params = {
+			key,
+			input,
+			location,
+			types: '(cities)',
+			radius: '4000',
+			rankby: 'distance'
+		}
+		return { body: { success: true, data: params } }
 	}
 	catch(e) {
 		console.error(e)
