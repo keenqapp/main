@@ -18,7 +18,7 @@ const Main = styled.main`
 `
 
 function Layout() {
-	if (!isAuthed.value) return <Navigate to='/auth/login' />
+	if (!isAuthed) return <Navigate to='/auth/login' />
 	return (
 		<div data-testid='Layout'>
 			<Loadable loading={!isReady.value}>

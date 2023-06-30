@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import { useSignal } from '@preact/signals'
 import { useNavigate } from 'react-router-dom'
 
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
 import LoadingButton from '@mui/lab/LoadingButton'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
@@ -12,12 +11,14 @@ import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+
 import { authError, useSend, useVerify } from '@/services/auth'
 
 import Container from '@/ui/Container'
 import Space from '@/ui/Space'
 
-import { inputsHasError, isNotEmpty, useInput } from '@/hooks/useInput'
+import { inputsHasError, isNotEmpty, isValidPhone, useInput } from '@/hooks/useInput'
 
 
 const StyledCardContent = styled(CardContent)`
@@ -59,7 +60,7 @@ function LoginForm() {
 		placeholder: 'Your phone number',
 		type: 'tel',
 		format: f,
-		validation: [isNotEmpty],
+		validation: [isNotEmpty, isValidPhone],
 		error: authError.value,
 		onFocus: () => authError.value = null
 	})
@@ -90,7 +91,7 @@ function LoginForm() {
 		if (!inputsHasError(phoneInput)) {
 			loading.value = true
 			codeInput.value = ''
-			await send(phoneInput.value) && setCodeSent(true)
+			await send(phoneInput.value.replace(/(?!^\+)\D/g, '')) && setCodeSent(true)
 			loading.value = false
 		}
 	}
@@ -98,7 +99,7 @@ function LoginForm() {
 	const onVerify = async () => {
 		if (!inputsHasError(codeInput)) {
 			loading.value = true
-			await verify(phoneInput.value, codeInput.value) && navigate('/match')
+			await verify(phoneInput.value.replace(/(?!^\+)\D/g, ''), codeInput.value) && navigate('/match')
 			loading.value = false
 		}
 	}

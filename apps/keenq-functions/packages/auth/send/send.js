@@ -42,7 +42,7 @@ async function ensureUser(user, phone, db) {
 	  if (!user) {
 			const uid = nanoid()
 			await db.table('credentials').insert({ phone, uid })
-		  await db.table('profiles').insert({ uid })
+		  await db.table('members').insert({ uid })
 		  await db.table('links').insert({ euid: uid, type: 'member', link: uid  })
 	  }
 	}

@@ -7,9 +7,9 @@ export interface IMember {
 	description: string
 	gender: string
 	sexuality: string
-	image: string
 	location: ILocation
 	tags: ITag[]
+	image: IImage
 	images?: IImage[]
 	linked?: (IMemberPartner)[]
 	setupDone?: boolean

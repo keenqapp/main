@@ -1,3 +1,4 @@
+import { gql } from '@apollo/client'
 import styled from '@emotion/styled'
 
 import Button from '@mui/material/Button'
@@ -29,6 +30,7 @@ import ProfileProgress from '@/components/Profile/ProfileProgress'
 import Swiper from '@/components/Swiper'
 
 import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { useInput } from '@/hooks/useInput'
 import { IMemberPartner } from '@/model/member'
 
@@ -102,9 +104,18 @@ const AddButton = styled(Button)`
   backdrop-filter: blur(2px);
 `
 
+const updategql = gql`
+	mutation update($uid: String!, $data: members_set_input!) {
+		update_members_by_pk(pk_columns: { uid: $uid }, _set: $data) {
+			uid
+		}
+	}
+`
+
 function Profile() {
 
 	const {
+		uid,
 		linked,
 		name,
 		description,
@@ -155,6 +166,16 @@ function Profile() {
 	const onDescClick = () => descriptionInput.inputRef.current?.focus()
 
 	const onTagsClick = () => onTagsOpen()
+
+	const data = {
+		name: nameInput.value,
+		description: descriptionInput.value
+	}
+
+	const [ update, { data: ddd } ] = useDebounceMutation(updategql, { variables: { uid, data } })
+
+	console.log('--- Profile.tsx:177 -> Profile ->', ddd)
+	// console.log('--- Profile.tsx:177 -> Profile ->', update)
 
 	return (
 		<Container data-testid='Profile'>

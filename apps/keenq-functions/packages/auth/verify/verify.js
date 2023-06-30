@@ -61,6 +61,8 @@ function getPayload(user) {
 		aud: 'keenq-web',
 		iss: 'keenq-functions',
 		'https://hasura.io/jwt/claims': {
+			'X-Hasura-User-Id': user.uid,
+			'X-Hasura-Role': "member",
 			'x-hasura-default-role': "member",
 			'x-hasura-allowed-roles': ['admin', 'manager', 'member'],
 		}
