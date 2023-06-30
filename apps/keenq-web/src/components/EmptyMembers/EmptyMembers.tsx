@@ -1,8 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 
-import ArrowBackIosTwoToneIcon from '@mui/icons-material/ArrowBackIosTwoTone'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+
+import ArrowBackIosTwoToneIcon from '@mui/icons-material/ArrowBackIosTwoTone'
+
+import { useModal } from '@/services/modals'
 
 import Card from '@/ui/Card'
 import Column from '@/ui/Column'
@@ -11,7 +14,11 @@ import Space from '@/ui/Space'
 
 function EmptyMembers() {
 	const navigate = useNavigate()
-	const onClick = () => navigate('/match')
+	const { onCloseAll } = useModal('addPartner')
+	const onClick = () => {
+		onCloseAll()
+		navigate('/match')
+	}
 	return (
 		<>
 			<Card data-testid='EmptyMembers'>

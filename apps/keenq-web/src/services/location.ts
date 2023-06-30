@@ -1,10 +1,12 @@
 import { useState } from 'preact/hooks'
+import { gql } from '@apollo/client'
 import { useStore } from '@nanostores/preact'
 import axios from 'axios'
 import { atom } from 'nanostores'
 
 import useAsyncEffect from '@/hooks/useAsyncEffect'
-import { gql, useMutation } from '@apollo/client'
+import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 
 
 interface LocalityInfo {
@@ -32,9 +34,28 @@ export interface Position {
 	principalSubdivisionCode: string
 }
 
+export interface ICity {
+	description: string
+	structured_formatting: {
+		main_text: string
+		secondary_text: string
+	}
+}
+
+export interface ExtendedGeolocationPosition extends GeolocationPosition {
+	isLoading: boolean
+}
+
 const $permission= atom<PermissionState|null>(null)
 const $status = atom<'pending'|'success'|'error'>('pending')
-const $location = atom<Position|null>(null)
+const $position = atom<Position|null>(null)
+const $coords = atom<GeolocationPosition|null>(null)
+
+function coordsToString(position: GeolocationPosition) {
+	if (!position) return ''
+	const { coords: { latitude, longitude } } = position
+	return `${latitude},${longitude}`
+}
 
 function getCurrentPositionFromUser(): Promise<GeolocationPosition> {
 	return new Promise((resolve, reject) => {
@@ -44,7 +65,8 @@ function getCurrentPositionFromUser(): Promise<GeolocationPosition> {
 
 async function getCurrentPositionFromRequest(): Promise<GeolocationPosition> {
 	const result = (await axios.get('https://europe-west3-keenqapp.cloudfunctions.net/getgeo')).data
-	const [latitude, longitude] = result.headers['x-appengine-citylatlong'].split(',')
+	const location = result.headers['x-appengine-citylatlong']
+	const [latitude, longitude] = location.split(',')
 	return {
 		coords: {
 			latitude,
@@ -55,28 +77,39 @@ async function getCurrentPositionFromRequest(): Promise<GeolocationPosition> {
 
 async function getCurrentPosition(): Promise<GeolocationPosition> {
 	try {
-		return await getCurrentPositionFromUser()
+		const { coords } = await getCurrentPositionFromUser()
+		$coords.set({ coords } as any)
+		return { coords } as any
 	}
 	catch(e) {
-		return await getCurrentPositionFromRequest()
+		const coords = await getCurrentPositionFromRequest()
+		$coords.set(coords)
+		return coords
 	}
 }
 
 async function getPositionByCoords({ coords: { latitude, longitude } }: GeolocationPosition): Promise<Position> {
-	// return (await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?longitude=${longitude}&latitude=${latitude}&localityLanguage=ru`)).data
 	return (await axios.get(`https://api.bigdatacloud.net/data/reverse-geocode-client?longitude=${longitude}&latitude=${latitude}`)).data
 }
 
+let timer: any
 async function getPosition() {
 	try {
-		const coords = await getCurrentPosition()
-		const position = await getPositionByCoords(coords)
-		$location.set(position)
-		$status.set('success')
-	} catch(e: any) {
-		if (e?.code === 1) $permission.set('denied')
-		$location.set(null)
-		$status.set('error')
+		if (timer) clearTimeout(timer)
+		timer = setTimeout(async () => {
+			const coords = await getCurrentPosition()
+			const position = await getPositionByCoords(coords)
+			$position.set(position)
+			$status.set('success')
+		}, 2000)
+	}
+	catch(e: any) {
+		if (timer) clearTimeout(timer)
+		timer = setTimeout(() => {
+			if (e?.code === 1) $permission.set('denied')
+			$position.set(null)
+			$status.set('error')
+		}, 2000)
 	}
 }
 
@@ -89,55 +122,46 @@ async function requestPermission() {
 }
 
 export function usePosition() {
+	const coords = useStore($coords)
 	const permission = useStore($permission)
 	const status = useStore($status)
-	const location = useStore($location)
+	const position = useStore($position)
 	useAsyncEffect(async () => {
 		await getPosition()
 	}, [])
 	return {
 		onRequest: requestPermission,
+		coords,
 		permission,
-		location,
+		position,
+		location: coordsToString(coords!),
 		status
 	}
 }
 
-const key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-const url = (params: string) => `https://maps.googleapis.com/maps/api/place/autocomplete/json?${params}`
-
-async function getPredictions(input: string) {
-	const params = {
-		input,
-		types: '(cities)',
-		location: '55.753215,37.622504',
-		radius: '4000',
-		rankby: 'distance'
-	}
-	const query = (new URLSearchParams(params)).toString()
-	return (await axios.get(url(query))).data
-}
-
-const cities = gql`
-	mutation GetCities($input: String!, $location: String!) {
-		getCities(input: $input, location: $location) {
-			predictions {
-				description
-			}
+const citiesWith = gql`
+	mutation GetCities($input:String!, $location:String!, $uid:String!) {
+		cities(input: $input, location: $location, uid: $uid) {
+			data
 		}
 	}
 `
 
-export function useCitySearch(input: string) {
-	const [predictions, { error } ] = useMutation(cities)
+export function useCitySearch(input = '') {
+	const [ cities, setCities ] = useState<ICity[]>([])
+	const { uid } = useCurrentMember()
+	const { coords, location } = usePosition()
+	const [ get ] = useDebounceMutation(citiesWith, { variables: { input, location, uid } })
 
 	useAsyncEffect(async () => {
-		if (!input) return
-		const data = await getPredictions(input)
-		console.log('--- location.ts:126 ->  ->', data)
+		if (coords) {
+			await getPosition()
+			const { data, errors } = await get()
+			if (!errors && data) setCities(data.cities.data)
+		}
 	}, [ input ])
 
-	return {
-		cities: []
-	}
+	return [
+		cities
+	]
 }

@@ -1,8 +1,10 @@
 import styled from '@emotion/styled'
 
-import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 import TextField from '@mui/material/TextField'
 
+import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
+
+import { ICity, useCitySearch, usePosition } from '@/services/location'
 import { useModal } from '@/services/modals'
 
 import Container from '@/ui/Container'
@@ -11,7 +13,6 @@ import List from '@/ui/List'
 import Space from '@/ui/Space'
 
 import { useInput } from '@/hooks/useInput'
-import { useCitySearch } from '@/services/location'
 
 
 const StyledContainer = styled(Container)`
@@ -23,6 +24,14 @@ const StyledContainer = styled(Container)`
 const CitiesList = styled(List<typeof citiesMock[number]>)`
   height: calc(100vh - var(--vertical-space) * 5 - 1rem);
 `
+
+function toCity({ description, structured_formatting }: ICity) {
+	return {
+		uid: description,
+		name: structured_formatting.main_text,
+		country: structured_formatting.secondary_text,
+	}
+}
 
 const citiesMock = [
 	{ uid: 'Moscow', name: 'Moscow', country: 'Russia' },
@@ -45,10 +54,11 @@ const citiesMock = [
 ]
 
 function CitiesListItem({ name, uid, country }: typeof citiesMock[number]) {
+	const { coords } = usePosition()
 	const { onClose } = useModal('city')
 	const onClick = () => {
 		onClose()
-		console.log('--- ChooseCityDrawer.tsx:34 -> onClick ->', uid)
+		console.log('--- ChooseCityDrawer.tsx:34 -> onClick ->', uid, coords)
 	}
 
 	return <DrawerItem text={name} subtext={country} onClick={onClick} />
@@ -66,9 +76,10 @@ function ChooseCityDrawer() {
 		}
 	})
 
-	const { cities } = useCitySearch(cityInput.value)
-
-	const data = citiesMock.filter(({ name }) => name.toLowerCase().includes(cityInput.value.toLowerCase()))
+	const [ cities ] = useCitySearch(cityInput.value)
+	const data = cities.length > 0
+		? cities.map(toCity)
+		: citiesMock.filter(({ name }) => name.toLowerCase().includes(cityInput.value.toLowerCase()))
 
 	return (
 		<Drawer data-testid='ChooseCityDrawer' {...drawer}>

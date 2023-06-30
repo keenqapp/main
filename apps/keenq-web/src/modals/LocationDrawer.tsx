@@ -24,7 +24,7 @@ const StyledCard = styled(Card)`
 
 function LocationDrawer() {
 
-	const { location, permission, onRequest } = usePosition()
+	const { position, permission, onRequest } = usePosition()
 	const { onClose, name } = useModal('location')
 	const { onOpen: onCityOpen } = useModal('city')
 	const { onOpen: onInstructionOpen } = useModal('permissionInstruction')
@@ -69,7 +69,7 @@ function LocationDrawer() {
 					disabled={permission !== 'granted'}
 					icon={<ExploreTwoToneIcon color='primary' />}
 					text='Use your current location'
-					subtext={location?.city}
+					subtext={position?.city}
 					onClick={onCurrentClick}
 				/>
 				<DrawerItem

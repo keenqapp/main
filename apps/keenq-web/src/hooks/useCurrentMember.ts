@@ -10,7 +10,7 @@ export function useCurrentMember() {
 	const admin = $isAdmin('me', room)
 
 	return {
-		uid: 'me',
+		uid: 'njXkmLVE',
 		name: '',
 		image: '',
 		setupDone: false,
