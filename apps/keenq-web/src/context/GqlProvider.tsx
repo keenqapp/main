@@ -1,15 +1,15 @@
 import { ComponentChildren } from 'preact'
-import { ApolloProvider } from '@apollo/client'
+import { Provider } from 'urql'
 
-import { client } from '@/providers/apollo'
+import client from '@/providers/urql'
 
 
 function GqlProvider({ children }: { children: ComponentChildren }) {
-  return (
-    <ApolloProvider data-testid='GqlProvider' client={client}>
-      {children}
-    </ApolloProvider>
-  )
+	return (
+		<Provider data-testid='GqlProvider' value={client}>
+			{children}
+		</Provider>
+	)
 }
 
 export default GqlProvider

@@ -1,0 +1,14 @@
+{
+  "name": "coords",
+  "version": "1.0.0",
+  "main": "coords.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "knex": "^2.4.2",
+    "lodash-es": "^4.17.21",
+    "nanoid": "^4.0.2",
+    "pg": "^8.11.0"
+  }
+}

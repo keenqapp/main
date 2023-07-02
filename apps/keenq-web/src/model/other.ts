@@ -6,6 +6,7 @@ export interface ITag {
 export interface IImage {
 	uid: string
 	url: string
+	name: string
 	width: number
 	height: number
 }
@@ -15,4 +16,5 @@ export interface ILocation {
 	city: string
 	longitude: number
 	latitude: number
+	timestamp: string
 }

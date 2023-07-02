@@ -5,9 +5,11 @@ export function $isAuthor(uid: string) {
 	return uid === 'me'
 }
 
-export function $isAdmin(uid: string, room?: IRoom) {
+export function $isAdmin(uid: string|null, room?: IRoom) {
 	return true
-	if (!room) return false
+	if (!uid && !room) return false
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	return !$isPersonal(room) && equals.any(uid, room.adminsUids)
 }
 

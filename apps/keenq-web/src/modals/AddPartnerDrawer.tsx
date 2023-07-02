@@ -54,7 +54,7 @@ function MemberItem({ uid, name, image }: IMember) {
 
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={on(partnerClick)}>
-			<Avatar src={image} alt={name} />
+			<Avatar src={image!} alt={name} />
 			<Row flex={1}>
 				<Typography variant='h6'>{name}</Typography>
 			</Row>

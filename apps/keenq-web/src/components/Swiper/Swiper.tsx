@@ -34,6 +34,7 @@ const Image = styled.img`
   background-image: linear-gradient(45deg, rgba(127, 20, 193, 0.06), rgba(128, 251, 251, 0.1));
   scroll-snap-align: start;
   display: block;
+	object-fit: cover;
 `
 
 interface SwiperProps {
@@ -59,9 +60,9 @@ function Swiper({ images, buttons }: SwiperProps) {
 	return (
 		<SwiperContainer>
 			<SwiperScroll data-testid='Swiper' ref={ref} onScroll={handleScroll}>
-				{images.map((image) => <ImageContainer key={image}><Image src={image} />{buttons}</ImageContainer>)}
+				{images.map(({ uid, url }) => <ImageContainer key={uid}><Image src={url} />{buttons}</ImageContainer>)}
 			</SwiperScroll>
-			<SwiperDots length={images.length} current={dot} />
+			{images.length > 1 && <SwiperDots length={images.length} current={dot} />}
 		</SwiperContainer>
 	)
 }

@@ -4,15 +4,21 @@ import TextField from '@mui/material/TextField'
 
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 
-import { ICity, useCitySearch, usePosition } from '@/services/location'
+import { ICity, useCitySearch } from '@/services/location'
 import { useModal } from '@/services/modals'
 
 import Container from '@/ui/Container'
 import Drawer, { DrawerItem } from '@/ui/Drawer'
 import List from '@/ui/List'
+import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
+import json from '@/assets/cities.json'
+import Loading from '@/core/Loading'
+import { useMutation } from '@/hooks/gql'
+import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useInput } from '@/hooks/useInput'
+import { updategql } from '@/model/member'
 
 
 const StyledContainer = styled(Container)`
@@ -21,11 +27,11 @@ const StyledContainer = styled(Container)`
 	flex-direction: column;
 `
 
-const CitiesList = styled(List<typeof citiesMock[number]>)`
+const CitiesList = styled(List<typeof json[number]>)`
   height: calc(100vh - var(--vertical-space) * 5 - 1rem);
 `
 
-function toCity({ description, structured_formatting }: ICity) {
+function toCity({ description, structured_formatting, ...rest }: ICity) {
 	return {
 		uid: description,
 		name: structured_formatting.main_text,
@@ -33,39 +39,30 @@ function toCity({ description, structured_formatting }: ICity) {
 	}
 }
 
-const citiesMock = [
-	{ uid: 'Moscow', name: 'Moscow', country: 'Russia' },
-	{ uid: 'Saint-Petersburg', name: 'Saint-Petersburg', country: 'Russia' },
-	{ uid: 'Tbilisi', name: 'Tbilisi', country: 'Georgia' },
-	{ uid: 'Istanbul', name: 'Istanbul', country: 'Turkey' },
-	{ uid: 'New-York', name: 'New York', country: 'USA' },
-	{ uid: 'London', name: 'London', country: 'UK' },
-	{ uid: 'Paris', name: 'Paris', country: 'France' },
-	{ uid: 'Berlin', name: 'Berlin', country: 'Germany' },
-	{ uid: 'Rome', name: 'Rome', country: 'Italy' },
-	{ uid: 'Madrid', name: 'Madrid', country: 'Spain' },
-	{ uid: 'Barcelona', name: 'Barcelona', country: 'Spain' },
-	{ uid: 'Amsterdam', name: 'Amsterdam', country: 'Netherlands' },
-	{ uid: 'Prague', name: 'Prague', country: 'Czech Republic' },
-	{ uid: 'Vienna', name: 'Vienna', country: 'Austria' },
-	{ uid: 'Tel-Aviv', name: 'Tel-Aviv', country: 'Israel' },
-	{ uid: 'Haifa', name: 'Haifa', country: 'Israel' },
-	{ uid: 'Dubai', name: 'Dubai', country: 'UAE' },
-]
-
-function CitiesListItem({ name, uid, country }: typeof citiesMock[number]) {
-	const { coords } = usePosition()
-	const { onClose } = useModal('city')
-	const onClick = () => {
-		onClose()
-		console.log('--- ChooseCityDrawer.tsx:34 -> onClick ->', uid, coords)
+function CitiesListItem(city: typeof json[number]) {
+	const { name, country, latitude, longitude } = city
+	const { on } = useModal('city')
+	const { uid } = useCurrentMember()
+	const [ _, update ] = useMutation(updategql)
+	const click = () => {
+		const data = {
+			location: {
+				country,
+				city: name,
+				longitude,
+				latitude,
+				timestamp: new Date().toISOString()
+			}
+		}
+		console.log('--- ChooseCityDrawer.tsx:57 -> click ->', data)
+		update({ uid, data })
 	}
 
-	return <DrawerItem text={name} subtext={country} onClick={onClick} />
+	return <DrawerItem text={name} subtext={country} onClick={on(click)} />
 }
 
 function ChooseCityDrawer() {
-	const drawer = useModal('city')
+	const { name } = useModal('city')
 
 	const cityInput = useInput({
 		label: 'Choose a city',
@@ -76,18 +73,19 @@ function ChooseCityDrawer() {
 		}
 	})
 
-	const [ cities ] = useCitySearch(cityInput.value)
-	const data = cities.length > 0
-		? cities.map(toCity)
-		: citiesMock.filter(({ name }) => name.toLowerCase().includes(cityInput.value.toLowerCase()))
+	const { data, fetching } = useCitySearch(cityInput.value)
+	const cities = data.length > 0
+		? data.map(toCity)
+		: json.filter(({ name }) => name.toLowerCase().includes(cityInput.value.toLowerCase()))
 
 	return (
-		<Drawer data-testid='ChooseCityDrawer' {...drawer}>
+		<Drawer data-testid='ChooseCityDrawer' name={name}>
 			<StyledContainer data-testid='ChooseCityDrawerContainer'>
 				<TextField {...cityInput} />
 				<Space />
+				{fetching && <Row justify='center'><Loading /></Row>}
 				<CitiesList
-					data={data}
+					data={cities}
 					render={CitiesListItem}
 				/>
 			</StyledContainer>

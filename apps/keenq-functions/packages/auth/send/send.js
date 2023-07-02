@@ -78,5 +78,3 @@ export async function main({ phone }) {
 		db?.destroy()
 	}
 }
-
-main({ phone: '+111' })

@@ -1,8 +1,5 @@
 import knex from 'knex'
 import axios from 'axios'
-// import { customAlphabet } from 'nanoid'
-// const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-// const nanoid = customAlphabet(alphabet, 8)
 
 
 const config = {
@@ -39,20 +36,16 @@ async function getUser(uid, db) {
 }
 
 const key = process.env.GOOGLE_MAPS_API_KEY
-const url = (params) => `https://maps.googleapis.com/maps/api/place/autocomplete/json?${params}`
+const url = (params) => `https://maps.googleapis.com/maps/api/geocode/json?${params}`
 
-async function getCity(input, location) {
+async function getCoords(place) {
 	try {
 		const params = {
 			key,
-			input,
-			location,
-			types: '(cities)',
-			radius: '4000',
-			rankby: 'distance'
+			place_id: place,
 		}
 		const query = (new URLSearchParams(params)).toString()
-		return (await axios.get(url(query))).data.predictions
+		return (await axios.get(url(query))).data
 	} catch(e) {
 		throw { error: e }
 	}
@@ -62,13 +55,13 @@ async function ensureUser(user, phone, db) {
 	if (!user) throw { error: 'Wrong credentials' }
 }
 
-export async function main({ uid, input, location }) {
+export async function main({ uid, place }) {
 	let db
 	try {
 		db = getDb(config)
 		const user = await getUser(uid, db)
 		await ensureUser(user)
-		const data = await getCity(input, location)
+		const data = await getCoords(place)
 
 		return { body: { success: true, data } }
 	}

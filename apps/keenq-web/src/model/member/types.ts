@@ -12,7 +12,7 @@ export interface IMember {
 	image: IImage
 	images?: IImage[]
 	linked?: (IMemberPartner)[]
-	setupDone?: boolean
+	done?: boolean
 
 	prefs?: IMemberPrefs
 	meta?: IMemberMeta

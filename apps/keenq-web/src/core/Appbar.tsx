@@ -3,11 +3,12 @@ import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 import AppBar from '@mui/material/AppBar'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Toolbar from '@mui/material/Toolbar'
+
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
@@ -36,7 +37,7 @@ const fadeInTop = keyframes`
 
 const HomeButton = styled(Button)`
   animation: ${fadeInTop} 300ms ease-in-out 1;
-	font: 2rem serif;
+	font: 2rem keenq, serif;
 	color: black;
 	text-transform: none;
 `

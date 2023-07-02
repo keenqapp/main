@@ -1,8 +1,7 @@
-import { useState } from 'preact/hooks'
-import { gql } from '@apollo/client'
 import { useStore } from '@nanostores/preact'
 import axios from 'axios'
 import { atom } from 'nanostores'
+import { gql } from 'urql'
 
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useCurrentMember } from '@/hooks/useCurrentMember'
@@ -140,28 +139,24 @@ export function usePosition() {
 }
 
 const citiesWith = gql`
-	mutation GetCities($input:String!, $location:String!, $uid:String!) {
-		cities(input: $input, location: $location, uid: $uid) {
+	mutation GetCities($uid: String!, $data: GetCitiesInput!) {
+		cities(uid: $uid, data: $data) {
 			data
 		}
 	}
 `
 
 export function useCitySearch(input = '') {
-	const [ cities, setCities ] = useState<ICity[]>([])
 	const { uid } = useCurrentMember()
 	const { coords, location } = usePosition()
-	const [ get ] = useDebounceMutation(citiesWith, { variables: { input, location, uid } })
+	const [ result, get ] = useDebounceMutation(citiesWith)
 
 	useAsyncEffect(async () => {
 		if (coords) {
 			await getPosition()
-			const { data, errors } = await get()
-			if (!errors && data) setCities(data.cities.data)
+			await get(uid, { input, location })
 		}
 	}, [ input ])
 
-	return [
-		cities
-	]
+	return { fetching: result.fetching, data: result.data?.cities?.data || [] }
 }

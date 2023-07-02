@@ -86,7 +86,7 @@ export function useInput(props: UseInputProps) {
 		const formattedValue = format(parsedValue, input)
 		event.target.value = formattedValue
 		if (onChange) {
-			onChange(event)
+			onChange(formattedValue)
 		}
 		setInput(formattedValue)
 	}

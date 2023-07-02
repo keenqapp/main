@@ -1,4 +1,3 @@
-import { gql } from '@apollo/client'
 import styled from '@emotion/styled'
 
 import Button from '@mui/material/Button'
@@ -19,6 +18,7 @@ import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserC
 import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
 
 import { useModal } from '@/services/modals'
+import { uploadImage } from '@/services/spaces'
 
 import Column from '@/ui/Column'
 import Container from '@/ui/Container'
@@ -32,7 +32,7 @@ import Swiper from '@/components/Swiper'
 import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { useInput } from '@/hooks/useInput'
-import { IMemberPartner } from '@/model/member'
+import { IMemberPartner, updategql } from '@/model/member'
 
 
 const Content = styled(Row)`
@@ -80,12 +80,18 @@ function Buttons() {
 }
 
 function EmptyImages() {
-	const onChange= (e: any) => {
-		console.log('--- Profile.tsx:80 -> onChange ->', e)
+
+	const { uid, images = [] } = useCurrentMember()
+	const [ _, update ] = useDebounceMutation(updategql)
+
+	const onChange = async (e: any) => {
+		const image = await uploadImage(`members/${uid}`, e.target.files[0])
+		update(uid, { images: [...images, image] })
 	}
+
 	return (
 		<EmptyImagesContainer>
-			<Upload onChange={onChange} accept='images/*'>
+			<Upload onChange={onChange} accept='image/*'>
 				<Column>
 					<Typography textAlign='center' variant='overline'>Upload at least three photos for better impression</Typography>
 					<Space />
@@ -98,18 +104,16 @@ function EmptyImages() {
 
 const AddButton = styled(Button)`
   position: absolute;
-  top: calc(100vw - 2rem - 3rem); // 100vw - 2rem = height of swiper 
-  right: 2rem;
+  bottom: 1rem;
+  right: 1rem;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(2px);
+	flex: 1;
+	white-space: nowrap;
 `
 
-const updategql = gql`
-	mutation update($uid: String!, $data: members_set_input!) {
-		update_members_by_pk(pk_columns: { uid: $uid }, _set: $data) {
-			uid
-		}
-	}
+const SwiperContainer = styled.div`
+	position: relative;
 `
 
 function Profile() {
@@ -121,11 +125,12 @@ function Profile() {
 		description,
 		gender,
 		sexuality,
-		images,
+		images = [],
 		location,
 		tags,
-		setupDone
+		done
 	} = useCurrentMember()
+
 	const partner = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value
 
 	const { onOpen: onLocationOpen } = useModal('location')
@@ -134,11 +139,13 @@ function Profile() {
 	const { onOpen: onGenderClick } = useModal('gender')
 	const { onOpen: onAddPartnerClick } = useModal('addPartner')
 
+	const [ _, update ] = useDebounceMutation(updategql)
+
 	const nameInput = useInput({
 		value: name,
 		placeholder: 'That is your name?',
 		disableUnderline: true,
-		onChange: (e: any) => console.log(e.target.value),
+		onChange: (name: string) => update(uid, { name }),
 	})
 
 	const descriptionInput = useInput({
@@ -147,11 +154,12 @@ function Profile() {
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
-		onChange: (e: any) => console.log(e.target.value),
+		onChange: (description: string) => update(uid, { description }),
 	})
 
-	const onUploadChange = (e: any) => {
-		console.log('--- Profile.tsx:136 -> onUploadChange ->', e)
+	const onUploadChange = async (e: any) => {
+		const image = await uploadImage(`/members/${uid}`, e.target.files[0])
+		update( uid, { images: [...images, image] })
 	}
 
 	const onNameClick = () => nameInput.inputRef.current?.focus()
@@ -167,29 +175,19 @@ function Profile() {
 
 	const onTagsClick = () => onTagsOpen()
 
-	const data = {
-		name: nameInput.value,
-		description: descriptionInput.value
-	}
-
-	const [ update, { data: ddd } ] = useDebounceMutation(updategql, { variables: { uid, data } })
-
-	console.log('--- Profile.tsx:177 -> Profile ->', ddd)
-	// console.log('--- Profile.tsx:177 -> Profile ->', update)
-
 	return (
 		<Container data-testid='Profile'>
-			{!setupDone && <ProfileProgress />}
+			{!done && <ProfileProgress />}
 			{images && images?.length > 0
 				? (
-					<>
+					<SwiperContainer>
 						<Swiper images={images} buttons={<Buttons />} />
 						<Row justify='end'>
-							<Upload accept='images/*' onChange={onUploadChange}>
-								<AddButton startIcon={<PhotoCameraTwoToneIcon />}>Add photo</AddButton>
+							<Upload accept='image/*' onChange={onUploadChange}>
+								<AddButton startIcon={<PhotoCameraTwoToneIcon />} component='span'>Add photo</AddButton>
 							</Upload>
 						</Row>
-					</>
+					</SwiperContainer>
 				)
 				: <EmptyImages />}
 			<Space />
