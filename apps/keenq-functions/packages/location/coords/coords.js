@@ -45,7 +45,7 @@ async function getCoords(place) {
 			place_id: place,
 		}
 		const query = (new URLSearchParams(params)).toString()
-		return (await axios.get(url(query))).data
+		return (await axios.get(url(query))).data?.results[0].geometry.location
 	} catch(e) {
 		throw { error: e }
 	}
