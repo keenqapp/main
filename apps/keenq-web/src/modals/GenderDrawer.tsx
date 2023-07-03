@@ -17,7 +17,7 @@ import Space from '@/ui/Space'
 
 import BiGenderIcon from '@/assets/BiGenderIcon'
 import NonBinaryIcon from '@/assets/NonBinaryIcon'
-import { useMutation } from '@/hooks/gql'
+import { useUpdate } from '@/hooks/gql'
 import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { updategql } from '@/model/member'
 
@@ -78,7 +78,7 @@ function GenderDrawer() {
 		sexuality,
 	} = useCurrentMember()
 
-	const [ state, update ] = useMutation(updategql)
+	const [ state, update ] = useUpdate(updategql)
 	const { gender: ugender, sexuality: usexuality } = state.data?.update_members_by_pk || {}
 	const choice = (type: 'gender'|'sexuality', chosen: string) => () => {
 		const d = { uid, data: { [type]:chosen  } }

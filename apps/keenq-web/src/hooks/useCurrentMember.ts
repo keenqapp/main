@@ -12,7 +12,7 @@ export function useCurrentMember() {
 	const uid = useStore($uid)
 	const [ { data } ] = useQuery(currentgql, { uid })
 	const member = data?.members_by_pk
-	const { uid: ruid } = useParams<{ uid: string }>()
+	const { uid: ruid } = useParams()
 	const room = getRoomById(ruid!)
 	const admin = $isAdmin(uid, room)
 

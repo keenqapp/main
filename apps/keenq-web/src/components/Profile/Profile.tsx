@@ -128,7 +128,7 @@ function Profile() {
 		images = [],
 		location,
 		tags,
-		done
+		// done
 	} = useCurrentMember()
 
 	const partner = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value
@@ -175,9 +175,16 @@ function Profile() {
 
 	const onTagsClick = () => onTagsOpen()
 
+	const isDone = !!images && images.length > 0
+		&& !!name
+		&& !!gender && !!sexuality
+		&& !!location
+		&& !!description
+		&& !!tags && tags.length > 0
+
 	return (
 		<Container data-testid='Profile'>
-			{!done && <ProfileProgress />}
+			{!isDone && <ProfileProgress />}
 			{images && images?.length > 0
 				? (
 					<SwiperContainer>
@@ -260,7 +267,7 @@ function Profile() {
 				<Row justify='between' align={tags?.length > 0 ? 'start' : 'center'} onClick={onTagsClick}>
 					<Row gap={0.5} wrap justify='start'>
 						{tags?.length > 0
-							? tags.map((tag) => <Chip key={tag} label={tag} />)
+							? tags.map(({ uid, label }) => <Chip key={uid} label={label} />)
 							: <Typography color='#B2ADBB'>Select what you are looking for</Typography>}
 					</Row>
 					<IconButton color='primary'><TagTwoToneIcon /></IconButton>

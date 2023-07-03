@@ -15,7 +15,7 @@ import Space from '@/ui/Space'
 
 import json from '@/assets/cities.json'
 import Loading from '@/core/Loading'
-import { useMutation } from '@/hooks/gql'
+import { useUpdate } from '@/hooks/gql'
 import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useInput } from '@/hooks/useInput'
 import { updategql } from '@/model/member'
@@ -31,7 +31,7 @@ const CitiesList = styled(List<typeof json[number]>)`
   height: calc(100vh - var(--vertical-space) * 5 - 1rem);
 `
 
-function toCity({ description, structured_formatting, ...rest }: ICity) {
+function toCity({ description, structured_formatting }: ICity) {
 	return {
 		uid: description,
 		name: structured_formatting.main_text,
@@ -43,7 +43,8 @@ function CitiesListItem(city: typeof json[number]) {
 	const { name, country, latitude, longitude } = city
 	const { on } = useModal('city')
 	const { uid } = useCurrentMember()
-	const [ _, update ] = useMutation(updategql)
+	const [ _, update ] = useUpdate(updategql)
+
 	const click = () => {
 		const data = {
 			location: {
@@ -54,7 +55,6 @@ function CitiesListItem(city: typeof json[number]) {
 				timestamp: new Date().toISOString()
 			}
 		}
-		console.log('--- ChooseCityDrawer.tsx:57 -> click ->', data)
 		update({ uid, data })
 	}
 

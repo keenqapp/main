@@ -1,6 +1,6 @@
 export interface ITag {
 	uid: string
-	name: string
+	label: string
 }
 
 export interface IImage {

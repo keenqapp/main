@@ -43,6 +43,7 @@ declare global {
 		last(): T | undefined
 		copySort(compareFn?: (a: T, b: T) => number): Array<T>
 		toComponents<T>(render: (item: T, index: number) => VNode<T>): VNode[]
+		toUids(): string[]
 	}
 
   interface String {
@@ -55,6 +56,7 @@ declare global {
     copyAdd(value: T): Set<T>
     copyDelete(value: T): Set<T>
 		copyToggle(value: T): Set<T>
+		toArray(): T[]
   }
 }
 
@@ -70,6 +72,12 @@ Object.defineProperty(Array.prototype, 'uniq', {
 		} else {
 			return [...new Set(this)]
 		}
+	}
+})
+
+Object.defineProperty(Array.prototype, 'toUids', {
+	value: function() {
+		return this.map((item: Entity) => item.uid)
 	}
 })
 
@@ -119,6 +127,12 @@ Object.defineProperty(String.prototype, 'decapitalize', {
 Object.defineProperty(String.prototype, 'cut', {
 	value: function(at: number) {
 		return this.length  > at ? this.slice(0, at) + '...' : this
+	}
+})
+
+Object.defineProperty(Set.prototype, 'toArray', {
+	value: function() {
+		return [...this]
 	}
 })
 

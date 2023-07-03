@@ -1,9 +1,11 @@
-import { useState } from 'preact/hooks'
 import styled from '@emotion/styled'
+import { gql } from 'urql'
 
-import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 import Chip from '@mui/material/Chip'
 import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+
+import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 
 import { useModal } from '@/services/modals'
 
@@ -13,34 +15,41 @@ import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
+import { useQuery, useUpdate } from '@/hooks/gql'
+import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useInput } from '@/hooks/useInput'
-import Typography from '@mui/material/Typography'
+import { updategql } from '@/model/member'
+import { ITag } from '@/model/other'
 
 
 const StyledContainer = styled(Container)`
   height: calc(100vh - var(--vertical-space) * 4);
 `
 
-const tags = [
-	{ uid: 'ffm', label: 'ffm' },
-	{ uid: 'bdsm', label: 'bdsm' },
-	{ uid: 'fwb', label: 'fwb' },
-	{ uid: 'poly', label: 'poly' },
-	{ uid: 'dating', label: 'dating' },
-	{ uid: 'just', label: 'just' },
-	{ uid: 'friends', label: 'friends' },
-	{ uid: 'travel', label: 'travel' },
-	{ uid:'shibari', label: 'shibari' },
-	{ uid:'threeway', label: 'threeway' },
-	{ uid:'huging', label: 'huging' },
-]
-
 const TagChip = styled(Chip)<{ selected: boolean }>`
 	background-color: ${p => p.selected ? theme.color.primaryLight : 'rgba(0, 0, 0, 0.08)'} !important;
 `
 
+const tagsgql = gql`
+	query GetTags {
+		tags {
+			uid
+			label
+		}
+	}
+`
+
+function byInput(input: string) {
+	return ({ label }: ITag) => input ? label.toLowerCase().includes(input.toLowerCase()) : true
+}
+
 function TagsDrawer() {
-	const [ selected, setSelected ] = useState(new Set(['friends', 'shibari', 'threeway']))
+	const {
+		uid,
+		tags
+	} = useCurrentMember()
+	const [ { data } ] = useQuery(tagsgql)
+	const [ , update ] = useUpdate(updategql)
 	const drawer = useModal('tags')
 
 	const tagInput = useInput({
@@ -52,10 +61,15 @@ function TagsDrawer() {
 		}
 	})
 
-	const data = tags.filter(({ label }) => label.toLowerCase().includes(tagInput.value.toLowerCase()))
+	const selected = new Set(tags?.toUids())
+	const alltags = data?.tags.filter(byInput(tagInput.value)) || []
 
-	const onClick = (uid: string) => {
-		setSelected(prev => prev.has(uid) ? prev.copyDelete(uid) : prev.copyAdd(uid) )
+	const onClick = (tuid: string) => {
+		if (selected.size >= 10) return
+
+		const next = selected.has(tuid) ? selected.copyDelete(tuid) : selected.copyAdd(tuid)
+		const tags = alltags.filter(({ uid }: ITag) => next.has(uid))
+		update(uid, { tags })
 	}
 
 	return (
@@ -68,7 +82,7 @@ function TagsDrawer() {
 				</Row>
 				<Space />
 				<Row wrap gap={1} justify='start'>
-					{data.map(tag => (
+					{alltags?.map((tag: ITag) => (
 						<TagChip
 							key={tag.uid}
 							selected={selected.has(tag.uid)}
