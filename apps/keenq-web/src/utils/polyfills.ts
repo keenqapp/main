@@ -42,6 +42,7 @@ declare global {
 		uniq(property?: string, flat?: boolean): Array<T>;
 		last(): T | undefined
 		copySort(compareFn?: (a: T, b: T) => number): Array<T>
+		copyPush(item: T): Array<T>
 		toComponents<T>(render: (item: T, index: number) => VNode<T>): VNode[]
 		toUids(): string[]
 	}
@@ -97,6 +98,14 @@ Object.defineProperty(Array.prototype, 'last', {
 Object.defineProperty(Array.prototype, 'copySort', {
 	value: function(compareFn?: (a: (typeof this)[number], b: (typeof this)[number]) => number) {
 		return structuredClone(this).sort(compareFn)
+	}
+})
+
+Object.defineProperty(Array.prototype, 'copyPush', {
+	value: function<T>(item: T): Array<T> {
+		const arr = structuredClone(this)
+		arr.push(item)
+		return arr
 	}
 })
 

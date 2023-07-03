@@ -14,6 +14,7 @@ export const currentgql = gql<{ uid: string }>`
 			done
 			location
 			tags
+			visible
 		}
 	}
 `

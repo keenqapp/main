@@ -1,3 +1,4 @@
+import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
 
 import Button from '@mui/material/Button'
@@ -128,7 +129,7 @@ function Profile() {
 		images = [],
 		location,
 		tags,
-		// done
+		done
 	} = useCurrentMember()
 
 	const partner = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value
@@ -182,9 +183,13 @@ function Profile() {
 		&& !!description
 		&& !!tags && tags.length > 0
 
+	useEffect(() => {
+		if (isDone && !done) update(uid, { done: true })
+	}, [ isDone, done ])
+
 	return (
 		<Container data-testid='Profile'>
-			{!isDone && <ProfileProgress />}
+			{!isDone && done === false && <ProfileProgress />}
 			{images && images?.length > 0
 				? (
 					<SwiperContainer>

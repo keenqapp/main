@@ -1,14 +1,15 @@
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
-import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
-import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
+
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
+import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
+import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 
 import { useModal } from '@/services/modals'
 
@@ -62,13 +63,13 @@ function Match() {
 	const { onOpen: onAcquaintanceOpen } = useModal('acquaintance')
 	const navigate = useNavigate()
 
-	const { setupDone } = useCurrentMember()
+	const { done } = useCurrentMember()
 	const onReportClick = () => onReportOpen()
 
 	const onPartnerClick = () => navigate(`/match/${partner.link}`)
 
 	const onYesClick = () => {
-		if (!setupDone) return onAcquaintanceOpen()
+		if (!done) return onAcquaintanceOpen()
 	}
 
 	const onNoClick = () => {
