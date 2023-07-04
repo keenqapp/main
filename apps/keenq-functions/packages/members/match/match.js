@@ -2,7 +2,7 @@ import knex from 'knex'
 import { customAlphabet } from 'nanoid'
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 8)
-import getMemberByUid from './getMemberByUid'
+import getMemberByUid from './lib/getMemberByUid'
 
 
 const config = {
@@ -43,8 +43,8 @@ export async function main({ uid }) {
 	let db
 	try {
 	  db = getDb(config)
-		// const member = await getMemberByUid(uid, db)
-		// await ensureMember(member)
+		const member = await getMemberByUid(uid, db)
+		await ensureMember(member)
 		const match = await getMatch(uid, db)
 
 		return { body: { success: true, data: match } }
