@@ -1,6 +1,6 @@
 import knex from 'knex'
 import { customAlphabet } from 'nanoid'
-import getMemberByUid from './getMemberByUid'
+// import getMemberByUid from './getMemberByUid'
 
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -40,15 +40,22 @@ async function getMember(uid, db) {
 
 async function ensureMember(member) {
 	if (!member) throw { error: 'Member doesnt exists' }
-	if (member.bannedAt) throw { error: 'Member is banned' }
+	if (member?.bannedAt) throw { error: 'Member is banned' }
 }
 
 async function getMatch(uid, db) {
 	try {
-		return {
-			for: uid,
-			matched: true,
-		}
+		const matched = await db
+			.table('members')
+			.select()
+			.where('deletedAt', null)
+			.where('bannedAt', null)
+			.where('visible', true)
+			.where('done', true)
+			.whereNot('uid', uid)
+			.first()
+		if (!matched) throw 'No match found'
+		return matched
 	}
 	catch(e) {
 		throw { error: e }

@@ -35,7 +35,7 @@ async function getMember(phone, db) {
 
 async function ensureMember(member) {
   if (!member) throw { error: 'Wrong credentials' }
-	if (member.bannedAt) throw { error: 'Member is banned' }
+	if (member?.bannedAt) throw { error: 'Member is banned' }
 }
 
 async function checkCode(phone, code, db) {

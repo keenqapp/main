@@ -44,7 +44,7 @@ async function ensureMember(member, phone, db) {
 		  await db.table('members').insert({ uid })
 		  await db.table('links').insert({ euid: uid, type: 'member', link: uid  })
 	  }
-		if (member.bannedAt) throw { error: 'Member is banned' }
+		if (member?.bannedAt) throw 'Member is banned'
 	}
 	catch(e) {
 		throw { error: e }
