@@ -22,7 +22,7 @@ function getDb(config) {
 	}
 }
 
-async function getUser(phone, db) {
+async function getMember(phone, db) {
 	try {
 		return await db
 			.table('credentials')
@@ -37,9 +37,9 @@ async function getUser(phone, db) {
 	}
 }
 
-async function ensureUser(user, phone, db) {
+async function ensureMember(member, phone, db) {
 	try {
-	  if (!user) {
+	  if (!member) {
 			const uid = nanoid()
 			await db.table('credentials').insert({ phone, uid })
 		  await db.table('members').insert({ uid })
@@ -64,8 +64,8 @@ export async function main({ phone }) {
 	let db
 	try {
 	  db = getDb(config)
-		const user = await getUser(phone, db)
-		await ensureUser(user, phone, db)
+		const member = await getMember(phone, db)
+		await ensureMember(member, phone, db)
 		await sendSMS(phone)
 
 		return { body: { success: true, data: {} } }

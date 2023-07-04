@@ -23,7 +23,7 @@ function getDb(config) {
 	}
 }
 
-async function getUser(uid, db) {
+async function getMember(uid, db) {
 	try {
 		return await db
 			.table('credentials')
@@ -58,16 +58,16 @@ async function getCity(input, location) {
 	}
 }
 
-async function ensureUser(user, phone, db) {
-	if (!user) throw { error: 'Wrong credentials' }
+async function ensureMember(member, db) {
+	if (!member) throw { error: 'Member doesnt exists' }
 }
 
 export async function main({ uid, input, location }) {
 	let db
 	try {
 		db = getDb(config)
-		const user = await getUser(uid, db)
-		await ensureUser(user)
+		const member = await getMember(uid, db)
+		await ensureMember(member)
 		const data = await getCity(input, location)
 
 		return { body: { success: true, data } }

@@ -20,6 +20,9 @@ import Space from '@/ui/Space'
 import Swiper from '@/components/Swiper'
 
 import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useMember } from '@/hooks/useMember'
+import { getPartner } from '@/model/member'
+import { gql, useMutation } from 'urql'
 
 
 const Content = styled(Row)`
@@ -44,32 +47,43 @@ const Partner = styled(Typography)`
 	border-bottom: 1px solid currentColor;
 `
 
-const tags = ['bdsm', 'ffm', 'fwb', 'shibari', 'threeway', 'huging']
-const images = [
-	'https://i.pravatar.cc/400?img=1',
-	'https://i.pravatar.cc/400?img=2',
-	'https://i.pravatar.cc/400?img=3',
-	'https://i.pravatar.cc/400?img=4',
-	'https://i.pravatar.cc/400?img=5',
-]
-
-const partner = {
-	name: 'Carrol',
-	link: 'KjdoFjd5'
-}
+const matchgql = gql`
+	mutation Match($uid: String!) {
+		match(uid: $uid) {
+			uid
+		}
+	}
+`
 
 function Match() {
 	const { onOpen: onReportOpen } = useModal('report')
 	const { onOpen: onAcquaintanceOpen } = useModal('acquaintance')
 	const navigate = useNavigate()
+	const { uid, done } = useCurrentMember()
 
-	const { done } = useCurrentMember()
+	const {
+		name,
+		images = [],
+		description,
+		gender,
+		sexuality,
+		tags,
+		linked
+	} = useMember(uid)
+
+	const partner = getPartner(linked)
 	const onReportClick = () => onReportOpen()
 
-	const onPartnerClick = () => navigate(`/match/${partner.link}`)
+	const [ , match] = useMutation(matchgql)
+
+	const onPartnerClick = () => {
+		if (!partner) return
+		navigate(`/match/${partner.uid}`)
+	}
 
 	const onYesClick = () => {
 		if (!done) return onAcquaintanceOpen()
+		else match({ uid })
 	}
 
 	const onNoClick = () => {
@@ -82,7 +96,7 @@ function Match() {
 			<Space />
 			<Content direction='column' align='start'>
 				<Row self='stretch' gap={0.5} align='baseline'>
-					<Typography variant='h5'>Lucy</Typography>
+					<Typography variant='h5'>{name}</Typography>
 					{partner && (
 						<>
 							<Typography variant='overline'>and</Typography>
@@ -90,7 +104,7 @@ function Match() {
 						</>
 					)}
 					<Space grow />
-					<Typography variant='body2'>Female Straight</Typography>
+					<Typography variant='body2'>{gender} {sexuality}</Typography>
 				</Row>
 				<Space height={0.2} />
 				<Typography variant='overline'>8 km away</Typography>
@@ -100,16 +114,10 @@ function Match() {
 					<IconButton onClick={onYesClick}><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
 				</Fabs>
 				<Space />
-				<Typography>
-					Going to the heavens of manifestation doesn’t view hypnosis anymore than yearning creates synthetic meditation.
-					Be small for whoever disappears, because each has been received with heaven.
-					Important futilities discovers most courages. Career realizes when you receive with happiness.
-					Control, blessing and an alchemistic body of career.
-					All further saints praise each other, only parallel lamas have an acceptance.
-				</Typography>
+				<Typography>{description}</Typography>
 				<Space height={2} />
 				<Row gap={0.5} wrap>
-					{tags.map((tag) => <Chip key={tag} label={tag} />)}
+					{tags?.map((tag) => <Chip key={tag.uid} label={tag.label} />)}
 				</Row>
 				<Space height={2} />
 				<StyledDivider />

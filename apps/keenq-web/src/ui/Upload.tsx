@@ -17,9 +17,10 @@ interface UploadProps {
 	accept?: string
 	onChange: (e: any) => void
 	id?: string
+	multiple?: boolean
 }
 
-function Upload({ children, accept, onChange, id = 'upload-button' }: UploadProps) {
+function Upload({ children, accept, onChange, multiple = false, id = 'upload-button' }: UploadProps) {
 	return (
 		<UploadContaniner data-testid='UploadButton'>
 			<label htmlFor={id}>
@@ -29,6 +30,7 @@ function Upload({ children, accept, onChange, id = 'upload-button' }: UploadProp
 				accept={accept}
 				id={id}
 				type='file'
+				multiple={multiple}
 				onChange={onChange}
 			/>
 		</UploadContaniner>

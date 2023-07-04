@@ -53,7 +53,6 @@ export function useSend() {
 	return {
 		send: async (phone: string) => {
 			const { data } = await send({ phone })
-			console.log('--- auth.ts:56 -> send ->', data)
 			return data.send?.success
 		},
 	}

@@ -81,8 +81,7 @@ function GenderDrawer() {
 	const [ state, update ] = useUpdate(updategql)
 	const { gender: ugender, sexuality: usexuality } = state.data?.update_members_by_pk || {}
 	const choice = (type: 'gender'|'sexuality', chosen: string) => () => {
-		const d = { uid, data: { [type]:chosen  } }
-		update(d)
+		update(uid, { [type]:chosen  })
 	}
 
 	return (

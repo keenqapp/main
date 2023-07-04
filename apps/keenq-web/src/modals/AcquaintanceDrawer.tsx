@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 
-import BadgeTwoToneIcon from '@mui/icons-material/BadgeTwoTone'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
+
+import BadgeTwoToneIcon from '@mui/icons-material/BadgeTwoTone'
 
 import { useModal } from '@/services/modals'
 

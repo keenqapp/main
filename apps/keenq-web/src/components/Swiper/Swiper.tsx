@@ -1,4 +1,4 @@
-import { VNode } from 'preact'
+import { cloneElement, VNode } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
 
@@ -40,14 +40,36 @@ const Image = styled.img`
 interface SwiperProps {
 	images: IImage[]
 	buttons?: VNode
+	onScroll?: any
 }
 
-function Swiper({ images, buttons }: SwiperProps) {
+function Swiper({ images, buttons, onScroll }: SwiperProps) {
 	const [ dot, setDot ] = useState(0)
 	const ref = useRef<HTMLDivElement>(null)
 	useEffect(() => {
 		checkSnap(ref.current)
 	}, [])
+
+	const count = useRef(images.length)
+	const scrollTo = (where: 'top' | 'bottom' | 'next' | 'prev') => {
+		if (ref.current) {
+			const { scrollHeight, clientHeight } = ref.current
+			switch (where) {
+				case 'top': return ref.current.scrollTo({ top: 0, behavior: 'smooth' })
+				case 'bottom': return ref.current.scrollTo({ top: scrollHeight - clientHeight, behavior: 'smooth' })
+				// case 'next': return ref.current.scrollTo({ top: scrollTop + clientHeight, behavior: 'smooth' })
+				// case 'prev': return ref.current.scrollTo({ top: scrollTop - clientHeight, behavior: 'smooth' })
+			}
+		}
+	}
+	useEffect(() => {
+		if (onScroll) onScroll.current = scrollTo
+	}, [ onScroll ])
+	useEffect(() => {
+		if (count.current < images.length) scrollTo('bottom')
+		count.current = images.length
+	}, [ images.length ])
+
 	const handleScroll = (e: any) => {
 		if (ref.current) {
 			requestAnimationFrame(() => {
@@ -60,7 +82,12 @@ function Swiper({ images, buttons }: SwiperProps) {
 	return (
 		<SwiperContainer>
 			<SwiperScroll data-testid='Swiper' ref={ref} onScroll={handleScroll}>
-				{images.map(({ uid, url }) => <ImageContainer key={uid}><Image src={url} />{buttons}</ImageContainer>)}
+				{images.map(({ uid, url }) => (
+					<ImageContainer key={uid}>
+						<Image src={url} />
+						{buttons && cloneElement(buttons, { uid })}
+					</ImageContainer>
+				))}
 			</SwiperScroll>
 			{images.length > 1 && <SwiperDots length={images.length} current={dot} />}
 		</SwiperContainer>

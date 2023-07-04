@@ -1,7 +1,8 @@
 import styled from '@emotion/styled'
+import { useStore } from '@nanostores/preact'
 import { Navigate, Outlet } from 'react-router-dom'
 
-import { $isAuthed, isReady } from '@/services/auth'
+import { $isAuthed } from '@/services/auth'
 
 import Loadable from '@/ui/Loadable'
 
@@ -18,7 +19,9 @@ const Main = styled.main`
 `
 
 function Layout() {
-	if (!$isAuthed.get()) return <Navigate to='/auth/login' />
+	const isAuthed = useStore($isAuthed)
+	if (!isAuthed) return <Navigate to='/auth/login' />
+
 	return (
 		<div data-testid='Layout'>
 			<Loadable loading={false}>

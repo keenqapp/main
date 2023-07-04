@@ -139,7 +139,7 @@ export function usePosition() {
 }
 
 const citiesWith = gql`
-	mutation GetCities($uid: String!, $data: GetCitiesInput!) {
+	mutation GetCities($uid: String!, $data: CitiesInput!) {
 		cities(uid: $uid, data: $data) {
 			data
 		}

@@ -8,21 +8,18 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
 import { logout } from '@/services/auth'
-import { useConfirm } from '@/services/modals'
+import { useConfirm, useModal } from '@/services/modals'
 
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Space from '@/ui/Space'
 
-import { useCurrentMember } from '@/hooks/useCurrentMember'
-import { signal } from '@/utils/signals'
 import { useUpdate } from '@/hooks/gql'
+import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { updategql } from '@/model/member'
 
 
-const show = signal(true)
-
 function SettingsDrawer() {
-
+	const { name, on } = useModal('settings')
 	const {
 		uid,
 		visible
@@ -34,20 +31,17 @@ function SettingsDrawer() {
 
 	const onCloseClick = () => {
 		confirm({
-			onConfirm: () => { console.log('--- SettingsDrawer.tsx:28 -> onConfirm ->', 'close account') }
+			onConfirm: on(() => { console.log('--- SettingsDrawer.tsx:28 -> onConfirm ->', 'close account') })
 		})
 	}
-	const onLogoutClick = () => logout()
-
-
 	return (
-		<Drawer data-testid='SettingsDrawer' name='settings'>
+		<Drawer data-testid='SettingsDrawer' name={name}>
 			<DrawerList>
 				<DrawerItem
 					icon={visible ? <VisibilityIcon color='primary' /> : <VisibilityOffIcon color='error' />}
 					text='Show me'
-					subtext={show() ? 'I am visible to others' : 'If I am not visible i cant see others'}
-					action={<Switch onChange={onShowChange} checked={show()} />}
+					subtext={visible ? 'I am visible to others' : 'If I am not visible i cant see others'}
+					action={<Switch onChange={onShowChange} checked={visible || false} />}
 				/>
 				<DrawerItem
 					icon={<HighlightOffTwoToneIcon color='error' />}
@@ -63,7 +57,7 @@ function SettingsDrawer() {
 						variant='outlined'
 						startIcon={<LogoutTwoToneIcon />}
 						fullWidth
-						onClick={onLogoutClick}
+						onClick={on(logout)}
 					>Logout</Button>
 				</DrawerItem>
 			</DrawerList>

@@ -1,8 +1,10 @@
 import { gql } from 'urql'
 
+import { IMember } from '@/model/member/types'
 
-export const currentgql = gql<{ uid: string }>`
-	query CurrentMember($uid: String!) {
+
+export const membergql = gql<{ members_by_pk: IMember }>`
+	query Member($uid: String!) {
 		members_by_pk(uid: $uid) {
 			uid
 			name
@@ -31,6 +33,7 @@ export const updategql = gql`
 			gender
 			done
 			location
+			visible
 		}
 	}
 `

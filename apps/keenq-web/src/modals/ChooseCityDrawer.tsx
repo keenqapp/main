@@ -55,7 +55,7 @@ function CitiesListItem(city: typeof json[number]) {
 				timestamp: new Date().toISOString()
 			}
 		}
-		update({ uid, data })
+		update(uid, { data })
 	}
 
 	return <DrawerItem text={name} subtext={country} onClick={on(click)} />

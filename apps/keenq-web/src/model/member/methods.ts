@@ -1,3 +1,4 @@
+import { IMember } from '@/model/member/types'
 import { $isPersonal, IRoom } from '@/model/room'
 
 
@@ -16,4 +17,8 @@ export function $isAdmin(uid: string|null, room?: IRoom) {
 export function $isRoomMember(room: IRoom, uid: string) {
 	if (!room) return false
 	return equals.any(uid, room.membersUids)
+}
+
+export function getPartner(linked: IMember['linked']) {
+	return linked?.find(({ type }) => type === 'partner')?.value
 }

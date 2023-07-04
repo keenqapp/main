@@ -65,11 +65,11 @@ function LoginForm() {
 		onFocus: () => authError.value = null
 	})
 
-	const handleChange = (e: any) => {
-		if (e.target.value.length === 6) {
+	const handleChange = (code: string) => {
+		if (code.length === 6) {
 			setTimeout(() => {
-				codeInput.value = e.target.value
-				e.target.blur()
+				codeInput.value = code
+				codeInput.inputRef.current.blur()
 				onVerify()
 			}, 1)
 		}
@@ -106,6 +106,9 @@ function LoginForm() {
 
 	const onRetry = () => {
 		setCodeSent(false)
+		loading.value = false
+		phoneInput.onClear()
+		codeInput.onClear()
 	}
 
 	return (

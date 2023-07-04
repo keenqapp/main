@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect, useRef } from 'preact/hooks'
 import styled from '@emotion/styled'
 
 import Button from '@mui/material/Button'
@@ -19,7 +19,7 @@ import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserC
 import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
 
 import { useModal } from '@/services/modals'
-import { uploadImage } from '@/services/spaces'
+import { deleteImage, uploadImage } from '@/services/spaces'
 
 import Column from '@/ui/Column'
 import Container from '@/ui/Container'
@@ -30,6 +30,7 @@ import Upload from '@/ui/Upload'
 import ProfileProgress from '@/components/Profile/ProfileProgress'
 import Swiper from '@/components/Swiper'
 
+import { useUpdate } from '@/hooks/gql'
 import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { useInput } from '@/hooks/useInput'
@@ -72,10 +73,20 @@ const EmptyImagesContainer = styled.div`
   padding: 2rem;
 `
 
-function Buttons() {
+function Buttons({ uid }: { uid?: string }) {
+	const { uid: cuid, images = [] } = useCurrentMember()
+	const [ , update ] = useUpdate(updategql)
+
+	const onClick = () => {
+		const image = images.find(({ uid: iuid }) => iuid === uid)
+		const newImages = images.filter(({ uid: iuid }) => iuid !== uid)
+		deleteImage(`/members/${cuid}`, image!.name)
+		update(cuid, { images: newImages })
+	}
+
 	return (
 		<Fabs>
-			<CancelTwoToneIcon fontSize='large' color='error' />
+			<CancelTwoToneIcon fontSize='large' color='error' onClick={onClick} />
 		</Fabs>
 	)
 }
@@ -83,16 +94,18 @@ function Buttons() {
 function EmptyImages() {
 
 	const { uid, images = [] } = useCurrentMember()
-	const [ _, update ] = useDebounceMutation(updategql)
+	const [ , update ] = useDebounceMutation(updategql)
 
 	const onChange = async (e: any) => {
-		const image = await uploadImage(`members/${uid}`, e.target.files[0])
-		update(uid, { images: [...images, image] })
+		for await (const file of e.target.files) {
+			const image = await uploadImage(`members/${uid}`, file)
+			await update(uid, { images: [...images, image] })
+		}
 	}
 
 	return (
 		<EmptyImagesContainer>
-			<Upload onChange={onChange} accept='image/*'>
+			<Upload onChange={onChange} accept='image/*' multiple>
 				<Column>
 					<Typography textAlign='center' variant='overline'>Upload at least three photos for better impression</Typography>
 					<Space />
@@ -132,6 +145,10 @@ function Profile() {
 		done
 	} = useCurrentMember()
 
+	useEffect(() => {
+		document.body.scrollTo({ top: 0, behavior: 'smooth' })
+	}, [])
+
 	const partner = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value
 
 	const { onOpen: onLocationOpen } = useModal('location')
@@ -140,7 +157,7 @@ function Profile() {
 	const { onOpen: onGenderClick } = useModal('gender')
 	const { onOpen: onAddPartnerClick } = useModal('addPartner')
 
-	const [ _, update ] = useDebounceMutation(updategql)
+	const [ , update ] = useDebounceMutation(updategql)
 
 	const nameInput = useInput({
 		value: name,
@@ -158,9 +175,11 @@ function Profile() {
 		onChange: (description: string) => update(uid, { description }),
 	})
 
+	const onScroll = useRef<(where: 'bottom' | 'top') => void>()
 	const onUploadChange = async (e: any) => {
-		const image = await uploadImage(`/members/${uid}`, e.target.files[0])
-		update( uid, { images: [...images, image] })
+		const image = await uploadImage(`members/${uid}`, e.target.files[0])
+		await update( uid, { images: [...images, image] })
+		// setTimeout(() => onScroll.current?.('bottom'), 1500)
 	}
 
 	const onNameClick = () => nameInput.inputRef.current?.focus()
@@ -193,7 +212,7 @@ function Profile() {
 			{images && images?.length > 0
 				? (
 					<SwiperContainer>
-						<Swiper images={images} buttons={<Buttons />} />
+						<Swiper images={images} onScroll={onScroll} buttons={<Buttons />} />
 						<Row justify='end'>
 							<Upload accept='image/*' onChange={onUploadChange}>
 								<AddButton startIcon={<PhotoCameraTwoToneIcon />} component='span'>Add photo</AddButton>

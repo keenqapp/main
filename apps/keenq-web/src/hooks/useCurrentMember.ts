@@ -4,13 +4,13 @@ import { useParams } from 'react-router-dom'
 import { $uid } from '@/services/auth'
 
 import { useQuery } from '@/hooks/gql'
-import { $isAdmin, currentgql, IMember } from '@/model/member'
+import { $isAdmin, IMember, membergql } from '@/model/member'
 import { getRoomById } from '@/model/room'
 
 
 export function useCurrentMember() {
 	const uid = useStore($uid)
-	const [ { data } ] = useQuery(currentgql, { uid })
+	const [ { data } ] = useQuery(membergql, { uid })
 	const member = data?.members_by_pk
 	const { uid: ruid } = useParams()
 	const room = getRoomById(ruid!)
