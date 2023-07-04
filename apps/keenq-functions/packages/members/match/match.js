@@ -2,7 +2,7 @@ import knex from 'knex'
 import { customAlphabet } from 'nanoid'
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 8)
-import getMemberByUid from './lib/getMemberByUid'
+import getMemberByUid from './getMemberByUid'
 
 
 const config = {
