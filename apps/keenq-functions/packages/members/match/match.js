@@ -1,8 +1,10 @@
 import knex from 'knex'
 import { customAlphabet } from 'nanoid'
+import getMemberByUid from './getMemberByUid'
+
+
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 8)
-
 
 const config = {
 	client: 'pg',
@@ -29,7 +31,6 @@ async function getMember(uid, db) {
 			.select()
 			.where('uid', uid)
 			.where('deletedAt', null)
-			// TODO: Where clause for NOT banned
 			.first()
 	}
 	catch(e) {
@@ -39,6 +40,7 @@ async function getMember(uid, db) {
 
 async function ensureMember(member) {
 	if (!member) throw { error: 'Member doesnt exists' }
+	if (member.bannedAt) throw { error: 'Member is banned' }
 }
 
 async function getMatch(uid, db) {

@@ -26,7 +26,6 @@ async function getMember(phone, db) {
 			.select()
 			.where('phone', phone)
 			.where('deletedAt', null)
-			// TODO: Where clause for NOT banned
 			.first()
 	}
 	catch(e) {
@@ -36,6 +35,7 @@ async function getMember(phone, db) {
 
 async function ensureMember(member) {
   if (!member) throw { error: 'Wrong credentials' }
+	if (member.bannedAt) throw { error: 'Member is banned' }
 }
 
 async function checkCode(phone, code, db) {
