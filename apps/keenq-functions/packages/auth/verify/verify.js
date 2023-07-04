@@ -19,7 +19,7 @@ function getDb(config) {
 	}
 }
 
-async function getUser(phone, db) {
+async function getMember(phone, db) {
 	try {
 		return await db
 			.table('credentials')
@@ -34,8 +34,8 @@ async function getUser(phone, db) {
 	}
 }
 
-async function ensureUser(user) {
-  if (!user) throw { error: 'Wrong credentials' }
+async function ensureMember(member) {
+  if (!member) throw { error: 'Wrong credentials' }
 }
 
 async function checkCode(phone, code, db) {
@@ -54,14 +54,14 @@ async function checkCode(phone, code, db) {
 	else throw { error: 'Wrong credentials' }
 }
 
-function getPayload(user) {
+function getPayload(member) {
 	return {
-		sub: user.uid,
+		sub: member.uid,
 		iat: Math.floor(Date.now() / 1000),
 		aud: 'keenq-web',
 		iss: 'keenq-functions',
 		'https://hasura.io/jwt/claims': {
-			'X-Hasura-User-Id': user.uid,
+			'X-Hasura-User-Id': member.uid,
 			'X-Hasura-Role': "member",
 			'x-hasura-default-role': "member",
 			'x-hasura-allowed-roles': ['admin', 'manager', 'member'],
@@ -82,12 +82,12 @@ export async function main({ phone, code }, context) {
 	let db
 	try {
 	  db = getDb(config)
-		const user = await getUser(phone, db)
-		await ensureUser(user)
+		const member = await getMember(phone, db)
+		await ensureMember(member)
 		await checkCode(phone, code, db)
-		const accessToken = await generateJWT(user)
+		const accessToken = await generateJWT(member)
 
-		return { body: { success: true, data: { accessToken, uid: user.uid } } }
+		return { body: { success: true, data: { accessToken, uid: member.uid } } }
 	}
 	catch(e) {
 		console.error(e)

@@ -2,7 +2,6 @@ import knex from 'knex'
 import { customAlphabet } from 'nanoid'
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 8)
-import getMemberByUid from './getMemberByUid'
 
 
 const config = {
@@ -23,6 +22,25 @@ function getDb(config) {
 	}
 }
 
+async function getMember(uid, db) {
+	try {
+		return await db
+			.table('credentials')
+			.select()
+			.where('uid', uid)
+			.where('deletedAt', null)
+			// TODO: Where clause for NOT banned
+			.first()
+	}
+	catch(e) {
+		throw { error: e }
+	}
+}
+
+async function ensureMember(member) {
+	if (!member) throw { error: 'Member doesnt exists' }
+}
+
 async function getMatch(uid, db) {
 	try {
 		return {
@@ -35,15 +53,11 @@ async function getMatch(uid, db) {
 	}
 }
 
-async function ensureMember(member) {
-	if (!member) throw { error: 'Member doesnt exists' }
-}
-
 export async function main({ uid }) {
 	let db
 	try {
 	  db = getDb(config)
-		const member = await getMemberByUid(uid, db)
+		const member = await getMember(uid, db)
 		await ensureMember(member)
 		const match = await getMatch(uid, db)
 
