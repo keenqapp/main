@@ -41,7 +41,6 @@ const Input = styled(TextField)`
 	flex-grow: 1;
 `
 
-// REFACTOR dont like it... but it works :: used in MessageMenu.tsx
 export const messageReplyOrEditId = signal({ mode: '', id: '' })
 
 function getMessageById(id?: string) {

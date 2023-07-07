@@ -76,13 +76,18 @@ export function useVerify() {
 	const [_, verity ] = useMutation(verifyGql)
 	return {
 		verify: async (phone: string, code: string) => {
-			const { data } = await verity({ phone, code })
-			if (data.verify?.success) {
-				$accessToken.set(data.verify.data.accessToken)
-				$id.set(data.verify.data.id)
-				return true
+			try {
+				const { data } = await verity({ phone, code })
+				if (data.verify?.success) {
+					$accessToken.set(data.verify.data.accessToken)
+					$id.set(data.verify.data.id)
+					return true
+				}
+				else authError.value = 'code_error'
 			}
-			else authError.value = 'code_error'
+			catch(e) {
+				authError.value = 'server_error'
+			}
 		}
 	}
 }
