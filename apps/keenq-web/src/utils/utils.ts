@@ -37,7 +37,7 @@ export function toComponent<Input extends Entity>(render: (item: Input, index: n
 		.map((item: Input, index: number) => {
 			const component = render(item, index)
 			if (!component) return null
-			return cloneElement(component, { key: item.uid })
+			return cloneElement(component, { key: item.id })
 		})
 		.filter(Boolean)
 }

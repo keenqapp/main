@@ -2,8 +2,8 @@ import { ComponentChildren } from 'preact'
 import styled from '@emotion/styled'
 
 
-const UploadContaniner = styled.div`
-	position: relative;
+const UploadContainer = styled.div`
+	//position: relative;
 	& input {
 		visibility: hidden;
 		position: absolute;
@@ -22,7 +22,7 @@ interface UploadProps {
 
 function Upload({ children, accept, onChange, multiple = false, id = 'upload-button' }: UploadProps) {
 	return (
-		<UploadContaniner data-testid='UploadButton'>
+		<UploadContainer data-testid='UploadButton'>
 			<label htmlFor={id}>
 				{children}
 			</label>
@@ -33,7 +33,7 @@ function Upload({ children, accept, onChange, multiple = false, id = 'upload-but
 				multiple={multiple}
 				onChange={onChange}
 			/>
-		</UploadContaniner>
+		</UploadContainer>
 	)
 }
 

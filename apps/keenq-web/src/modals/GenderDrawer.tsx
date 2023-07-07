@@ -18,8 +18,8 @@ import Space from '@/ui/Space'
 import BiGenderIcon from '@/assets/BiGenderIcon'
 import NonBinaryIcon from '@/assets/NonBinaryIcon'
 import { useUpdate } from '@/hooks/gql'
-import { useCurrentMember } from '@/hooks/useCurrentMember'
-import { updategql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
+import { updatemembergql } from '@/model/member'
 
 
 const StyledItem = styled(Row)<{ active: boolean }>`
@@ -56,7 +56,7 @@ const genders = [
 	{ text: 'Non-Binary', icon: <NonBinaryIcon />	 },
 	{ text: 'Agender', icon: <RadioButtonUncheckedTwoToneIcon fontSize='small' /> },
 	{ text: 'Transperson', icon: <TransgenderTwoToneIcon /> },
-	{ text: 'Genderfluid', icon: <BiGenderIcon /> },
+	{ text: 'Genderflid', icon: <BiGenderIcon /> },
 ]
 
 const sexualities = [
@@ -73,15 +73,15 @@ function GenderDrawer() {
 	const { name } = useModal('gender')
 
 	const {
-		uid,
+		id,
 		gender,
 		sexuality,
 	} = useCurrentMember()
 
-	const [ state, update ] = useUpdate(updategql)
+	const [ state, update ] = useUpdate(updatemembergql)
 	const { gender: ugender, sexuality: usexuality } = state.data?.update_members_by_pk || {}
 	const choice = (type: 'gender'|'sexuality', chosen: string) => () => {
-		update(uid, { [type]:chosen  })
+		update(id, { [type]:chosen  })
 	}
 
 	return (

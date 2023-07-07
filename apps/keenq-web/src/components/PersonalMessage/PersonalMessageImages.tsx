@@ -17,10 +17,10 @@ function Image(props: any) {
 	return <StyledImage {...props} />
 }
 
-function getAttachment({ uid, url, width, height }: IImage) {
+function getAttachment({ id, url, width, height }: IImage) {
 	return (
 		<Image
-			key={uid}
+			key={id}
 			src={url + '?' + Date.now()}
 			width={width}
 			height={height}

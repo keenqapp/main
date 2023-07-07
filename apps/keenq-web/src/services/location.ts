@@ -4,7 +4,7 @@ import { atom } from 'nanostores'
 import { gql } from 'urql'
 
 import useAsyncEffect from '@/hooks/useAsyncEffect'
-import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useCurrentMember } from '@/model/member/hooks'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 
 
@@ -139,22 +139,22 @@ export function usePosition() {
 }
 
 const citiesWith = gql`
-	mutation GetCities($uid: String!, $data: CitiesInput!) {
-		cities(uid: $uid, data: $data) {
+	mutation GetCities($id: String!, $data: CitiesInput!) {
+		cities(id: $id, data: $data) {
 			data
 		}
 	}
 `
 
 export function useCitySearch(input = '') {
-	const { uid } = useCurrentMember()
+	const { id } = useCurrentMember()
 	const { coords, location } = usePosition()
 	const [ result, get ] = useDebounceMutation(citiesWith)
 
 	useAsyncEffect(async () => {
 		if (coords) {
 			await getPosition()
-			await get(uid, { input, location })
+			await get(id, { input, location })
 		}
 	}, [ input ])
 

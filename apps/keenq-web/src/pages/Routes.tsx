@@ -28,7 +28,7 @@ const routes = createBrowserRouter([
 				element: <MatchPage />,
 			},
 			{
-				path: '/match/:uid',
+				path: '/match/:id',
 				element: <MatchPage />,
 			},
 			{
@@ -36,11 +36,11 @@ const routes = createBrowserRouter([
 				element: <RoomsPage />,
 			},
 			{
-				path: '/room/:uid',
+				path: '/room/:id',
 				element: <RoomPage />,
 			},
 			{
-				path: '/roomInfo/:uid',
+				path: '/room/:id/info',
 				element: <RoomInfoPage />,
 			},
 			{
@@ -48,7 +48,7 @@ const routes = createBrowserRouter([
 				element: <EventsPage />,
 			},
 			{
-				path: '/event/:uid',
+				path: '/event/:id',
 				element: <EventPage />,
 			},
 			{

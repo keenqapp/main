@@ -14,20 +14,20 @@ import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Space from '@/ui/Space'
 
 import { useUpdate } from '@/hooks/gql'
-import { useCurrentMember } from '@/hooks/useCurrentMember'
-import { updategql } from '@/model/member'
+import { updatemembergql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 function SettingsDrawer() {
 	const { name, on } = useModal('settings')
 	const {
-		uid,
+		id,
 		visible
 	} = useCurrentMember()
 	const { confirm } = useConfirm()
-	const [ , update ] = useUpdate(updategql)
+	const [ , update ] = useUpdate(updatemembergql)
 
-	const onShowChange = () => update(uid, { visible: !visible })
+	const onShowChange = () => update(id, { visible: !visible })
 
 	const onCloseClick = () => {
 		confirm({

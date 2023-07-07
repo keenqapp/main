@@ -6,7 +6,7 @@ import { IRoom } from '@/model/room/types'
 export const roomsgql = gql<{ rooms: IRoom }>`
 	query Rooms {
 		rooms {
-			uid
+			id
 			name
 			image
 			description
@@ -16,10 +16,47 @@ export const roomsgql = gql<{ rooms: IRoom }>`
 	}
 `
 
-export const updategql = gql`
-	mutation UpdateMember($uid: String!, $data: rooms_set_input!) {
-		update_rooms_by_pk(pk_columns: { uid: $uid }, _set: $data) {
-			uid
+export const roomgql = gql<{ room_by_pk: IRoom }>`
+	query Room($id: String!) {
+		rooms_by_pk(id: $id) {
+			id
+			name
+			image
+			description
+			type
+			verified
+		}
+	}
+`
+
+export const currentroomgql = gql<{ room_by_pk: IRoom }>`
+	query CurrentRoom($id: String!) {
+		rooms_by_pk(id: $id) {
+			id
+			name
+			image
+			description
+			type
+			verified
+		}
+		rooms_members_aggregate(where: { roomId: { _eq: $id } }) {
+			aggregate {
+				count
+			}
+		}
+		rooms_members(where: { roomId: { _eq: $id } }) {
+			memberId
+		}
+		rooms_admins(where: { roomId: { _eq: $id } }) {
+			memberId
+		}
+	}
+`
+
+export const updateroomgql = gql`
+	mutation UpdateMember($id: String!, $data: rooms_set_input!) {
+		update_rooms_by_pk(pk_columns: { id: $id }, _set: $data) {
+			id
 			name
 			image
 			description

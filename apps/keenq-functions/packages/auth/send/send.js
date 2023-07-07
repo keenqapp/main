@@ -39,10 +39,10 @@ async function getMember(phone, db) {
 async function ensureMember(member, phone, db) {
 	try {
 	  if (!member) {
-			const uid = nanoid()
-			await db.table('credentials').insert({ phone, uid })
-		  await db.table('members').insert({ uid })
-		  await db.table('links').insert({ euid: uid, type: 'member', link: uid  })
+			const id = nanoid()
+			await db.table('credentials').insert({ phone, id })
+		  await db.table('members').insert({ id })
+		  await db.table('links').insert({ entityId: id, type: 'member', link: id  })
 	  }
 		if (member?.bannedAt) throw 'Member is banned'
 	}
@@ -60,6 +60,7 @@ async function sendSMS(phone) {
 	}
 }
 
+// TODO: check id for 'creds' and 'members' for sync
 export async function main({ phone }) {
 	let db
 	try {

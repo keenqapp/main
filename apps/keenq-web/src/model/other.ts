@@ -1,10 +1,10 @@
 export interface ITag {
-	uid: string
+	id: string
 	label: string
 }
 
 export interface IImage {
-	uid: string
+	id: string
 	url: string
 	name: string
 	width: number
@@ -12,7 +12,7 @@ export interface IImage {
 }
 
 export interface ILocation {
-	uid: string
+	id: string
 	city: string
 	longitude: number
 	latitude: number

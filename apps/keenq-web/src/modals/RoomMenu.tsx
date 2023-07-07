@@ -16,7 +16,7 @@ import { $isPrivate, getRoomById } from '@/model/room'
 
 function RoomMenu() {
 	const navigate = useNavigate()
-	const { uid } = useParams()
+	const { id } = useParams()
 	const { name, on } = useModal('room')
 	const { onOpen: addMemberOpen } = useModal('addMemberToRoom')
 	const { onOpen: reportOpen } = useModal('report')
@@ -32,16 +32,16 @@ function RoomMenu() {
 
 	const shareClick = () => {}
 
-	const roomClick = () => navigate(`/roomInfo/${uid}`)
-	const profileClick = () => navigate(`/match/${uid}`)
+	const roomClick = () => navigate(`/room/${id}/info`)
+	const profileClick = () => navigate(`/match/${id}`)
 
-	const addMemberClick = () => addMemberOpen({ to: 'room', uid })
+	const addMemberClick = () => addMemberOpen({ to: 'room', id })
 
 	const muteClick = () => {
 		console.log('--- RoomMenu.tsx:44 -> muteClick ->', 'muteClick')
 	}
 
-	const room = getRoomById(uid!)
+	const room = getRoomById(id!)
 	const isPrivate = $isPrivate(room)
 
 	return (

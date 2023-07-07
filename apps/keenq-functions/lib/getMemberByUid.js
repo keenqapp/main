@@ -1,9 +1,9 @@
-export default async function getMemberByUid(uid, db) {
+export default async function getMemberById(id, db) {
 	try {
 		return await db
 			.table('credentials')
 			.select()
-			.where('uid', uid)
+			.where('id', id)
 			.where('deletedAt', null)
 			// TODO: Where clause for NOT banned
 			.first()

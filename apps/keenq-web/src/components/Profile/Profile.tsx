@@ -31,10 +31,10 @@ import ProfileProgress from '@/components/Profile/ProfileProgress'
 import Swiper from '@/components/Swiper'
 
 import { useUpdate } from '@/hooks/gql'
-import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useCurrentMember } from '@/model/member/hooks'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
-import { useInput } from '@/hooks/useInput'
-import { IMemberPartner, updategql } from '@/model/member'
+import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
+import { IMemberPartner, updatemembergql } from '@/model/member'
 
 
 const Content = styled(Row)`
@@ -73,15 +73,15 @@ const EmptyImagesContainer = styled.div`
   padding: 2rem;
 `
 
-function Buttons({ uid }: { uid?: string }) {
-	const { uid: cuid, images = [] } = useCurrentMember()
-	const [ , update ] = useUpdate(updategql)
+function Buttons({ id }: { id?: string }) {
+	const { id: cid, images = [] } = useCurrentMember()
+	const [ , update ] = useUpdate(updatemembergql)
 
 	const onClick = () => {
-		const image = images.find(({ uid: iuid }) => iuid === uid)
-		const newImages = images.filter(({ uid: iuid }) => iuid !== uid)
-		deleteImage(`/members/${cuid}`, image!.name)
-		update(cuid, { images: newImages })
+		const image = images.find(({ id: iid }) => iid === id)
+		const newImages = images.filter(({ id: iid }) => iid !== id)
+		deleteImage(`/members/${cid}`, image!.name)
+		update(cid, { images: newImages })
 	}
 
 	return (
@@ -93,13 +93,13 @@ function Buttons({ uid }: { uid?: string }) {
 
 function EmptyImages() {
 
-	const { uid, images = [] } = useCurrentMember()
-	const [ , update ] = useDebounceMutation(updategql)
+	const { id, images = [] } = useCurrentMember()
+	const [ , update ] = useDebounceMutation(updatemembergql)
 
 	const onChange = async (e: any) => {
 		for await (const file of e.target.files) {
-			const image = await uploadImage(`members/${uid}`, file)
-			await update(uid, { images: [...images, image] })
+			const image = await uploadImage(`members/${id}`, file)
+			await update(id, { images: [...images, image] })
 		}
 	}
 
@@ -133,7 +133,7 @@ const SwiperContainer = styled.div`
 function Profile() {
 
 	const {
-		uid,
+		id,
 		linked,
 		name,
 		description,
@@ -157,13 +157,15 @@ function Profile() {
 	const { onOpen: onGenderClick } = useModal('gender')
 	const { onOpen: onAddPartnerClick } = useModal('addPartner')
 
-	const [ , update ] = useDebounceMutation(updategql)
+	const [ , update ] = useDebounceMutation(updatemembergql)
 
 	const nameInput = useInput({
 		value: name,
 		placeholder: 'That is your name?',
 		disableUnderline: true,
-		onChange: (name: string) => update(uid, { name }),
+		validation: [isNotEmpty, isLengthLower(24)],
+		forceValid: true,
+		onChange: (name: string) => update(id, { name }),
 	})
 
 	const descriptionInput = useInput({
@@ -172,13 +174,13 @@ function Profile() {
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
-		onChange: (description: string) => update(uid, { description }),
+		onChange: (description: string) => update(id, { description }),
 	})
 
 	const onScroll = useRef<(where: 'bottom' | 'top') => void>()
 	const onUploadChange = async (e: any) => {
-		const image = await uploadImage(`members/${uid}`, e.target.files[0])
-		await update( uid, { images: [...images, image] })
+		const image = await uploadImage(`members/${id}`, e.target.files[0])
+		await update( id, { images: [...images, image] })
 		// setTimeout(() => onScroll.current?.('bottom'), 1500)
 	}
 
@@ -203,7 +205,7 @@ function Profile() {
 		&& !!tags && tags.length > 0
 
 	useEffect(() => {
-		if (isDone && !done) update(uid, { done: true })
+		if (isDone && !done) update(id, { done: true })
 	}, [ isDone, done ])
 
 	return (
@@ -291,7 +293,7 @@ function Profile() {
 				<Row justify='between' align={tags?.length > 0 ? 'start' : 'center'} onClick={onTagsClick}>
 					<Row gap={0.5} wrap justify='start'>
 						{tags?.length > 0
-							? tags.map(({ uid, label }) => <Chip key={uid} label={label} />)
+							? tags.map(({ id, label }) => <Chip key={id} label={label} />)
 							: <Typography color='#B2ADBB'>Select what you are looking for</Typography>}
 					</Row>
 					<IconButton color='primary'><TagTwoToneIcon /></IconButton>

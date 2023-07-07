@@ -1,6 +1,6 @@
 import knex from 'knex'
 import { customAlphabet } from 'nanoid'
-// import getMemberByUid from './getMemberByUid'
+// import getMemberById from './getMemberById'
 
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -24,12 +24,12 @@ function getDb(config) {
 	}
 }
 
-async function getMember(uid, db) {
+async function getMember(id, db) {
 	try {
 		return await db
 			.table('credentials')
 			.select()
-			.where('uid', uid)
+			.where('id', id)
 			.where('deletedAt', null)
 			.first()
 	}
@@ -43,7 +43,7 @@ async function ensureMember(member) {
 	if (member?.bannedAt) throw { error: 'Member is banned' }
 }
 
-async function getMatch(uid, db) {
+async function getMatch(id, db) {
 	try {
 		const matched = await db
 			.table('members')
@@ -52,7 +52,7 @@ async function getMatch(uid, db) {
 			.where('bannedAt', null)
 			.where('visible', true)
 			.where('done', true)
-			.whereNot('uid', uid)
+			.whereNot('id', id)
 			.first()
 		if (!matched) throw 'No match found'
 		return matched
@@ -62,13 +62,13 @@ async function getMatch(uid, db) {
 	}
 }
 
-export async function main({ uid }) {
+export async function main({ id }) {
 	let db
 	try {
 	  db = getDb(config)
-		const member = await getMember(uid, db)
+		const member = await getMember(id, db)
 		await ensureMember(member)
-		const match = await getMatch(uid, db)
+		const match = await getMatch(id, db)
 
 		return { body: { success: true, data: match } }
 	}

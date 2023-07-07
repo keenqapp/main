@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 
 import { TextFieldProps } from '@mui/material/TextField'
 
-import { hasError, Validator } from './validation'
+import { hasError as $hasError, Validator } from './validation'
 
 
 export interface Dict extends Object {
@@ -25,6 +25,7 @@ export interface UseInputProps extends Dict {
   placeholder?: string;
   helperText?: string;
   translation?: (value: unknown) => string;
+	forceValid?: boolean;
 
   // To change displaying value in <input>
   format?: (value: string, prev?: string) => string;
@@ -41,6 +42,7 @@ export function useInput(props: UseInputProps) {
 		onBlur,
 		type = 'text',
 		validation = () => true,
+		forceValid,
 		placeholder = '',
 		helperText,
 		translation = (input) => input as string,
@@ -64,7 +66,7 @@ export function useInput(props: UseInputProps) {
 
 	const _validate = (value: string): string | EmptyString | boolean => {
 		const validationArray = Array.isArray(validation) ? validation : [validation]
-		const validatorErrorText = hasError(value, validationArray, true)
+		const validatorErrorText = $hasError(value, validationArray, true)
 		const validatorError = validatorErrorText && typeof validatorErrorText === 'string' ? translation(validatorErrorText) : ''
 		setError(validatorError as string)
 		return validatorError as string
@@ -84,10 +86,13 @@ export function useInput(props: UseInputProps) {
 	const handleChange = (event: any) => {
 		const parsedValue = parse(event.target?.value)
 		const formattedValue = format(parsedValue, input)
-		event.target.value = formattedValue
+		const isValid = !$hasError(formattedValue, validation)
+
 		if (onChange) {
-			onChange(formattedValue)
+			if (forceValid && !isValid) return
+			onChange(formattedValue, isValid)
 		}
+		event.target.value = formattedValue
 		setInput(formattedValue)
 	}
 

@@ -1,5 +1,7 @@
+import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
+import { gql, useMutation } from 'urql'
 
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -19,10 +21,9 @@ import Space from '@/ui/Space'
 
 import Swiper from '@/components/Swiper'
 
-import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useCurrentMember } from '@/model/member/hooks'
 import { useMember } from '@/hooks/useMember'
 import { getPartner } from '@/model/member'
-import { gql, useMutation } from 'urql'
 
 
 const Content = styled(Row)`
@@ -48,9 +49,12 @@ const Partner = styled(Typography)`
 `
 
 const matchgql = gql`
-	mutation Match($uid: String!) {
-		match(uid: $uid) {
-			uid
+	mutation Match($id: String!) {
+		match(id: $id) {
+			success
+			data {
+				id
+			}
 		}
 	}
 `
@@ -59,9 +63,13 @@ function Match() {
 	const { onOpen: onReportOpen } = useModal('report')
 	const { onOpen: onAcquaintanceOpen } = useModal('acquaintance')
 	const navigate = useNavigate()
-	const { uid, done } = useCurrentMember()
+	const { id, done } = useCurrentMember()
+
+	const [ result, match ] = useMutation(matchgql)
+	const { data, fetching, error } = result
 
 	const {
+		id: mid,
 		name,
 		images = [],
 		description,
@@ -69,25 +77,27 @@ function Match() {
 		sexuality,
 		tags,
 		linked
-	} = useMember(uid)
+	} = useMember(data?.match?.data.id)
+
+	useEffect(() => {
+		if (id && !mid && !fetching && !error) match({ id })
+	}, [ mid, fetching, error, id ])
 
 	const partner = getPartner(linked)
 	const onReportClick = () => onReportOpen()
 
-	const [ , match] = useMutation(matchgql)
-
 	const onPartnerClick = () => {
 		if (!partner) return
-		navigate(`/match/${partner.uid}`)
+		navigate(`/match/${partner.id}`)
 	}
 
 	const onYesClick = () => {
 		if (!done) return onAcquaintanceOpen()
-		else match({ uid })
+		else match({ id })
 	}
 
 	const onNoClick = () => {
-		console.log('--- Match.tsx:74 -> onNoClick ->', 'next with no')
+		match({ id })
 	}
 
 	return (
@@ -117,7 +127,7 @@ function Match() {
 				<Typography>{description}</Typography>
 				<Space height={2} />
 				<Row gap={0.5} wrap>
-					{tags?.map((tag) => <Chip key={tag.uid} label={tag.label} />)}
+					{tags?.map((tag) => <Chip key={tag.id} label={tag.label} />)}
 				</Row>
 				<Space height={2} />
 				<StyledDivider />

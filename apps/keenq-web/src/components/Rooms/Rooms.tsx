@@ -15,14 +15,19 @@ const RoomsList = styled(List)`
 	gap: 1.5rem
 `
 
+const context = {
+	additionalTypenames: ['rooms']
+}
+
 function Rooms() {
-	const [ result ] = useQuery(roomsgql)
+	const [ result ] = useQuery(roomsgql, null, { context })
+	const { data } = result
 
 	return (
 		<Container data-testid='Rooms' horizontal={0} flex>
 			<Space />
 			<RoomsList
-				data={result.data?.rooms || []}
+				data={data?.rooms || []}
 				render={RoomsItem}
 				empty={RoomsEmpty}
 			/>

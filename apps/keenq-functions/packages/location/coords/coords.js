@@ -20,12 +20,12 @@ function getDb(config) {
 	}
 }
 
-async function getUser(uid, db) {
+async function getUser(id, db) {
 	try {
 		return await db
 			.table('credentials')
 			.select()
-			.where('uid', uid)
+			.where('id', id)
 			.where('deletedAt', null)
 			// TODO: Where clause for NOT banned
 			.first()
@@ -55,11 +55,11 @@ async function ensureUser(user, phone, db) {
 	if (!user) throw { error: 'Wrong credentials' }
 }
 
-export async function main({ uid, place }) {
+export async function main({ id, place }) {
 	let db
 	try {
 		db = getDb(config)
-		const user = await getUser(uid, db)
+		const user = await getUser(id, db)
 		await ensureUser(user)
 		const data = await getCoords(place)
 

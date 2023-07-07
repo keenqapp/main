@@ -12,9 +12,9 @@ import { useModal } from '@/services/modals'
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Row from '@/ui/Row'
 
-import { messageReplyOrEditUid } from '@/components/Room/RoomInput'
+import { messageReplyOrEditId } from '@/components/Room/RoomInput'
 
-import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useCurrentMember } from '@/model/member/hooks'
 import { $isAdmin, $isAuthor } from '@/model/member'
 import { $isChannel, getRoomById } from '@/model/room'
 
@@ -27,46 +27,46 @@ const Reactions = styled(Row)`
 `
 
 const reactions = [
-	{ uid: '7', emoji: '💩' },
-	{ uid: '6', emoji: '👎' },
-	{ uid: '5', emoji: '😄' },
-	{ uid: '4', emoji: '️👍' },
-	{ uid: '3', emoji: '🥰' },
-	{ uid: '2', emoji: '🔥' },
-	{ uid: '1', emoji: '❤️' },
+	{ id: '7', emoji: '💩' },
+	{ id: '6', emoji: '👎' },
+	{ id: '5', emoji: '😄' },
+	{ id: '4', emoji: '️👍' },
+	{ id: '3', emoji: '🥰' },
+	{ id: '2', emoji: '🔥' },
+	{ id: '1', emoji: '❤️' },
 ]
 
 function MessageMenu() {
 	const navigate = useNavigate()
-	const { uid: cuid } = useCurrentMember()
+	const { id: cid } = useCurrentMember()
 	const { name, params, on } = useModal('message')
 	const { onOpen } = useModal('report')
-	const { uid: ruid } = useParams()
-	const { uid, authorUid } = params
-	const room = getRoomById(ruid!)
+	const { id: rid } = useParams()
+	const { id, authorId } = params
+	const room = getRoomById(rid!)
 
-	const reportClick = () => onOpen({ entity: 'message', uid })
+	const reportClick = () => onOpen({ entity: 'message', id })
 
-	const profileClick = () => navigate(`/match/${authorUid}`)
-	const roomClick = () => navigate(`/roomInfo/${ruid}`)
+	const profileClick = () => navigate(`/match/${authorId}`)
+	const roomClick = () => navigate(`/room/${rid}/info`)
 	const deleteClick = () => {
-		console.log('--- MessageMenu.tsx:23 -> deleteClick -> deleteClick', uid)
+		console.log('--- MessageMenu.tsx:23 -> deleteClick -> deleteClick', id)
 	}
 
 	const replyClick = () => {
-		messageReplyOrEditUid({ mode: 'reply', uid })
+		messageReplyOrEditId({ mode: 'reply', id })
 	}
 
 	const editClick = () => {
-		messageReplyOrEditUid({ mode: 'edit', uid })
+		messageReplyOrEditId({ mode: 'edit', id })
 	}
 
-	const reactionClick = (uid: string) => () => {
-		console.log('--- MessageMenu.tsx:61 -> reactionClick ->', uid)
+	const reactionClick = (id: string) => () => {
+		console.log('--- MessageMenu.tsx:61 -> reactionClick ->', id)
 	}
 
-	const isAuthor = $isAuthor(authorUid)
-	const isAdmin = $isAdmin(cuid, room)
+	const isAuthor = $isAuthor(authorId)
+	const isAdmin = $isAdmin(cid, room)
 	const isChannel = $isChannel(room)
 
 	const isEditable = (!isChannel && isAuthor) || (isChannel && isAdmin)
@@ -83,7 +83,7 @@ function MessageMenu() {
 				{isReplyable && <DrawerItem icon={<FormatQuoteTwoToneIcon color='secondary' />} text='Reply' onClick={on(replyClick)} />}
 				<DrawerItem>
 					<Reactions justify='between' flex={1}>
-						{reactions.map(({ uid, emoji }) => <div key={uid} onClick={on(reactionClick(uid))}>{emoji}</div>)}
+						{reactions.map(({ id, emoji }) => <div key={id} onClick={on(reactionClick(id))}>{emoji}</div>)}
 					</Reactions>
 				</DrawerItem>
 			</DrawerList>

@@ -32,10 +32,10 @@ export type ModalKeys = keyof typeof modals
 export type ModalParams<N> = N extends keyof ModalParamsMap ? ModalParamsMap[N] : Record<string, never>
 
 export interface ModalParamsMap {
-	roomInfoMember: { uid: string }
-	message: { uid: string, authorUid: string }
-	report: { uid: string, entity: string }
-	addMemberToRoom: { uid?: string, to: string }
+	roomInfoMember: { id: string }
+	message: { id: string, authorId: string }
+	report: { id: string, entity: string }
+	addMemberToRoom: { id?: string, to: string }
 	roomInfo: IRoom
 }
 

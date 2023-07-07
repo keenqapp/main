@@ -4,9 +4,9 @@ import { IMember } from '@/model/member/types'
 
 
 export const membergql = gql<{ members_by_pk: IMember }>`
-	query Member($uid: String!) {
-		members_by_pk(uid: $uid) {
-			uid
+	query Member($id: String!) {
+		members_by_pk(id: $id) {
+			id
 			name
 			description
 			image
@@ -21,10 +21,10 @@ export const membergql = gql<{ members_by_pk: IMember }>`
 	}
 `
 
-export const updategql = gql`
-	mutation UpdateMember($uid: String!, $data: members_set_input!) {
-		update_members_by_pk(pk_columns: { uid: $uid }, _set: $data) {
-			uid
+export const updatemembergql = gql`
+	mutation UpdateMember($id: String!, $data: members_set_input!) {
+		update_members_by_pk(pk_columns: { id: $id }, _set: $data) {
+			id
 			name
 			description
 			image

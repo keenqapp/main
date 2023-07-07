@@ -11,15 +11,15 @@ const store = create('auth')
 
 const authKeys = {
 	accessToken: '$accessToken',
-	uid: '$uid',
+	id: '$id',
 }
 
 export const isReady = signal(false)
 
-export const $uid = atom<string|null>(null)
-$uid.set(store.getItem<string>(authKeys.uid) || null)
-$uid.listen(uid => store.setItem(authKeys.uid, uid))
-export const $isAuthed = computed($uid, uid => !!uid)
+export const $id = atom<string|null>(null)
+$id.set(store.getItem<string>(authKeys.id) || null)
+$id.listen(id => store.setItem(authKeys.id, id))
+export const $isAuthed = computed($id, id => !!id)
 
 export const $accessToken = atom<string|null>(anonAccessToken)
 $accessToken.set(store.getItem<string>(authKeys.accessToken) || anonAccessToken)
@@ -29,10 +29,10 @@ $accessToken.listen(token => store.setItem(authKeys.accessToken, token) )
 export const authError = signal<string|null>(null)
 
 export function useAuth() {
-	const uid = useStore($uid)
+	const id = useStore($id)
 	return {
-		uid,
-		isAuthed: !!uid,
+		id,
+		isAuthed: !!id,
 	}
 }
 
@@ -63,7 +63,7 @@ const verifyGql = gql`
     verify(phone: $phone, code: $code) {
       data {
         accessToken
-        uid
+        id
         error
         reason
       }
@@ -79,7 +79,7 @@ export function useVerify() {
 			const { data } = await verity({ phone, code })
 			if (data.verify?.success) {
 				$accessToken.set(data.verify.data.accessToken)
-				$uid.set(data.verify.data.uid)
+				$id.set(data.verify.data.id)
 				return true
 			}
 			else authError.value = 'code_error'
@@ -89,6 +89,6 @@ export function useVerify() {
 
 export async function logout() {
 	$accessToken.set(anonAccessToken)
-	$uid.set(null)
+	$id.set(null)
 	store.clearAll()
 }

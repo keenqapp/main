@@ -17,11 +17,11 @@ import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
 import { useQuery, useUpdate } from '@/hooks/gql'
-import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { isLengthLower, useInput } from '@/hooks/useInput'
-import { updategql } from '@/model/member'
+import { updatemembergql } from '@/model/member'
 import { ITag } from '@/model/other'
 import { match } from '@/utils/utils'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 const StyledContainer = styled(Container)`
@@ -35,7 +35,7 @@ const TagChip = styled(Chip)<{ selected: boolean }>`
 const tagsgql = gql`
 	query GetTags {
 		tags {
-			uid
+			id
 			label
 		}
 	}
@@ -44,7 +44,7 @@ const tagsgql = gql`
 const addtaggql = gql`
 	mutation AddTag($label: String!) {
 		insert_tags_one(object: { label: $label }) {
-			uid
+			id
 			label
 		}
 	}
@@ -56,11 +56,11 @@ function byInput(input: string) {
 
 function TagsDrawer() {
 	const {
-		uid,
+		id,
 		tags
 	} = useCurrentMember()
 	const [ { data } ] = useQuery(tagsgql)
-	const [ , update ] = useUpdate(updategql)
+	const [ , update ] = useUpdate(updatemembergql)
 	const [ , mutate ] = useMutation(addtaggql)
 	const drawer = useModal('tags')
 
@@ -75,21 +75,21 @@ function TagsDrawer() {
 		}
 	})
 
-	const selected = new Set(tags?.toUids())
+	const selected = new Set(tags?.toIds())
 	const alltags = data?.tags.filter(byInput(tagInput.value)) || []
 
-	const onClick = (tuid: string) => {
+	const onClick = (tid: string) => {
 		if (selected.size >= 10) return
 
-		const next = selected.has(tuid) ? selected.copyDelete(tuid) : selected.copyAdd(tuid)
-		const tags = alltags.filter(({ uid }: ITag) => next.has(uid))
-		update(uid, { tags })
+		const next = selected.has(tid) ? selected.copyDelete(tid) : selected.copyAdd(tid)
+		const tags = alltags.filter(({ id }: ITag) => next.has(id))
+		update(id, { tags })
 	}
 
 	const onCreateClick = async () => {
 		tagInput.onClear()
 		const { data } = await mutate({ label: tagInput.value })
-		if (data) update(uid, { tags: tags.copyPush(data.insert_tags_one) })
+		if (data) update(id, { tags: tags.copyPush(data.insert_tags_one) })
 	}
 
 	return (
@@ -105,10 +105,10 @@ function TagsDrawer() {
 					{alltags.length > 0
 						? alltags?.map((tag: ITag) => (
 							<TagChip
-								key={tag.uid}
-								selected={selected.has(tag.uid)}
-								onClick={(e: any) => e.target.blur() || onClick(tag.uid)}
-								onDelete={selected.has(tag.uid) ? () => onClick(tag.uid) : undefined}
+								key={tag.id}
+								selected={selected.has(tag.id)}
+								onClick={(e: any) => e.target.blur() || onClick(tag.id)}
+								onDelete={selected.has(tag.id) ? () => onClick(tag.id) : undefined}
 								{...tag}
 							/>
 						))

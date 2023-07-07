@@ -73,7 +73,7 @@ export function resize(file: File, options: Options): Promise<any> {
 						const bytes = new Uint8Array(buffer)
 						const hash = md5(bytes)
 						const newFile = new File([blob], file.name, { type: `image/${format}` })
-						newFile.uid = hash
+						newFile.id = hash
 						newFile.width = width
 						newFile.height = height
 						resolve(newFile)

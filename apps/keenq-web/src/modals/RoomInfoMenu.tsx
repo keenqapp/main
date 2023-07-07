@@ -9,7 +9,7 @@ import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 
 
 function RoomInfoMenu() {
-	const { uid } = useParams()
+	const { id } = useParams()
 	const { name, on } = useModal('roomInfo')
 	const { confirm } = useConfirm()
 
@@ -17,7 +17,7 @@ function RoomInfoMenu() {
 		confirm({
 			title: 'Delete room',
 			text: 'Are you sure you want to delete this room?',
-			onConfirm: on(() => { console.log('--- RoomInfoMenu.tsx:18 ->  ->', 'del', uid) })
+			onConfirm: on(() => { console.log('--- RoomInfoMenu.tsx:18 ->  ->', 'del', id) })
 		})
 	}
 

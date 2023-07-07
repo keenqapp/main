@@ -1,14 +1,15 @@
 import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
-import { useParams } from 'react-router-dom'
+
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
 
 import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import FormatQuoteTwoToneIcon from '@mui/icons-material/FormatQuoteTwoTone'
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import SendTwoToneIcon from '@mui/icons-material/SendTwoTone'
-import IconButton from '@mui/material/IconButton'
-import TextField from '@mui/material/TextField'
 
 import { useModal } from '@/services/modals'
 
@@ -18,14 +19,13 @@ import Space from '@/ui/Space'
 import PersonalMessageReply from '@/components/PersonalMessage/PersonalMessageReply'
 
 import { messages } from './messages.mock'
-import { useCurrentMember } from '@/hooks/useCurrentMember'
 import { useInput } from '@/hooks/useInput'
-import { $isAdmin, $isRoomMember } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 import { IMessage } from '@/model/message'
 import { getText } from '@/model/message'
-import { $isChannel, getRoomById } from '@/model/room'
+import { $isChannel } from '@/model/room'
+import { useCurrentRoom } from '@/model/room/hooks'
 import { signal } from '@/utils/signals'
-import Button from '@mui/material/Button'
 
 
 const RoomInputContainer = styled.div`
@@ -42,11 +42,11 @@ const Input = styled(TextField)`
 `
 
 // REFACTOR dont like it... but it works :: used in MessageMenu.tsx
-export const messageReplyOrEditUid = signal({ mode: '', uid: '' })
+export const messageReplyOrEditId = signal({ mode: '', id: '' })
 
-function getMessageByUid(uid?: string) {
-	if (!uid) return
-	return messages.find((m) => m.uid === uid)
+function getMessageById(id?: string) {
+	if (!id) return
+	return messages.find((m) => m.id === id)
 }
 
 function asReply(message?: IMessage) {
@@ -57,19 +57,15 @@ function asReply(message?: IMessage) {
 
 function RoomInput() {
 
-	const { uid: muid } = useCurrentMember()
+	const { id: mid } = useCurrentMember()
 	const { onOpen } = useModal('attachment')
-	const { uid } = useParams()
-
-	const room = getRoomById(uid!)
+	const { room, isMember, isAdmin } = useCurrentRoom()
 	const isChannel = $isChannel(room)
-	const isMember = $isRoomMember(room, muid)
-	const isAdmin = $isAdmin(muid, room)
 
-	const message = getMessageByUid(messageReplyOrEditUid().uid())
+	const message = getMessageById(messageReplyOrEditId().id())
 	const replay = asReply(message)
 	const text = getText(message)
-	const isEdit = messageReplyOrEditUid().mode() === 'edit'
+	const isEdit = messageReplyOrEditId().mode() === 'edit'
 
 	const textInput = useInput({
 		value: isEdit ? text : '',
@@ -82,10 +78,10 @@ function RoomInput() {
 	})
 
 	useEffect(() => {
-		if (messageReplyOrEditUid().uid()) textInput.inputRef.current?.focus()
-	}, [ messageReplyOrEditUid().uid() ])
+		if (messageReplyOrEditId().id()) textInput.inputRef.current?.focus()
+	}, [ messageReplyOrEditId().id() ])
 
-	const onRemoveClick = () => messageReplyOrEditUid.clear()
+	const onRemoveClick = () => messageReplyOrEditId.clear()
 
 	const onSendClick = () => {
 		textInput.onClear()

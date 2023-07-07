@@ -44,7 +44,7 @@ declare global {
 		copySort(compareFn?: (a: T, b: T) => number): Array<T>
 		copyPush(item: T): Array<T>
 		toComponents<T>(render: (item: T, index: number) => VNode<T>): VNode[]
-		toUids(): string[]
+		toIds(): string[]
 	}
 
   interface String {
@@ -76,9 +76,9 @@ Object.defineProperty(Array.prototype, 'uniq', {
 	}
 })
 
-Object.defineProperty(Array.prototype, 'toUids', {
+Object.defineProperty(Array.prototype, 'toIds', {
 	value: function() {
-		return this.map((item: Entity) => item.uid)
+		return this.map((item: Entity) => item.id)
 	}
 })
 
@@ -115,7 +115,7 @@ Object.defineProperty(Array.prototype, 'toComponents', {
 			.map((item: P, index: number) => {
 				const component = render(item, index)
 				if (!component) return null
-				return cloneElement(component, { key: item.uid })
+				return cloneElement(component, { key: item.id })
 			})
 			.filter(Boolean)
 	}

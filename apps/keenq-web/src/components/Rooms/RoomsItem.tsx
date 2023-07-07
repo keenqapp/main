@@ -29,23 +29,23 @@ const SBadge = styled(Badge)`
 	}
 `
 
-function RoomsItem({ uid, name, image, unread = 0, last, verified }: IRoom) {
+function RoomsItem({ id, name, image, description, unread = 0, last, verified }: IRoom) {
 	const navigate = useNavigate()
-	const onClick = (uid: string) => () => {
-		navigate(`/room/${uid}`)
+	const onClick = (id: string) => () => {
+		navigate(`/room/${id}`)
 	}
 	return (
-		<RoomItemContainer data-testid='RoomsItem' onClick={onClick(uid)}>
+		<RoomItemContainer data-testid='RoomsItem' onClick={onClick(id)}>
 			<Row justify='start' gap={1}>
 				<SBadge badgeContent={unread} color='secondary'>
-					<Avatar src={image} alt={name} />
+					<Avatar src={image.url} alt={name} />
 				</SBadge>
 				<Row direction='column' align='start'>
 					<Row justify='start' gap={0.5}>
 						<NoWrap variant='h6'>{name}</NoWrap>
 						{verified && <VerifiedTwoToneIcon fontSize='small' color='primary' />}
 					</Row>
-					<NoWrap variant='body2'>{last}</NoWrap>
+					<NoWrap variant='body2'>{last || description}</NoWrap>
 				</Row>
 			</Row>
 		</RoomItemContainer>

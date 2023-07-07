@@ -21,7 +21,7 @@ const Content = styled(Column)`
 
 const keenq = [
 	{
-		uid: 'keenq',
+		id: 'keenq',
 		name: 'keenq',
 		image: '',
 		verified: true,

@@ -1,8 +1,9 @@
 import { IMember } from '@/model/member'
 
+
 export interface IMessage {
-	uid: string
-	roomUid: string
+	id: string
+	roomId: string
 	type: 'system' | 'personal' | 'other'
 
 	// Dates
@@ -12,14 +13,14 @@ export interface IMessage {
 	nextDate?: string | null
 
 	// Authors
-	authorUid: string
+	authorId: string
 	author: {
 		name: string
 		image: string
 	}
 	// @local @computed
-	prevAuthorUid?: string | null,
-	nextAuthorUid?: string | null
+	prevAuthorId?: string | null,
+	nextAuthorId?: string | null
 
 	content: (IMessageReply | IMessageText | IMessageImage | IMessageFile | IPartnerRequest) []
 	reactions: IMessageReaction[]
@@ -29,13 +30,13 @@ export interface IMessage {
 }
 
 export interface IMessageReaction {
-	uid: string
+	id: string
 	emoji: string
 	from: string
 }
 
 export interface IMessageReactionCount {
-	uid: string
+	id: string
 	emoji: string
 	count: number
 }
@@ -50,7 +51,7 @@ export interface IMessageText {
 export interface IMessageImage {
 	type: 'image'
 	value: {
-		uid: string
+		id: string
 		url: string
 		width: number
 		height: number
@@ -60,7 +61,7 @@ export interface IMessageImage {
 export interface IMessageFile {
 	type: 'file'
 	value: {
-		uid: string
+		id: string
 		url: string
 	}
 }
@@ -73,7 +74,7 @@ export interface IMessageReply {
 export interface IPartnerRequest {
 	type: 'partnerRequest'
 	value: {
-		fromUid: string
+		fromId: string
 		from: IMember
 	}
 }

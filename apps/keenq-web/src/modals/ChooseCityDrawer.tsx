@@ -16,9 +16,9 @@ import Space from '@/ui/Space'
 import json from '@/assets/cities.json'
 import Loading from '@/core/Loading'
 import { useUpdate } from '@/hooks/gql'
-import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useCurrentMember } from '@/model/member/hooks'
 import { useInput } from '@/hooks/useInput'
-import { updategql } from '@/model/member'
+import { updatemembergql } from '@/model/member'
 
 
 const StyledContainer = styled(Container)`
@@ -33,7 +33,7 @@ const CitiesList = styled(List<typeof json[number]>)`
 
 function toCity({ description, structured_formatting }: ICity) {
 	return {
-		uid: description,
+		id: description,
 		name: structured_formatting.main_text,
 		country: structured_formatting.secondary_text,
 	}
@@ -42,20 +42,18 @@ function toCity({ description, structured_formatting }: ICity) {
 function CitiesListItem(city: typeof json[number]) {
 	const { name, country, latitude, longitude } = city
 	const { on } = useModal('city')
-	const { uid } = useCurrentMember()
-	const [ _, update ] = useUpdate(updategql)
+	const { id } = useCurrentMember()
+	const [ _, update ] = useUpdate(updatemembergql)
 
 	const click = () => {
-		const data = {
-			location: {
-				country,
-				city: name,
-				longitude,
-				latitude,
-				timestamp: new Date().toISOString()
-			}
+		const location = {
+			country,
+			city: name,
+			longitude,
+			latitude,
+			timestamp: new Date().toISOString()
 		}
-		update(uid, { data })
+		update(id, { location })
 	}
 
 	return <DrawerItem text={name} subtext={country} onClick={on(click)} />

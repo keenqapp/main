@@ -21,18 +21,18 @@ const Text = styled(Typography)`
 `
 
 function PersonalMessageText(message: IMessage) {
-	const { authorUid, author: { name } } = message
+	const { authorId, author: { name } } = message
 	const text = getText(message)
 
 	const preventSelection = (e: MouseEvent) => e.preventDefault()
 
-	const { uid: ruid } = useParams()
-	const room = getRoomById(ruid!)
+	const { id: rid } = useParams()
+	const room = getRoomById(rid!)
 
-	const isSelf = $isAuthor(authorUid)
+	const isSelf = $isAuthor(authorId)
 	const isPrivate = $isPrivate(room)
 	const shouldShowName = checkShowName(message, room)
-	const admin = $isAdmin(authorUid, room)
+	const admin = $isAdmin(authorId, room)
 
 	if ((isSelf || isPrivate) && !text) return null
 	if (!text && !shouldShowName) return null

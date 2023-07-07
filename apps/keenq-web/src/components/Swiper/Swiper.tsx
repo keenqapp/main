@@ -82,10 +82,10 @@ function Swiper({ images, buttons, onScroll }: SwiperProps) {
 	return (
 		<SwiperContainer>
 			<SwiperScroll data-testid='Swiper' ref={ref} onScroll={handleScroll}>
-				{images.map(({ uid, url }) => (
-					<ImageContainer key={uid}>
+				{images.map(({ id, url }) => (
+					<ImageContainer key={id}>
 						<Image src={url} />
-						{buttons && cloneElement(buttons, { uid })}
+						{buttons && cloneElement(buttons, { id })}
 					</ImageContainer>
 				))}
 			</SwiperScroll>

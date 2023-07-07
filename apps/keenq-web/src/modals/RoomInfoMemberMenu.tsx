@@ -9,22 +9,22 @@ import { useModal } from '@/services/modals'
 
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 
-import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useCurrentMember } from '@/model/member/hooks'
 import { useIsAdmin } from '@/hooks/useIsAdmin'
 
 
 function RoomInfoMemberMenu() {
-	const { uid: cuid } = useCurrentMember()
+	const { id: cid } = useCurrentMember()
 
 	const navigate = useNavigate()
 	const { name, on, params } = useModal('roomInfoMember')
-	const { uid } = params
-	const profileClick = () => navigate(`/match/${uid}`)
+	const { id } = params
+	const profileClick = () => navigate(`/match/${id}`)
 
-	const currIsAdmin = useIsAdmin(cuid)
-	const memberIsAdmin = useIsAdmin(uid)
-	const isOwner = uid === '1'
-	const isSelf = cuid === uid
+	const currIsAdmin = useIsAdmin(cid)
+	const memberIsAdmin = useIsAdmin(id)
+	const isOwner = id === '1'
+	const isSelf = cid === id
 
 	return (
 		<Drawer data-testid='RoomInfoMemberMenu' name={name}>

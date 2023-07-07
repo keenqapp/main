@@ -6,8 +6,8 @@ import { $isPrivate, IRoom } from '@/model/room'
 
 
 const MAX_DIFF_IN_MINUTES = 2
-export function shouldShowCheck({ date, nextDate, authorUid, nextAuthorUid }: IMessage) {
-	if (authorUid !== nextAuthorUid) return true
+export function shouldShowCheck({ date, nextDate, authorId, nextAuthorId }: IMessage) {
+	if (authorId !== nextAuthorId) return true
 	if (!nextDate) return true
 	const current = parseISO(date)
 	const next = parseISO(nextDate)
@@ -15,12 +15,12 @@ export function shouldShowCheck({ date, nextDate, authorUid, nextAuthorUid }: IM
 	return differenceInMinutes(next, current) >= MAX_DIFF_IN_MINUTES
 }
 
-export function checkShowName({ authorUid, prevAuthorUid, date, prevDate }: IMessage, room: IRoom) {
+export function checkShowName({ authorId, prevAuthorId, date, prevDate }: IMessage, room: IRoom) {
 	const isPrivate = $isPrivate(room)
-	const isSelf = $isAuthor(authorUid)
+	const isSelf = $isAuthor(authorId)
 	if (isSelf || isPrivate) return false
 
-	const isDifferentAuthor = authorUid !== prevAuthorUid
+	const isDifferentAuthor = authorId !== prevAuthorId
 	if (isDifferentAuthor) return true
 	if (!prevDate) return true
 

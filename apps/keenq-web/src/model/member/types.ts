@@ -2,7 +2,7 @@ import { IImage, ILocation, ITag } from '@/model/other'
 
 
 export interface IMember {
-	uid: string
+	id: string
 	name: string
 	description: string
 	gender: string

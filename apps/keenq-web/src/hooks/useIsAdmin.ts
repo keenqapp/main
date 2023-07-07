@@ -4,9 +4,9 @@ import { $isAdmin } from '@/model/member'
 import { getRoomById } from '@/model/room'
 
 
-export function useIsAdmin(muid: string) {
-	const { uid: ruid } = useParams()
-	if (!ruid) return false
-	const room = getRoomById(ruid)
-	return $isAdmin(muid, room)
+export function useIsAdmin(mid: string) {
+	const { id: rid } = useParams()
+	if (!rid) return false
+	const room = getRoomById(rid)
+	return $isAdmin(mid, room)
 }

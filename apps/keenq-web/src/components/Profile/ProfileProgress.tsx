@@ -16,7 +16,7 @@ import Column from '@/ui/Column'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
-import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 const ProfileProgressContainer = styled.div`

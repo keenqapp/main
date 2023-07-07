@@ -27,10 +27,10 @@ const MemberContainer = styled(Row)`
 `
 
 
-function Member({ uid, name, image }: IMember) {
+function Member({ id, name, image }: IMember) {
 	const { onOpen } = useModal('roomInfoMember')
-	const admin = useIsAdmin(uid)
-	const onClick = () => onOpen({ uid })
+	const admin = useIsAdmin(id)
+	const onClick = () => onOpen({ id })
 	return (
 		<MemberContainer justify='start' gap={1} onClick={onClick}>
 			<Avatar src={image} alt={name} />

@@ -1,4 +1,4 @@
-export type Entity = { uid: string }
+export type Entity = { id: string }
 
 export type Opaque<K, T> = T & { __TYPE__: K }
 

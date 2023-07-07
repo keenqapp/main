@@ -2,112 +2,112 @@
   {
     "country": "United Arab Emirates",
     "name": "Dubai",
-    "uid": "Dubai",
+    "id": "Dubai",
     "latitude": "25.07725",
     "longitude": "55.30927"
   },
   {
     "country": "Austria",
     "name": "Vienna",
-    "uid": "Vienna",
+    "id": "Vienna",
     "latitude": "48.20849",
     "longitude": "16.37208"
   },
   {
     "country": "Chech Republic",
     "name": "Prague",
-    "uid": "Prague",
+    "id": "Prague",
     "latitude": "50.08804",
     "longitude": "14.42076"
   },
   {
     "country": "Germany",
     "name": "Berlin",
-    "uid": "Berlin",
+    "id": "Berlin",
     "latitude": "52.52437",
     "longitude": "13.41053"
   },
   {
     "country": "Spain",
     "name": "Madrid",
-    "uid": "Madrid",
+    "id": "Madrid",
     "latitude": "40.4165",
     "longitude": "-3.70256"
   },
   {
     "country": "Spain",
     "name": "Barcelona",
-    "uid": "Barcelona",
+    "id": "Barcelona",
     "latitude": "41.38879",
     "longitude": "2.15899"
   },
   {
     "country": "France",
     "name": "Paris",
-    "uid": "Paris",
+    "id": "Paris",
     "latitude": "48.85341",
     "longitude": "2.3488"
   },
   {
     "country": "United Kingdom",
     "name": "London",
-    "uid": "London",
+    "id": "London",
     "latitude": "51.50853",
     "longitude": "-0.12574"
   },
   {
     "country": "Georgia",
     "name": "Tbilisi",
-    "uid": "Tbilisi",
+    "id": "Tbilisi",
     "latitude": "41.69411",
     "longitude": "44.83368"
   },
   {
     "country": "Israel",
     "name": "Haifa",
-    "uid": "Haifa",
+    "id": "Haifa",
     "latitude": "32.81841",
     "longitude": "34.9885"
   },
   {
     "country": "Israel",
     "name": "Tel-Aviv",
-    "uid": "Tel-Aviv",
+    "id": "Tel-Aviv",
     "latitude": "32.109333",
     "longitude": "34.855499"
   },
   {
     "country": "Italy",
     "name": "Rome",
-    "uid": "Rome",
+    "id": "Rome",
     "latitude": "41.89193",
     "longitude": "12.51133"
   },
   {
     "country": "Netherlands",
     "name": "Amsterdam",
-    "uid": "Amsterdam",
+    "id": "Amsterdam",
     "latitude": "52.37403",
     "longitude": "4.88969"
   },
   {
     "country": "Russia",
     "name": "Moscow",
-    "uid": "Moscow",
+    "id": "Moscow",
     "latitude": "55.75222",
     "longitude": "37.61556"
   },
   {
     "country": "Russia",
     "name": "Saint-Petersburg",
-    "uid": "Saint-Petersburg",
+    "id": "Saint-Petersburg",
     "latitude": "59.937500",
     "longitude": "30.308611"
   },
   {
     "country": "Türkiye",
     "name": "Istanbul",
-    "uid": "Istanbul",
+    "id": "Istanbul",
     "latitude": "41.01384",
     "longitude": "28.94966"
   }

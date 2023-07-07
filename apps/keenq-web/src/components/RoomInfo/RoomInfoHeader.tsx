@@ -11,7 +11,7 @@ import { useModal } from '@/services/modals'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
-import { useCurrentMember } from '@/hooks/useCurrentMember'
+import { useCurrentMember } from '@/model/member/hooks'
 import { useIsAdmin } from '@/hooks/useIsAdmin'
 import { IRoom } from '@/model/room'
 
@@ -22,8 +22,8 @@ function RoomInfoHeader(room: IRoom) {
 	const navigate = useNavigate()
 	const { onOpen } = useModal('roomInfo')
 
-	const { uid: cuid } = useCurrentMember()
-	const isAdmin = useIsAdmin(cuid)
+	const { id: cid } = useCurrentMember()
+	const isAdmin = useIsAdmin(cid)
 
 	const handleBack = () => navigate(-1)
 	const onClick = () => onOpen(room)

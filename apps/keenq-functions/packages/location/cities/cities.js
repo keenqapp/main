@@ -23,12 +23,12 @@ function getDb(config) {
 	}
 }
 
-async function getMember(uid, db) {
+async function getMember(id, db) {
 	try {
 		return await db
 			.table('credentials')
 			.select()
-			.where('uid', uid)
+			.where('id', id)
 			.where('deletedAt', null)
 			// TODO: Where clause for NOT banned
 			.first()
@@ -62,11 +62,11 @@ async function ensureMember(member, db) {
 	if (!member) throw { error: 'Member doesnt exists' }
 }
 
-export async function main({ uid, input, location }) {
+export async function main({ id, input, location }) {
 	let db
 	try {
 		db = getDb(config)
-		const member = await getMember(uid, db)
+		const member = await getMember(id, db)
 		await ensureMember(member)
 		const data = await getCity(input, location)
 

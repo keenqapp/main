@@ -11,13 +11,6 @@ packages:
         web: true
         environment:
           JWT_SECRET: "${JWT_SECRET}"
-  - name: profiles
-    environment:
-      DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
-    functions:
-      - name: create
-        runtime: nodejs:18
-        web: true
   - name: location
     environment:
       DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"

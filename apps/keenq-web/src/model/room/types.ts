@@ -1,12 +1,13 @@
 import { IMember } from '@/model/member'
+import { IImage } from '@/model/other'
 
 
 export interface IRoom {
-	uid: string
+	id: string
 	name: string
 	verified: boolean
 	type: 'personal' | 'private' | 'public'  | 'channel'
-	image: string
+	image: IImage
 	description: string
 
 	last?: string

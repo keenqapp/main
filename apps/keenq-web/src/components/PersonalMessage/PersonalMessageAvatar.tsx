@@ -19,12 +19,12 @@ const EmptyAvatar = styled.div`
 `
 
 function PersonalMessageAvatar(message: IMessage) {
-	const { authorUid, author: { image } } = message
-	const { uid } = useParams()
+	const { authorId, author: { image } } = message
+	const { id } = useParams()
 
 	const shouldShow = shouldShowCheck(message)
-	const isSelf = $isAuthor(authorUid)
-	const isPrivate = $isPrivate(uid!)
+	const isSelf = $isAuthor(authorId)
+	const isPrivate = $isPrivate(id!)
 
 	if (isSelf || isPrivate) return null
 	if (!shouldShow) return <EmptyAvatar />

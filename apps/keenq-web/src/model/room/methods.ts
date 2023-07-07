@@ -3,8 +3,8 @@ import { rooms } from '@/components/Rooms/rooms.mock'
 import { IRoom } from '@/model/room/types'
 
 
-export function getRoomById(uid: string) {
-	return rooms.find(room => room.uid === uid)! as IRoom
+export function getRoomById(id: string) {
+	return rooms.find(room => room.id === id)! as IRoom
 }
 
 export function $isPrivate(room?: IRoom) {

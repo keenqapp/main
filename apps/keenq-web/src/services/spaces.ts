@@ -37,7 +37,7 @@ export async function uploadImage(where: string, file: File): Promise<IImage|und
 		}
 		spaces.putObject(params)
 		return {
-			uid: resized.uid,
+			id: resized.id,
 			name: name,
 			url: fullUrl,
 			width: resized.width,

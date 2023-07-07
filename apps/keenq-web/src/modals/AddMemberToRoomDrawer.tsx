@@ -37,34 +37,34 @@ const MemberItemContainer = styled(Row)`
 `
 
 const mockData = [
-	{ uid: '1', name: 'Patrisia', image: 'https://i.pravatar.cc/200?img=5' },
-	{ uid: '2', name: 'Mia', image: 'https://i.pravatar.cc/200?img=1' },
-	{ uid: '3', name: 'Liam', image: 'https://i.pravatar.cc/200?img=2' },
-	{ uid: '4', name: 'Noah', image: 'https://i.pravatar.cc/200?img=3' },
-	{ uid: '5', name: 'Emma', image: 'https://i.pravatar.cc/200?img=4' },
-	{ uid: '6', name: 'Olivia', image: 'https://i.pravatar.cc/200?img=5' },
-	{ uid: '7', name: 'Ava', image: 'https://i.pravatar.cc/200?img=1' },
-	{ uid: '8', name: 'Isabella', image: 'https://i.pravatar.cc/200?img=2' },
-	{ uid: '9', name: 'Sophia', image: 'https://i.pravatar.cc/200?img=3' },
-	{ uid: '10', name: 'Charlotte', image: 'https://i.pravatar.cc/200?img=4' },
-	{ uid: '11', name: 'Amelia', image: 'https://i.pravatar.cc/200?img=5' },
-	{ uid: '12', name: 'Mia', image: 'https://i.pravatar.cc/200?img=1' },
-	{ uid: '13', name: 'Liam', image: 'https://i.pravatar.cc/200?img=2' },
-	{ uid: '14', name: 'Noah', image: 'https://i.pravatar.cc/200?img=3' },
-	{ uid: '15', name: 'Emma', image: 'https://i.pravatar.cc/200?img=4' },
+	{ id: '1', name: 'Patrisia', image: 'https://i.pravatar.cc/200?img=5' },
+	{ id: '2', name: 'Mia', image: 'https://i.pravatar.cc/200?img=1' },
+	{ id: '3', name: 'Liam', image: 'https://i.pravatar.cc/200?img=2' },
+	{ id: '4', name: 'Noah', image: 'https://i.pravatar.cc/200?img=3' },
+	{ id: '5', name: 'Emma', image: 'https://i.pravatar.cc/200?img=4' },
+	{ id: '6', name: 'Olivia', image: 'https://i.pravatar.cc/200?img=5' },
+	{ id: '7', name: 'Ava', image: 'https://i.pravatar.cc/200?img=1' },
+	{ id: '8', name: 'Isabella', image: 'https://i.pravatar.cc/200?img=2' },
+	{ id: '9', name: 'Sophia', image: 'https://i.pravatar.cc/200?img=3' },
+	{ id: '10', name: 'Charlotte', image: 'https://i.pravatar.cc/200?img=4' },
+	{ id: '11', name: 'Amelia', image: 'https://i.pravatar.cc/200?img=5' },
+	{ id: '12', name: 'Mia', image: 'https://i.pravatar.cc/200?img=1' },
+	{ id: '13', name: 'Liam', image: 'https://i.pravatar.cc/200?img=2' },
+	{ id: '14', name: 'Noah', image: 'https://i.pravatar.cc/200?img=3' },
+	{ id: '15', name: 'Emma', image: 'https://i.pravatar.cc/200?img=4' },
 ]
 
 const selected = signal(new Set<string>())
 
-function MemberItem({ uid, name, image }: IMember) {
-	const onChange = () => selected.value = selected.value.copyToggle(uid)
+function MemberItem({ id, name, image }: IMember) {
+	const onChange = () => selected.value = selected.value.copyToggle(id)
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={onChange}>
 			<Avatar src={image} alt={name} />
 			<Row flex={1} >
 				<Typography variant='h6'>{name}</Typography>
 			</Row>
-			<Checkbox value={selected.value.has(uid)} />
+			<Checkbox value={selected.value.has(id)} />
 		</MemberItemContainer>
 	)
 }
@@ -82,7 +82,7 @@ function AddMemberToRoom() {
 	})
 
 	const click = () => {
-		console.log('--- AddMemberToRoomDrawer.tsx:77 -> onClick ->', params.uid, selected.value)
+		console.log('--- AddMemberToRoomDrawer.tsx:77 -> onClick ->', params.id, selected.value)
 	}
 
 	const data = mockData.filter(({ name }) => match(nameInput.value, name))

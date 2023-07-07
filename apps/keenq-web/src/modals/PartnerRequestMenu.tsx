@@ -12,10 +12,10 @@ function PartnerRequestMenu() {
 	const navigate = useNavigate()
 	const { onOpen } = useModal('report')
 	const { name, on, params } = useModal('partnerRequest')
-	const { uid } = params
+	const { id } = params
 
-	const reportClick = () => onOpen({ entity: 'partnerRequest', uid })
-	const profileClick = () => navigate(`/match/${uid}`)
+	const reportClick = () => onOpen({ entity: 'partnerRequest', id })
+	const profileClick = () => navigate(`/match/${id}`)
 
 	return (
 		<Drawer data-testid='PartnerRequestMenu' name={name}>

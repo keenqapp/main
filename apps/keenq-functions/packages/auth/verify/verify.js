@@ -19,7 +19,7 @@ function getDb(config) {
 	}
 }
 
-async function getMember(phone, db) {
+async function getMember(phone, id, db) {
 	try {
 		return await db
 			.table('credentials')
@@ -56,12 +56,12 @@ async function checkCode(phone, code, db) {
 
 function getPayload(member) {
 	return {
-		sub: member.uid,
+		sub: member.id,
 		iat: Math.floor(Date.now() / 1000),
 		aud: 'keenq-web',
 		iss: 'keenq-functions',
 		'https://hasura.io/jwt/claims': {
-			'X-Hasura-User-Id': member.uid,
+			'X-Hasura-User-Id': member.id,
 			'X-Hasura-Role': "member",
 			'x-hasura-default-role': "member",
 			'x-hasura-allowed-roles': ['admin', 'manager', 'member'],
@@ -78,7 +78,8 @@ async function generateJWT(user) {
 	}
 }
 
-export async function main({ phone, code }, context) {
+// TODO: check id for 'creds' and 'members' for sync
+export async function main({ phone, code }) {
 	let db
 	try {
 	  db = getDb(config)
@@ -87,7 +88,7 @@ export async function main({ phone, code }, context) {
 		await checkCode(phone, code, db)
 		const accessToken = await generateJWT(member)
 
-		return { body: { success: true, data: { accessToken, uid: member.uid } } }
+		return { body: { success: true, data: { accessToken, id: member.id } } }
 	}
 	catch(e) {
 		console.error(e)

@@ -23,9 +23,9 @@ function enrich(acc: IMessage[], message: IMessage, index: number, data: IMessag
 	}
 	acc.push({
 		...message,
-		nextAuthorUid: next?.authorUid || null,
+		nextAuthorId: next?.authorId || null,
 		nextDate: next?.date || null,
-		prevAuthorUid: prev?.authorUid || null,
+		prevAuthorId: prev?.authorId || null,
 		prevDate: prev?.date || null
 	})
 	return acc

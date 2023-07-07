@@ -62,7 +62,7 @@ function LoginForm() {
 		format: f,
 		validation: [isNotEmpty, isValidPhone],
 		error: authError.value,
-		onFocus: () => authError.value = null
+		onFocus: () => authError.value = null,
 	})
 
 	const handleChange = (code: string) => {

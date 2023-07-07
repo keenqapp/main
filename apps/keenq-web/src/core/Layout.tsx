@@ -8,6 +8,7 @@ import Loadable from '@/ui/Loadable'
 
 import Appbar from '@/core/Appbar'
 import BottomTabs from '@/core/BottomTabs'
+import { usePreload } from '@/hooks/usePreload'
 import Modals from '@/modals/Modals'
 
 
@@ -22,9 +23,11 @@ function Layout() {
 	const isAuthed = useStore($isAuthed)
 	if (!isAuthed) return <Navigate to='/auth/login' />
 
+	const loading = usePreload()
+
 	return (
 		<div data-testid='Layout'>
-			<Loadable loading={false}>
+			<Loadable loading={loading} fullHeight>
 				<Appbar />
 				<Main>
 					<Outlet />
