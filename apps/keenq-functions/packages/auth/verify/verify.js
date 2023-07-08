@@ -19,7 +19,7 @@ function getDb(config) {
 	}
 }
 
-async function getMember(phone, id, db) {
+async function getMember(phone, db) {
 	try {
 		return await db
 			.table('credentials')
