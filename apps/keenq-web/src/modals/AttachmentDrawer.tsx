@@ -1,16 +1,20 @@
 import styled from '@emotion/styled'
 
-// TODO implement gifs and stickers
-// import GifBoxTwoToneIcon from '@mui/icons-material/GifBoxTwoTone'
-// import SentimentVerySatisfiedTwoToneIcon from '@mui/icons-material/SentimentVerySatisfiedTwoTone'
-import PhotoCameraBackTwoToneIcon from '@mui/icons-material/PhotoCameraBackTwoTone'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 
+// TODO implement gifs and stickers
+// import GifBoxTwoToneIcon from '@mui/icons-material/GifBoxTwoTone'
+// import SentimentVerySatisfiedTwoToneIcon from '@mui/icons-material/SentimentVerySatisfiedTwoTone'
+import PhotoCameraBackTwoToneIcon from '@mui/icons-material/PhotoCameraBackTwoTone'
+
 import { useModal } from '@/services/modals'
 
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
+import Upload from '@/ui/Upload'
+
+import { prepareImageToUpload } from '@/components/Room/RoomInput/state'
 
 
 const StyledDrawerItem = styled(DrawerItem)`
@@ -26,39 +30,22 @@ const StyledDrawerItem = styled(DrawerItem)`
 
 function AttachmentDrawer() {
 	const { name, on } = useModal('attachment')
-
-	const photoOrVideoChange = () => {
-		console.log('--- AttachmentDrawer.tsx:12 -> photoOrVideoClick ->', 'photoOrVideoClick')
+	const imageChange = async (e: any) => {
+		for await (const file of Array.from(e.target.files).slice(0, 3)) {
+			await prepareImageToUpload(file as File)
+		}
 	}
-
-	// const selectFile = () => {}
-	//
-	// const gifClick = () => {
-	// 	console.log('--- AttachmentDrawer.tsx:16 -> gifClick ->', 'gifClick')
-	// }
-	//
-	// const stickerClick = () => {
-	// 	console.log('--- AttachmentDrawer.tsx:20 -> stickerClick ->', 'stickerClick')
-	// }
 
 	return (
 		<Drawer data-testid='AttachmentDrawer' name={name}>
 			<DrawerList>
 				<StyledDrawerItem text=''>
-					<label htmlFor="contained-button-file">
-						{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-						{/* @ts-ignore */}
+					<Upload onChange={on(imageChange)} accept='image/*' multiple>
 						<ListItemButton component='span'>
 							<ListItemIcon><PhotoCameraBackTwoToneIcon color='primary' /></ListItemIcon>
-							<ListItemText primary='Photo or video' />
+							<ListItemText primary='Photos' secondary='Max 3' />
 						</ListItemButton>
-					</label>
-					<input
-						accept="image/*"
-						id="contained-button-file"
-						type="file"
-						onChange={on(photoOrVideoChange)}
-					/>
+					</Upload>
 				</StyledDrawerItem>
 				{/* TODO implement gifs and stickers */}
 				{/*<DrawerItem icon={<GifBoxTwoToneIcon color='primary' />} text='Gif' onClick={on(gifClick)} />*/}

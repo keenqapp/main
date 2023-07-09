@@ -1,10 +1,4 @@
 import knex from 'knex'
-import { customAlphabet } from 'nanoid'
-// import getMemberById from './getMemberById'
-
-
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-const nanoid = customAlphabet(alphabet, 8)
 
 const config = {
 	client: 'pg',
@@ -22,6 +16,10 @@ function getDb(config) {
 	catch(e) {
 		throw { reason: 'Could not connect to database', error: e }
 	}
+}
+
+function validate(id) {
+	if (typeof id !== 'string') throw { error: 'validation error', reason: 'id must be a string' }
 }
 
 async function getMember(id, db) {
@@ -65,6 +63,7 @@ async function getMatch(id, db) {
 export async function main({ id }) {
 	let db
 	try {
+		validate(id)
 	  db = getDb(config)
 		const member = await getMember(id, db)
 		await ensureMember(member)

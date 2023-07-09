@@ -10,7 +10,7 @@ import List from '@/ui/List'
 import Row from '@/ui/Row'
 
 import { useIsAdmin } from '@/hooks/useIsAdmin'
-import { IMember } from '@/model/member'
+import { getAvatar, IMember } from '@/model/member'
 import { IRoom } from '@/model/room'
 
 
@@ -27,16 +27,18 @@ const MemberContainer = styled(Row)`
 `
 
 
-function Member({ id, name, image }: IMember) {
+function Member(member: IMember) {
+	const { id, name } = member
+	const avatar = getAvatar(member)
 	const { onOpen } = useModal('roomInfoMember')
-	const admin = useIsAdmin(id)
+	const isAdmin = useIsAdmin(id)
 	const onClick = () => onOpen({ id })
 	return (
 		<MemberContainer justify='start' gap={1} onClick={onClick}>
-			<Avatar src={image} alt={name} />
+			<Avatar src={avatar?.url} alt={name} />
 			<Column>
 				<Typography variant='h6'>{name}</Typography>
-				{admin && <Typography variant='body2'>admin</Typography>}
+				{isAdmin && <Typography variant='body2'>admin</Typography>}
 			</Column>
 		</MemberContainer>
 	)

@@ -6,9 +6,10 @@ export interface ITag {
 export interface IImage {
 	id: string
 	url: string
-	name: string
 	width: number
 	height: number
+	date: string
+	authorId?: string
 }
 
 export interface ILocation {

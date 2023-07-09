@@ -1,11 +1,5 @@
-import { rooms } from '@/components/Rooms/rooms.mock'
-
 import { IRoom } from '@/model/room/types'
 
-
-export function getRoomById(id: string) {
-	return rooms.find(room => room.id === id)! as IRoom
-}
 
 export function $isPrivate(room?: IRoom) {
 	if (!room) return false

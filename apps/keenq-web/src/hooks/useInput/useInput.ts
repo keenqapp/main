@@ -90,7 +90,7 @@ export function useInput(props: UseInputProps) {
 
 		if (onChange) {
 			if (forceValid && !isValid) return
-			onChange(formattedValue, isValid)
+			onChange(event, formattedValue, isValid)
 		}
 		event.target.value = formattedValue
 		setInput(formattedValue)

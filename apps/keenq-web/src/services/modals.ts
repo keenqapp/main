@@ -52,8 +52,8 @@ export function useModal<N extends ModalKeys>(name: N) {
 		params = {} as any
 		modalsStore()[name](false)
 	}, [])
-	const on = useCallback((fn: () => void) => () => {
-		fn()
+	const on = useCallback((fn: (e?: any) => void) => (e?: any) => {
+		fn(e)
 		onClose()
 	}, [])
 	const onCloseAll = useCallback(() => modalsStore.clear(), [])

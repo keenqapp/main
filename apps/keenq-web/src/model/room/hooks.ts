@@ -25,8 +25,6 @@ export function useCurrentRoom() {
 	const { id: mid } = useCurrentMember()
 	const [ result ] = useQuery(currentroomgql, { id }, options)
 
-	console.log('--- hooks.ts:28 -> useCurrentRoom ->', result.data)
-
 	const data = useMemo(() => {
 		const room = result.data?.rooms_by_pk || {}
 		const membersCount = result.data?.rooms_members_aggregate.aggregate.count

@@ -17,7 +17,6 @@ const PersonalMessageReactionsContainer = styled(Row)`
 `
 
 const Reaction = styled(Row)`
-  //background: rgba(233,233,233,0.8);
   background: rgba(220, 244, 227, 0.85);
   padding: 0.2rem 0.5rem;
   border-radius: 1rem;

@@ -21,13 +21,11 @@ const context = {
 
 function Rooms() {
 	const [ result ] = useQuery(roomsgql, null, { context })
-	const { data } = result
-
 	return (
 		<Container data-testid='Rooms' horizontal={0} flex>
 			<Space />
 			<RoomsList
-				data={data?.rooms || []}
+				data={result.data?.rooms || []}
 				render={RoomsItem}
 				empty={RoomsEmpty}
 			/>

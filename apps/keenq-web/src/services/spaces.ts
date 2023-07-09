@@ -4,10 +4,6 @@ import { IImage } from '@/model/other'
 import { resize } from '@/utils/resize'
 
 
-function random(min: number, max: number) {
-	return Math.random() * (max - min) + min
-}
-
 const spaces = new S3({
 	forcePathStyle: false, // Configures to use subdomain/virtual calling format.
 	endpoint: import.meta.env.VITE_SPACES_ENDPOINT,
@@ -20,28 +16,29 @@ const spaces = new S3({
 
 export default spaces
 
-export async function uploadImage(where: string, file: File): Promise<IImage|undefined> {
+export async function uploadImage(where: string, file: File, authorId?: string): Promise<IImage|undefined> {
 	try {
-		const resized = await resize(file, { maxHeight: 500, maxWidth: 500 })
-		const name = random(1, 100).toFixed(0) + '' + Date.now()
-		const fullUrl = `https://keenq.fra1.cdn.digitaloceanspaces.com/images/${where}/${name}.webp`
+		const resized = await resize(file, { maxHeight: 500, maxWidth: 500, prepare: true })
+		const fullUrl = `https://keenq.fra1.cdn.digitaloceanspaces.com/images/${where}/${resized.id}.webp`
 		const params = {
-			Key: `images/${where}/${name}.webp`,
-			Body: resized,
+			Key: `images/${where}/${resized.id}.webp`,
+			Body: resized.data,
 			Bucket:  import.meta.env.VITE_SPACES_BUCKET,
 			ACL: 'public-read',
 			ContentType: 'image/webp',
 			Metadata: {
-				'Last-Modified': new Date().toUTCString()
+				'Last-Modified': new Date().toUTCString(),
+				'Author-Id': authorId || ''
 			}
 		}
-		spaces.putObject(params)
+		await spaces.putObject(params)
 		return {
 			id: resized.id,
-			name: name,
 			url: fullUrl,
 			width: resized.width,
-			height: resized.height
+			height: resized.height,
+			date: new Date().toISOString(),
+			authorId
 		}
 	}
 	catch(e) {

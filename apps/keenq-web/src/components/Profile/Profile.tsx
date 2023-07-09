@@ -31,10 +31,10 @@ import ProfileProgress from '@/components/Profile/ProfileProgress'
 import Swiper from '@/components/Swiper'
 
 import { useUpdate } from '@/hooks/gql'
-import { useCurrentMember } from '@/model/member/hooks'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
 import { IMemberPartner, updatemembergql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 const Content = styled(Row)`
@@ -74,13 +74,14 @@ const EmptyImagesContainer = styled.div`
 `
 
 function Buttons({ id }: { id?: string }) {
-	const { id: cid, images = [] } = useCurrentMember()
+	const { id: cid, images } = useCurrentMember()
 	const [ , update ] = useUpdate(updatemembergql)
 
 	const onClick = () => {
-		const image = images.find(({ id: iid }) => iid === id)
-		const newImages = images.filter(({ id: iid }) => iid !== id)
-		deleteImage(`/members/${cid}`, image!.name)
+		const image = images?.find(({ id: iid }) => iid === id)
+		const newImages = images?.excludeById(id!)
+		if (!image) return
+		deleteImage(`/members/${cid}`, image.id)
 		update(cid, { images: newImages })
 	}
 
@@ -165,7 +166,7 @@ function Profile() {
 		disableUnderline: true,
 		validation: [isNotEmpty, isLengthLower(24)],
 		forceValid: true,
-		onChange: (name: string) => update(id, { name }),
+		onChange: (_:any, name: string) => update(id, { name }),
 	})
 
 	const descriptionInput = useInput({
@@ -174,7 +175,7 @@ function Profile() {
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
-		onChange: (description: string) => update(id, { description }),
+		onChange: (_:any, description: string) => update(id, { description }),
 	})
 
 	const onScroll = useRef<(where: 'bottom' | 'top') => void>()

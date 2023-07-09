@@ -1,11 +1,10 @@
 import styled from '@emotion/styled'
-import { useParams } from 'react-router-dom'
 
 import Avatar from '@mui/material/Avatar'
 
-import { $isAuthor } from '@/model/member'
+import { $isAuthor, useCurrentMember } from '@/model/member'
 import { IMessage, shouldShowCheck } from '@/model/message'
-import { $isPrivate } from '@/model/room'
+import { $isPrivate, useCurrentRoom } from '@/model/room'
 
 
 const StyledAvatar = styled(Avatar)`
@@ -19,18 +18,19 @@ const EmptyAvatar = styled.div`
 `
 
 function PersonalMessageAvatar(message: IMessage) {
-	const { authorId, author: { image } } = message
-	const { id } = useParams()
+	const { authorId, author: { images } } = message
+	const { room } = useCurrentRoom()
+	const { id } = useCurrentMember()
 
 	const shouldShow = shouldShowCheck(message)
-	const isSelf = $isAuthor(authorId)
-	const isPrivate = $isPrivate(id!)
+	const isSelf = $isAuthor(authorId, id)
+	const isPrivate = $isPrivate(room)
 
 	if (isSelf || isPrivate) return null
 	if (!shouldShow) return <EmptyAvatar />
 
 	return (
-		<StyledAvatar data-testid='PersonalMessageAvatar' src={image} />
+		<StyledAvatar data-testid='PersonalMessageAvatar' src={images}  />
 	)
 }
 

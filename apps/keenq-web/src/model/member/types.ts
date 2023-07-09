@@ -9,7 +9,6 @@ export interface IMember {
 	sexuality: string
 	location: ILocation
 	tags: ITag[]
-	image: IImage
 	images?: IImage[]
 	linked?: (IMemberPartner)[]
 	visible?: boolean

@@ -1,4 +1,5 @@
 import { IMember } from '@/model/member'
+import { IImage } from '@/model/other'
 
 
 export interface IMessage {
@@ -16,15 +17,15 @@ export interface IMessage {
 	authorId: string
 	author: {
 		name: string
-		image: string
+		images: IImage[]
 	}
 	// @local @computed
 	prevAuthorId?: string | null,
 	nextAuthorId?: string | null
 
 	content: (IMessageReply | IMessageText | IMessageImage | IMessageFile | IPartnerRequest) []
-	reactions: IMessageReaction[]
-	reactionsCount: IMessageReactionCount[]
+	reactions?: IMessageReaction[]
+	reactionsCount?: IMessageReactionCount[]
 
 	meta?: IMessageMeta
 }
@@ -50,12 +51,7 @@ export interface IMessageText {
 
 export interface IMessageImage {
 	type: 'image'
-	value: {
-		id: string
-		url: string
-		width: number
-		height: number
-	}
+	value: IImage
 }
 
 export interface IMessageFile {

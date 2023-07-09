@@ -45,6 +45,7 @@ declare global {
 		copyPush(item: T): Array<T>
 		toComponents<T>(render: (item: T, index: number) => VNode<T>): VNode[]
 		toIds(): string[]
+		excludeById(id: string): Array<T>
 	}
 
   interface String {
@@ -59,6 +60,12 @@ declare global {
 		copyToggle(value: T): Set<T>
 		toArray(): T[]
   }
+
+	interface Map<K, V> {
+		copyAdd(key: K, value: V): Map<K, V>
+		copyDelete(key: K): Map<K, V>
+		toFlatArray(): V[]
+	}
 }
 
 Object.defineProperty(Array.prototype, 'uniq', {
@@ -92,6 +99,12 @@ Object.defineProperty(Array.prototype, 'last', {
 	value: function() {
 		if (this.length === 0) return undefined
 		return this[this.length - 1]
+	}
+})
+
+Object.defineProperty(Array.prototype, 'excludeById', {
+	value: function(id: string) {
+		return this.filter((item: Entity) => item.id !== id)
 	}
 })
 
@@ -162,6 +175,26 @@ Object.defineProperty(Set.prototype, 'copyDelete', {
 	value: function<T>(value: T) {
 		this.delete(value)
 		return new Set(this)
+	}
+})
+
+Object.defineProperty(Map.prototype, 'copyAdd', {
+	value: function<K, V>(key: K, value: V) {
+		this.set(key, value)
+		return new Map(this)
+	}
+})
+
+Object.defineProperty(Map.prototype, 'copyDelete', {
+	value: function<K>(key: K) {
+		this.delete(key)
+		return new Map(this)
+	}
+})
+
+Object.defineProperty(Map.prototype, 'toFlatArray', {
+	value: function() {
+		return [...this.values()]
 	}
 })
 

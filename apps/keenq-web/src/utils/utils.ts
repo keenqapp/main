@@ -68,6 +68,10 @@ export function merge(left: object, right: object) {
 	return { ...left, ...right }
 }
 
+// export function guard(input: unknown) {
+// 	return input
+// }
+
 // function resolve<T extends (...args: any[]) => ReturnType<T>>(fn: T): Promise<ReturnType<T>> {
 // 	return new Promise((resolve, reject) => { fn(resolve, reject) })
 // }

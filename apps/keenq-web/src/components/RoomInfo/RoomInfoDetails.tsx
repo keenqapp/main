@@ -35,7 +35,7 @@ function RoomInfoDetails({ id, name, description }: IRoom) {
 		fullWidth: true,
 		validation: [ isNotEmpty, isLengthLower(24) ],
 		forceValid: true,
-		onChange: (value: string) => update(id, { name: value }),
+		onChange: (_:any, value: string) => update(id, { name: value }),
 	})
 
 	const descriptionInput = useInput({
@@ -43,7 +43,7 @@ function RoomInfoDetails({ id, name, description }: IRoom) {
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
-		onChange: (value: string) => update(id, { description: value }),
+		onChange: (_:any, value: string) => update(id, { description: value }),
 	})
 
 	const onNameClick = () => nameInput.inputRef.current?.focus()

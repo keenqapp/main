@@ -65,7 +65,7 @@ function LoginForm() {
 		onFocus: () => authError.value = null,
 	})
 
-	const handleChange = (code: string) => {
+	const handleChange = ( _: any, code: string) => {
 		if (code.length === 6) {
 			setTimeout(() => {
 				codeInput.value = code

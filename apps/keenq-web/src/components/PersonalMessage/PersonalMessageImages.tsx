@@ -4,24 +4,20 @@ import { getImages, IMessage } from '@/model/message'
 import { IImage } from '@/model/other'
 
 
-const StyledImage = styled.img`
-  max-height: calc((100vw - 6rem) * 2);
-  max-width: calc(100vw - 6rem);
-	aspect-ratio: attr(width) / attr(height);
-	object-fit: contain;
-	display: block;
+const Image = styled.div`
+  aspect-ratio: ${p => p.width / p.height};
+	width: calc(100vw - 6rem);
+	background-image:url(${p => p.src});
+	background-size: contain;
   box-shadow: 1px 1px 6px rgba(0,0,0,0.07);
 `
-
-function Image(props: any) {
-	return <StyledImage {...props} />
-}
 
 function getAttachment({ id, url, width, height }: IImage) {
 	return (
 		<Image
+			className='image'
 			key={id}
-			src={url + '?' + Date.now()}
+			src={url}
 			width={width}
 			height={height}
 			loading='lazy'

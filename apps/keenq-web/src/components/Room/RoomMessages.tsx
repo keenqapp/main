@@ -1,13 +1,15 @@
 import { useEffect, useRef } from 'preact/hooks'
 import styled from '@emotion/styled'
+import { useParams } from 'react-router-dom'
+import { useSubscription } from 'urql'
 
 import List from '@/ui/List'
 
 import RoomMessage from '@/components/Room/RoomMessage'
 
-import { messages as mock } from './messages.mock'
 import { usePipe } from '@/hooks/usePipe'
 import type { IMessage } from '@/model/message'
+import { messagesgql } from '@/model/message/gql'
 import { reduce, sort } from '@/utils/utils'
 
 
@@ -48,8 +50,11 @@ function RoomMessages() {
 	useEffect(() => {
 		ref.current?.scrollTo(0, ref.current.scrollHeight)
 	}, [])
-	const data = mock
-	const messages = usePipe(data, sort(byDate), reduce(enrich, []))
+
+	const { id } = useParams()
+	const [ result ] = useSubscription( { query: messagesgql, variables: { id } })
+
+	const messages = usePipe(result.data?.messages || [], sort(byDate), reduce(enrich, []))
 
 	return (
 		<RoomMessagesContainer data-testid='RoomMessages'>

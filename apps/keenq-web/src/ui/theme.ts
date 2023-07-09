@@ -4,7 +4,7 @@ const theme = {
 	unit: 'rem',
 	gap: isLarge ? 1.5 : 1,
 	fontFamily: 'Source sans',
-	boxShadow: 'box-shadow: 1px 3px 4px rgba(0,0,0,0.07)',
+	boxShadow: 'box-shadow: 1px 3px 6px rgba(0,0,0,0.07)',
 	fontSize: {
 		text: '0.9rem',
 		sub: '0.8rem',

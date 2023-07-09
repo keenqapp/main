@@ -14,7 +14,7 @@ import PersonalMessageReply from '@/components/PersonalMessage/PersonalMessageRe
 import PersonalMessageText from '@/components/PersonalMessage/PersonalMessageText'
 import PersonalMessageTime from '@/components/PersonalMessage/PersonalMessageTime'
 
-import { $isAuthor } from '@/model/member'
+import { useIsAuthor } from '@/model/member'
 import { IMessage } from '@/model/message'
 import { formatDate } from '@/utils/formatters'
 
@@ -29,10 +29,10 @@ const notSelfCss = css`
 	& .MuiTypography-caption {
 		align-self: flex-start;
 	}
-	& img {
+  & .image {
     align-self: flex-start;
     border-radius: 1rem 1rem 1rem 0;
-	}
+  }
 	& .reaction-container {
 		right: 0.2rem;
 	}
@@ -48,7 +48,7 @@ const selfCss = css`
 	& .MuiTypography-caption {
 		align-self: flex-end;
 	}
-  & img {
+  & .image {
     align-self: flex-end;
     border-radius: 1rem 1rem 0 1rem;
   }
@@ -57,13 +57,13 @@ const selfCss = css`
   }
 `
 
-const MessageContainer = styled.div<{ isSelf: boolean }>`
+const MessageContainer = styled.div<{ isAuthor: boolean }>`
 	padding: 0 1rem;
   max-width: calc(100vw - 4rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;
 	}
-	${p => p.isSelf ? selfCss : notSelfCss}
+	${p => p.isAuthor ? selfCss : notSelfCss}
 `
 
 const SeparateDate = styled.div`
@@ -86,7 +86,7 @@ function DateSeparator({ date, prevDate }: IMessage) {
 function PersonalMessage(message: IMessage) {
 	const { authorId, content } = message
 	const { onOpen } = useModal('message')
-	const isSelf = $isAuthor(authorId)
+	const isAuthor = useIsAuthor(authorId)
 	if (!content?.length) return null
 
 	const onMessageClick = () => onOpen(message)
@@ -94,7 +94,7 @@ function PersonalMessage(message: IMessage) {
 	return (
 		<>
 			<DateSeparator {...message} />
-			<MessageContainer data-testid='PersonalMessage' isSelf={isSelf} onClick={onMessageClick}>
+			<MessageContainer data-testid='PersonalMessage' isAuthor={isAuthor} onClick={onMessageClick}>
 				<Row gap={0.5} align='end'>
 					<PersonalMessageAvatar {...message} />
 					<Row direction='column' gap={0.2} relative>

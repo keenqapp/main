@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone'
@@ -12,11 +12,13 @@ import { useModal } from '@/services/modals'
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Row from '@/ui/Row'
 
-import { messageReplyOrEditId } from '@/components/Room/RoomInput'
+import { $messageReplyOrEditId } from '@/components/Room/RoomInput/state'
 
+import { useMutation } from '@/hooks/gql'
+import { useIsAuthor } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
-import { $isAdmin, $isAuthor } from '@/model/member'
-import { $isChannel, getRoomById } from '@/model/room'
+import { deletemessagegql } from '@/model/message'
+import { $isChannel, useCurrentRoom } from '@/model/room'
 
 
 const Reactions = styled(Row)`
@@ -38,35 +40,37 @@ const reactions = [
 
 function MessageMenu() {
 	const navigate = useNavigate()
-	const { id: cid } = useCurrentMember()
+	const { id: mid } = useCurrentMember()
 	const { name, params, on } = useModal('message')
 	const { onOpen } = useModal('report')
-	const { id: rid } = useParams()
 	const { id, authorId } = params
-	const room = getRoomById(rid!)
+	const { room, isAdmin } = useCurrentRoom()
+	const { id: rid } = room
+	const [ , remove ] = useMutation(deletemessagegql)
 
 	const reportClick = () => onOpen({ entity: 'message', id })
 
 	const profileClick = () => navigate(`/match/${authorId}`)
+
 	const roomClick = () => navigate(`/room/${rid}/info`)
+
 	const deleteClick = () => {
-		console.log('--- MessageMenu.tsx:23 -> deleteClick -> deleteClick', id)
+		remove({ id })
 	}
 
 	const replyClick = () => {
-		messageReplyOrEditId({ mode: 'reply', id })
+		$messageReplyOrEditId.set({ mode: 'reply', id })
 	}
 
 	const editClick = () => {
-		messageReplyOrEditId({ mode: 'edit', id })
+		$messageReplyOrEditId.set({ mode: 'edit', id })
 	}
 
 	const reactionClick = (id: string) => () => {
-		console.log('--- MessageMenu.tsx:61 -> reactionClick ->', id)
+		console.log('--- MessageMenu.tsx:61 -> reactionClick ->', id, mid)
 	}
 
-	const isAuthor = $isAuthor(authorId)
-	const isAdmin = $isAdmin(cid, room)
+	const isAuthor = useIsAuthor(authorId)
 	const isChannel = $isChannel(room)
 
 	const isEditable = (!isChannel && isAuthor) || (isChannel && isAdmin)

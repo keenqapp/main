@@ -23,7 +23,7 @@ const MenuProps = {
 interface Props {
 	value: string[]
 	options: string[]
-	onChange: (value: string[]) => void
+	onChange: (_:any, value: string[]) => void
 	closeOnChange?: boolean
 }
 

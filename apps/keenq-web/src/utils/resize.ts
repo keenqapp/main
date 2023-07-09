@@ -3,34 +3,53 @@
 import md5 from 'md5'
 
 
-export interface Options {
+export interface ResizeOptions {
 	maxWidth?: number
 	maxHeight?: number
 	format?: 'jpeg' | 'png' | 'webp' | 'bmp',
 	quality?: number,
 	output?: 'dataURL' | 'File' | 'Blob'
+	prepare?: boolean
 }
 
-function toArrayBuffer(blob: Blob, cb: any): ArrayBuffer {
-	blob
-		.arrayBuffer()
-		.then((buffer: ArrayBuffer) => cb(buffer))
+export interface ResizeResult {
+	id: string
+	width: number
+	height: number
+	file: File
+	date: string
+	data: string | File
 }
 
-export function resize(file: File, options: Options): Promise<any> {
+export type Return<O> = O extends { prepare: true }
+	? ResizeResult
+	: O extends { output: 'dataURL' }
+		? string
+		: O extends { output: 'File' }
+			? File
+			: Blob
+
+async function toBlob(canvas: HTMLCanvasElement, type: string, quality: number): Promise<Blob> {
+	return new Promise((resolve) => {
+		canvas.toBlob(resolve, type, quality)
+	})
+}
+
+export function resize<O extends ResizeOptions>(file: File, options: O): Promise<Return<O>> {
 	const {
 		maxWidth = 1024,
 		maxHeight = 768,
 		format = 'webp',
 		quality = 1.0,
-		output = 'File'
+		output = 'File',
+		prepare = false
 	} = options
 
 	const image = new Image()
 	const url = typeof file === 'string' ? file : URL.createObjectURL(file)
 
 	return new Promise((resolve, reject) => {
-		image.onload = () => {
+		image.onload = async () => {
 			const canvas = document.createElement('canvas')
 			const ctx = canvas.getContext('2d')
 
@@ -58,27 +77,48 @@ export function resize(file: File, options: Options): Promise<any> {
 
 			if (output === 'dataURL') {
 				const dataURL = canvas.toDataURL(`image/${format}`, quality)
-				resolve(dataURL)
+				if (prepare) {
+					const id = md5(dataURL)
+					const result = {
+						id,
+						width,
+						height,
+						file,
+						data: dataURL,
+						date: new Date().toISOString()
+					}
+					resolve(result)
+				}
+				else resolve(dataURL)
 			}
 
 			if (output === 'Blob') {
-				canvas.toBlob(blob => resolve(blob), `image/${format}`, quality)
+				const blob = await toBlob(canvas, `image/${format}`, quality)
+				resolve(blob)
 			}
 
 			if (output === 'File') {
-				canvas.toBlob(blob => {
-					if (!blob) return reject('Error')
+				const blob = await toBlob(canvas, `image/${format}`, quality)
+				if (!blob) return reject('Error')
 
-					toArrayBuffer(blob, (buffer: ArrayBuffer) => {
-						const bytes = new Uint8Array(buffer)
-						const hash = md5(bytes)
-						const newFile = new File([blob], file.name, { type: `image/${format}` })
-						newFile.id = hash
-						newFile.width = width
-						newFile.height = height
-						resolve(newFile)
-					})
-				}, `image/${format}`, quality)
+				if (prepare) {
+					const arrayBuffer = await blob.arrayBuffer()
+					const bytes = new Uint8Array(arrayBuffer)
+					const id = md5(bytes)
+					const result = {
+						id,
+						width,
+						height,
+						file,
+						data: new File([blob], file.name, { type: `image/${format}` }),
+						date: new Date().toISOString()
+					}
+					resolve(result)
+				}
+				else {
+					const newfile = new File([blob], file.name, { type: `image/${format}` })
+					resolve(newfile)
+				}
 			}
 		}
 		image.src = url

@@ -1,15 +1,14 @@
 import styled from '@emotion/styled'
-import { useParams } from 'react-router-dom'
 
 import Typography from '@mui/material/Typography'
 
 import Row from '@/ui/Row'
 import theme from '@/ui/theme'
 
-import { $isAdmin, $isAuthor } from '@/model/member'
+import { $isAdmin, useIsAuthor } from '@/model/member'
 import { checkShowName, getText, IMessage } from '@/model/message'
 import { toColor } from '@/model/message'
-import { $isPrivate, getRoomById } from '@/model/room'
+import { $isPrivate, useCurrentRoom } from '@/model/room'
 
 
 const MessageContainerContent = styled(Row)`
@@ -26,10 +25,8 @@ function PersonalMessageText(message: IMessage) {
 
 	const preventSelection = (e: MouseEvent) => e.preventDefault()
 
-	const { id: rid } = useParams()
-	const room = getRoomById(rid!)
-
-	const isSelf = $isAuthor(authorId)
+	const { room } = useCurrentRoom()
+	const isSelf = useIsAuthor(authorId)
 	const isPrivate = $isPrivate(room)
 	const shouldShowName = checkShowName(message, room)
 	const admin = $isAdmin(authorId, room)

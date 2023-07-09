@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
 import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone'
@@ -11,22 +11,32 @@ import { useConfirm, useModal } from '@/services/modals'
 
 import { Drawer, DrawerItem, DrawerList } from '@/ui/Drawer'
 
-import { $isPrivate, getRoomById } from '@/model/room'
+import { useMutation } from '@/hooks/gql/useMutation'
+import { useCurrentMember } from '@/model/member'
+import { $isPrivate, useCurrentRoom } from '@/model/room'
+import { leaveroom } from '@/model/rooms_members'
 
 
 function RoomMenu() {
 	const navigate = useNavigate()
-	const { id } = useParams()
 	const { name, on } = useModal('room')
 	const { onOpen: addMemberOpen } = useModal('addMemberToRoom')
 	const { onOpen: reportOpen } = useModal('report')
 	const { confirm } = useConfirm()
+	const { id: memberId } = useCurrentMember()
+	const { room, isMember } = useCurrentRoom()
+	const { id } = room
+
+	const [ , leave ] = useMutation(leaveroom)
 
 	const leaveClick = () => {
 		confirm({
 			title: 'Leave room',
 			text: 'Are you sure you want to leave this room?',
-			onConfirm: on(() => navigate('/match'))
+			onConfirm: on(() => {
+				leave({ memberId, roomId: id })
+				navigate('/match')
+			})
 		})
 	}
 
@@ -41,17 +51,18 @@ function RoomMenu() {
 		console.log('--- RoomMenu.tsx:44 -> muteClick ->', 'muteClick')
 	}
 
-	const room = getRoomById(id!)
 	const isPrivate = $isPrivate(room)
 
 	return (
 		<Drawer data-testid='RoomMenu' name={name}>
 			<DrawerList>
-				<DrawerItem
-					icon={<DeleteTwoToneIcon color='secondary' />}
-					text='Leave'
-					onClick={on(leaveClick)}
-				/>
+				{isMember && (
+					<DrawerItem
+						icon={<DeleteTwoToneIcon color='secondary' />}
+						text='Leave'
+						onClick={on(leaveClick)}
+					/>
+				)}
 				<DrawerItem
 					icon={<ReportTwoToneIcon color='error' />}
 					text='Report'
