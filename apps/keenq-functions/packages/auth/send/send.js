@@ -4,6 +4,10 @@ const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
 const nanoid = customAlphabet(alphabet, 8)
 
 
+function validate(phone) {
+	if (typeof phone !== 'string') throw { error: 'validation error', reason: 'phone must be a string' }
+}
+
 const config = {
 	client: 'pg',
 	connection: {
@@ -64,6 +68,7 @@ async function sendSMS(phone) {
 export async function main({ phone }) {
 	let db
 	try {
+		validate(phone)
 	  db = getDb(config)
 		const member = await getMember(phone, db)
 		await ensureMember(member, phone, db)

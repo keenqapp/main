@@ -1,6 +1,11 @@
 import knex from 'knex'
 import jwt from 'jsonwebtoken'
 
+function validate(phone, code) {
+	if (typeof phone !== 'string') throw { error: 'validation error', reason: 'phone must be a string' }
+	if (typeof code !== 'string') throw { error: 'validation error', reason: 'code must be a string' }
+}
+
 const config = {
 	client: 'pg',
 	connection: {
@@ -82,6 +87,7 @@ async function generateJWT(user) {
 export async function main({ phone, code }) {
 	let db
 	try {
+		validate(phone, code)
 	  db = getDb(config)
 		const member = await getMember(phone, db)
 		await ensureMember(member)
