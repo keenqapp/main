@@ -1,10 +1,11 @@
 import knex from 'knex'
 import jwt from 'jsonwebtoken'
+import { object, string } from 'yup'
 
-function validate(phone, code) {
-	if (typeof phone !== 'string') throw { error: 'validation error', reason: 'phone must be a string' }
-	if (typeof code !== 'string') throw { error: 'validation error', reason: 'code must be a string' }
-}
+const schema = object({
+	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
+	code: string().required().length(6),
+})
 
 const config = {
 	client: 'pg',
@@ -84,10 +85,10 @@ async function generateJWT(user) {
 }
 
 // TODO: check id for 'creds' and 'members' for sync
-export async function main({ phone, code }) {
+export async function main(body) {
 	let db
 	try {
-		validate(phone, code)
+		const { phone, code } = schema.validateSync(body)
 	  db = getDb(config)
 		const member = await getMember(phone, db)
 		await ensureMember(member)

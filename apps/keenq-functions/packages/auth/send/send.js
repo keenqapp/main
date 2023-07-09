@@ -1,12 +1,14 @@
 import knex from 'knex'
 import { customAlphabet } from 'nanoid'
+import { object, string } from 'yup'
+
+
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 const nanoid = customAlphabet(alphabet, 8)
 
-
-function validate(phone) {
-	if (typeof phone !== 'string') throw { error: 'validation error', reason: 'phone must be a string' }
-}
+const schema = object({
+	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
+})
 
 const config = {
 	client: 'pg',
@@ -65,10 +67,10 @@ async function sendSMS(phone) {
 }
 
 // TODO: check id for 'creds' and 'members' for sync
-export async function main({ phone }) {
+export async function main(body) {
 	let db
 	try {
-		validate(phone)
+		const { phone } = schema.validateSync(body)
 	  db = getDb(config)
 		const member = await getMember(phone, db)
 		await ensureMember(member, phone, db)

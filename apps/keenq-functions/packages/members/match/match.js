@@ -1,4 +1,10 @@
 import knex from 'knex'
+import { object, string } from 'yup'
+
+
+const schema = object({
+	id: string().required(),
+})
 
 const config = {
 	client: 'pg',
@@ -60,10 +66,10 @@ async function getMatch(id, db) {
 	}
 }
 
-export async function main({ id }) {
+export async function main(body) {
 	let db
 	try {
-		validate(id)
+		const { id } = schema.validateSync(body)
 	  db = getDb(config)
 		const member = await getMember(id, db)
 		await ensureMember(member)
