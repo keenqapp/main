@@ -8,7 +8,8 @@ import List from '@/ui/List'
 
 import RoomsItem from '@/components/Rooms/RoomsItem'
 
-import { IRoom } from '@/model/room'
+import { useQuery } from '@/hooks/gql'
+import { roomgql } from '@/model/room'
 
 
 const RoomsEmptyContainer = styled(Column)`
@@ -19,19 +20,10 @@ const Content = styled(Column)`
 	padding: 0 2rem;
 `
 
-const keenq = [
-	{
-		id: 'keenq',
-		name: 'keenq',
-		image: '',
-		verified: true,
-		last: 'keenq is a place for conversations',
-	}
-] as IRoom[]
-
 const DEFAULT_TEXT = 'Here will be\nchats with your matches\nand\nrooms for conversations!'
 
 function RoomsEmpty() {
+	const [ result ] = useQuery(roomgql, { id: 'keenq' })
 	return (
 		<RoomsEmptyContainer data-testid='RoomsEmpty' gap={0.2}>
 			<Content gap={1}>
@@ -46,7 +38,7 @@ function RoomsEmpty() {
 				<Typography variant='h6'>And now you can join and read:</Typography>
 			</Content>
 			<List
-				data={keenq}
+				data={result.data ? [result.data?.rooms_by_pk] : []}
 				render={RoomsItem}
 			/>
 		</RoomsEmptyContainer>

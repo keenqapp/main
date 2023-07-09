@@ -25,7 +25,7 @@ function Rooms() {
 		<Container data-testid='Rooms' horizontal={0} flex>
 			<Space />
 			<RoomsList
-				data={result.data?.rooms || []}
+				data={result.data?.rooms.excludeById('keenq') || []}
 				render={RoomsItem}
 				empty={RoomsEmpty}
 			/>

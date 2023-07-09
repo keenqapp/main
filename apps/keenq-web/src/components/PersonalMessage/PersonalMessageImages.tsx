@@ -4,7 +4,7 @@ import { getImages, IMessage } from '@/model/message'
 import { IImage } from '@/model/other'
 
 
-const Image = styled.div`
+const Image = styled.div<{ width: number, height: number, src: string }>`
   aspect-ratio: ${p => p.width / p.height};
 	width: calc(100vw - 6rem);
 	background-image:url(${p => p.src});
@@ -15,12 +15,11 @@ const Image = styled.div`
 function getAttachment({ id, url, width, height }: IImage) {
 	return (
 		<Image
-			className='image'
+			className='image lazy-bg'
 			key={id}
 			src={url}
 			width={width}
 			height={height}
-			loading='lazy'
 		/>
 	)
 }
@@ -28,6 +27,7 @@ function getAttachment({ id, url, width, height }: IImage) {
 function PersonalMessageImages(message: IMessage) {
 	const images = getImages(message)
 	if (!images?.length) return null
+
 	return (
 		<>
 			{images.map(getAttachment)}

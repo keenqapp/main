@@ -1,4 +1,7 @@
-import { useQuery, UseQueryOptions } from '@/hooks/gql'
+import { useEffect } from 'preact/hooks'
+
+import { useMutation, useQuery, UseQueryOptions } from '@/hooks/gql'
+import { matchgql, useCurrentMember } from '@/model/member'
 import { roomsgql } from '@/model/room'
 
 
@@ -10,7 +13,14 @@ const roomsOptions = {
 } as UseQueryOptions
 
 export function usePreload() {
-	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
+	const { id } = useCurrentMember()
 
-	return roomsFetching
+	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
+	const [{ fetching: matchFetching }, match] = useMutation(matchgql)
+
+	useEffect(() => {
+		match({ id })
+	}, [ id ])
+
+	return roomsFetching || matchFetching
 }

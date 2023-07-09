@@ -1,7 +1,7 @@
 import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
-import { gql, useMutation } from 'urql'
+import { useMutation } from 'urql'
 
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -21,9 +21,9 @@ import Space from '@/ui/Space'
 
 import Swiper from '@/components/Swiper'
 
-import { useCurrentMember } from '@/model/member/hooks'
 import { useMember } from '@/hooks/useMember'
-import { getPartner } from '@/model/member'
+import { getPartner, matchgql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 const Content = styled(Row)`
@@ -46,17 +46,6 @@ const StyledDivider = styled(Divider)`
 const Partner = styled(Typography)`
 	opacity: 0.8;
 	border-bottom: 1px solid currentColor;
-`
-
-const matchgql = gql`
-	mutation Match($id: String!) {
-		match(id: $id) {
-			success
-			data {
-				id
-			}
-		}
-	}
 `
 
 function Match() {

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
 import { useSubscription } from 'urql'
@@ -45,14 +45,18 @@ const RoomMessagesList = styled(List<IMessage>)<{ height: number }>`
 `
 
 function RoomMessages() {
+	const [ loaded, setLoaded ] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
-
-	useEffect(() => {
-		ref.current?.scrollTo(0, ref.current.scrollHeight)
-	}, [])
 
 	const { id } = useParams()
 	const [ result ] = useSubscription( { query: messagesgql, variables: { id } })
+
+	useEffect(() => {
+		if (result.data && !loaded) {
+			setLoaded(true)
+			ref.current?.scrollTo(0, ref.current.scrollHeight)
+		}
+	}, [ result.data ])
 
 	const messages = usePipe(result.data?.messages || [], sort(byDate), reduce(enrich, []))
 

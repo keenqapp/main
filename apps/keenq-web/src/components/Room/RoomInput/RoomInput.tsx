@@ -121,7 +121,7 @@ function RoomInput() {
 			}
 		}
 		if (images.length > 0) {
-			content.concat(images.slice(0, 3))
+			content.push(...images.slice(0, 3))
 		}
 		if (isReply) {
 			shouldSave = true

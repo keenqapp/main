@@ -30,7 +30,7 @@ function PersonalMessageAvatar(message: IMessage) {
 	if (!shouldShow) return <EmptyAvatar />
 
 	return (
-		<StyledAvatar data-testid='PersonalMessageAvatar' src={images}  />
+		<StyledAvatar data-testid='PersonalMessageAvatar' src={images?.[0].url}  />
 	)
 }
 

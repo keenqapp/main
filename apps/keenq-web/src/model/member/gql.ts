@@ -3,6 +3,17 @@ import { gql } from 'urql'
 import { IMember } from '@/model/member/types'
 
 
+export const matchgql = gql`
+	mutation Match($id: String!) {
+		match(id: $id) {
+			success
+			data {
+				id
+			}
+		}
+	}
+`
+
 export const membergql = gql<{ members_by_pk: IMember }>`
 	query Member($id: String!) {
 		members_by_pk(id: $id) {
