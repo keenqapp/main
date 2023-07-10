@@ -83,10 +83,11 @@ async function createRoom(db) {
 	try {
 		const id = nanoid()
 		const name = generate({ exactly: 3, join: '-' })
-		return db
+		const room = await db
 			.table('rooms')
 			.returning('*')
 			.insert({ id, name })
+		return room[0]
 	}
 	catch(e) {
 		throw { error: e }
@@ -94,16 +95,18 @@ async function createRoom(db) {
 }
 
 async function add(authorId, memberId, room, db) {
+	const roomId = room.id
 	try {
+		const roomId = room.id
 		await db
 			.table('rooms_members')
 			.insert([
-				{ roomId: room.id, memberId: authorId },
-				{ roomId: room.id, memberId: memberId },
+				{ roomId, memberId: authorId },
+				{ roomId, memberId: memberId },
 			])
 	}
 	catch(e) {
-		throw { error: e }
+		throw { error: e, reason: { roomId } }
 	}
 }
 
