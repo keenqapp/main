@@ -119,7 +119,7 @@ export async function main(body) {
 
 		await check(authorId, memberId, type, db)
 		const room = await createRoom(db)
-		await add(authorId, memberId, room, db)
+		// await add(authorId, memberId, room, db)
 
 		return { body: { success: true, data: room } }
 	}
