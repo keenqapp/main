@@ -1,12 +1,13 @@
 import styled from '@emotion/styled'
 import { signal } from '@preact/signals'
 
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
-import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 
 import { useModal } from '@/services/modals'
 
@@ -35,24 +36,6 @@ const MembersList = styled(List)`
 const MemberItemContainer = styled(Row)`
 	padding: 0 1rem;
 `
-
-const mockData = [
-	{ id: '1', name: 'Patrisia', image: 'https://i.pravatar.cc/200?img=5' },
-	{ id: '2', name: 'Mia', image: 'https://i.pravatar.cc/200?img=1' },
-	{ id: '3', name: 'Liam', image: 'https://i.pravatar.cc/200?img=2' },
-	{ id: '4', name: 'Noah', image: 'https://i.pravatar.cc/200?img=3' },
-	{ id: '5', name: 'Emma', image: 'https://i.pravatar.cc/200?img=4' },
-	{ id: '6', name: 'Olivia', image: 'https://i.pravatar.cc/200?img=5' },
-	{ id: '7', name: 'Ava', image: 'https://i.pravatar.cc/200?img=1' },
-	{ id: '8', name: 'Isabella', image: 'https://i.pravatar.cc/200?img=2' },
-	{ id: '9', name: 'Sophia', image: 'https://i.pravatar.cc/200?img=3' },
-	{ id: '10', name: 'Charlotte', image: 'https://i.pravatar.cc/200?img=4' },
-	{ id: '11', name: 'Amelia', image: 'https://i.pravatar.cc/200?img=5' },
-	{ id: '12', name: 'Mia', image: 'https://i.pravatar.cc/200?img=1' },
-	{ id: '13', name: 'Liam', image: 'https://i.pravatar.cc/200?img=2' },
-	{ id: '14', name: 'Noah', image: 'https://i.pravatar.cc/200?img=3' },
-	{ id: '15', name: 'Emma', image: 'https://i.pravatar.cc/200?img=4' },
-]
 
 const selected = signal(new Set<string>())
 
@@ -85,7 +68,7 @@ function AddMemberToRoom() {
 		console.log('--- AddMemberToRoomDrawer.tsx:77 -> onClick ->', params.id, selected.value)
 	}
 
-	const data = mockData.filter(({ name }) => match(nameInput.value, name))
+	const data = []
 
 	return (
 		<Drawer data-testid='ChooseMemberDrawer' fullHeight name={name}>
@@ -93,7 +76,7 @@ function AddMemberToRoom() {
 				<TextField {...nameInput} />
 				<Space />
 				<MembersList
-					data={[]}
+					data={data}
 					render={MemberItem}
 					empty={EmptyMembers}
 				/>

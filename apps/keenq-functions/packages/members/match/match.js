@@ -24,10 +24,6 @@ function getDb(config) {
 	}
 }
 
-function validate(id) {
-	if (typeof id !== 'string') throw { error: 'validation error', reason: 'id must be a string' }
-}
-
 async function getMember(id, db) {
 	try {
 		return await db

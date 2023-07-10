@@ -4,7 +4,7 @@ import Avatar from '@mui/material/Avatar'
 
 import { $isAuthor, useCurrentMember } from '@/model/member'
 import { IMessage, shouldShowCheck } from '@/model/message'
-import { $isPrivate, useCurrentRoom } from '@/model/room'
+import { $isChannel, $isPrivate, useCurrentRoom } from '@/model/room'
 
 
 const StyledAvatar = styled(Avatar)`
@@ -25,8 +25,9 @@ function PersonalMessageAvatar(message: IMessage) {
 	const shouldShow = shouldShowCheck(message)
 	const isSelf = $isAuthor(authorId, id)
 	const isPrivate = $isPrivate(room)
+	const isChannel = $isChannel(room)
 
-	if (isSelf || isPrivate) return null
+	if (isSelf || isPrivate || isChannel) return null
 	if (!shouldShow) return <EmptyAvatar />
 
 	return (

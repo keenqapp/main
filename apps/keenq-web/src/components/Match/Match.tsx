@@ -22,8 +22,9 @@ import Space from '@/ui/Space'
 import Swiper from '@/components/Swiper'
 
 import { useMember } from '@/hooks/useMember'
-import { getPartner, matchgql } from '@/model/member'
+import { addmatchgql, getPartner, matchgql } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
+import { useInsert } from '@/hooks/gql'
 
 
 const Content = styled(Row)`
@@ -55,6 +56,7 @@ function Match() {
 	const { id, done } = useCurrentMember()
 
 	const [ result, match ] = useMutation(matchgql)
+	const [ , add ] = useInsert(addmatchgql)
 	const { data, fetching, error } = result
 
 	const {
@@ -82,10 +84,12 @@ function Match() {
 
 	const onYesClick = () => {
 		if (!done) return onAcquaintanceOpen()
-		else match({ id })
+		add({ authorId: id, memberId: mid, type: 'yes' })
+		match({ id })
 	}
 
 	const onNoClick = () => {
+		add({ authorId: id, memberId: mid, type: 'no' })
 		match({ id })
 	}
 

@@ -8,7 +8,7 @@ import theme from '@/ui/theme'
 import { $isAdmin, useIsAuthor } from '@/model/member'
 import { checkShowName, getText, IMessage } from '@/model/message'
 import { toColor } from '@/model/message'
-import { $isPrivate, useCurrentRoom } from '@/model/room'
+import { $isChannel, $isPrivate, useCurrentRoom } from '@/model/room'
 
 
 const MessageContainerContent = styled(Row)`
@@ -20,7 +20,7 @@ const Text = styled(Typography)`
 `
 
 function PersonalMessageText(message: IMessage) {
-	const { authorId, author: { name } } = message
+	const { authorId, author: { name: mname } } = message
 	const text = getText(message)
 
 	const preventSelection = (e: MouseEvent) => e.preventDefault()
@@ -30,6 +30,8 @@ function PersonalMessageText(message: IMessage) {
 	const isPrivate = $isPrivate(room)
 	const shouldShowName = checkShowName(message, room)
 	const admin = $isAdmin(authorId, room)
+	const isChannel = $isChannel(room)
+	const name = isChannel ? room.name : mname
 
 	if ((isSelf || isPrivate) && !text) return null
 	if (!text && !shouldShowName) return null
@@ -49,7 +51,7 @@ function PersonalMessageText(message: IMessage) {
 				? (
 					<Row>
 						<Typography color={toColor(name)} fontWeight={600}>{name}</Typography>
-						{admin && <Typography variant='caption'>admin</Typography>}
+						{admin && !isChannel && <Typography variant='caption'>admin</Typography>}
 					</Row>
 				)
 				: null}

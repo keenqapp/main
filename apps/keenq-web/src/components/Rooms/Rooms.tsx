@@ -21,11 +21,12 @@ const context = {
 
 function Rooms() {
 	const [ result ] = useQuery(roomsgql, null, { context })
+	const data =  result.data?.rooms.length > 1 ? result.data?.rooms :  result.data?.rooms.excludeById('keenq')
 	return (
 		<Container data-testid='Rooms' horizontal={0} flex>
 			<Space />
 			<RoomsList
-				data={result.data?.rooms.excludeById('keenq') || []}
+				data={data}
 				render={RoomsItem}
 				empty={RoomsEmpty}
 			/>

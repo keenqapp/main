@@ -14,6 +14,14 @@ export const matchgql = gql`
 	}
 `
 
+export const addmatchgql = gql`
+	mutation AddMatch($object: matches_insert_input!) {
+		insert_matches_one(object: $object) {
+			id
+		}
+	}
+`
+
 export const membergql = gql<{ members_by_pk: IMember }>`
 	query Member($id: String!) {
 		members_by_pk(id: $id) {
