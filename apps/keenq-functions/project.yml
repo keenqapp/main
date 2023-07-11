@@ -29,4 +29,7 @@ packages:
       - name: matched
         runtime: nodejs:18
         web: true
+      - name: lang
+        runtime: nodejs:18
+        web: true
 
