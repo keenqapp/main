@@ -12,6 +12,10 @@ export const roomsgql = gql<{ rooms: IRoom }>`
 			description
 			type
 			verified
+			lastMessage {
+				id
+				content
+			}
 		}
 	}
 `
@@ -62,6 +66,21 @@ export const updateroomgql = gql`
 			description
 			type
 			verified
+		}
+	}
+`
+
+export const privateroomgql = gql`
+	query PrivateRoom($roomId: String!, $memberId: String!) {
+		rooms_members(where: { _and: { roomId: { _eq: $roomId }, memberId: { _neq: $memberId } } }) {
+			member {
+				id
+				name
+				images
+			}
+			room {
+				lastMessageId
+			}
 		}
 	}
 `

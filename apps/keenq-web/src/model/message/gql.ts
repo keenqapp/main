@@ -32,7 +32,7 @@ export const insertmessagegql = gql`
 `
 
 export const deletemessagegql = gql`
-	mutation DeleteMessage($id: Int!) {
+	mutation DeleteMessage($id: bigint!) {
 		delete_messages_by_pk(id: $id) {
 			id
 		}
@@ -40,7 +40,7 @@ export const deletemessagegql = gql`
 `
 
 export const messagegql = gql`
-	query Message($id: Int!) {
+	query Message($id: bigint!) {
 		messages_by_pk(id: $id) {
 			id
 			content
@@ -48,15 +48,25 @@ export const messagegql = gql`
 			author {
 				id
 				name
+				images
 			}
 		}
 	}
 `
 
 export const updatemessagegql = gql`
-	mutation UpdateMessage($id: Int!, $data: messages_set_input!) {
+	mutation UpdateMessage($id: bigint!, $data: messages_set_input!) {
 		update_messages_by_pk(pk_columns: { id: $id }, _set: $data) {
 			id
 		}
 	}
 `
+
+// export const lastmessagegql = gql`
+// 	query LastMessage($rid: String!) {
+// 		messages(where: { roomId: { _eq: $rid } }, order_by: { date: desc }, limit: 1) {
+// 			date
+// 			content
+// 		}
+// 	}
+// `

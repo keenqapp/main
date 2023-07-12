@@ -1,4 +1,5 @@
 import { IMember } from '@/model/member'
+import { IMessage } from '@/model/message'
 import { IImage } from '@/model/other'
 
 
@@ -9,8 +10,9 @@ export interface IRoom {
 	type: 'personal' | 'private' | 'public'  | 'channel'
 	image: IImage
 	description: string
+	lastMessage?: IMessage
 
-	last?: string
+	lastMessageId?: number
 	unread?: number
 	links: string[]
 	members: IMember[]

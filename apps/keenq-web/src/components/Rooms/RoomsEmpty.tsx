@@ -6,7 +6,7 @@ import Card from '@/ui/Card'
 import Column from '@/ui/Column'
 import List from '@/ui/List'
 
-import RoomsItem from '@/components/Rooms/RoomsItem'
+import PublicRoomsItem from '@/components/Rooms/PublicRoomsItem'
 
 import { useQuery } from '@/hooks/gql'
 import { roomgql } from '@/model/room'
@@ -39,7 +39,7 @@ function RoomsEmpty() {
 			</Content>
 			<List
 				data={result.data ? [result.data?.rooms_by_pk] : []}
-				render={RoomsItem}
+				render={PublicRoomsItem}
 			/>
 		</RoomsEmptyContainer>
 	)

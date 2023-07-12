@@ -4,11 +4,12 @@ import Container from '@/ui/Container'
 import List from '@/ui/List'
 import Space from '@/ui/Space'
 
+import PrivateRoomsItem from '@/components/Rooms/PrivateRoomsItem'
+import PublicRoomsItem from '@/components/Rooms/PublicRoomsItem'
 import RoomsEmpty from '@/components/Rooms/RoomsEmpty'
-import RoomsItem from '@/components/Rooms/RoomsItem'
 
 import { useQuery } from '@/hooks/gql'
-import { roomsgql } from '@/model/room'
+import { $isPrivate, IRoom, roomsgql } from '@/model/room'
 
 
 const RoomsList = styled(List)`
@@ -19,6 +20,13 @@ const context = {
 	additionalTypenames: ['rooms']
 }
 
+function RoomsItems(room: IRoom) {
+	const isPrivate = $isPrivate(room)
+	return isPrivate
+		? PrivateRoomsItem(room)
+		: PublicRoomsItem(room)
+}
+
 function Rooms() {
 	const [ result ] = useQuery(roomsgql, null, { context })
 	const data =  result.data?.rooms.length > 1 ? result.data?.rooms :  result.data?.rooms.excludeById('keenq')
@@ -27,7 +35,7 @@ function Rooms() {
 			<Space />
 			<RoomsList
 				data={data}
-				render={RoomsItem}
+				render={RoomsItems}
 				empty={RoomsEmpty}
 			/>
 		</Container>

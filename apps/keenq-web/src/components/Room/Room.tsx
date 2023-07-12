@@ -1,8 +1,11 @@
 import styled from '@emotion/styled'
 
+import PrivateRoomHeader from '@/components/Room/PrivateRoomHeader'
 import RoomHeader from '@/components/Room/RoomHeader'
 import RoomInput from '@/components/Room/RoomInput'
 import PersonalMessages from '@/components/Room/RoomMessages'
+
+import { $isPrivate, useCurrentRoom } from '@/model/room'
 
 
 const StyledContainer = styled.div`
@@ -17,9 +20,12 @@ const StyledContainer = styled.div`
 `
 
 function Room() {
+	const { room } = useCurrentRoom()
+	const isPrivate = $isPrivate(room)
+
 	return (
 		<StyledContainer data-testid='Room'>
-			<RoomHeader />
+			{isPrivate ? <PrivateRoomHeader /> : <RoomHeader />}
 			<PersonalMessages />
 			<RoomInput />
 		</StyledContainer>
