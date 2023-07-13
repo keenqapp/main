@@ -101,8 +101,8 @@ async function add(authorId, memberId, room, db) {
 		await db
 			.table('rooms_members')
 			.insert([
-				{ roomId, memberId: authorId },
-				{ roomId, memberId: memberId },
+				{ roomId, memberId: authorId, privateFor: memberId },
+				{ roomId, memberId: memberId, privateFor: authorId },
 			])
 	}
 	catch(e) {

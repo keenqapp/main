@@ -47,13 +47,16 @@ async function getMatch(id, db) {
 	try {
 		const matched = await db
 			.table('members')
-			.select()
-			.where('deletedAt', null)
-			.where('bannedAt', null)
-			.where('visible', true)
-			.where('done', true)
-			.whereNot('id', id)
+			.select('members.id')
+			.leftJoin('matches', 'members.id', 'matches.memberId')
+			.where('members.id', '!=', id)
+			.whereNull('matches.authorId')
+			.where('members.deletedAt', null)
+			.where('members.bannedAt', null)
+			.where('members.visible', true)
+			.where('members.done', true)
 			.first()
+
 		if (!matched) throw 'No match found'
 		return matched
 	}
@@ -81,3 +84,5 @@ export async function main(body) {
 		db?.destroy()
 	}
 }
+
+main({ id: 'boris'})
