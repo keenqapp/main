@@ -56,3 +56,15 @@ export const updatemembergql = gql`
 		}
 	}
 `
+
+export const contactsgql = gql`
+	query Contacts($id: String!) {
+		matches(where: { _and: { authorId: { _eq: $id }, result: { _eq: true } } }) {
+			member {
+				id
+				name
+				images
+			}
+		}
+	}
+`

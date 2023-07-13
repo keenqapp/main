@@ -70,17 +70,4 @@ export const updateroomgql = gql`
 	}
 `
 
-export const privateroomgql = gql`
-	query PrivateRoom($roomId: String!, $memberId: String!) {
-		rooms_members(where: { _and: { roomId: { _eq: $roomId }, memberId: { _neq: $memberId } } }) {
-			member {
-				id
-				name
-				images
-			}
-			room {
-				lastMessageId
-			}
-		}
-	}
-`
+

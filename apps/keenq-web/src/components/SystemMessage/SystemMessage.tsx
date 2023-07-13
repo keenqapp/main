@@ -17,7 +17,7 @@ function SystemMessage(message: IMessage) {
 	const text = getText(message)
 	return (
 		<SystemMessageContainer data-testid='SystemMessage' aling='center'>
-			{request && <PartnerRequest {...request} />}
+			{request && <PartnerRequest id={message.id} {...request} />}
 			{text && <SystemTextMessage text={text} />}
 		</SystemMessageContainer>
 	)

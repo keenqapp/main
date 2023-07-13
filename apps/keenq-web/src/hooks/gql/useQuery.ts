@@ -1,4 +1,4 @@
-import { AnyVariables, useQuery as _useQuery, UseQueryResponse } from 'urql'
+import { AnyVariables, useQuery as _useQuery, UseQueryArgs, UseQueryResponse } from 'urql'
 
 
 export interface UseQueryOptions {
@@ -6,8 +6,8 @@ export interface UseQueryOptions {
 	context?: any
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export function useQuery<D = any, V extends AnyVariables>(query: any, variables?: V | null, options?: UseQueryOptions): UseQueryResponse<D, V> | UseQueryResponse<D> {
+export function useQuery<D, V extends AnyVariables = AnyVariables>(query: UseQueryArgs<V, D>['query'], variables?: V | null, options?: UseQueryOptions): UseQueryResponse<D, V> | UseQueryResponse<D> {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	return _useQuery({ query, ...(variables ? { variables } : {}), ...(options ? options : {}) })
 }

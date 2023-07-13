@@ -15,3 +15,7 @@ declare module 'react-router-dom' {
 declare global {
   type Timer = ReturnType<typeof setTimeout>
 }
+
+export type Required<T> = {
+  [P in keyof T]-?: T[P]
+}

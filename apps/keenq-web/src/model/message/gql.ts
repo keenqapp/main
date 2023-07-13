@@ -61,12 +61,3 @@ export const updatemessagegql = gql`
 		}
 	}
 `
-
-// export const lastmessagegql = gql`
-// 	query LastMessage($rid: String!) {
-// 		messages(where: { roomId: { _eq: $rid } }, order_by: { date: desc }, limit: 1) {
-// 			date
-// 			content
-// 		}
-// 	}
-// `

@@ -68,6 +68,12 @@ export function merge(left: object, right: object) {
 	return { ...left, ...right }
 }
 
+export function optional<T>(input: T): Exclude<T, undefined> {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	return input || {}
+}
+
 // export function guard(input: unknown) {
 // 	return input
 // }

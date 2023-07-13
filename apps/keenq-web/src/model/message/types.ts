@@ -1,4 +1,3 @@
-import { IMember } from '@/model/member'
 import { IImage } from '@/model/other'
 
 
@@ -70,8 +69,8 @@ export interface IMessageReply {
 export interface IPartnerRequest {
 	type: 'partnerRequest'
 	value: {
-		fromId: string
-		from: IMember
+		from: string
+		to: string
 	}
 }
 

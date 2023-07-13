@@ -25,5 +25,5 @@ export function getPartner(linked: IMember['linked']) {
 }
 
 export function getAvatar(member: IMember) {
-	return member.images?.[0]
+	return member?.images?.[0]
 }
