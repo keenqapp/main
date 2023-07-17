@@ -110,9 +110,9 @@ export async function main(body) {
 		const member = await getMember(id, db)
 		await ensureMember(member)
 
-		const match = await getMatch(id, db, redis)
+		// const match = await getMatch(id, db, redis)
 
-		return { body: { success: true, data: match } }
+		return { body: { success: true, data: member } }
 	}
 	catch(e) {
 		console.error(e)
