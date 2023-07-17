@@ -1,5 +1,5 @@
 import knex from 'knex'
-import { createClient } from 'redis';
+import { createClient } from 'redis'
 
 import { object, string } from 'yup'
 
@@ -30,9 +30,11 @@ function getDb(config) {
 	}
 }
 
-function getRedis(config) {
+async function getRedis(config) {
 	try {
-		return createClient(config)
+		const client =  createClient(config)
+		await client.connect()
+		return client
 	}
 	catch(e) {
 		throw { reason: 'Could not connect to redis', error: e }
@@ -85,13 +87,13 @@ async function updateCache(id, db, redis) {
 async function getMatch(id, db, redis) {
 	try {
 		const cached = await redis.get(path(id))
-		updateCache(id, db, redis)
-		if (cached) {
-			return cached
-		}
-		else {
-			return searchMatch(id, db)
-		}
+		// updateCache(id, db, redis)
+		// if (cached) {
+			return 'ttt'
+		// }
+		// else {
+		// 	return searchMatch(id, db)
+		// }
 	}
 	catch(e) {
 		throw { error: e }
@@ -110,9 +112,9 @@ export async function main(body) {
 		const member = await getMember(id, db)
 		await ensureMember(member)
 
-		// const match = await getMatch(id, db, redis)
+		const match = await getMatch(id, db, redis)
 
-		return { body: { success: true, data: member } }
+		return { body: { success: true, data: match } }
 	}
 	catch(e) {
 		console.error(e)
