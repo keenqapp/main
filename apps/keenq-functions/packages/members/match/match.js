@@ -102,7 +102,9 @@ async function updateCache(id, db, redis) {
 
 async function getMatch(id, db, redis) {
 	try {
-		return searchMatch(id, db)
+		const cached = await redis.get(path(id))
+		// return searchMatch(id, db)
+		return cached
 	}
 	catch(e) {
 		throw { error: e }
@@ -116,7 +118,7 @@ export async function main(body) {
 		const { id } = schema.validateSync(body)
 
 	  db = getDb(dbConfig)
-		redis = getRedis(redisConfig)
+		redis = await getRedis(redisConfig)
 
 		const member = await getMember(id, db)
 		await ensureMember(member)
