@@ -84,16 +84,25 @@ async function updateCache(id, db, redis) {
 	redis.set(path(id), matched)
 }
 
+// async function getMatch(id, db, redis) {
+// 	try {
+// 		const cached = await redis.get(path(id))
+// 		updateCache(id, db, redis)
+// 		if (cached) {
+// 			return cached
+// 		}
+// 		else {
+// 			return searchMatch(id, db)
+// 		}
+// 	}
+// 	catch(e) {
+// 		throw { error: e }
+// 	}
+// }
+
 async function getMatch(id, db, redis) {
 	try {
-		const cached = await redis.get(path(id))
-		// updateCache(id, db, redis)
-		// if (cached) {
-			return 'ttt'
-		// }
-		// else {
-		// 	return searchMatch(id, db)
-		// }
+		return searchMatch(id, db)
 	}
 	catch(e) {
 		throw { error: e }
