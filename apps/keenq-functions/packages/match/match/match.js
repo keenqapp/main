@@ -1,7 +1,7 @@
 import knex from 'knex'
 import { createClient } from 'redis'
 
-import { object, string } from 'yup'
+import { array, object, string } from 'yup'
 
 
 const schema = object({
@@ -60,8 +60,8 @@ async function ensureMember(member) {
 	if (member?.bannedAt) throw { error: 'Member is banned' }
 }
 
-async function searchMatch(id, not, db) {
-	const match = await db
+async function searchNew(id, not, db) {
+	return db
 		.table('members')
 		.select('members.id')
 		.leftJoin('matches', 'members.id', 'matches.memberId')
@@ -72,7 +72,27 @@ async function searchMatch(id, not, db) {
 		.where('members.visible', true)
 		.where('members.done', true)
 		.first()
-	if (!match) throw 'Not match found'
+}
+
+async function searchSeen(id, not, db) {
+	return db
+		.table('members')
+		.select('members.id')
+		.leftJoin('matches', 'members.id', 'matches.memberId')
+		.whereNot('members.id', id)
+		.where('matches.type', 'seen')
+		.where('members.deletedAt', null)
+		.where('members.bannedAt', null)
+		.where('members.visible', true)
+		.where('members.done', true)
+		.first()
+}
+
+async function searchMatch(id, not, db) {
+	let match
+	match = await searchNew(id, not, db)
+	if (!match) match = await searchSeen(id, not, db)
+	if (!match) throw { id: null, reason: 'Not match found' }
 	return match
 }
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'urql'
@@ -19,6 +19,7 @@ import Container from '@/ui/Container'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
+import EmptyMatch from '@/components/Match/EmptyMatch'
 import Swiper from '@/components/Swiper'
 
 import { useInsert, useQuery } from '@/hooks/gql'
@@ -57,11 +58,11 @@ function Match() {
 	const { id, done } = useCurrentMember()
 
 	const [ result, match ] = useQuery(matchgql, { id })
-	console.log('--- Match.tsx:60 -> Match ->', result)
 	const { data, fetching, error } = result
-	console.log('--- Match.tsx:61 -> Match ->', data?.match?.data)
 	const [ , add ] = useInsert(addmatchgql)
 	const [ , update ] = useMutation(updatematchgql)
+
+	const [ empty, setEmpty ] = useState(false)
 
 	const {
 		id: mid,
@@ -73,6 +74,10 @@ function Match() {
 		tags,
 		linked
 	} = useMember(data?.match?.data.id)
+
+	useEffect(() => {
+		setEmpty(!data?.match.id)
+	}, [ data?.match.id ])
 
 	useEffect(() => {
 		if (id && mid && !fetching && !error) add({ authorId: id, memberId: mid, type: 'seen' })
@@ -96,6 +101,8 @@ function Match() {
 		update({ authorId: id, memberId: mid, type: 'no' })
 		match()
 	}
+
+	if (empty) return <EmptyMatch />
 
 	return (
 		<Container data-testid='Match'>

@@ -10,7 +10,7 @@ import RoomInfoImage from '@/components/RoomInfo/RoomInfoImage'
 import RoomInfoMembers from '@/components/RoomInfo/RoomInfoMembers'
 
 import { useQuery } from '@/hooks/gql'
-import { roomgql } from '@/model/room'
+import { IRoom, roomgql } from '@/model/room'
 
 
 const RoomInfoContainer = styled(Container)`
@@ -24,7 +24,7 @@ const options = {
 function RoomInfo() {
 	const { id } = useParams()
 	const [ result ] = useQuery(roomgql, { id }, options)
-	const room = result.data?.rooms_by_pk || {}
+	const room = result.data?.rooms_by_pk || {} as IRoom
 
 	return (
 		<RoomInfoContainer data-testid='RoomInfo' flex>
