@@ -83,7 +83,7 @@ async function searchNew(id, not, db) {
 				.whereNull('matches.authorId')
 				.orWhereNot('matches.authorId', id)
 		})
-		.first()
+		// .first()
 }
 
 async function searchSeen(id, not, db) {
