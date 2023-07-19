@@ -1,3 +1,4 @@
+import { devtoolsExchange } from '@urql/devtools'
 import { persistedExchange } from '@urql/exchange-persisted'
 import { createClient as createWSClient } from 'graphql-ws'
 import { cacheExchange, Client, fetchExchange, subscriptionExchange } from 'urql'
@@ -9,7 +10,7 @@ const wsClient = createWSClient({
 	url: import.meta.env.VITE_GRAPHQL_ENDPOINT.replace('http', 'ws'),
 	connectionParams: () => ({
 		headers: {
-			Authorization: `Bearer ${$accessToken.get()}`,
+			Authorization: `Bearer ${$accessToken.get()}`
 		}
 	}),
 })
@@ -18,6 +19,7 @@ const wsClient = createWSClient({
 const client = new Client({
 	url: import.meta.env.VITE_GRAPHQL_ENDPOINT,
 	exchanges: [
+		devtoolsExchange,
 		cacheExchange,
 		fetchExchange,
 		subscriptionExchange({
@@ -36,7 +38,9 @@ const client = new Client({
 		})
 	],
 	fetchOptions: () => ({
-		headers: { authorization: `Bearer ${$accessToken.get()}` }
+		headers: {
+			authorization: `Bearer ${$accessToken.get()}`
+		}
 	})
 })
 

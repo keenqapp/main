@@ -19,7 +19,7 @@ packages:
       - name: cities
         runtime: nodejs:18
         web: true
-  - name: members
+  - name: match
     environment:
       DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
     functions:

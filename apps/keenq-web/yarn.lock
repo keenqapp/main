@@ -3435,6 +3435,13 @@
     "@0no-co/graphql.web" "^1.0.1"
     wonka "^6.3.2"
 
+"@urql/devtools@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@urql/devtools/-/devtools-2.0.3.tgz#780998c37386c72af9402a8f88c1b388e62f28cd"
+  integrity sha512-TktPLiBS9LcBPHD6qcnb8wqOVcg3Bx0iCtvQ80uPpfofwwBGJmqnQTjUdEFU6kwaLOFZULQ9+Uo4831G823mQw==
+  dependencies:
+    wonka ">= 4.0.9"
+
 "@urql/exchange-persisted@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@urql/exchange-persisted/-/exchange-persisted-4.0.0.tgz#30eaafe6da786843b7e6873939fa81ff2987f95a"
@@ -6990,7 +6997,7 @@ window-size@0.1.0:
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
   integrity sha512-1pTPQDKTdd61ozlKGNCjhNRd+KPmgLSGa3mZTHoOliaGcESD8G1PXhh7c1fgiPjVbNVfgy2Faw4BI8/m0cC8Mg==
 
-wonka@^6.3.2:
+"wonka@>= 4.0.9", wonka@^6.3.2:
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/wonka/-/wonka-6.3.2.tgz#6f32992b332251d7b696b038990f4dc284b3b33d"
   integrity sha512-2xXbQ1LnwNS7egVm1HPhW2FyKrekolzhpM3mCwXdQr55gO+tAiY76rhb32OL9kKsW8taj++iP7C6hxlVzbnvrw==

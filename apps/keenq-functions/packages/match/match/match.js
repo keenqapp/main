@@ -61,7 +61,7 @@ async function ensureMember(member) {
 }
 
 async function searchMatch(id, not, db) {
-	return db
+	const match = await db
 		.table('members')
 		.select('members.id')
 		.leftJoin('matches', 'members.id', 'matches.memberId')
@@ -72,17 +72,19 @@ async function searchMatch(id, not, db) {
 		.where('members.visible', true)
 		.where('members.done', true)
 		.first()
+	if (!match) throw 'Not match found'
+	return match
 }
 
-function path(id) {
-	return `match/${id}`
-}
-
-async function updateCache({ id, matched, db, redis }) {
-	const match = await searchMatch(id, matched, db)
-	if (!match) throw 'No match found'
-	redis.set(path(id), match)
-}
+// function path(id) {
+// 	return `match/${id}`
+// }
+//
+// async function updateCache({ id, matched, db, redis }) {
+// 	const match = await searchMatch(id, matched, db)
+// 	if (!match) throw 'No match found'
+// 	redis.set(path(id), match)
+// }
 
 // async function getMatch(id, db, redis) {
 // 	try {

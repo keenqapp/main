@@ -21,10 +21,11 @@ import Space from '@/ui/Space'
 
 import Swiper from '@/components/Swiper'
 
+import { useInsert, useQuery } from '@/hooks/gql'
 import { useMember } from '@/hooks/useMember'
-import { addmatchgql, getPartner, matchgql } from '@/model/member'
+import { addmatchgql, matchgql, updatematchgql } from '@/model/match/gql'
+import { getPartner } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
-import { useInsert } from '@/hooks/gql'
 
 
 const Content = styled(Row)`
@@ -55,9 +56,12 @@ function Match() {
 	const navigate = useNavigate()
 	const { id, done } = useCurrentMember()
 
-	const [ result, match ] = useMutation(matchgql)
-	const [ , add ] = useInsert(addmatchgql)
+	const [ result, match ] = useQuery(matchgql, { id })
+	console.log('--- Match.tsx:60 -> Match ->', result)
 	const { data, fetching, error } = result
+	console.log('--- Match.tsx:61 -> Match ->', data?.match?.data)
+	const [ , add ] = useInsert(addmatchgql)
+	const [ , update ] = useMutation(updatematchgql)
 
 	const {
 		id: mid,
@@ -71,7 +75,7 @@ function Match() {
 	} = useMember(data?.match?.data.id)
 
 	useEffect(() => {
-		if (id && !mid && !fetching && !error) match({ id })
+		if (id && mid && !fetching && !error) add({ authorId: id, memberId: mid, type: 'seen' })
 	}, [ mid, fetching, error, id ])
 
 	const partner = getPartner(linked)
@@ -84,13 +88,13 @@ function Match() {
 
 	const onYesClick = () => {
 		if (!done) return onAcquaintanceOpen()
-		add({ authorId: id, memberId: mid, type: 'yes' })
-		match({ id })
+		update({ authorId: id, memberId: mid, type: 'yes' })
+		match()
 	}
 
 	const onNoClick = () => {
-		add({ authorId: id, memberId: mid, type: 'no' })
-		match({ id })
+		update({ authorId: id, memberId: mid, type: 'no' })
+		match()
 	}
 
 	return (
