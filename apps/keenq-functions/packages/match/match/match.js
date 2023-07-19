@@ -62,6 +62,39 @@ async function ensureMember(member) {
 
 async function searchNew(id, not, db) {
 	return db
+		.select('members.id', 'matches.type')
+		.from(function () {
+			this
+				.select('*')
+				.from('members')
+				.where(function () {
+					this
+						.whereNot('members.id', id)
+						.where('members.deletedAt', null)
+						.where('members.bannedAt', null)
+						.where('members.visible', true)
+						.where('members.done', true)
+				})
+				.as('members')
+		})
+		.whereNotIn('id', function () {
+			this
+				.select('memberId')
+				.from('matches')
+				.where('authorId', id)
+				.whereIn('type', ['yes', 'no'])
+		})
+		.whereNotIn('id', function () {
+			this
+				.select('authorId')
+				.from('matches')
+				.where('memberId', id)
+				.where('type', 'no')
+		})
+}
+
+async function searchSeen(id, not, db) {
+	return db
 		.select('members.id')
 		.from(function () {
 			this
@@ -77,32 +110,18 @@ async function searchNew(id, not, db) {
 				})
 				.as('members')
 		})
-		.leftJoin('matches', 'members.id', 'matches.memberId')
-		.where(function () {
+		.whereNotIn('id', function () {
 			this
-				.whereNull('matches.authorId')
-				.orWhereNot('matches.authorId', id)
+				.select('memberId')
+				.from('matches')
+				.where('authorId', id)
 		})
-		// .first()
-}
-
-async function searchSeen(id, not, db) {
-	return db
-		.table('members')
-		.select('members.id')
-		.leftJoin('matches', 'members.id', 'matches.memberId')
-		.whereNot('members.id', id)
-		.andWhere(function () {
+		.whereNotIn('id', function () {
 			this
-				.whereNull('matches.authorId')
-				.orWhere('matches.type', 'seen')
-		})
-		.andWhere(function () {
-			this
-				.where('members.deletedAt', null)
-				.where('members.bannedAt', null)
-				.where('members.visible', true)
-				.where('members.done', true)
+				.select('authorId')
+				.from('matches')
+				.where('memberId', id)
+				.where('type', 'no')
 		})
 		.first()
 }
