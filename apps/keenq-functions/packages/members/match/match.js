@@ -60,12 +60,12 @@ async function ensureMember(member) {
 	if (member?.bannedAt) throw { error: 'Member is banned' }
 }
 
-async function searchMatch(id, db) {
+async function searchMatch(id, not, db) {
 	return db
 		.table('members')
 		.select('members.id')
 		.leftJoin('matches', 'members.id', 'matches.memberId')
-		.where('members.id', '!=', id)
+		.whereNot('members.id', id)
 		.whereNull('matches.authorId')
 		.where('members.deletedAt', null)
 		.where('members.bannedAt', null)
@@ -78,21 +78,23 @@ function path(id) {
 	return `match/${id}`
 }
 
-async function updateCache(id, db, redis) {
-	const matched = await searchMatch(id, db)
-	if (!matched) throw 'No match found'
-	redis.set(path(id), matched)
+async function updateCache({ id, matched, db, redis }) {
+	const match = await searchMatch(id, matched, db)
+	if (!match) throw 'No match found'
+	redis.set(path(id), match)
 }
 
 // async function getMatch(id, db, redis) {
 // 	try {
 // 		const cached = await redis.get(path(id))
-// 		updateCache(id, db, redis)
 // 		if (cached) {
+// 			updateCache({ id, db, redis })
 // 			return cached
 // 		}
 // 		else {
-// 			return searchMatch(id, db)
+// 			const matched = await searchMatch(id, null, db)
+// 			updateCache({ id, matched, db, redis })
+// 			return matched
 // 		}
 // 	}
 // 	catch(e) {
@@ -101,19 +103,13 @@ async function updateCache(id, db, redis) {
 // }
 
 async function getMatch(id, db, redis) {
-	try {
-		const cached = await redis.get(path(id))
-		// return searchMatch(id, db)
-		return cached
-	}
-	catch(e) {
-		throw { error: e }
-	}
+	return searchMatch(id, null, db)
 }
 
 export async function main(body) {
 	let db
 	let redis
+
 	try {
 		const { id } = schema.validateSync(body)
 
@@ -136,3 +132,5 @@ export async function main(body) {
 		db?.destroy()
 	}
 }
+
+main({ id: 'boris' })
