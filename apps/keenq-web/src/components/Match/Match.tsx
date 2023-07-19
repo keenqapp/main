@@ -76,8 +76,8 @@ function Match() {
 	} = useMember(data?.match?.data.id)
 
 	useEffect(() => {
-		setEmpty(!data?.match.id)
-	}, [ data?.match.id ])
+		setEmpty(!data?.match.data.id)
+	}, [ data?.match.data.id ])
 
 	useEffect(() => {
 		if (id && mid && !fetching && !error) add({ authorId: id, memberId: mid, type: 'seen' })

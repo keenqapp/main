@@ -66,11 +66,18 @@ async function searchNew(id, not, db) {
 		.select('members.id')
 		.leftJoin('matches', 'members.id', 'matches.memberId')
 		.whereNot('members.id', id)
-		.whereNull('matches.authorId')
-		.where('members.deletedAt', null)
-		.where('members.bannedAt', null)
-		.where('members.visible', true)
-		.where('members.done', true)
+		.andWhere(function () {
+			this
+				.whereNull('matches.authorId')
+				.orWhereNot('matches.authorId', id)
+		})
+		.andWhere(function () {
+			this
+				.where('members.deletedAt', null)
+				.where('members.bannedAt', null)
+				.where('members.visible', true)
+				.where('members.done', true)
+		})
 		.first()
 }
 
@@ -80,11 +87,18 @@ async function searchSeen(id, not, db) {
 		.select('members.id')
 		.leftJoin('matches', 'members.id', 'matches.memberId')
 		.whereNot('members.id', id)
-		.where('matches.type', 'seen')
-		.where('members.deletedAt', null)
-		.where('members.bannedAt', null)
-		.where('members.visible', true)
-		.where('members.done', true)
+		.andWhere(function () {
+			this
+				.whereNull('matches.authorId')
+				.orWhere('matches.type', 'seen')
+		})
+		.andWhere(function () {
+			this
+				.where('members.deletedAt', null)
+				.where('members.bannedAt', null)
+				.where('members.visible', true)
+				.where('members.done', true)
+		})
 		.first()
 }
 
