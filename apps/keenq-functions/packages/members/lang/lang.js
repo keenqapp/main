@@ -2,6 +2,8 @@ import knex from 'knex'
 import { customAlphabet } from 'nanoid'
 import { object, string,  } from 'yup'
 import { generate } from 'random-words'
+import { test as getTest } from './test'
+
 
 
 // const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -123,8 +125,9 @@ export async function main(body, context) {
 		// await check(authorId, memberId, type, db)
 		// const room = await createRoom(db)
 		// await add(authorId, memberId, room, db)
+		const test = getTest()
 
-		return { body: { success: true, data: { body, context } } }
+		return { body: { success: true, data: { body, context, test } } }
 	}
 	catch(e) {
 		console.error(e)

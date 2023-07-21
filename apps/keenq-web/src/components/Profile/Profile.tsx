@@ -121,7 +121,7 @@ const AddButton = styled(Button)`
   position: absolute;
   bottom: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(2px);
 	flex: 1;
 	white-space: nowrap;

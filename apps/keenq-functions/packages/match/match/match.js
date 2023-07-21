@@ -1,7 +1,7 @@
 import knex from 'knex'
 import { createClient } from 'redis'
 
-import { array, object, string } from 'yup'
+import { object, string } from 'yup'
 
 
 const schema = object({

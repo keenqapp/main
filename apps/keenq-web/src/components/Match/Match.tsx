@@ -57,6 +57,8 @@ function Match() {
 	const navigate = useNavigate()
 	const { id, done } = useCurrentMember()
 
+	console.log('--- Match.tsx:60 -> Match ->', id)
+
 	const [ result, match ] = useQuery(matchgql, { id })
 	const { data, fetching, error } = result
 	const [ , add ] = useInsert(addmatchgql)

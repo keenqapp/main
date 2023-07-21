@@ -66,7 +66,7 @@ function LoginForm() {
 	})
 
 	const handleChange = ( _: any, code: string) => {
-		if (code.length === 6) {
+		if (code.length === 4) {
 			setTimeout(() => {
 				codeInput.value = code
 				codeInput.inputRef.current.blur()

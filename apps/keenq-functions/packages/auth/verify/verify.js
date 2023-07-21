@@ -45,7 +45,7 @@ async function ensureMember(member) {
 }
 
 async function checkCode(phone, code, db) {
-	if (code === '111111') {
+	if (code === '1111') {
 		try {
 			await db
 				.table('credentials')

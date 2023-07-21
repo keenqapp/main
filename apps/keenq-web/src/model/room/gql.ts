@@ -33,7 +33,14 @@ export const roomgql = gql<{ rooms_by_pk: IRoom }>`
 	}
 `
 
-export const currentroomgql = gql<{ rooms_by_pk: IRoom }>`
+interface ICurrentroomgql {
+	rooms_by_pk: IRoom
+	rooms_members_aggregate: { aggregate: { count: number } }
+	rooms_members: string[]
+	rooms_admins: string[]
+}
+
+export const currentroomgql = gql<ICurrentroomgql>`
 	query CurrentRoom($id: String!) {
 		rooms_by_pk(id: $id) {
 			id
