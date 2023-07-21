@@ -31,4 +31,8 @@ packages:
       - name: matched
         runtime: nodejs:18
         web: true
-
+  - name: members
+    functions:
+      - name: lang
+        runtime: nodejs:18
+        web: true
