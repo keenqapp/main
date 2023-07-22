@@ -2,3 +2,4 @@ match.js
 package.json
 
 node_modules
+../../../lib/shared.js

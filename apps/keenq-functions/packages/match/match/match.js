@@ -1,7 +1,6 @@
-import knex from 'knex'
-import { createClient } from 'redis'
-
 import { object, string } from 'yup'
+
+import { getDb, getMember, ensureMember, success, error } from './shared.js'
 
 
 const schema = object({
@@ -17,50 +16,7 @@ const dbConfig = {
 	pool: { min: 0, max: 2 }
 }
 
-const redisConfig = {
-	url: process.env.REDIS_URL,
-}
-
-function getDb(config) {
-	try {
-		return knex(config)
-	}
-	catch(e) {
-		throw { reason: 'Could not connect to database', error: e }
-	}
-}
-
-async function getRedis(config) {
-	try {
-		const client =  createClient(config)
-		await client.connect()
-		return client
-	}
-	catch(e) {
-		throw { reason: 'Could not connect to redis', error: e }
-	}
-}
-
-async function getMember(id, db) {
-	try {
-		return await db
-			.table('credentials')
-			.select()
-			.where('id', id)
-			.where('deletedAt', null)
-			.first()
-	}
-	catch(e) {
-		throw { error: e }
-	}
-}
-
-async function ensureMember(member) {
-	if (!member) throw { error: 'Member doesnt exists' }
-	if (member?.bannedAt) throw { error: 'Member is banned' }
-}
-
-async function searchNew(id, not, db) {
+async function searchNew(id, db) {
 	return db
 		.select('members.id')
 		.from(function () {
@@ -93,7 +49,7 @@ async function searchNew(id, not, db) {
 		.first()
 }
 
-async function searchSeen(id, not, db) {
+async function searchSeen(id, db) {
 	return db
 		.select('members.id')
 		.from(function () {
@@ -127,71 +83,37 @@ async function searchSeen(id, not, db) {
 		.first()
 }
 
-async function searchMatch(id, not, db) {
+async function searchMatch(id, db) {
 	let match
-	match = await searchNew(id, not, db)
-	if (!match) match = await searchSeen(id, not, db)
+	match = await searchNew(id, db)
+	if (!match) match = await searchSeen(id, db)
 	if (!match) throw { id: null, reason: 'Not match found' }
 	return match
 }
 
-// function path(id) {
-// 	return `match/${id}`
-// }
-//
-// async function updateCache({ id, matched, db, redis }) {
-// 	const match = await searchMatch(id, matched, db)
-// 	if (!match) throw 'No match found'
-// 	redis.set(path(id), match)
-// }
-
-// async function getMatch(id, db, redis) {
-// 	try {
-// 		const cached = await redis.get(path(id))
-// 		if (cached) {
-// 			updateCache({ id, db, redis })
-// 			return cached
-// 		}
-// 		else {
-// 			const matched = await searchMatch(id, null, db)
-// 			updateCache({ id, matched, db, redis })
-// 			return matched
-// 		}
-// 	}
-// 	catch(e) {
-// 		throw { error: e }
-// 	}
-// }
-
-async function getMatch(id, db, redis) {
-	return searchMatch(id, null, db)
+async function getMatch(id, db) {
+	return searchMatch(id, db)
 }
 
 export async function main(body) {
 	let db
-	let redis
 
 	try {
 		const { id } = schema.validateSync(body)
 
 	  db = getDb(dbConfig)
-		redis = await getRedis(redisConfig)
 
 		const member = await getMember(id, db)
 		await ensureMember(member)
 
-		const match = await getMatch(id, db, redis)
+		const match = await getMatch(id, db)
 
-		return { body: { success: true, data: match } }
+		return success(match)
 	}
 	catch(e) {
-		console.error(e)
-		return { body: { success: false, data: e } }
+		return error(e)
 	}
 	finally {
-		redis?.quit()
 		db?.destroy()
 	}
 }
-
-main({ id: 'boris' })
