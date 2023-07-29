@@ -1,6 +1,5 @@
 import { useCurrentMember } from '@/model/member/hooks'
 import { IMember } from '@/model/member/types'
-import { $isPersonal, IRoom } from '@/model/room'
 
 
 export function $isAuthor(aid: string, mid: string) {
@@ -12,12 +11,9 @@ export function useIsAuthor(aid: string) {
 	return $isAuthor(aid, id)
 }
 
-export function $isAdmin(id: string|null, room?: IRoom) {
-	return true
-	if (!id && !room) return false
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	return !$isPersonal(room) && equals.any(id, room.adminsIds)
+export function $isAdmin(id: string|null, adminsIds?: string[]) {
+	if (!id || !adminsIds) return false
+	return equals.any(id, adminsIds)
 }
 
 export function getPartner(linked: IMember['linked']) {

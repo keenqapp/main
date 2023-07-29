@@ -29,7 +29,9 @@ function RoomsItems(room: IRoom) {
 
 function Rooms() {
 	const [ result ] = useQuery(roomsgql, null, { context })
-	const data =  result.data?.rooms.length > 1 ? result.data?.rooms :  result.data?.rooms.excludeById('keenq')
+	const data =  result.data?.rooms && result.data?.rooms.length > 1
+		? result.data?.rooms
+		: result.data?.rooms.excludeById('keenq')
 	return (
 		<Container data-testid='Rooms' horizontal={0} flex>
 			<Space />

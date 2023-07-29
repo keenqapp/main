@@ -22,8 +22,8 @@ export const addmatchgql = gql`
 `
 
 export const updatematchgql = gql`
-	mutation UpdateMatch($authodId: String!, $memberId: String!, $data: matches_set_input!) {
-		update_matches_by_pk(pk_columns: { authorId: $authodId, memberId: $memberId}, _set: $data) {
+	mutation UpdateMatch($authorId: String!, $memberId: String!, $data: matches_set_input!) {
+		update_matches_by_pk(pk_columns: { authorId: $authorId, memberId: $memberId}, _set: $data) {
 			id
 		}
 	}

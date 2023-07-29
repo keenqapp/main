@@ -15,7 +15,6 @@ const wsClient = createWSClient({
 	}),
 })
 
-
 const client = new Client({
 	url: import.meta.env.VITE_GRAPHQL_ENDPOINT,
 	exchanges: [

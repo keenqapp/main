@@ -1,7 +1,8 @@
-import knex from 'knex'
 import { customAlphabet } from 'nanoid'
 import { object, string,  } from 'yup'
 import { generate } from 'random-words'
+
+import { getDb, getMember, ensureMember, success, error } from './shared.js'
 
 
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -20,34 +21,6 @@ const config = {
 		ssl: { rejectUnauthorized: false },
 	},
 	pool: { min: 0, max: 2 }
-}
-
-function getDb(config) {
-	try {
-		return knex(config)
-	}
-	catch(e) {
-		throw { reason: 'Could not connect to database', error: e }
-	}
-}
-
-async function getMember(id, db) {
-	try {
-		return await db
-			.table('credentials')
-			.select()
-			.where('id', id)
-			.where('deletedAt', null)
-			.first()
-	}
-	catch(e) {
-		throw { error: e }
-	}
-}
-
-async function ensureMember(member) {
-	if (!member) throw { error: 'Member doesnt exists' }
-	if (member?.bannedAt) throw { error: 'Member is banned' }
 }
 
 async function check(authorId, memberId, type, db) {
@@ -124,11 +97,10 @@ export async function main(body) {
 		const room = await createRoom(db)
 		await add(authorId, memberId, room, db)
 
-		return { body: { success: true, data: room } }
+		return success(room)
 	}
 	catch(e) {
-		console.error(e)
-		return { body: { success: false, data: e } }
+		return error(e)
 	}
 	finally {
 		db?.destroy()

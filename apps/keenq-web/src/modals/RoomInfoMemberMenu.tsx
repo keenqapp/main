@@ -9,8 +9,8 @@ import { useModal } from '@/services/modals'
 
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 
-import { useCurrentMember } from '@/model/member/hooks'
 import { useIsAdmin } from '@/hooks/useIsAdmin'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 function RoomInfoMemberMenu() {

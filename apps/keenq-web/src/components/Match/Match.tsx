@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation } from 'urql'
 
 import Button from '@mui/material/Button'
@@ -52,19 +52,21 @@ const Partner = styled(Typography)`
 `
 
 function Match() {
+	const { id: pid } = useParams()
+
 	const { onOpen: onReportOpen } = useModal('report')
 	const { onOpen: onAcquaintanceOpen } = useModal('acquaintance')
 	const navigate = useNavigate()
 	const { id, done } = useCurrentMember()
 
-	console.log('--- Match.tsx:60 -> Match ->', id)
-
-	const [ result, match ] = useQuery(matchgql, { id })
+	const [ result, match ] = useQuery(matchgql, { id }, { requestPolicy: 'cache-and-network' })
 	const { data, fetching, error } = result
 	const [ , add ] = useInsert(addmatchgql)
 	const [ , update ] = useMutation(updatematchgql)
 
 	const [ empty, setEmpty ] = useState(false)
+
+	const getId = pid || data?.match?.data.id
 
 	const {
 		id: mid,
@@ -75,11 +77,11 @@ function Match() {
 		sexuality,
 		tags,
 		linked
-	} = useMember(data?.match?.data.id)
+	} = useMember(getId)
 
 	useEffect(() => {
-		setEmpty(!data?.match.data.id)
-	}, [ data?.match.data.id ])
+		setEmpty(!getId)
+	}, [ getId ])
 
 	useEffect(() => {
 		if (id && mid && !fetching && !error) add({ authorId: id, memberId: mid, type: 'seen' })
@@ -95,12 +97,12 @@ function Match() {
 
 	const onYesClick = () => {
 		if (!done) return onAcquaintanceOpen()
-		update({ authorId: id, memberId: mid, type: 'yes' })
+		update({ authorId: id, memberId: mid, data: { type: 'yes' } })
 		match()
 	}
 
 	const onNoClick = () => {
-		update({ authorId: id, memberId: mid, type: 'no' })
+		update({ authorId: id, memberId: mid, data: { type: 'no' } })
 		match()
 	}
 

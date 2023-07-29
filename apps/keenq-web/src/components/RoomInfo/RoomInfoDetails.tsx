@@ -9,11 +9,9 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import Container from '@/ui/Container'
 import Row from '@/ui/Row'
 
-import { useCurrentMember } from '@/model/member/hooks'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
-import { useIsAdmin } from '@/hooks/useIsAdmin'
-import { IRoom, updateroomgql } from '@/model/room'
+import { IRoom, updateroomgql, useCurrentRoom } from '@/model/room'
 
 
 const NameInput = styled(Input)`
@@ -24,8 +22,7 @@ const NameInput = styled(Input)`
 `
 
 function RoomInfoDetails({ id, name, description }: IRoom) {
-	const { id: cid } = useCurrentMember()
-	const admin = useIsAdmin(cid)
+	const { isAdmin } = useCurrentRoom()
 
 	const [ , update ] = useDebounceMutation(updateroomgql)
 
@@ -51,13 +48,13 @@ function RoomInfoDetails({ id, name, description }: IRoom) {
 
 	return (
 		<Container data-testid='RoomInfoDetails' horizontal={2}>
-			{admin && (
+			{isAdmin && (
 				<Row onClick={onNameClick}>
 					<NameInput {...nameInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
 				</Row>
 			)}
-			{admin ? (
+			{isAdmin ? (
 				<Row onClick={onDescClick} align='start'>
 					<Input {...descriptionInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>

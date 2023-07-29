@@ -1,9 +1,10 @@
 import { gql } from 'urql'
 
 import { IRoom } from '@/model/room/types'
+import { IRoomMember } from '@/model/rooms_members'
 
 
-export const roomsgql = gql<{ rooms: IRoom }>`
+export const roomsgql = gql<{ rooms: IRoom[] }>`
 	query Rooms {
 		rooms {
 			id
@@ -36,8 +37,8 @@ export const roomgql = gql<{ rooms_by_pk: IRoom }>`
 interface ICurrentroomgql {
 	rooms_by_pk: IRoom
 	rooms_members_aggregate: { aggregate: { count: number } }
-	rooms_members: string[]
-	rooms_admins: string[]
+	rooms_members: IRoomMember[]
+	rooms_admins: IRoomMember[]
 }
 
 export const currentroomgql = gql<ICurrentroomgql>`

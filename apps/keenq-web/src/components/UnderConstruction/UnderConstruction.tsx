@@ -1,3 +1,5 @@
+/* eslint-disable */
+// @ts-nocheck
 import Typography from '@mui/material/Typography'
 
 import HandymanTwoToneIcon from '@mui/icons-material/HandymanTwoTone'
