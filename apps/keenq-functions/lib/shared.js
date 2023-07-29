@@ -1,4 +1,5 @@
 import knex from 'knex'
+import { customAlphabet } from 'nanoid'
 
 export function getDb(config) {
 	try {
@@ -34,4 +35,18 @@ export function success(data) {
 
 export function error(data) {
 	return { body: { success: false, data } }
+}
+
+export function getId() {
+	const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+	return customAlphabet(alphabet, 8)
+}
+
+function validate(body, schema) {
+	try {
+		return schema.validateSync(body)
+	}
+	catch(e) {
+		throw { error: e }
+	}
 }

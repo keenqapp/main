@@ -4,8 +4,17 @@ import { object, string } from 'yup'
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
-	code: string().required().length(6),
+	code: string().required().length(4),
 })
+
+function validate(body, schema) {
+	try {
+		return schema.validateSync(body)
+	}
+	catch(e) {
+		throw { error: e }
+	}
+}
 
 const config = {
 	client: 'pg',
@@ -88,7 +97,7 @@ async function generateJWT(user) {
 export async function main(body) {
 	let db
 	try {
-		const { phone, code } = schema.validateSync(body)
+		const { phone, code } = validate(body, schema)
 	  db = getDb(config)
 		const member = await getMember(phone, db)
 		await ensureMember(member)

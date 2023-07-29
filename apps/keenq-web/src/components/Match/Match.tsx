@@ -84,7 +84,10 @@ function Match() {
 	}, [ getId ])
 
 	useEffect(() => {
-		if (id && mid && !fetching && !error) add({ authorId: id, memberId: mid, type: 'seen' })
+		if (id && mid && !fetching && !error) {
+			console.log('--- Match.tsx:88 ->  -> seen', mid)
+			add({ authorId: id, memberId: mid, type: 'seen' })
+		}
 	}, [ mid, fetching, error, id ])
 
 	const partner = getPartner(linked)
@@ -98,11 +101,13 @@ function Match() {
 	const onYesClick = () => {
 		if (!done) return onAcquaintanceOpen()
 		update({ authorId: id, memberId: mid, data: { type: 'yes' } })
+		console.log('--- Match.tsx:88 ->  -> yes', mid)
 		match()
 	}
 
 	const onNoClick = () => {
 		update({ authorId: id, memberId: mid, data: { type: 'no' } })
+		console.log('--- Match.tsx:88 ->  -> no', mid)
 		match()
 	}
 

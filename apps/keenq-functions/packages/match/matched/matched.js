@@ -1,12 +1,8 @@
-import { customAlphabet } from 'nanoid'
 import { object, string,  } from 'yup'
 import { generate } from 'random-words'
 
-import { getDb, getMember, ensureMember, success, error } from './shared.js'
+import { getDb, getMember, ensureMember, success, error, getId, validate } from './shared.js'
 
-
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-const nanoid = customAlphabet(alphabet, 8)
 
 const schema = object({
 	authorId: string().required(),
@@ -50,11 +46,13 @@ async function check(authorId, memberId, type, db) {
 			second
 		}
 	}
+
+	return [first, second]
 }
 
 async function createRoom(db) {
 	try {
-		const id = nanoid()
+		const id = getId()
 		const name = generate({ exactly: 3, join: '-' })
 		const room = await db
 			.table('rooms')
@@ -86,18 +84,18 @@ async function add(authorId, memberId, room, db) {
 export async function main(body) {
 	let db
 	try {
-		const { authorId, memberId, type } = schema.validateSync(body)
+		const { authorId, memberId, type } = validate(body, schema)
 	  db = getDb(config)
 
 		const [author, member] = await Promise.all([getMember(authorId, db), getMember(memberId, db)])
 		await ensureMember(author)
 		await ensureMember(member)
 
-		await check(authorId, memberId, type, db)
-		const room = await createRoom(db)
-		await add(authorId, memberId, room, db)
+		const [f,s] = await check(authorId, memberId, type, db)
+		// const room = await createRoom(db)
+		// await add(authorId, memberId, room, db)
 
-		return success(room)
+		return success([f,s])
 	}
 	catch(e) {
 		return error(e)

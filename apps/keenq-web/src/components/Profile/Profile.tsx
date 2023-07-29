@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
 
 import Button from '@mui/material/Button'
@@ -178,11 +178,14 @@ function Profile() {
 		onChange: (_:any, description: string) => update(id, { description }),
 	})
 
+	const [ loading, setLoading ] = useState(false)
+
 	const onScroll = useRef<(where: 'bottom' | 'top') => void>()
 	const onUploadChange = async (e: any) => {
+		setLoading(true)
 		const image = await uploadImage(`members/${id}`, e.target.files[0])
 		await update( id, { images: [...images, image] })
-		// setTimeout(() => onScroll.current?.('bottom'), 1500)
+		setLoading(false)
 	}
 
 	const onNameClick = () => nameInput.inputRef.current?.focus()
@@ -215,7 +218,12 @@ function Profile() {
 			{images && images?.length > 0
 				? (
 					<SwiperContainer>
-						<Swiper images={images} onScroll={onScroll} buttons={<Buttons />} />
+						<Swiper
+							loading={loading}
+							images={images}
+							onScroll={onScroll}
+							buttons={<Buttons />}
+						/>
 						<Row justify='end'>
 							<Upload accept='image/*' onChange={onUploadChange}>
 								<AddButton startIcon={<PhotoCameraTwoToneIcon />} component='span'>Add photo</AddButton>

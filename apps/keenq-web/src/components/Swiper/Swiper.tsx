@@ -6,6 +6,7 @@ import SwiperDots from '@/components/Swiper/SwiperDots'
 import { checkSnap } from '@/components/Swiper/utils'
 
 import { IImage } from '@/model/other'
+import Loadable from '@/ui/Loadable'
 
 
 const SwiperContainer = styled.div`
@@ -41,16 +42,19 @@ interface SwiperProps {
 	images: IImage[]
 	buttons?: VNode
 	onScroll?: any
+	loading?: boolean
 }
 
-function Swiper({ images, buttons, onScroll }: SwiperProps) {
+function Swiper({ images, buttons, onScroll, loading = false }: SwiperProps) {
 	const [ dot, setDot ] = useState(0)
 	const ref = useRef<HTMLDivElement>(null)
+
 	useEffect(() => {
 		checkSnap(ref.current)
 	}, [])
 
 	const count = useRef(images.length)
+
 	const scrollTo = (where: 'top' | 'bottom' | 'next' | 'prev') => {
 		if (ref.current) {
 			const { scrollHeight, clientHeight } = ref.current
@@ -62,9 +66,11 @@ function Swiper({ images, buttons, onScroll }: SwiperProps) {
 			}
 		}
 	}
+
 	useEffect(() => {
 		if (onScroll) onScroll.current = scrollTo
 	}, [ onScroll ])
+
 	useEffect(() => {
 		if (count.current < images.length) scrollTo('bottom')
 		count.current = images.length
@@ -84,7 +90,9 @@ function Swiper({ images, buttons, onScroll }: SwiperProps) {
 			<SwiperScroll data-testid='Swiper' ref={ref} onScroll={handleScroll}>
 				{images.map(({ id, url }) => (
 					<ImageContainer key={id}>
-						<Image src={url} />
+						<Loadable loading={loading} fullHeight overlay>
+							<Image src={url} />
+						</Loadable>
 						{buttons && cloneElement(buttons, { id })}
 					</ImageContainer>
 				))}

@@ -9,6 +9,7 @@ interface Props {
   children: ComponentChildren
   loader? : VNode
 	fullHeight?: boolean
+	overlay?: boolean
 }
 
 const LoadableContainer = styled.div<{ fullHeight?: boolean }>`
@@ -20,13 +21,32 @@ const LoadableContainer = styled.div<{ fullHeight?: boolean }>`
 	${p => p.fullHeight && 'height: 100vh'}
 `
 
+const Overlay = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: var(--vertical-space);
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.8);
+`
+
 const LoadingComponent = ({ fullHeight }: { fullHeight?: boolean }) => <LoadableContainer fullHeight={fullHeight}><CircularProgress /></LoadableContainer>
 
-function Loadable({ loading, children, loader, fullHeight }: Props) {
+function Loadable({ loading, children, loader, fullHeight, overlay }: Props) {
 	return (
 		<>
 			{loading
-				? loader || <LoadingComponent fullHeight={fullHeight} />
+				? overlay
+					? (
+						<>
+							<Overlay fullHeight={fullHeight}>{loader || <LoadingComponent fullHeight={fullHeight} />}</Overlay>
+							{children}
+						</>
+					)
+					: loader || <LoadingComponent fullHeight={fullHeight} />
 				: children
 			}
 		</>
