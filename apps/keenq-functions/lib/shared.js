@@ -42,7 +42,7 @@ export function getId() {
 	return customAlphabet(alphabet, 8)
 }
 
-function validate(body, schema) {
+export function validate(body, schema) {
 	try {
 		return schema.validateSync(body)
 	}

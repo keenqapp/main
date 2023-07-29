@@ -91,11 +91,11 @@ export async function main(body) {
 		await ensureMember(author)
 		await ensureMember(member)
 
-		const [f,s] = await check(authorId, memberId, type, db)
-		// const room = await createRoom(db)
-		// await add(authorId, memberId, room, db)
+		await check(authorId, memberId, type, db)
+		const room = await createRoom(db)
+		await add(authorId, memberId, room, db)
 
-		return success([f,s])
+		return success(room)
 	}
 	catch(e) {
 		return error(e)
