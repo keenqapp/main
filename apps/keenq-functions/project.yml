@@ -26,8 +26,6 @@ packages:
       - name: match
         runtime: nodejs:18
         web: true
-        environment:
-          REDIS_URL: "${REDIS_URL}"
       - name: matched
         runtime: nodejs:18
         web: true

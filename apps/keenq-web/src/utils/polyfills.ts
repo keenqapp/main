@@ -1,6 +1,7 @@
 import { cloneElement, VNode } from 'preact'
 import $equals from 'fast-deep-equal'
 
+import 'large-small-dynamic-viewport-units-polyfill'
 import { Entity } from '@/types/utility'
 
 

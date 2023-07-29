@@ -58,7 +58,7 @@ async function getCity(input, location) {
 	}
 }
 
-async function ensureMember(member, db) {
+async function ensureCreds(member, db) {
 	if (!member) throw { error: 'Member doesnt exists' }
 }
 
@@ -66,8 +66,8 @@ export async function main({ id, input, location }) {
 	let db
 	try {
 		db = getDb(config)
-		const member = await getMember(id, db)
-		await ensureMember(member)
+		const creds = await getCreds(id, db)
+		await ensureCreds(member)
 		const data = await getCity(input, location)
 
 		return { body: { success: true, data } }

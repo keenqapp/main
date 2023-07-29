@@ -223,6 +223,7 @@ function Profile() {
 							images={images}
 							onScroll={onScroll}
 							buttons={<Buttons />}
+							scrollOnAdd
 						/>
 						<Row justify='end'>
 							<Upload accept='image/*' onChange={onUploadChange}>

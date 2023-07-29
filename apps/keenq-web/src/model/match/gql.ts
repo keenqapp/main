@@ -28,3 +28,15 @@ export const updatematchgql = gql`
 		}
 	}
 `
+
+export const matchedgql = gql`
+	mutation Matched($authorId: String!, $memberId: String!, $type: String!) {
+		matched(authorId: $authorId, memberId: $memberId, type: $type) {
+			success
+			data {
+				id
+				name
+			}
+		}
+	}
+`

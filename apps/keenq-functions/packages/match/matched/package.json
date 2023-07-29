@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "knex": "^2.4.2",
+    "knex": "^2.5.1",
     "nanoid": "^4.0.2",
     "pg": "^8.11.0",
     "random-words": "^2.0.0",

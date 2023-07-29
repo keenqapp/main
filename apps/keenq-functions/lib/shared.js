@@ -10,7 +10,7 @@ export function getDb(config) {
 	}
 }
 
-export async function getMember(id, db) {
+export async function getCreds(id, db) {
 	try {
 		return db
 			.table('credentials')
@@ -24,9 +24,9 @@ export async function getMember(id, db) {
 	}
 }
 
-export function ensureMember(member) {
-	if (!member) throw { error: 'Wrong credentials' }
-	if (member?.bannedAt) throw { error: 'Member is banned' }
+export function ensureCreds(creds) {
+	if (!creds) throw { error: 'Wrong credentials' }
+	if (creds?.bannedAt) throw { error: 'Member is banned' }
 }
 
 export function success(data) {
@@ -39,7 +39,7 @@ export function error(data) {
 
 export function getId() {
 	const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-	return customAlphabet(alphabet, 8)
+	return customAlphabet(alphabet, 8)()
 }
 
 export function validate(body, schema) {

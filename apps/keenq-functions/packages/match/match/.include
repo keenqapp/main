@@ -1,5 +1,6 @@
 match.js
 package.json
+yarn.lock
 
 node_modules
 ../../../lib/shared.js

@@ -1,10 +1,8 @@
 import knex from 'knex'
-import { customAlphabet } from 'nanoid'
 import { object, string } from 'yup'
+import { customAlphabet } from 'nanoid'
 
-
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-const nanoid = customAlphabet(alphabet, 8)
+import { success, error, validate, getDb, getId } from './shared.js'
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
@@ -19,16 +17,7 @@ const config = {
 	pool: { min: 0, max: 2 }
 }
 
-function getDb(config) {
-	try {
-		return knex(config)
-	}
-	catch(e) {
-		throw { reason: 'Could not connect to database', error: e }
-	}
-}
-
-async function getMember(phone, db) {
+async function getCreds(phone, db) {
 	try {
 		return await db
 			.table('credentials')
@@ -42,15 +31,15 @@ async function getMember(phone, db) {
 	}
 }
 
-async function ensureMember(member, phone, db) {
+async function ensureCredsAndMember(creds, phone, db) {
 	try {
-	  if (!member) {
-			const id = nanoid()
+	  if (!creds) {
+			const id = getId()
 			await db.table('credentials').insert({ phone, id })
 		  await db.table('members').insert({ id })
 		  await db.table('links').insert({ entityId: id, type: 'member', link: id  })
 	  }
-		if (member?.bannedAt) throw 'Member is banned'
+		if (creds?.bannedAt) throw 'Member is banned'
 	}
 	catch(e) {
 		throw { error: e }
@@ -66,21 +55,18 @@ async function sendSMS(phone) {
 	}
 }
 
-// TODO: check id for 'creds' and 'members' for sync
 export async function main(body) {
 	let db
 	try {
-		const { phone } = schema.validateSync(body)
+		const { phone } = validate(body, schema)
 	  db = getDb(config)
-		const member = await getMember(phone, db)
-		await ensureMember(member, phone, db)
+		const creds = await getCreds(phone, db)
+		await ensureCredsAndMember(creds, phone, db)
 		await sendSMS(phone)
-
-		return { body: { success: true, data: {} } }
+		return success(true)
 	}
 	catch(e) {
-		console.error(e)
-		return { body: { success: false, data: e } }
+		return error(e)
 	}
 	finally {
 		db?.destroy()

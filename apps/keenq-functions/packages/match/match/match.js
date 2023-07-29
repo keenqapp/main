@@ -1,6 +1,6 @@
 import { object, string } from 'yup'
 
-import { getDb, getMember, ensureMember, success, error } from './shared.js'
+import { getDb, getCreds, ensureCreds, success, error, validate } from './shared.js'
 
 
 const schema = object({
@@ -16,95 +16,78 @@ const dbConfig = {
 	pool: { min: 0, max: 2 }
 }
 
-async function searchNew(id, db) {
-	return db
-		.select('members.id')
-		.from(function () {
-			this
-				.select('*')
-				.from('members')
-				.where(function () {
-					this
-						.whereNot('members.id', id)
-						.where('members.deletedAt', null)
-						.where('members.bannedAt', null)
-						.where('members.visible', true)
-						.where('members.done', true)
-				})
-				.as('members')
-		})
-		.whereNotIn('id', function () {
-			this
-				.select('memberId')
-				.from('matches')
-				.where('authorId', id)
-		})
-		.whereNotIn('id', function () {
-			this
-				.select('authorId')
-				.from('matches')
-				.where('memberId', id)
-				.where('type', 'no')
-		})
-		.first()
-}
+const sql = (seen = false) => `
+	select matchable.id, matchable.distance
+	from (
+	  with current_member as (
+	    select * from members where members.id = :id
+	  )
+	  select
+	    members.id,
+	    members.name,
+	    ST_DistanceSphere(
+	      current_member.point,
+	      members.point
+	    ) as distance
+	  from 
+	    members,
+	    current_member
+	  where members.id != current_member.id
+		and members."deletedAt" is null
+		and members."bannedAt" is null
+		and members.visible = true
+		and members.done = true
+		and (
+	    case
+	      when (current_member.gender = 'Male' and current_member.sexuality = 'Hetero') then members.gender != 'Male'
+	      when (current_member.gender = 'Female' and current_member.sexuality = 'Hetero') then members.gender != 'Female'
+	    end
+		)
+		order by distance
+	) as matchable
+  where matchable.distance is not null
+  and matchable.id not in (
+    ${seen 
+	    ? 'select "memberId" from matches where "authorId" = :id and type in (\'no\', \'yes\')'
+	    : 'select "memberId" from matches where "authorId" = :id'}
+  )
+  and matchable.id not in (
+    select "authorId" from matches where "memberId" = :id and type = 'no'
+  )
+	limit 1
+`
 
-async function searchSeen(id, db) {
-	return db
-		.select('members.id')
-		.from(function () {
-			this
-				.select('*')
-				.from('members')
-				.where(function () {
-					this
-						.whereNot('members.id', id)
-						.where('members.deletedAt', null)
-						.where('members.bannedAt', null)
-						.where('members.visible', true)
-						.where('members.done', true)
-				})
-				.as('members')
-		})
-		.whereNotIn('id', function () {
-			this
-				.select('memberId')
-				.from('matches')
-				.where('authorId', id)
-				.whereIn('type', ['yes', 'no'])
-		})
-		.whereNotIn('id', function () {
-			this
-				.select('authorId')
-				.from('matches')
-				.where('memberId', id)
-				.where('type', 'no')
-		})
-		.first()
-}
-
-async function searchMatch(id, db) {
-	let match
-	match = await searchNew(id, db)
-	if (!match) match = await searchSeen(id, db)
-	if (!match) throw { id: null, reason: 'Not match found' }
-	return match
+async function search(id, seen, db) {
+	try {
+		const result = await db.raw(sql(seen), { id })
+		return result.rows?.[0]
+	}
+	catch (e) {
+		throw e
+	}
 }
 
 async function getMatch(id, db) {
-	return searchMatch(id, db)
+	try {
+		let match = await search(id, false, db)
+		if (!match) match = await search(id, true, db)
+		if (!match) throw 'No match found'
+		return match
+	}
+	catch(e) {
+		throw { error: e }
+	}
 }
 
 export async function main(body) {
 	let db
-
 	try {
-		const { id } = schema.validateSync(body)
+		const { id } = validate(body, schema)
 
 	  db = getDb(dbConfig)
 
-		const member = await getMember(id, db)
-		await ensureMember(member)
+		const creds = await getCreds(id, db)
+		await ensureCreds(creds)
 
 		const match = await getMatch(id, db)
 

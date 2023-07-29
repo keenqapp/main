@@ -5537,6 +5537,11 @@ language-tags@=1.0.5:
   dependencies:
     language-subtag-registry "~0.3.2"
 
+large-small-dynamic-viewport-units-polyfill@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/large-small-dynamic-viewport-units-polyfill/-/large-small-dynamic-viewport-units-polyfill-0.1.1.tgz#30ae68ae1323c09e4855df23ae9de32b6d7e526a"
+  integrity sha512-98hOXouuWWcWGXaFwztU/LyGjwe8QNYAXRwuGiO3eI2bmDv+pvDNN5G9udP8CQldhyRcJ0gQzFigjHteTLvyQQ==
+
 lazy-cache@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"

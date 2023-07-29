@@ -22,9 +22,10 @@ import Space from '@/ui/Space'
 import EmptyMatch from '@/components/Match/EmptyMatch'
 import Swiper from '@/components/Swiper'
 
+import { $unread } from '@/core/BottomTabs'
 import { useInsert, useQuery } from '@/hooks/gql'
 import { useMember } from '@/hooks/useMember'
-import { addmatchgql, matchgql, updatematchgql } from '@/model/match/gql'
+import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
 import { getPartner } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
 
@@ -63,6 +64,7 @@ function Match() {
 	const { data, fetching, error } = result
 	const [ , add ] = useInsert(addmatchgql)
 	const [ , update ] = useMutation(updatematchgql)
+	const [ , matched ] = useMutation(matchedgql)
 
 	const [ empty, setEmpty ] = useState(false)
 
@@ -85,7 +87,6 @@ function Match() {
 
 	useEffect(() => {
 		if (id && mid && !fetching && !error) {
-			console.log('--- Match.tsx:88 ->  -> seen', mid)
 			add({ authorId: id, memberId: mid, type: 'seen' })
 		}
 	}, [ mid, fetching, error, id ])
@@ -98,16 +99,17 @@ function Match() {
 		navigate(`/match/${partner.id}`)
 	}
 
-	const onYesClick = () => {
+	const onYesClick = async () => {
 		if (!done) return onAcquaintanceOpen()
-		update({ authorId: id, memberId: mid, data: { type: 'yes' } })
-		console.log('--- Match.tsx:88 ->  -> yes', mid)
+		await update({ authorId: id, memberId: mid, data: { type: 'yes' } })
 		match()
+		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
+		if (data?.matched.success) $unread.set(true)
 	}
 
 	const onNoClick = () => {
 		update({ authorId: id, memberId: mid, data: { type: 'no' } })
-		console.log('--- Match.tsx:88 ->  -> no', mid)
+		// matched({ authorId: id, memberId: mid, type: 'no' })
 		match()
 	}
 

@@ -1,7 +1,7 @@
-import knex from 'knex'
-import { customAlphabet } from 'nanoid'
-import { object, string,  } from 'yup'
-import { generate } from 'random-words'
+// import knex from 'knex'
+// import { customAlphabet } from 'nanoid'
+// import { object, string,  } from 'yup'
+// import { generate } from 'random-words'
 
 
 
@@ -46,7 +46,7 @@ import { generate } from 'random-words'
 // 	}
 // }
 //
-// async function ensureMember(member) {
+// async function ensureCreds(member) {
 // 	if (!member) throw { error: 'Member doesnt exists' }
 // 	if (member?.bannedAt) throw { error: 'Member is banned' }
 // }
@@ -118,8 +118,8 @@ export async function main(body, context) {
 		// db = getDb(config)
 		//
 		// const [author, member] = await Promise.all([getMember(authorId, db), getMember(memberId, db)])
-		// await ensureMember(author)
-		// await ensureMember(member)
+		// await ensureCreds(author)
+		// await ensureCreds(member)
 		//
 		// await check(authorId, memberId, type, db)
 		// const room = await createRoom(db)
@@ -134,3 +134,14 @@ export async function main(body, context) {
 		db?.destroy()
 	}
 }
+
+function test() {
+	if (typeof window !== 'undefined') {
+		console.log('--- lang.js:138 ->  ->', window?.location.href)
+	}
+	else {
+		console.log('--- lang.js:138 ->  ->', 'else')
+	}
+}
+
+test()

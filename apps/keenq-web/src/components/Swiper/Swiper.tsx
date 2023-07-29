@@ -2,11 +2,12 @@ import { cloneElement, VNode } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
 
+import Loadable from '@/ui/Loadable'
+
 import SwiperDots from '@/components/Swiper/SwiperDots'
 import { checkSnap } from '@/components/Swiper/utils'
 
 import { IImage } from '@/model/other'
-import Loadable from '@/ui/Loadable'
 
 
 const SwiperContainer = styled.div`
@@ -43,9 +44,10 @@ interface SwiperProps {
 	buttons?: VNode
 	onScroll?: any
 	loading?: boolean
+	scrollOnAdd?: boolean
 }
 
-function Swiper({ images, buttons, onScroll, loading = false }: SwiperProps) {
+function Swiper({ images, buttons, onScroll, loading = false, scrollOnAdd = false }: SwiperProps) {
 	const [ dot, setDot ] = useState(0)
 	const ref = useRef<HTMLDivElement>(null)
 
@@ -55,10 +57,11 @@ function Swiper({ images, buttons, onScroll, loading = false }: SwiperProps) {
 
 	const count = useRef(images.length)
 
-	const scrollTo = (where: 'top' | 'bottom' | 'next' | 'prev') => {
+	const scrollTo = (to: 'top' | 'bottom' | 'next' | 'prev') => {
+		console.log('--- Swiper.tsx:60 -> scrollTo ->', to, images)
 		if (ref.current) {
 			const { scrollHeight, clientHeight } = ref.current
-			switch (where) {
+			switch (to) {
 				case 'top': return ref.current.scrollTo({ top: 0, behavior: 'smooth' })
 				case 'bottom': return ref.current.scrollTo({ top: scrollHeight - clientHeight, behavior: 'smooth' })
 				// case 'next': return ref.current.scrollTo({ top: scrollTop + clientHeight, behavior: 'smooth' })
@@ -72,7 +75,7 @@ function Swiper({ images, buttons, onScroll, loading = false }: SwiperProps) {
 	}, [ onScroll ])
 
 	useEffect(() => {
-		if (count.current < images.length) scrollTo('bottom')
+		if (count.current < images.length && scrollOnAdd) scrollTo('bottom')
 		count.current = images.length
 	}, [ images.length ])
 
@@ -88,8 +91,8 @@ function Swiper({ images, buttons, onScroll, loading = false }: SwiperProps) {
 	return (
 		<SwiperContainer>
 			<SwiperScroll data-testid='Swiper' ref={ref} onScroll={handleScroll}>
-				{images.map(({ id, url }) => (
-					<ImageContainer key={id}>
+				{images.map(({ id, url, date }) => (
+					<ImageContainer key={id+date}>
 						<Loadable loading={loading} fullHeight overlay>
 							<Image src={url} />
 						</Loadable>

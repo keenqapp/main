@@ -1,20 +1,12 @@
-import knex from 'knex'
 import jwt from 'jsonwebtoken'
 import { object, string } from 'yup'
 
+import { getDb, ensureCreds, success, error, validate } from './shared.js'
+
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
-	code: string().required().length(4),
+	code: string().required().length(4)
 })
-
-function validate(body, schema) {
-	try {
-		return schema.validateSync(body)
-	}
-	catch(e) {
-		throw { error: e }
-	}
-}
 
 const config = {
 	client: 'pg',
@@ -25,16 +17,7 @@ const config = {
 	pool: { min: 0, max: 2 }
 }
 
-function getDb(config) {
-	try {
-		return knex(config)
-	}
-	catch(e) {
-		throw { reason: 'Could not connect to database', error: e }
-	}
-}
-
-async function getMember(phone, db) {
+async function getCreds(phone, db) {
 	try {
 		return await db
 			.table('credentials')
@@ -46,11 +29,6 @@ async function getMember(phone, db) {
 	catch(e) {
 		throw { error: e }
 	}
-}
-
-async function ensureMember(member) {
-  if (!member) throw { error: 'Wrong credentials' }
-	if (member?.bannedAt) throw { error: 'Member is banned' }
 }
 
 async function checkCode(phone, code, db) {
@@ -93,22 +71,20 @@ async function generateJWT(user) {
 	}
 }
 
-// TODO: check id for 'creds' and 'members' for sync
 export async function main(body) {
 	let db
 	try {
 		const { phone, code } = validate(body, schema)
 	  db = getDb(config)
-		const member = await getMember(phone, db)
-		await ensureMember(member)
+		const creds = await getCreds(phone, db)
+		await ensureCreds(creds)
 		await checkCode(phone, code, db)
-		const accessToken = await generateJWT(member)
+		const accessToken = await generateJWT(creds)
 
-		return { body: { success: true, data: { accessToken, id: member.id } } }
+		return success({ accessToken, id: creds.id })
 	}
 	catch(e) {
-		console.error(e)
-		return { body: { success: false, data: e } }
+		return error(e)
 	}
 	finally {
 		db?.destroy()

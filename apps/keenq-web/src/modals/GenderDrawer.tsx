@@ -18,8 +18,8 @@ import Space from '@/ui/Space'
 import BiGenderIcon from '@/assets/BiGenderIcon'
 import NonBinaryIcon from '@/assets/NonBinaryIcon'
 import { useUpdate } from '@/hooks/gql'
-import { useCurrentMember } from '@/model/member/hooks'
 import { updatemembergql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 const StyledItem = styled(Row)<{ active: boolean }>`

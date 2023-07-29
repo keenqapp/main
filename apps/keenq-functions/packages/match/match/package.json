@@ -5,9 +5,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "knex": "^2.4.2",
+    "@types/knex": "^0.16.1",
+    "knex": "^2.5.1",
+    "nanoid": "^4.0.2",
     "pg": "^8.11.0",
-    "redis": "^4.6.7",
     "yup": "^1.2.0"
   },
   "scripts": {

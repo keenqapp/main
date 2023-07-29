@@ -1,7 +1,7 @@
 import { object, string,  } from 'yup'
 import { generate } from 'random-words'
 
-import { getDb, getMember, ensureMember, success, error, getId, validate } from './shared.js'
+import { getDb, ensureCreds, success, error, getId, validate, getCreds } from './shared.js'
 
 
 const schema = object({
@@ -87,9 +87,9 @@ export async function main(body) {
 		const { authorId, memberId, type } = validate(body, schema)
 	  db = getDb(config)
 
-		const [author, member] = await Promise.all([getMember(authorId, db), getMember(memberId, db)])
-		await ensureMember(author)
-		await ensureMember(member)
+		const [author, member] = await Promise.all([getCreds(authorId, db), getCreds(memberId, db)])
+		await ensureCreds(author)
+		await ensureCreds(member)
 
 		await check(authorId, memberId, type, db)
 		const room = await createRoom(db)
