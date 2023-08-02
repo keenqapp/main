@@ -7,6 +7,7 @@ export const matchgql = gql`
 			success
 			data {
 				id
+				distance
 				reason
 			}
 		}

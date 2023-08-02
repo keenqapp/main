@@ -24,6 +24,7 @@ import Swiper from '@/components/Swiper'
 
 import { $unread } from '@/core/BottomTabs'
 import { useInsert, useQuery } from '@/hooks/gql'
+import { useFormatDistance } from '@/hooks/useFormatDistance'
 import { useMember } from '@/hooks/useMember'
 import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
 import { getPartner } from '@/model/member'
@@ -69,6 +70,7 @@ function Match() {
 	const [ empty, setEmpty ] = useState(false)
 
 	const getId = pid || data?.match?.data.id
+	const distance = useFormatDistance(data?.match?.data.distance)
 
 	const {
 		id: mid,
@@ -109,7 +111,6 @@ function Match() {
 
 	const onNoClick = () => {
 		update({ authorId: id, memberId: mid, data: { type: 'no' } })
-		// matched({ authorId: id, memberId: mid, type: 'no' })
 		match()
 	}
 
@@ -132,7 +133,7 @@ function Match() {
 					<Typography variant='body2'>{gender} {sexuality}</Typography>
 				</Row>
 				<Space height={0.2} />
-				<Typography variant='overline'>8 km away</Typography>
+				<Typography variant='overline'>{distance} away</Typography>
 				<Space height={0.5} />
 				<Fabs justify='between' self='stretch'>
 					<IconButton onClick={onNoClick}><HighlightOffTwoToneIcon fontSize='large' color='secondary' /></IconButton>

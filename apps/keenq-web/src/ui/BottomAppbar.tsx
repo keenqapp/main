@@ -1,10 +1,10 @@
-import { ReactNode } from 'react'
+import { VNode } from 'preact'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 
-
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
+
 
 const fadeInBottom = keyframes`
   0% {
@@ -27,17 +27,17 @@ const StyledAppBar = styled(AppBar)`
 `
 
 interface Props {
-  children: ReactNode
+  children: VNode
 }
 
 function BottomAppbar({ children }: Props) {
-  return (
-    <StyledAppBar position='fixed'>
-      <Toolbar>
-        {children}
-      </Toolbar>
-    </StyledAppBar>
-  )
+	return (
+		<StyledAppBar position='fixed'>
+			<Toolbar>
+				{children}
+			</Toolbar>
+		</StyledAppBar>
+	)
 }
 
 export default BottomAppbar
