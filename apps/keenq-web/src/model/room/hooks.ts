@@ -13,9 +13,11 @@ const options = {
 } as const
 
 export interface IUseCurrentRoom {
+	id: string
 	room: IRoom
 	isMember: boolean
 	isAdmin: boolean
+	isOwner: boolean
 	membersCount: number
 	members: IRoomMember[]
 	membersIds: string[]
@@ -34,18 +36,21 @@ export function useCurrentRoom() {
 		const room = result.data?.rooms_by_pk || {} as IRoom
 		const membersCount = result.data?.rooms_members_aggregate.aggregate.count
 		const members = result.data?.rooms_members || []
-		const membersIds = result.data?.rooms_members.map((rm: any) => rm.memberId)
+		const membersIds = result.data?.rooms_members.map(rm => rm.memberId)
 		const admins = result.data?.rooms_admins || []
-		const adminsIds = result.data?.rooms_admins.map((rm: any) => rm.memberId)
+		const adminsIds = result.data?.rooms_admins.map(rm => rm.memberId)
 		const isMember = membersIds?.includes(mid)
 		const isAdmin = adminsIds?.includes(mid)
+		const isOwner = !!result.data?.rooms_admins.find(rm => rm.memberId === mid && rm.role === 'owner')
 		const isChannel = equals(room.type, 'channel')
 		const isPrivate = equals(room.type, 'private')
 
 		return {
+			id,
 			room,
 			isMember,
 			isAdmin,
+			isOwner,
 			membersCount,
 			members,
 			membersIds,

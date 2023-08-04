@@ -19,6 +19,14 @@ export const joinroom = gql`
 	}
 `
 
+export const undateroommember = gql`
+	mutation UpdateRoomMember($roomId: String!, $memberId: String!, $role: String!) {
+		update_rooms_members_by_pk(pk_columns: { roomId: $roomId, memberId: $memberId }, _set: { role: $role }) {
+			id
+		}
+	}
+`
+
 export const othermemberinprivategql = gql`
 	query OtherMember($rid: String!, $mid: String!) {
 		rooms_members(where: { _and: { roomId: { _eq: $rid }, memberId: {_neq: $mid } } }) {

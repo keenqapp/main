@@ -61,6 +61,7 @@ export const currentroomgql = gql<ICurrentroomgql>`
 		}
 		rooms_admins(where: { roomId: { _eq: $id } }) {
 			memberId
+			role
 		}
 	}
 `
