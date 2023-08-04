@@ -2,8 +2,8 @@ import styled from '@emotion/styled'
 
 import Typography from '@mui/material/Typography'
 
-import theme from '@/ui/theme'
 import Space from '@/ui/Space'
+import theme from '@/ui/theme'
 
 
 const SystemTextMessageContainer = styled.div`

@@ -90,9 +90,9 @@ async function hi(room, db, trx) {
 		.transacting(trx)
 		.insert({
 			roomId: room.id,
-			type: 'greeting',
+			type: 'system',
 			authorId: 'keenq',
-			content: JSON.stringify([{ type: 'text', value: { text: 'Hi!' } }])
+			content: JSON.stringify([{ type: 'greeting', value: { text: 'Hi!' } }])
 		})
 }
 

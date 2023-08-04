@@ -21,6 +21,8 @@ export interface IUseCurrentRoom {
 	membersIds: string[]
 	admins: IRoomMember[]
 	adminsIds: string[]
+	isChannel: boolean
+	isPrivate: boolean
 }
 
 export function useCurrentRoom() {
@@ -29,7 +31,7 @@ export function useCurrentRoom() {
 	const [ result ] = useQuery(currentroomgql, { id }, options)
 
 	const data = useMemo(() => {
-		const room = result.data?.rooms_by_pk || {}
+		const room = result.data?.rooms_by_pk || {} as IRoom
 		const membersCount = result.data?.rooms_members_aggregate.aggregate.count
 		const members = result.data?.rooms_members || []
 		const membersIds = result.data?.rooms_members.map((rm: any) => rm.memberId)
@@ -37,6 +39,9 @@ export function useCurrentRoom() {
 		const adminsIds = result.data?.rooms_admins.map((rm: any) => rm.memberId)
 		const isMember = membersIds?.includes(mid)
 		const isAdmin = adminsIds?.includes(mid)
+		const isChannel = equals(room.type, 'channel')
+		const isPrivate = equals(room.type, 'private')
+
 		return {
 			room,
 			isMember,
@@ -45,7 +50,9 @@ export function useCurrentRoom() {
 			members,
 			membersIds,
 			admins,
-			adminsIds
+			adminsIds,
+			isChannel,
+			isPrivate
 		}
 	}, [ result.data ])
 

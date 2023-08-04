@@ -4,7 +4,7 @@ import { IImage } from '@/model/other'
 export interface IMessage {
 	id: string
 	roomId: string
-	type: 'system' | 'personal' | 'greeting' | 'other'
+	type: 'system' | 'personal' | 'other'
 
 	// Dates
 	date: string
@@ -22,7 +22,7 @@ export interface IMessage {
 	prevAuthorId?: string | null,
 	nextAuthorId?: string | null
 
-	content: (IMessageReply | IMessageText | IMessageImage | IMessageFile | IPartnerRequest) []
+	content: (IMessageReply | IMessageText | IMessageImage | IMessageFile | IPartnerRequest | IGreeting) []
 	reactions?: IMessageReaction[]
 	reactionsCount?: IMessageReactionCount[]
 
@@ -71,6 +71,13 @@ export interface IPartnerRequest {
 	value: {
 		from: string
 		to: string
+	}
+}
+
+export interface IGreeting {
+	type: 'greeting'
+	value: {
+		text: string
 	}
 }
 

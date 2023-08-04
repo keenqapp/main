@@ -1,7 +1,7 @@
 import { differenceInMinutes, isSameDay, parseISO } from 'date-fns'
 
 import { $isAuthor, useCurrentMember } from '@/model/member'
-import { IMessage, IMessageImage, IMessageReply, IMessageText, IPartnerRequest } from '@/model/message'
+import { IGreeting, IMessage, IMessageImage, IMessageReply, IMessageText, IPartnerRequest } from '@/model/message'
 import { $isPrivate, IRoom } from '@/model/room'
 
 
@@ -35,6 +35,11 @@ export function checkShowName({ authorId, prevAuthorId, date, prevDate }: IMessa
 export function getText(message?: IMessage) {
 	if (!message) return ''
 	return message.content.find((c): c is IMessageText => c.type === 'text')?.value.text
+}
+
+export function getGreeting(message?: IMessage) {
+	if (!message) return ''
+	return message.content.find((c): c is IGreeting => c.type === 'greeting')?.value.text
 }
 
 export function getReply(message?: IMessage) {
