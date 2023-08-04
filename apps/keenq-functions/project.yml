@@ -34,3 +34,10 @@ packages:
       - name: lang
         runtime: nodejs:18
         web: true
+  - name: test
+    environment:
+      DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
+    functions:
+      - name: test
+        runtime: nodejs:18
+        web: true

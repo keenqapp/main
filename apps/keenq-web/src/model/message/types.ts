@@ -4,7 +4,7 @@ import { IImage } from '@/model/other'
 export interface IMessage {
 	id: string
 	roomId: string
-	type: 'system' | 'personal' | 'other'
+	type: 'system' | 'personal' | 'greeting' | 'other'
 
 	// Dates
 	date: string

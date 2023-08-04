@@ -152,7 +152,7 @@ function RoomInput() {
 	const [ , join ] = useInsert(joinroom)
 
 	const onJoinClick = () => {
-		join({ memberId: mid, roomId: rid })
+		join({ memberId: mid, roomId: rid, privateFor: rid })
 	}
 
 	const showInput =  isAdmin || (!isChannel && isMember)

@@ -1,7 +1,7 @@
 import { object, string,  } from 'yup'
 import { generate } from 'random-words'
 
-import { getDb, ensureCreds, success, error, getId, validate, getCreds } from './shared.js'
+import { getDb, ensureCreds, success, error, getId, validate, getCreds, transaction } from './shared.js'
 
 
 const schema = object({
@@ -19,11 +19,12 @@ const config = {
 	pool: { min: 0, max: 2 }
 }
 
-async function check(authorId, memberId, type, db) {
+async function check(authorId, memberId, type, db, trx) {
 	if (type === 'no') throw { reason: 'This is "no" match' }
 
 	const first = await db
 		.table('matches')
+		.transacting(trx)
 		.select()
 		.where('authorId', authorId)
 		.where('memberId', memberId)
@@ -32,6 +33,7 @@ async function check(authorId, memberId, type, db) {
 
 	const second = await db
 		.table('matches')
+		.transacting(trx)
 		.select()
 		.where('authorId', memberId)
 		.where('memberId', authorId)
@@ -50,12 +52,13 @@ async function check(authorId, memberId, type, db) {
 	return [first, second]
 }
 
-async function createRoom(db) {
+async function createRoom(db, trx) {
 	try {
 		const id = getId()
 		const name = generate({ exactly: 3, join: '-' })
 		const room = await db
 			.table('rooms')
+			.transacting(trx)
 			.returning('*')
 			.insert({ id, name })
 		return room[0]
@@ -65,12 +68,12 @@ async function createRoom(db) {
 	}
 }
 
-async function add(authorId, memberId, room, db) {
+async function add(authorId, memberId, room, db, trx) {
 	const roomId = room.id
 	try {
-		const roomId = room.id
 		await db
 			.table('rooms_members')
+			.transacting(trx)
 			.insert([
 				{ roomId, memberId: authorId, privateFor: memberId },
 				{ roomId, memberId: memberId, privateFor: authorId },
@@ -79,6 +82,18 @@ async function add(authorId, memberId, room, db) {
 	catch(e) {
 		throw { error: e, reason: { roomId } }
 	}
+}
+
+async function hi(room, db, trx) {
+	await db
+		.table('messages')
+		.transacting(trx)
+		.insert({
+			roomId: room.id,
+			type: 'greeting',
+			authorId: 'keenq',
+			content: JSON.stringify([{ type: 'text', value: { text: 'Hi!' } }])
+		})
 }
 
 export async function main(body) {
@@ -91,11 +106,15 @@ export async function main(body) {
 		await ensureCreds(author)
 		await ensureCreds(member)
 
-		await check(authorId, memberId, type, db)
-		const room = await createRoom(db)
-		await add(authorId, memberId, room, db)
+		const test = await transaction(db, async trx => {
+			await check(authorId, memberId, type, db, trx)
+			const room = await createRoom(db, trx)
+			await add(authorId, memberId, room, db, trx)
+			await hi(room, db, trx)
+			return room
+		})
 
-		return success(room)
+		return success(test)
 	}
 	catch(e) {
 		return error(e)

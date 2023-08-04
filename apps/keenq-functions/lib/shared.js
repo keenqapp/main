@@ -50,3 +50,12 @@ export function validate(body, schema) {
 		throw { error: e }
 	}
 }
+
+export async function transaction(db, fn) {
+	try {
+		return await db.transaction(fn)
+	}
+	catch(e) {
+		throw { error: e }
+	}
+}

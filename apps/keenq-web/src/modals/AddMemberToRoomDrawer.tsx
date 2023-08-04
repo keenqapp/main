@@ -1,3 +1,4 @@
+import { useMemo } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { signal } from '@preact/signals'
 
@@ -20,9 +21,10 @@ import Space from '@/ui/Space'
 
 import EmptyMembers from '@/components/EmptyMembers'
 
+import { useQuery } from '@/hooks/gql'
 import { useInput } from '@/hooks/useInput'
-import { IMember } from '@/model/member'
-import { match } from '@/utils/utils'
+import { IMatch } from '@/model/match'
+import { contactsgql, getAvatar, IMember, useCurrentMember } from '@/model/member'
 
 
 const StyledContainer = styled(Container)`
@@ -39,11 +41,13 @@ const MemberItemContainer = styled(Row)`
 
 const selected = signal(new Set<string>())
 
-function MemberItem({ id, name, image }: IMember) {
+function MemberItem(member: IMember) {
+	const { id, name } = member
+	const avatar = getAvatar(member)
 	const onChange = () => selected.value = selected.value.copyToggle(id)
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={onChange}>
-			<Avatar src={image} alt={name} />
+			<Avatar src={avatar?.url} alt={name} />
 			<Row flex={1} >
 				<Typography variant='h6'>{name}</Typography>
 			</Row>
@@ -54,6 +58,9 @@ function MemberItem({ id, name, image }: IMember) {
 function AddMemberToRoom() {
 
 	const { params, name, on } = useModal('addMemberToRoom')
+	const { id } = useCurrentMember()
+	const [ result ] = useQuery(contactsgql, { id })
+	const members = useMemo(() => result.data?.matches.map((match: IMatch) => match.member) || [], [ result.data ])
 
 	const nameInput = useInput({
 		label: 'Find who you want',
@@ -68,19 +75,17 @@ function AddMemberToRoom() {
 		console.log('--- AddMemberToRoomDrawer.tsx:77 -> onClick ->', params.id, selected.value)
 	}
 
-	const data = []
-
 	return (
 		<Drawer data-testid='ChooseMemberDrawer' fullHeight name={name}>
 			<StyledContainer flex>
 				<TextField {...nameInput} />
 				<Space />
 				<MembersList
-					data={data}
+					data={members}
 					render={MemberItem}
 					empty={EmptyMembers}
 				/>
-				{data.length > 0 && <Button onClick={on(click)} fullWidth startIcon={<CheckTwoToneIcon />}>Yeap</Button>}
+				{members.length > 0 && <Button onClick={on(click)} fullWidth startIcon={<CheckTwoToneIcon />}>Yeap</Button>}
 			</StyledContainer>
 		</Drawer>
 	)
