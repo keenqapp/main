@@ -16,9 +16,9 @@ import Space from '@/ui/Space'
 import json from '@/assets/cities.json'
 import Loading from '@/core/Loading'
 import { useUpdate } from '@/hooks/gql'
-import { useCurrentMember } from '@/model/member/hooks'
 import { useInput } from '@/hooks/useInput'
 import { updatemembergql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 const StyledContainer = styled(Container)`
@@ -53,7 +53,11 @@ function CitiesListItem(city: typeof json[number]) {
 			latitude,
 			timestamp: new Date().toISOString()
 		}
-		update(id, { location })
+		const point = {
+			type: 'Point',
+			coordinates: [longitude, latitude]
+		}
+		update(id, { location, point })
 	}
 
 	return <DrawerItem text={name} subtext={country} onClick={on(click)} />

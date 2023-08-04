@@ -1,11 +1,12 @@
+import { useEffect } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 import axios from 'axios'
 import { atom } from 'nanostores'
 import { gql } from 'urql'
 
 import useAsyncEffect from '@/hooks/useAsyncEffect'
-import { useCurrentMember } from '@/model/member/hooks'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
+import { useCurrentMember } from '@/model/member/hooks'
 
 
 interface LocalityInfo {
@@ -125,11 +126,35 @@ export function usePosition() {
 	const permission = useStore($permission)
 	const status = useStore($status)
 	const position = useStore($position)
+
+	useEffect(() => {
+		if (!permission) requestPermission()
+	}, [ permission ])
+
 	useAsyncEffect(async () => {
 		await getPosition()
 	}, [])
+
+	const getPointAndLocation = () => {
+		if (!position) return {}
+		return {
+			point: {
+				type: 'Point',
+				coordinates: [ position.longitude, position.latitude ]
+			},
+			location: {
+				id: position.plusCode,
+				city: position.city,
+				longitude: position.longitude,
+				latitude: position.latitude,
+				timestamp: new Date().toISOString()
+			}
+		}
+	}
+
 	return {
 		onRequest: requestPermission,
+		getPointAndLocation,
 		coords,
 		permission,
 		position,

@@ -49,18 +49,10 @@ export const membersgql = gql<{ members: IMember[] }>`
 export const updatemembergql = gql`
 	mutation UpdateMember($id: String!, $data: members_set_input!) {
 		update_members_by_pk(pk_columns: { id: $id }, _set: $data) {
-			id
-			name
-			description
-			image
-			images
-			sexuality
-			gender
-			done
-			location
-			visible
+			...MemberFragment
 		}
 	}
+	${memmberfragment}
 `
 
 export const contactsgql = gql`

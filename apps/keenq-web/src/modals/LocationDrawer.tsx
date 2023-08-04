@@ -16,18 +16,22 @@ import Drawer from '@/ui/Drawer'
 import { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Space from '@/ui/Space'
 
+import { useUpdate } from '@/hooks/gql'
+import { updatemembergql, useCurrentMember } from '@/model/member'
+
 
 const StyledCard = styled(Card)`
 	flex: 1;
 `
 
-
 function LocationDrawer() {
 
-	const { position, permission, onRequest } = usePosition()
+	const { id } = useCurrentMember()
+	const { position, permission, getPointAndLocation, onRequest } = usePosition()
 	const { onClose, name } = useModal('location')
 	const { onOpen: onCityOpen } = useModal('city')
 	const { onOpen: onInstructionOpen } = useModal('permissionInstruction')
+	const [ _, update ] = useUpdate(updatemembergql)
 
 	const onRequestClick = () => {
 		if (permission === 'denied') return onInstructionOpen()
@@ -35,7 +39,9 @@ function LocationDrawer() {
 	}
 
 	const onCurrentClick = () => {
-		console.log('--- LocationDrawer.tsx:36 -> onCurrentClick ->', location)
+		if (!position || permission !== 'granted') return
+		const pl = getPointAndLocation()
+		update(id, pl)
 	}
 
 	const onClickCity = () => {
@@ -68,11 +74,12 @@ function LocationDrawer() {
 				<DrawerItem
 					disabled={permission !== 'granted'}
 					icon={<ExploreTwoToneIcon color='primary' />}
-					text='Use your current location'
+					text='Use your current city'
 					subtext={position?.city}
 					onClick={onCurrentClick}
 				/>
 				<DrawerItem
+					disabled={permission === 'granted'}
 					icon={<LocationCityTwoToneIcon color='secondary' />}
 					text='Choose a city'
 					onClick={onClickCity}
