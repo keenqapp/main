@@ -72,7 +72,10 @@ export function useInput(props: UseInputProps) {
 		return validatorError as string
 	}
 
-	const onClear = () => setInput(getFormatted(''))
+	const onClear = () => {
+		setInput(getFormatted(''))
+		setError('')
+	}
 
 	// Automatically clear error on focus
 	const handleFocus = () => {

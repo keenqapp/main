@@ -31,6 +31,7 @@ export function isNotEmpty(input: unknown) {
 	}
 	return regex.test(inputString)
 }
+isNotEmpty.errorText = 'Input shouldn\'t be empty'
 
 export function isContainDigitsAndLetters(input: string) {
 	const inputString = input

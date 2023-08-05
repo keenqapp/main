@@ -79,4 +79,10 @@ export const updateroomgql = gql`
 	}
 `
 
-
+export const createroomgql = gql`
+	mutation CreateRoom($object: rooms_insert_input!) {
+		insert_rooms_one(object: $object) {
+			id
+		}
+	}
+`

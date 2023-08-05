@@ -1,0 +1,17 @@
+{
+  "name": "id",
+  "version": "1.0.0",
+  "main": "id.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "knex": "^2.4.2",
+    "nanoid": "^4.0.2",
+    "pg": "^8.11.0",
+    "random-words": "^2.0.0",
+    "yup": "^1.2.0"
+  },
+  "scripts": {
+    "main": "set -a && source ./.env && node ./id.js"
+  }
+}

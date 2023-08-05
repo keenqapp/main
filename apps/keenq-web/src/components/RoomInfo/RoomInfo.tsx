@@ -32,7 +32,7 @@ function RoomInfo() {
 				<RoomInfoHeader {...room} />
 				<RoomInfoImage {...room} />
 				<RoomInfoDetails {...room} />
-				<RoomInfoMembers {...room} />
+				<RoomInfoMembers />
 			</Column>
 		</RoomInfoContainer>
 	)

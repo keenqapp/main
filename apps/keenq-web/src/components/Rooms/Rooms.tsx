@@ -2,11 +2,11 @@ import styled from '@emotion/styled'
 
 import Container from '@/ui/Container'
 import List from '@/ui/List'
-import Space from '@/ui/Space'
 
 import PrivateRoomsItem from '@/components/Rooms/PrivateRoomsItem'
 import PublicRoomsItem from '@/components/Rooms/PublicRoomsItem'
 import RoomsEmpty from '@/components/Rooms/RoomsEmpty'
+import RoomsHeader from '@/components/Rooms/RoomsHeader'
 
 import { useQuery } from '@/hooks/gql'
 import { $isPrivate, IRoom, roomsgql } from '@/model/room'
@@ -34,7 +34,7 @@ function Rooms() {
 		: result.data?.rooms.excludeById('keenq')
 	return (
 		<Container data-testid='Rooms' horizontal={0} flex>
-			<Space />
+			<RoomsHeader />
 			<RoomsList
 				data={data}
 				render={RoomsItems}

@@ -1,7 +1,6 @@
 import { ComponentChildren, VNode } from 'preact'
 import styled from '@emotion/styled'
 
-import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 import IconButton from '@mui/material/IconButton'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -9,6 +8,8 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import SwipeableDrawer from '@mui/material/SwipeableDrawer'
+
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded'
 
 import { ModalKeys, useModal } from '@/services/modals'
 

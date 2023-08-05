@@ -126,6 +126,7 @@ const theme = unstable_createMuiStrictModeTheme({
 		},
 		body2: {
 			fontFamily: 'system-ui',
+			opacity: 0.8,
 			fontWeight: 300
 		},
 		overline: {

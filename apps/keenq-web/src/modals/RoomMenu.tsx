@@ -13,7 +13,7 @@ import { Drawer, DrawerItem, DrawerList } from '@/ui/Drawer'
 
 import { useMutation } from '@/hooks/gql/useMutation'
 import { useCurrentMember } from '@/model/member'
-import { $isPrivate, useCurrentRoom } from '@/model/room'
+import { useCurrentRoom } from '@/model/room'
 import { leaveroom } from '@/model/rooms_members'
 
 
@@ -24,7 +24,7 @@ function RoomMenu() {
 	const { onOpen: reportOpen } = useModal('report')
 	const { confirm } = useConfirm()
 	const { id: memberId } = useCurrentMember()
-	const { room, isMember } = useCurrentRoom()
+	const { room, isMember, isPrivate } = useCurrentRoom()
 	const { id } = room
 
 	const [ , leave ] = useMutation(leaveroom)
@@ -50,8 +50,6 @@ function RoomMenu() {
 	const muteClick = () => {
 		console.log('--- RoomMenu.tsx:44 -> muteClick ->', 'muteClick')
 	}
-
-	const isPrivate = $isPrivate(room)
 
 	return (
 		<Drawer data-testid='RoomMenu' name={name}>
