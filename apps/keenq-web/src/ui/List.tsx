@@ -59,7 +59,7 @@ function Autosizer({ setHeight }: { setHeight: (height: number) => void }) {
 
 interface ListProps<P extends Entity, > {
 	data?: P[]
-	render: (item: P, index: number) => VNode<P>
+	render: (item: P, index: number) => VNode<P> | VNode
 	empty?: () => VNode
 	scrollRef?: any
 	className?: string

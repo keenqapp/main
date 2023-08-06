@@ -25,6 +25,7 @@ export interface IUseCurrentRoom {
 	adminsIds: string[]
 	isChannel: boolean
 	isPrivate: boolean
+	isPersonal: boolean
 }
 
 export function useCurrentRoom() {
@@ -44,6 +45,7 @@ export function useCurrentRoom() {
 		const isOwner = !!result.data?.rooms_admins.find(rm => rm.memberId === mid && rm.role === 'owner')
 		const isChannel = equals(room.type, 'channel')
 		const isPrivate = equals(room.type, 'private')
+		const isPersonal = equals(room.type, 'personal')
 
 		return {
 			id,
@@ -57,7 +59,8 @@ export function useCurrentRoom() {
 			admins,
 			adminsIds,
 			isChannel,
-			isPrivate
+			isPrivate,
+			isPersonal
 		}
 	}, [ result.data ])
 

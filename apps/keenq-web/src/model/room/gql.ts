@@ -86,3 +86,11 @@ export const createroomgql = gql`
 		}
 	}
 `
+
+export const removeroomgql = gql`
+	mutation RemoveRoom($id: String!, $data: rooms_set_input!) {
+		update_rooms_by_pk(pk_columns: { id: $id }, _set: $data) {
+			id
+		}
+	}
+`

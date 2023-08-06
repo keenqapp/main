@@ -93,3 +93,8 @@ export function loadScript(src: string, position: HTMLElement | null, id: string
 	script.src = src
 	position.appendChild(script)
 }
+
+export const boolAtom = {
+	encode: JSON.stringify,
+	decode: JSON.parse,
+}

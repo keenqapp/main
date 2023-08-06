@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
 import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone'
+import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import NotificationsOffTwoToneIcon from '@mui/icons-material/NotificationsOffTwoTone'
 import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
@@ -13,7 +14,7 @@ import { Drawer, DrawerItem, DrawerList } from '@/ui/Drawer'
 
 import { useMutation } from '@/hooks/gql/useMutation'
 import { useCurrentMember } from '@/model/member'
-import { useCurrentRoom } from '@/model/room'
+import { removeroomgql, useCurrentRoom } from '@/model/room'
 import { leaveroom } from '@/model/rooms_members'
 
 
@@ -24,10 +25,10 @@ function RoomMenu() {
 	const { onOpen: reportOpen } = useModal('report')
 	const { confirm } = useConfirm()
 	const { id: memberId } = useCurrentMember()
-	const { room, isMember, isPrivate } = useCurrentRoom()
-	const { id } = room
+	const { id, isMember, isPersonal, isOwner } = useCurrentRoom()
 
 	const [ , leave ] = useMutation(leaveroom)
+	const [ , remove ] = useMutation(removeroomgql)
 
 	const leaveClick = () => {
 		confirm({
@@ -47,6 +48,16 @@ function RoomMenu() {
 
 	const addMemberClick = () => addMemberOpen({ to: 'room', id })
 
+	const deleteClick = () => {
+		confirm({
+			title: 'Delete room',
+			text: 'Are you sure you want to delete this room?',
+			onConfirm: on(() => {
+				remove({ id, deletedAt: new Date().toISOString() })
+			})
+		})
+	}
+
 	const muteClick = () => {
 		console.log('--- RoomMenu.tsx:44 -> muteClick ->', 'muteClick')
 	}
@@ -54,6 +65,13 @@ function RoomMenu() {
 	return (
 		<Drawer data-testid='RoomMenu' name={name}>
 			<DrawerList>
+				{isOwner && (
+					<DrawerItem
+						icon={<HighlightOffTwoToneIcon color='error' />}
+						text='Delete'
+						onClick={on(deleteClick)}
+					/>
+				)}
 				{isMember && (
 					<DrawerItem
 						icon={<DeleteTwoToneIcon color='secondary' />}
@@ -71,7 +89,7 @@ function RoomMenu() {
 					text='Mute'
 					onClick={on(muteClick)}
 				/>
-				{isPrivate ? (
+				{isPersonal ? (
 					<DrawerItem
 						icon={<ForumTwoToneIcon color='primary' />}
 						text='Profile'

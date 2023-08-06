@@ -25,7 +25,7 @@ const RoomInfoContainer = styled(Row)`
 	padding: 0 1rem;
 `
 
-function RoomHeader() {
+function PersonalRoomHeader() {
 	const { onOpen } = useModal('room')
 	const { room } = useCurrentRoom()
 	const { id: mid } = useCurrentMember()
@@ -43,7 +43,7 @@ function RoomHeader() {
 	const onNameClick = () => navigate(`/match/${mid}`)
 
 	return (
-		<RoomInfoContainer gap={0.5} data-testid='RoomHeader'>
+		<RoomInfoContainer gap={0.5} data-testid='PersonalRoomHeader'>
 			<IconButton color='primary' onClick={onBack}><ArrowBackIosTwoToneIcon /></IconButton>
 			<Row gap={1} onClick={onNameClick}>
 				<Avatar src={avatar?.url} alt={name} />
@@ -61,4 +61,4 @@ function RoomHeader() {
 	)
 }
 
-export default RoomHeader
+export default PersonalRoomHeader

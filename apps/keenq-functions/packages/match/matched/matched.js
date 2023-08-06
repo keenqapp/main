@@ -60,7 +60,7 @@ async function createRoom(db, trx) {
 			.table('rooms')
 			.transacting(trx)
 			.returning('*')
-			.insert({ id, name })
+			.insert({ id, name, type: 'personal' })
 		return room[0]
 	}
 	catch(e) {
