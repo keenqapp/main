@@ -12,15 +12,36 @@ import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 import { useModal } from '@/services/modals'
 
 import Row from '@/ui/Row'
-import Space from '@/ui/Space'
 
 import { $isPersonal } from '@/model/room'
 import { useCurrentRoom } from '@/model/room/hooks'
 
 
-const RoomInfoContainer = styled(Row)`
+const RoomHeaderContainer = styled(Row)`
 	height: var(--vertical-space);
 	padding: 0 1rem;
+	width: 100vw;
+`
+
+const NoWrap = styled(Typography)`
+	white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+	width: calc(100% - 2rem); // 40px - avatar width
+`
+
+const Info = styled(Row)`
+	flex: 1 1 auto;
+  min-width: 0;
+`
+
+const Wrap = styled.div`
+	width: 100%;
+`
+
+const StyledAvatar = styled(Avatar)`
+	width: 2rem;
+	height: 2rem;
 `
 
 function RoomHeader() {
@@ -40,21 +61,21 @@ function RoomHeader() {
 	}
 
 	return (
-		<RoomInfoContainer gap={0.5} data-testid='RoomHeader'>
+		<RoomHeaderContainer gap={0.5} data-testid='RoomHeader'>
 			<IconButton color='primary' onClick={onBack}><ArrowBackIosTwoToneIcon /></IconButton>
-			<Row gap={1} onClick={onNameClick}>
-				<Avatar src={image?.url} alt={name} />
-				<div>
+			<Info gap={0.5} onClick={onNameClick} justify='start'>
+				<StyledAvatar src={image?.url} alt={name} />
+				<Wrap>
 					<Row gap={0.5}>
-						<Typography variant='h6'>{name}</Typography>
+						<NoWrap variant='h6'>{name}</NoWrap>
 						{verified && <VerifiedTwoToneIcon color='primary' fontSize='small' />}
 					</Row>
 					<Typography variant='body2'>{isPersonal ? 'Online' : `${membersCount} members`}</Typography>
-				</div>
-			</Row>
-			<Space grow />
+				</Wrap>
+			</Info>
+			{/*<Space grow />*/}
 			<IconButton onClick={onMenuClick}><MoreVertTwoToneIcon /></IconButton>
-		</RoomInfoContainer>
+		</RoomHeaderContainer>
 	)
 }
 

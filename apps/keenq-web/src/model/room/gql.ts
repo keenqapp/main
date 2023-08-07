@@ -67,7 +67,7 @@ export const currentroomgql = gql<ICurrentroomgql>`
 `
 
 export const updateroomgql = gql`
-	mutation UpdateMember($id: String!, $data: rooms_set_input!) {
+	mutation UpdateRoom($id: String!, $data: rooms_set_input!) {
 		update_rooms_by_pk(pk_columns: { id: $id }, _set: $data) {
 			id
 			name

@@ -30,7 +30,7 @@ function RoomInfoDetails({ id, name, description }: IRoom) {
 		value: name,
 		disableUnderline: true,
 		fullWidth: true,
-		validation: [ isNotEmpty, isLengthLower(24) ],
+		validation: [ isNotEmpty, isLengthLower(36) ],
 		forceValid: true,
 		onChange: (_:any, value: string) => update(id, { name: value }),
 	})

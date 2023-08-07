@@ -1,0 +1,21 @@
+{
+  "name": "keenq-landing",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/svelte": "^3.1.0",
+    "@astrojs/ts-plugin": "^1.1.1",
+    "astro": "^2.10.1",
+    "svelte": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}

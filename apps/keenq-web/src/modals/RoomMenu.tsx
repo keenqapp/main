@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
 import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone'
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
-import NotificationsOffTwoToneIcon from '@mui/icons-material/NotificationsOffTwoTone'
+// import NotificationsOffTwoToneIcon from '@mui/icons-material/NotificationsOffTwoTone'
 import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
@@ -58,9 +58,9 @@ function RoomMenu() {
 		})
 	}
 
-	const muteClick = () => {
-		console.log('--- RoomMenu.tsx:44 -> muteClick ->', 'muteClick')
-	}
+	// const muteClick = () => {
+	// 	console.log('--- RoomMenu.tsx:44 -> muteClick ->', 'muteClick')
+	// }
 
 	return (
 		<Drawer data-testid='RoomMenu' name={name}>
@@ -84,11 +84,11 @@ function RoomMenu() {
 					text='Report'
 					onClick={on(reportOpen)}
 				/>
-				<DrawerItem
-					icon={<NotificationsOffTwoToneIcon color='secondary' />}
-					text='Mute'
-					onClick={on(muteClick)}
-				/>
+				{/*<DrawerItem*/}
+				{/*	icon={<NotificationsOffTwoToneIcon color='secondary' />}*/}
+				{/*	text='Mute'*/}
+				{/*	onClick={on(muteClick)}*/}
+				{/*/>*/}
 				{isPersonal ? (
 					<DrawerItem
 						icon={<ForumTwoToneIcon color='primary' />}

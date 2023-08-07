@@ -17,35 +17,41 @@ const dbConfig = {
 }
 
 const sql = (seen = false) => `
-	select matchable.id, matchable.distance
-	from (
-	  with current_member as (
-	    select * from members where members.id = :id
-	  )
-	  select
-	    members.id,
-	    members.name,
-	    ST_DistanceSphere(
-	      current_member.point,
-	      members.point
-	    ) as distance
-	  from 
-	    members,
-	    current_member
-	  where members.id != current_member.id
-		and members."deletedAt" is null
-		and members."bannedAt" is null
-		and members.visible = true
-		and members.done = true
-		and (
-	    case
-	      when (current_member.gender = 'Male' and current_member.sexuality = 'Hetero') then members.gender != 'Male'
-	      when (current_member.gender = 'Female' and current_member.sexuality = 'Hetero') then members.gender != 'Female'
-	    end
-		)
+  with current_member as (
+    select * from members where members.id = '5aQW4uK4'
+  )
+  select matchable.id, matchable.distance
+  from (
+		select
+		 members.id,
+		 members.name,
+		 ST_DistanceSphere(
+		   current_member.point,
+		   members.point
+		   ) as distance
+		from
+		 members,
+		 current_member
+		where members."deletedAt" is null
+		 and members."bannedAt" is null
+		 and members.visible = true
+		 and members.done = true
+		 and (
+		 	case
+		   when (current_member.gender = 'Male' and current_member.sexuality = 'Hetero') then members.gender != 'Male'
+		   when (current_member.gender = 'Female' and current_member.sexuality = 'Hetero') then members.gender != 'Female'
+		   else true
+		  end
+		 )
 		order by distance
-	) as matchable
-  where matchable.distance is not null
+	) as matchable, 
+    current_member
+  where (
+    case
+      when current_member.point is null then true
+      when matchable.distance is not null then true
+    end
+  )
   and matchable.id not in (
     ${seen 
 	    ? 'select "memberId" from matches where "authorId" = :id and type in (\'no\', \'yes\')'

@@ -1,9 +1,10 @@
 import { IMember } from '@/model/member'
 import { IMessage } from '@/model/message'
 import { IImage } from '@/model/other'
+import { Entity } from '@/types/utility'
 
 
-export interface IRoom {
+export interface IRoom extends Entity {
 	id: string
 	name: string
 	verified: boolean
@@ -11,7 +12,6 @@ export interface IRoom {
 	image: IImage
 	description: string
 	lastMessage?: IMessage
-
 	lastMessageId?: number
 	unread?: number
 	links: string[]

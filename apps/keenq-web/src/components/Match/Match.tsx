@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useMutation } from 'urql'
 
 import Button from '@mui/material/Button'
@@ -101,19 +101,26 @@ function Match() {
 		navigate(`/match/${partner.id}`)
 	}
 
+	function redirect() {
+		if (pid) navigate('/match')
+	}
+
 	const onYesClick = async () => {
 		if (!done) return onAcquaintanceOpen()
 		await update({ authorId: id, memberId: mid, data: { type: 'yes' } })
-		match()
+		await match()
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
 		if (data?.matched.success) $unread.set(true)
+		redirect()
 	}
 
-	const onNoClick = () => {
+	const onNoClick = async () => {
 		update({ authorId: id, memberId: mid, data: { type: 'no' } })
-		match()
+		await match()
+		redirect()
 	}
 
+	if (pid === id) return <Navigate to='/match' />
 	if (empty) return <EmptyMatch />
 
 	return (

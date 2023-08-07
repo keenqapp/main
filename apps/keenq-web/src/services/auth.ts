@@ -1,6 +1,7 @@
+import { persistentAtom } from '@nanostores/persistent'
 import { useStore } from '@nanostores/preact'
 import { signal } from '@preact/signals'
-import { atom, computed } from 'nanostores'
+import { computed } from 'nanostores'
 import { gql, useMutation } from 'urql'
 
 import { create } from '@/utils/storage'
@@ -16,15 +17,10 @@ const authKeys = {
 
 export const isReady = signal(false)
 
-export const $id = atom<string|null>(null)
-$id.set(store.getItem<string>(authKeys.id) || null)
-$id.listen(id => store.setItem(authKeys.id, id))
+export const $id = persistentAtom<string>(authKeys.id, '')
 export const $isAuthed = computed($id, id => !!id)
 
-export const $accessToken = atom<string|null>(anonAccessToken)
-$accessToken.set(store.getItem<string>(authKeys.accessToken) || anonAccessToken)
-$accessToken.listen(token => store.setItem(authKeys.accessToken, token) )
-
+export const $accessToken = persistentAtom<string>(authKeys.accessToken, anonAccessToken)
 
 export const authError = signal<string|null>(null)
 
@@ -94,6 +90,6 @@ export function useVerify() {
 
 export async function logout() {
 	$accessToken.set(anonAccessToken)
-	$id.set(null)
+	$id.set('')
 	store.clearAll()
 }
