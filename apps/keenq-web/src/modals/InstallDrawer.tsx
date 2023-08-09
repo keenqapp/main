@@ -1,3 +1,6 @@
+import { useEffect } from 'preact/hooks'
+import { useStore } from '@nanostores/preact'
+
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
@@ -8,12 +11,10 @@ import Card from '@/ui/Card'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
 import Space from '@/ui/Space'
-import { useEffect } from 'preact/hooks'
-import { useStore } from '@nanostores/preact'
 
 
 function InstallDrawer() {
-	const { name, onOpen } = useModal('install')
+	const { name, onOpen, onClose } = useModal('install')
 	const shouldShow = useStore($shouldShow)
 	useEffect(() => {
 		if (shouldShow) {
@@ -25,6 +26,7 @@ function InstallDrawer() {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		$pwa.get()?.prompt()
+		onClose()
 	}
 	return (
 		<Drawer data-testid='InstallDrawer' name={name}>
