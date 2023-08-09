@@ -1,4 +1,5 @@
 import ConfirmDialog from '@/modals/ConfirmDialog'
+import InstallDrawer from '@/modals/InstallDrawer'
 import ReportMenu from '@/modals/ReportMenu'
 
 
@@ -8,6 +9,7 @@ function Modals() {
 		<>
 			<ConfirmDialog />
 			<ReportMenu />
+			<InstallDrawer />
 		</>
 	)
 }

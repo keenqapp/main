@@ -27,6 +27,7 @@ const modals = {
 	permissionInstruction: false,
 	rooms: false,
 	createRoom: false,
+	install: false
 }
 
 export type ModalsState = typeof modals
