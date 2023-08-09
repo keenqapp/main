@@ -27,6 +27,7 @@ export async function uploadImage(where: string, file: File, authorId?: string):
 			ACL: 'public-read',
 			ContentType: 'image/webp',
 			Metadata: {
+				'Cache-Control': 'max-age=2628000, public',
 				'Last-Modified': new Date().toUTCString(),
 				'Author-Id': authorId || ''
 			}
