@@ -10,3 +10,7 @@ import App from '@/core/App'
 // document.body.requestFullscreen()
 
 render(<App />, document.getElementById('app') as HTMLElement)
+
+if (typeof navigator.serviceWorker !== 'undefined') {
+	navigator.serviceWorker.register('serviceworker.js')
+}
