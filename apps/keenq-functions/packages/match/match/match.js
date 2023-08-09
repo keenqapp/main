@@ -40,7 +40,7 @@ const sql = (seen = false) => `
 		 	case
 		   when (current_member.gender = 'Male' and current_member.sexuality = 'Hetero') then members.gender != 'Male'
 		   when (current_member.gender = 'Female' and current_member.sexuality = 'Hetero') then members.gender != 'Female'
-		   else true
+		   when current_member.gender is null then true
 		  end
 		 )
 		order by distance
