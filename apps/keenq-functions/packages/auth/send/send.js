@@ -1,8 +1,11 @@
 import knex from 'knex'
+import http from 'axios'
 import { object, string } from 'yup'
 import { customAlphabet } from 'nanoid'
 
 import { success, error, validate, getDb, getId } from './shared.js'
+
+const url = (phone, code) => `https://sms.ru/sms/send?api_id=A80649CB-0FF7-B273-E2A3-64F7CCFE904D&to=${phone}&msg=Код+для+входа+в+ваш+keenq:+${code}&json=1`
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
@@ -46,9 +49,26 @@ async function ensureCredsAndMember(creds, phone, db) {
 	}
 }
 
-async function sendSMS(phone) {
+function fromTo(min, max) {
+	return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+function getCode() {
+	return fromTo(1000, 9999)
+}
+
+async function save(phone, code, db) {
+	return db
+		.table('codes')
+		.insert({
+			phone,
+			code
+		})
+}
+
+async function sendSMS(phone, code) {
 	try {
-		console.log('--- send.js:39 -> sendSMS -> phone', phone)
+		return await http.get(url(phone, code))
 	}
 	catch(e) {
 		throw { reason: 'Could not send SMS', error: e }
@@ -62,8 +82,12 @@ export async function main(body) {
 	  db = getDb(config)
 		const creds = await getCreds(phone, db)
 		await ensureCredsAndMember(creds, phone, db)
-		await sendSMS(phone)
-		return success(true)
+
+		const code = getCode()
+		await save(phone, code, db)
+		const data = await sendSMS(phone, code)
+
+		return success(data)
 	}
 	catch(e) {
 		return error(e)

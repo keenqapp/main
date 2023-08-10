@@ -6,6 +6,7 @@
   "type": "module",
   "dependencies": {
     "@types/knex": "^0.16.1",
+    "axios": "^1.4.0",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.5.1",
     "nanoid": "^4.0.2",
