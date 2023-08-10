@@ -64,11 +64,14 @@ async function save(phone, code, db) {
 			phone,
 			code
 		})
+		.onConflict('phone')
+		.merge()
 }
 
 async function sendSMS(phone, code) {
 	try {
-		return await http.get(url(phone, code))
+		// return await http.get(url(phone, code))
+		return true
 	}
 	catch(e) {
 		throw { reason: 'Could not send SMS', error: e }
@@ -80,6 +83,7 @@ export async function main(body) {
 	try {
 		const { phone } = validate(body, schema)
 	  db = getDb(config)
+
 		const creds = await getCreds(phone, db)
 		await ensureCredsAndMember(creds, phone, db)
 
@@ -87,7 +91,7 @@ export async function main(body) {
 		await save(phone, code, db)
 		const data = await sendSMS(phone, code)
 
-		return success(data)
+		return success(code)
 	}
 	catch(e) {
 		return error(e)

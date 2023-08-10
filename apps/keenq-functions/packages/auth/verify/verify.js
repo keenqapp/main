@@ -31,14 +31,26 @@ async function getCreds(phone, db) {
 	}
 }
 
-async function checkCode(phone, code, db) {
-	if (code === '1111') {
+async function getSaved(phone) {
+	return db
+		.select()
+		.from('codes')
+		.where('phone', phone)
+		.first()
+}
+
+async function checkCode(phone, code, saved, db) {
+	if (code === saved) {
 		try {
 			await db
 				.table('credentials')
 				.update({ verified: true, lastLoginAt: new Date().toISOString() })
 				.where('phone', phone)
 				.where('deletedAt', null)
+			await db
+				.table('codes')
+				.delete()
+				.where('phone', phone)
 			return true
 		} catch(e) {
 			throw { error: e }
@@ -76,12 +88,17 @@ export async function main(body) {
 	try {
 		const { phone, code } = validate(body, schema)
 	  db = getDb(config)
+
 		const creds = await getCreds(phone, db)
 		await ensureCreds(creds)
-		await checkCode(phone, code, db)
-		const accessToken = await generateJWT(creds)
 
-		return success({ accessToken, id: creds.id })
+		const saved = await getSaved(phone, db)
+		// await checkCode(phone, code, saved.code, db)
+
+		// const accessToken = await generateJWT(creds)
+
+		// return success({ accessToken, id: creds.id })
+		return success(saved)
 	}
 	catch(e) {
 		return error(e)
