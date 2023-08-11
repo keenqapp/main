@@ -18,7 +18,7 @@ const dbConfig = {
 
 const sql = (seen = false) => `
   with current_member as (
-    select * from members where members.id = '5aQW4uK4'
+    select * from members where members.id = :id
   )
   select matchable.id, matchable.distance
   from (
@@ -41,6 +41,7 @@ const sql = (seen = false) => `
 		   when (current_member.gender = 'Male' and current_member.sexuality = 'Hetero') then members.gender != 'Male'
 		   when (current_member.gender = 'Female' and current_member.sexuality = 'Hetero') then members.gender != 'Female'
 		   when current_member.gender is null then true
+		 	 else true
 		  end
 		 )
 		order by distance
