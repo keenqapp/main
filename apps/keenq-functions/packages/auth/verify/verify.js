@@ -31,7 +31,7 @@ async function getCreds(phone, db) {
 	}
 }
 
-async function getSaved(phone) {
+async function getSaved(phone, db) {
 	return db
 		.select()
 		.from('codes')
@@ -93,12 +93,10 @@ export async function main(body) {
 		await ensureCreds(creds)
 
 		const saved = await getSaved(phone, db)
-		// await checkCode(phone, code, saved.code, db)
+		await checkCode(phone, code, saved.code, db)
+		const accessToken = await generateJWT(creds)
 
-		// const accessToken = await generateJWT(creds)
-
-		// return success({ accessToken, id: creds.id })
-		return success(saved)
+		return success({ accessToken, id: creds.id })
 	}
 	catch(e) {
 		return error(e)
