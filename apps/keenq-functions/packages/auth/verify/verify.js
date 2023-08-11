@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken'
-import { object, string } from 'yup'
+import { object, string, number } from 'yup'
 
 import { getDb, ensureCreds, success, error, validate } from './shared.js'
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
-	code: string().required().length(4)
+	code: number().required().min(1000).max(9999)
 })
 
 const config = {
@@ -93,12 +93,11 @@ export async function main(body) {
 		await ensureCreds(creds)
 
 		const saved = await getSaved(phone, db)
-		// await checkCode(phone, code, saved.code, db)
+		await checkCode(phone, code, saved.code, db)
 
 		const accessToken = await generateJWT(creds)
 
-		// return success({ accessToken, id: creds.id })
-		return success({ code, saved: saved.code })
+		return success({ accessToken, id: creds.id })
 	}
 	catch(e) {
 		return error(e)

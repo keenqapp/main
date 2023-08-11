@@ -70,8 +70,7 @@ async function save(phone, code, db) {
 
 async function sendSMS(phone, code) {
 	try {
-		// return await http.get(url(phone, code))
-		return true
+		return await http.get(url(phone, code))
 	}
 	catch(e) {
 		throw { reason: 'Could not send SMS', error: e }
@@ -89,9 +88,9 @@ export async function main(body) {
 
 		const code = getCode()
 		await save(phone, code, db)
-		const data = await sendSMS(phone, code)
+		await sendSMS(phone, code)
 
-		return success(code)
+		return success()
 	}
 	catch(e) {
 		return error(e)
