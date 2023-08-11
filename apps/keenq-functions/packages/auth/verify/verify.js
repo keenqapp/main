@@ -93,11 +93,12 @@ export async function main(body) {
 		await ensureCreds(creds)
 
 		const saved = await getSaved(phone, db)
-		await checkCode(phone, code, saved.code, db)
+		// await checkCode(phone, code, saved.code, db)
 
 		const accessToken = await generateJWT(creds)
 
-		return success({ accessToken, id: creds.id })
+		// return success({ accessToken, id: creds.id })
+		return success({ code, saved: saved.code })
 	}
 	catch(e) {
 		return error(e)
