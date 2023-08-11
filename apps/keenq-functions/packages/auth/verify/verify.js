@@ -94,6 +94,7 @@ export async function main(body) {
 
 		const saved = await getSaved(phone, db)
 		await checkCode(phone, code, saved.code, db)
+
 		const accessToken = await generateJWT(creds)
 
 		return success({ accessToken, id: creds.id })
