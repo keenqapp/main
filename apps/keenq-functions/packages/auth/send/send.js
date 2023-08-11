@@ -3,7 +3,7 @@ import http from 'axios'
 import { object, string } from 'yup'
 import { customAlphabet } from 'nanoid'
 
-import { success, error, validate, getDb, getId } from './shared.js'
+import { success, error, validate, getDb, getId, testPhones } from './shared.js'
 
 const url = (phone, code) => `https://sms.ru/sms/send?api_id=A80649CB-0FF7-B273-E2A3-64F7CCFE904D&to=${phone}&msg=Код+для+входа+в+ваш+keenq:+${code}&json=1`
 
@@ -54,7 +54,7 @@ function fromTo(min, max) {
 }
 
 function getCode() {
-	return fromTo(1000, 9999)
+	return fromTo(1001, 9998)
 }
 
 async function save(phone, code, db) {
@@ -70,7 +70,8 @@ async function save(phone, code, db) {
 
 async function sendSMS(phone, code) {
 	try {
-		return await http.get(url(phone, code))
+		if (testPhones.includes(phone)) return true
+		else return await http.get(url(phone, code))
 	}
 	catch(e) {
 		throw { reason: 'Could not send SMS', error: e }

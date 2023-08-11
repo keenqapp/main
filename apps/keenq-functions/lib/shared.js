@@ -59,3 +59,5 @@ export async function transaction(db, fn) {
 		throw { error: e }
 	}
 }
+
+export const testPhones = [ '+79500131700', '+79312096251' ]
