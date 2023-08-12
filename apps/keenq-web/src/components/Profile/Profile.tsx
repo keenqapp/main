@@ -184,7 +184,7 @@ function Profile() {
 	const onUploadChange = async (e: any) => {
 		setLoading(true)
 		const image = await uploadImage(`members/${id}`, e.target.files[0])
-		await update( id, { images: [...images, image] })
+		if (image) await update( id, { images: [...images, image] })
 		setLoading(false)
 	}
 
