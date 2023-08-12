@@ -32,7 +32,8 @@ const sql = (seen = false) => `
 		from
 		 members,
 		 current_member
-		where members."deletedAt" is null
+		where members.id =! :id
+		 and members."deletedAt" is null
 		 and members."bannedAt" is null
 		 and members.visible = true
 		 and members.done = true
