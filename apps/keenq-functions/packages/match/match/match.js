@@ -32,7 +32,7 @@ const sql = (seen = false) => `
 		from
 		 members,
 		 current_member
-		where members.id =! :id
+		where members.id != :id
 		 and members."deletedAt" is null
 		 and members."bannedAt" is null
 		 and members.visible = true
@@ -56,7 +56,7 @@ const sql = (seen = false) => `
   )
   and matchable.id not in (
     ${seen 
-	    ? 'select "memberId" from matches where "authorId" = :id and type in (\'no\', \'yes\')'
+	    ? `select "memberId" from matches where "authorId" = :id and type in ('no', 'yes')`
 	    : 'select "memberId" from matches where "authorId" = :id'}
   )
   and matchable.id not in (
@@ -76,15 +76,10 @@ async function search(id, seen, db) {
 }
 
 async function getMatch(id, db) {
-	try {
-		let match = await search(id, false, db)
-		if (!match) match = await search(id, true, db)
-		if (!match) throw 'No match found'
-		return match
-	}
-	catch(e) {
-		throw { error: e }
-	}
+	let match = await search(id, false, db)
+	if (!match) match = await search(id, true, db)
+	if (!match) throw 'No match found'
+	return match
 }
 
 export async function main(body) {
