@@ -14,6 +14,11 @@ import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
+
+import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
+import { getPartner } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
 import Row from '@/ui/Row'
@@ -26,9 +31,6 @@ import { $unread } from '@/core/BottomTabs'
 import { useInsert, useQuery } from '@/hooks/gql'
 import { useFormatDistance } from '@/hooks/useFormatDistance'
 import { useMember } from '@/hooks/useMember'
-import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
-import { getPartner } from '@/model/member'
-import { useCurrentMember } from '@/model/member/hooks'
 
 
 const Content = styled(Row)`
@@ -55,6 +57,7 @@ const Partner = styled(Typography)`
 
 function Match() {
 	const { id: pid } = useParams()
+	const { t } = useTranslate()
 
 	const { onOpen: onReportOpen } = useModal('report')
 	const { onOpen: onAcquaintanceOpen } = useModal('acquaintance')
@@ -132,15 +135,15 @@ function Match() {
 					<Typography variant='h5'>{name}</Typography>
 					{partner && (
 						<>
-							<Typography variant='overline'>and</Typography>
+							<Typography variant='overline'>{t`match.and`}</Typography>
 							<Partner variant='h6' onClick={onPartnerClick}>{partner.name}</Partner>
 						</>
 					)}
 					<Space grow />
-					<Typography variant='body2'>{gender} {sexuality}</Typography>
+					<Typography variant='body2'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
 				</Row>
 				<Space height={0.2} />
-				<Typography variant='overline'>{distance} away</Typography>
+				<Typography variant='overline'>{distance} {t`match.away`}</Typography>
 				<Space height={0.5} />
 				<Fabs justify='between' self='stretch'>
 					<IconButton onClick={onNoClick}><HighlightOffTwoToneIcon fontSize='large' color='secondary' /></IconButton>

@@ -1,0 +1,44 @@
+{
+  "gender": {
+    "female": "Female",
+    "flexible": "Flexible",
+    "gender": "Gender",
+    "hetero": "Hetero",
+    "homo": "Homo",
+    "male": "Male",
+    "nonBinary": "Non-binary",
+    "sexuality": "Sexuality"
+  },
+  "location": {
+    "chooseCity": "Choose a city",
+    "denied": "You have denied to share location",
+    "request": "Request permission",
+    "useCurrent": "Use your current city"
+  },
+  "match": {
+    "and": "and",
+    "away": "away",
+    "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms"
+  },
+  "profile": {
+    "addPhoto": "Add photo",
+    "and": "And",
+    "description": "Who you are? What you like? What you want? A few sentences to help people know you better.",
+    "gs": "gender and sexuality",
+    "iam": "I am",
+    "in": "In",
+    "name": "That is your name?",
+    "partner": "Partner",
+    "settings": "Settings",
+    "tags": "Select what you are looking for",
+    "upload": "Upload at least three photos for better impression",
+    "your": "Your"
+  },
+  "tags": {
+    "create": "Create",
+    "find": "Find what you want",
+    "max": "Max 16 characters",
+    "noTag": "Seems no tags, you can create a new one",
+    "selected": "Selected"
+  }
+}

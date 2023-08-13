@@ -7,6 +7,9 @@ import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 import { ICity, useCitySearch } from '@/services/location'
 import { useModal } from '@/services/modals'
 
+import { updatemembergql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
+
 import Container from '@/ui/Container'
 import Drawer, { DrawerItem } from '@/ui/Drawer'
 import List from '@/ui/List'
@@ -17,8 +20,6 @@ import json from '@/assets/cities.json'
 import Loading from '@/core/Loading'
 import { useUpdate } from '@/hooks/gql'
 import { useInput } from '@/hooks/useInput'
-import { updatemembergql } from '@/model/member'
-import { useCurrentMember } from '@/model/member/hooks'
 
 
 const StyledContainer = styled(Container)`

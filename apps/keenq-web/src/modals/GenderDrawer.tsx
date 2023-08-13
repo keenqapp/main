@@ -5,21 +5,23 @@ import Typography from '@mui/material/Typography'
 
 import FemaleTwoToneIcon from '@mui/icons-material/FemaleTwoTone'
 import MaleTwoToneIcon from '@mui/icons-material/MaleTwoTone'
-import RadioButtonUncheckedTwoToneIcon from '@mui/icons-material/RadioButtonUncheckedTwoTone'
-import TransgenderTwoToneIcon from '@mui/icons-material/TransgenderTwoTone'
 
+// import RadioButtonUncheckedTwoToneIcon from '@mui/icons-material/RadioButtonUncheckedTwoTone'
+// import TransgenderTwoToneIcon from '@mui/icons-material/TransgenderTwoTone'
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
+
+import { updatemembergql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
-import BiGenderIcon from '@/assets/BiGenderIcon'
+// import BiGenderIcon from '@/assets/BiGenderIcon'
 import NonBinaryIcon from '@/assets/NonBinaryIcon'
 import { useUpdate } from '@/hooks/gql'
-import { updatemembergql } from '@/model/member'
-import { useCurrentMember } from '@/model/member/hooks'
 
 
 const StyledItem = styled(Row)<{ active: boolean }>`
@@ -28,17 +30,27 @@ const StyledItem = styled(Row)<{ active: boolean }>`
   border-radius: 1rem;
   border: 1px solid rgba(211, 211, 211, 0.5);
 	background: ${p => p.active ? p.theme.palette.primary.light : 'transparent'};
+	flex: 1;
 `
 
 const Icon = styled.div`
 	color: ${p => p.theme.palette.primary.main};
 `
 
-function Item({ text, icon, active, onClick }: { text: string, active: boolean, icon?: VNode, onClick: (text: string) => void }) {
+interface GenderItemProps {
+	text: string,
+	active: boolean,
+	icon?: VNode,
+	onClick: (text: string) => void
+	value: string
+}
+
+function Item({ icon, active, onClick, value }: GenderItemProps) {
+	const { t } = useTranslate()
 	return (
 		<StyledItem direction='column' onClick={onClick} active={active}>
 			{icon && <Icon>{icon}</Icon>}
-			<Typography>{text}</Typography>
+			<Typography>{t`gender.${value}`}</Typography>
 		</StyledItem>
 	)
 }
@@ -51,26 +63,27 @@ const Scroll = styled(Row)`
 `
 
 const genders = [
-	{ text: 'Male', icon: <MaleTwoToneIcon />	 },
-	{ text: 'Female', icon: <FemaleTwoToneIcon /> },
-	{ text: 'Non-Binary', icon: <NonBinaryIcon />	 },
-	{ text: 'Agender', icon: <RadioButtonUncheckedTwoToneIcon fontSize='small' /> },
-	{ text: 'Transperson', icon: <TransgenderTwoToneIcon /> },
-	{ text: 'Genderflid', icon: <BiGenderIcon /> },
+	{ text: 'Male', value: 'male', icon: <MaleTwoToneIcon />	 },
+	{ text: 'Female', value: 'female',  icon: <FemaleTwoToneIcon /> },
+	{ text: 'Non-binary', value: 'nonBinary', icon: <NonBinaryIcon />	 },
+	// { text: 'Agender', icon: <RadioButtonUncheckedTwoToneIcon fontSize='small' /> },
+	// { text: 'Transperson', icon: <TransgenderTwoToneIcon /> },
+	// { text: 'Genderflid', icon: <BiGenderIcon /> },
 ]
 
 const sexualities = [
-	{ text: 'Hetero' },
-	{ text: 'Homo' },
-	{ text: 'Bi' },
-	{ text: 'Flexible' },
-	{ text: 'Demi' },
-	{ text: 'Asexual' },
-	{ text: 'Pansexual' },
+	{ text: 'Hetero', value: 'hetero' },
+	{ text: 'Homo', value: 'homo' },
+	{ text: 'Flexible', value: 'flexible' },
+	// { text: 'Bi' },
+	// { text: 'Demi' },
+	// { text: 'Asexual' },
+	// { text: 'Pansexual' },
 ]
 
 function GenderDrawer() {
 	const { name } = useModal('gender')
+	const { t } = useTranslate()
 
 	const {
 		id,
@@ -87,30 +100,30 @@ function GenderDrawer() {
 	return (
 		<Drawer name={name} data-testid='GenderDrawer'>
 			<Container>
-				<Typography variant='h6'>Gender</Typography>
+				<Typography variant='h6'>{t`gender.gender`}</Typography>
 				<Space height={1} />
 				<Scroll gap={1} align='stretch'>
 					<Space width={0.1} />
 					{genders.map(item => (
 						<Item
-							key={item.text}
-							active={(ugender || gender) === item.text}
-							onClick={choice('gender', item.text)}
+							key={item.value}
+							active={(ugender || gender) === item.value}
+							onClick={choice('gender', item.value)}
 							{...item}
 						/>
 					))}
 					<Space width={0.1} />
 				</Scroll>
 				<Space height={2} />
-				<Typography variant='h6'>Sexuality</Typography>
+				<Typography variant='h6'>{t`gender.sexuality`}</Typography>
 				<Space height={1} />
 				<Scroll gap={1} align='stretch'>
 					<Space width={0.1} />
 					{sexualities.map(item => (
 						<Item
-							key={item.text}
-							active={(usexuality || sexuality) === item.text}
-							onClick={choice('sexuality', item.text)}
+							key={item.value}
+							active={(usexuality || sexuality) === item.value}
+							onClick={choice('sexuality', item.value)}
 							{...item}
 						/>
 					))}

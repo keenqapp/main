@@ -20,6 +20,10 @@ import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
 
 import { useModal } from '@/services/modals'
 import { deleteImage, uploadImage } from '@/services/spaces'
+import { useTranslate } from '@/services/translate'
+
+import { IMemberPartner, updatemembergql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
 
 import Column from '@/ui/Column'
 import Container from '@/ui/Container'
@@ -33,8 +37,6 @@ import Swiper from '@/components/Swiper'
 import { useUpdate } from '@/hooks/gql'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
-import { IMemberPartner, updatemembergql } from '@/model/member'
-import { useCurrentMember } from '@/model/member/hooks'
 
 
 const Content = styled(Row)`
@@ -94,6 +96,8 @@ function Buttons({ id }: { id?: string }) {
 
 function EmptyImages() {
 
+	const { t } = useTranslate()
+
 	const { id, images = [] } = useCurrentMember()
 	const [ , update ] = useDebounceMutation(updatemembergql)
 
@@ -108,9 +112,9 @@ function EmptyImages() {
 		<EmptyImagesContainer>
 			<Upload onChange={onChange} accept='image/*' multiple>
 				<Column>
-					<Typography textAlign='center' variant='overline'>Upload at least three photos for better impression</Typography>
+					<Typography textAlign='center' variant='overline'>{t`profile.upload`}</Typography>
 					<Space />
-					<Button startIcon={<PhotoCameraTwoToneIcon />} component='span'>Add photo</Button>
+					<Button startIcon={<PhotoCameraTwoToneIcon />} component='span'>{t`profile.addPhoto`}</Button>
 				</Column>
 			</Upload>
 		</EmptyImagesContainer>
@@ -132,6 +136,8 @@ const SwiperContainer = styled.div`
 `
 
 function Profile() {
+
+	const { t } = useTranslate()
 
 	const {
 		id,
@@ -162,7 +168,7 @@ function Profile() {
 
 	const nameInput = useInput({
 		value: name,
-		placeholder: 'That is your name?',
+		placeholder: t`match.name`,
 		disableUnderline: true,
 		validation: [isNotEmpty, isLengthLower(24)],
 		forceValid: true,
@@ -171,7 +177,7 @@ function Profile() {
 
 	const descriptionInput = useInput({
 		value: description,
-		placeholder: 'Who you are? What you like? What you want? A few sentences to help people know you better.',
+		placeholder: t`match.description`,
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
@@ -227,7 +233,7 @@ function Profile() {
 						/>
 						<Row justify='end'>
 							<Upload accept='image/*' onChange={onUploadChange}>
-								<AddButton startIcon={<PhotoCameraTwoToneIcon />} component='span'>Add photo</AddButton>
+								<AddButton startIcon={<PhotoCameraTwoToneIcon />} component='span'>{t`profile.addPhoto`}</AddButton>
 							</Upload>
 						</Row>
 					</SwiperContainer>
@@ -242,7 +248,7 @@ function Profile() {
 				{partner
 					? (
 						<Row onClick={onPartnerClick} gap={0.5} align='baseline'>
-							<Typography variant='h6'>And</Typography>
+							<Typography variant='h6'>{t`profile.and`}</Typography>
 							<Typography variant='overline'>{partner.name}</Typography>
 							<Space grow />
 							<IconButton color='secondary'><GroupRemoveTwoToneIcon /></IconButton>
@@ -255,8 +261,8 @@ function Profile() {
 							gap={0.5}
 							align='baseline'
 						>
-							<Typography variant='h6'>Add</Typography>
-							<Typography variant='overline' color='#B2ADBB'>Partner</Typography>
+							<Typography variant='h6'>{t`profile.and`}</Typography>
+							<Typography variant='overline' color='#B2ADBB'>{t`profile.partner`}</Typography>
 							<Space grow />
 							<IconButton color='primary'><SupervisedUserCircleTwoToneIcon /></IconButton>
 						</Row>
@@ -270,14 +276,14 @@ function Profile() {
 					{gender && sexuality
 						? (
 							<>
-								<Typography variant='h6'>I am</Typography>
-								<Typography variant='overline'>{gender} {sexuality}</Typography>
+								<Typography variant='h6'>{t`profile.iam`}</Typography>
+								<Typography variant='overline'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
 							</>
 						)
 						: (
 							<>
-								<Typography variant='h6'>Your</Typography>
-								<Typography variant='overline' color='#B2ADBB'>gender and sexuality</Typography>
+								<Typography variant='h6'>{t`profile.your`}</Typography>
+								<Typography variant='overline' color='#B2ADBB'>{t`profile.gs`}</Typography>
 							</>
 						)}
 					<Space grow />
@@ -289,7 +295,7 @@ function Profile() {
 					gap={0.5}
 					align='baseline'
 				>
-					<Typography variant='h6'>In</Typography>
+					<Typography variant='h6'>{t`profile.in`}</Typography>
 					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city ? location.city : 'some city'}</Typography>
 					<Space grow />
 					<IconButton color='primary'><EditLocationTwoToneIcon /></IconButton>
@@ -304,7 +310,7 @@ function Profile() {
 					<Row gap={0.5} wrap justify='start'>
 						{tags?.length > 0
 							? tags.map(({ id, label }) => <Chip key={id} label={label} />)
-							: <Typography color='#B2ADBB'>Select what you are looking for</Typography>}
+							: <Typography color='#B2ADBB'>{t`profile.tags`}</Typography>}
 					</Row>
 					<IconButton color='primary'><TagTwoToneIcon /></IconButton>
 				</Row>
@@ -316,7 +322,7 @@ function Profile() {
 					fullWidth
 					onClick={onSettingsClick}
 					startIcon={<SettingsTwoToneIcon />}
-				>Settings</Button>
+				>{t`profile.settings`}</Button>
 				<Space />
 			</Content>
 		</Container>

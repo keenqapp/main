@@ -11,13 +11,15 @@ import NotListedLocationTwoToneIcon from '@mui/icons-material/NotListedLocationT
 import { usePosition } from '@/services/location'
 import { useModal } from '@/services/modals'
 
+import { updatemembergql, useCurrentMember } from '@/model/member'
+
 import Card from '@/ui/Card'
 import Drawer from '@/ui/Drawer'
 import { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Space from '@/ui/Space'
 
 import { useUpdate } from '@/hooks/gql'
-import { updatemembergql, useCurrentMember } from '@/model/member'
+import { useTranslate } from '@/services/translate'
 
 
 const StyledCard = styled(Card)`
@@ -25,6 +27,8 @@ const StyledCard = styled(Card)`
 `
 
 function LocationDrawer() {
+
+	const { t } = useTranslate('location')
 
 	const { id } = useCurrentMember()
 	const { position, permission, getPointAndLocation, onRequest } = usePosition()
@@ -57,7 +61,7 @@ function LocationDrawer() {
 						<StyledCard color='secondary.veryLight' align='center'>
 							<ExploreOffTwoToneIcon color='secondary' />
 							<Space height={0.5} />
-							<Typography variant='overline' textAlign='center'>You have denied to share location</Typography>
+							<Typography variant='overline' textAlign='center'>{t`denied`}</Typography>
 						</StyledCard>
 					</DrawerItem>
 				)}
@@ -68,20 +72,20 @@ function LocationDrawer() {
 							startIcon={<NotListedLocationTwoToneIcon />}
 							onClick={onRequestClick}
 							fullWidth
-						>Request permission</Button>
+						>{t`request`}</Button>
 					</DrawerItem>
 				)}
 				<DrawerItem
 					disabled={permission !== 'granted'}
 					icon={<ExploreTwoToneIcon color='primary' />}
-					text='Use your current city'
+					text={t`useCurrent`}
 					subtext={position?.city}
 					onClick={onCurrentClick}
 				/>
 				<DrawerItem
-					disabled={permission === 'granted'}
+					// disabled={permission === 'granted'}
 					icon={<LocationCityTwoToneIcon color='secondary' />}
-					text='Choose a city'
+					text={t`chooseCity`}
 					onClick={onClickCity}
 				/>
 			</DrawerList>

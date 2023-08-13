@@ -5,8 +5,8 @@ export interface IMember {
 	id: string
 	name: string
 	description: string
-	gender: string
-	sexuality: string
+	gender: 'male' | 'female' | 'non-binary'
+	sexuality: 'hetero' | 'homo' | 'flexible'
 	location: ILocation
 	tags: ITag[]
 	images?: IImage[]

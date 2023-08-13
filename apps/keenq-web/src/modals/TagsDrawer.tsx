@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { gql, useMutation } from 'urql'
+import uuid from 'uuid-random'
 
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -9,6 +9,12 @@ import Typography from '@mui/material/Typography'
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
+
+import { updatemembergql } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
+import { ITag } from '@/model/other'
+import { addtaggql, tagsgql } from '@/model/tags/gql'
 
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
@@ -16,12 +22,9 @@ import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
-import { useQuery, useUpdate } from '@/hooks/gql'
+import { useInsert, useQuery, useUpdate } from '@/hooks/gql'
 import { isLengthLower, useInput } from '@/hooks/useInput'
-import { updatemembergql } from '@/model/member'
-import { ITag } from '@/model/other'
 import { match } from '@/utils/utils'
-import { useCurrentMember } from '@/model/member/hooks'
 
 
 const StyledContainer = styled(Container)`
@@ -32,23 +35,6 @@ const TagChip = styled(Chip)<{ selected: boolean }>`
 	background-color: ${p => p.selected ? theme.color.primaryLight : 'rgba(0, 0, 0, 0.08)'} !important;
 `
 
-const tagsgql = gql`
-	query GetTags {
-		tags {
-			id
-			label
-		}
-	}
-`
-
-const addtaggql = gql`
-	mutation AddTag($label: String!) {
-		insert_tags_one(object: { label: $label }) {
-			id
-			label
-		}
-	}
-`
 
 function byInput(input: string) {
 	return ({ label }: ITag) => input ? match(input, label) : true
@@ -61,15 +47,17 @@ function TagsDrawer() {
 	} = useCurrentMember()
 	const [ { data } ] = useQuery(tagsgql)
 	const [ , update ] = useUpdate(updatemembergql)
-	const [ , mutate ] = useMutation(addtaggql)
+	const [ , create ] = useInsert(addtaggql)
 	const drawer = useModal('tags')
 
+	const { t } = useTranslate('tags')
+
 	const tagInput = useInput({
-		label: 'Find what you want',
+		label: t`find`,
 		variant: 'outlined',
 		fullWidth: true,
 		validation: [ isLengthLower(16) ],
-		helperText: 'Max 16 characters',
+		helperText: t`max`,
 		InputProps: {
 			endAdornment: <ClearTwoToneIcon onClick={() => tagInput.onClear()} />,
 		}
@@ -81,16 +69,22 @@ function TagsDrawer() {
 	const onClick = (tid: string) => {
 		if (selected.size >= 10) return
 
-		const next = selected.has(tid) ? selected.copyDelete(tid) : selected.copyAdd(tid)
+		const next = selected.copyToggle(tid)
 		const tags = alltags.filter(({ id }: ITag) => next.has(id))
 		update(id, { tags })
 	}
 
 	const onCreateClick = async () => {
 		tagInput.onClear()
-		const { data } = await mutate({ label: tagInput.value })
-		if (data) update(id, { tags: tags.copyPush(data.insert_tags_one) })
+		const tag = {
+			id: uuid(),
+			label: tagInput.value
+		}
+		update(id, { tags: tags.copyPush(tag) })
+		create(tag)
 	}
+
+	const isExectExist = alltags.some(({ label }) => label === tagInput.value)
 
 	return (
 		<Drawer data-testid='ChooseCityDrawer' {...drawer}>
@@ -98,7 +92,7 @@ function TagsDrawer() {
 				<TextField {...tagInput} />
 				<Space />
 				<Row justify='center'>
-					<Typography variant='overline'>Selected {selected.size} / 10</Typography>
+					<Typography variant='overline'>{t`selected`} {selected.size} {'/ 10'}</Typography>
 				</Row>
 				<Space />
 				<Row wrap gap={1} justify={alltags.length > 0 ? 'start' : 'stretch'}>
@@ -113,12 +107,12 @@ function TagsDrawer() {
 							/>
 						))
 						: (
-							<Row justify='center' flex={1} direction='column'>
+							<Row justify='center' direction='column'>
 								<Space height={0.5} />
-								<Typography variant='overline' textAlign='center'>Seems no tags, you can create a new one</Typography>
+								<Typography variant='overline' textAlign='center'>{t`noTag`}</Typography>
 							</Row>
 						)}
-					{alltags.length === 0 && selected.size < 10 && <Button fullWidth onClick={onCreateClick}>Create</Button>}
+					{tagInput.value.length > 0 && !isExectExist && selected.size < 10 && <Button fullWidth onClick={onCreateClick}>{t`create`}</Button>}
 				</Row>
 			</StyledContainer>
 		</Drawer>

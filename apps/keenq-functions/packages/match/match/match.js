@@ -39,8 +39,8 @@ const sql = (seen = false) => `
 		 and members.done = true
 		 and (
 		 	case
-		   when (current_member.gender = 'Male' and current_member.sexuality = 'Hetero') then members.gender != 'Male'
-		   when (current_member.gender = 'Female' and current_member.sexuality = 'Hetero') then members.gender != 'Female'
+		   when (current_member.gender = 'male' and current_member.sexuality = 'hetero') then members.gender != 'male'
+		   when (current_member.gender = 'female' and current_member.sexuality = 'hetero') then members.gender != 'female'
 		   when current_member.gender is null then true
 		 	 else true
 		  end
