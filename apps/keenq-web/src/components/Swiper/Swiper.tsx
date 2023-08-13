@@ -2,12 +2,12 @@ import { cloneElement, VNode } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
 
+import { IImage } from '@/model/other'
+
 import Loadable from '@/ui/Loadable'
 
 import SwiperDots from '@/components/Swiper/SwiperDots'
 import { checkSnap } from '@/components/Swiper/utils'
-
-import { IImage } from '@/model/other'
 
 
 const SwiperContainer = styled.div`
@@ -58,7 +58,6 @@ function Swiper({ images, buttons, onScroll, loading = false, scrollOnAdd = fals
 	const count = useRef(images.length)
 
 	const scrollTo = (to: 'top' | 'bottom' | 'next' | 'prev') => {
-		console.log('--- Swiper.tsx:60 -> scrollTo ->', to, images)
 		if (ref.current) {
 			const { scrollHeight, clientHeight } = ref.current
 			switch (to) {
@@ -91,7 +90,7 @@ function Swiper({ images, buttons, onScroll, loading = false, scrollOnAdd = fals
 	return (
 		<SwiperContainer>
 			<SwiperScroll data-testid='Swiper' ref={ref} onScroll={handleScroll}>
-				{images.map(({ id, url, date }) => (
+				{images.filter(Boolean).map(({ id, url, date }) => (
 					<ImageContainer key={id+date}>
 						<Loadable loading={loading} fullHeight overlay>
 							<Image src={url} />
