@@ -1,7 +1,8 @@
 {
   "extends": "astro/tsconfigs/strict",
-  "include": ["src"],
+  "include": ["src", "**/*.astro", "./src/**/*.astro"],
   "compilerOptions": {
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
@@ -9,9 +10,10 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["src/components/*"],
-      "@layouts/*": ["src/layouts/*"],
-      "@pages/*": ["src/pages/*"]
+      "@/*": ["src/*"],
+//      "@components/*": ["src/components/*"],
+//      "@layouts/*": ["src/layouts/*"],
+//      "@pages/*": ["src/pages/*"]
     }
   }
 }

@@ -1,0 +1,15 @@
+---
+const { href } = Astro.props
+---
+
+<a class='abutton' href={href}><slot /></a>
+
+<style>
+	.abutton {
+    display: block;
+		color: var(--primary);
+		padding: 0.5rem 2rem;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+	}
+</style>

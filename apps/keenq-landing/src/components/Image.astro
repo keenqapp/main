@@ -1,0 +1,23 @@
+---
+let src = 'https://keenq.fra1.cdn.digitaloceanspaces.com/assets/images/keenq_min_ru.png'
+---
+<img class="image" src={src} alt='Your keenq' />
+
+<script>
+	if (navigator && document) {
+		let lang  = navigator.language
+		const el = document.querySelector('.image')
+		if (lang !== 'ru-RU') {
+			el.src = 'https://keenq.fra1.cdn.digitaloceanspaces.com/assets/images/keenq_min_eng.png'
+		}
+	}
+</script>
+
+<style>
+	.image {
+    max-height: 80vh;
+    margin-top: -4rem;
+    margin-bottom: -4rem;
+		margin-right: -0.5rem;
+	}
+</style>

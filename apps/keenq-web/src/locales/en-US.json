@@ -18,7 +18,8 @@
   "match": {
     "and": "and",
     "away": "away",
-    "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms"
+    "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms",
+    "report": "Report"
   },
   "profile": {
     "addPhoto": "Add photo",

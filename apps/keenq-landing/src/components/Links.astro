@@ -1,0 +1,27 @@
+---
+
+---
+
+<ul class='flex'>
+	<li><a href='/rules/'>Правила</a></li>
+	<li><a href='/contacts/'>Контакты</a></li>
+</ul>
+
+<style>
+	.flex {
+    padding: 2rem;
+    padding-top: 4rem;
+		margin: 0;
+		display: flex;
+    list-style-type: none;
+	}
+  li + li::before {
+    content: "|";
+		padding: 0 1rem;
+		color: lightgray;
+  }
+	a {
+		color: var(--secondary);
+		opacity: 0.8;
+	}
+</style>
