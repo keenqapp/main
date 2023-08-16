@@ -4,6 +4,7 @@ import { AnyVariables, useQuery as _useQuery, UseQueryArgs, UseQueryResponse } f
 export interface UseQueryOptions {
 	requestPolicy?: 'cache-first' | 'cache-and-network' | 'network-only' | 'cache-only'
 	context?: any
+	pause?: boolean
 }
 
 export function useQuery<D, V extends AnyVariables = AnyVariables>(query: UseQueryArgs<V, D>['query'], variables?: V | null, options?: UseQueryOptions): UseQueryResponse<D, V> | UseQueryResponse<D> {

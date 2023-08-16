@@ -64,8 +64,15 @@ function Match() {
 	const navigate = useNavigate()
 	const { id, done } = useCurrentMember()
 
-	const [ result, match ] = useQuery(matchgql, { id }, { requestPolicy: 'cache-and-network' })
+	const [ result, match ] = useQuery(matchgql, { id }, { requestPolicy: 'cache-and-network', pause: true })
 	const { data, fetching, error } = result
+
+	useEffect(() => {
+		if (!pid && !data && !fetching && !error && id) {
+			match()
+		}
+	}, [ result ])
+
 	const [ , add ] = useInsert(addmatchgql)
 	const [ , update ] = useMutation(updatematchgql)
 	const [ , matched ] = useMutation(matchedgql)

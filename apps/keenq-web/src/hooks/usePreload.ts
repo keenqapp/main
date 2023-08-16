@@ -2,10 +2,11 @@ import { useEffect } from 'preact/hooks'
 
 import { usePosition } from '@/services/location'
 
-import { useQuery, UseQueryOptions, useUpdate } from '@/hooks/gql'
 import { matchgql } from '@/model/match/gql'
 import { updatemembergql, useCurrentMember } from '@/model/member'
 import { roomsgql } from '@/model/room'
+
+import { useQuery, UseQueryOptions, useUpdate } from '@/hooks/gql'
 
 
 const roomsOptions = {
@@ -20,8 +21,12 @@ export function usePreload() {
 	const { position, permission, getPointAndLocation } = usePosition()
 
 	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
-	const [{ fetching: matchFetching }] = useQuery(matchgql, { id })
+	const [{ fetching: matchFetching, data }, match] = useQuery(matchgql, { id }, { pause: true })
 	const [ _, update ] = useUpdate(updatemembergql)
+
+	useEffect(() => {
+		if (id && !matchFetching && !data) match()
+	}, [ id, matchFetching, data ])
 
 	useEffect(() => {
 		if (!position || permission !== 'granted') return
