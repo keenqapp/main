@@ -18,7 +18,7 @@ function _path(key: string, namespace?: string) {
 }
 
 function translate({ namespace, key, locale, values }: { key: TemplateStringsArray | string, namespace?: string, locale: string, values?: string[] }) {
-	const r = values
+	const r = values && Array.isArray(key)
 		? (key as TemplateStringsArray).reduce((result, string, index) => result + string + (values[index] || ''), '')
 		: key as string
 	const path = _path(r, namespace)

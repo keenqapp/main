@@ -11,6 +11,13 @@ import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 import GroupAddTwoToneIcon from '@mui/icons-material/GroupAddTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
+
+import { IMatch } from '@/model/match'
+import { contactsgql, getAvatar, useCurrentMember } from '@/model/member'
+import { IMember } from '@/model/member'
+import { insertmessagegql } from '@/model/message'
+import { privateroomgql } from '@/model/rooms_members'
 
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
@@ -22,11 +29,6 @@ import EmptyMembers from '@/components/EmptyMembers'
 
 import { useInsert, useQuery } from '@/hooks/gql'
 import { useInput } from '@/hooks/useInput'
-import { IMatch } from '@/model/match'
-import { contactsgql, getAvatar, useCurrentMember } from '@/model/member'
-import { IMember } from '@/model/member'
-import { insertmessagegql } from '@/model/message'
-import { privateroomgql } from '@/model/rooms_members'
 import { optional } from '@/utils/utils'
 
 
@@ -76,13 +78,14 @@ function MemberItem(member: IMember) {
 }
 
 function AddPartnerDrawer() {
+	const { t } = useTranslate('addMember')
 	const { name } = useModal('addPartner')
 	const { id } = useCurrentMember()
 	const [ result ] = useQuery(contactsgql, { id })
 	const members = useMemo(() => result.data?.matches.map((match: IMatch) => match.member) || [], [ result.data ])
 
 	const nameInput = useInput({
-		label: 'Find who you want',
+		label: t`find`,
 		variant: 'outlined',
 		fullWidth: true,
 		InputProps: {

@@ -2,6 +2,7 @@ import { useCallback } from 'preact/hooks'
 import { computed } from '@preact/signals'
 
 import { IRoom } from '@/model/room'
+
 import { signal } from '@/utils/signals'
 import { merge } from '@/utils/utils'
 
@@ -84,8 +85,8 @@ export interface StrictConfirmOptions {
 }
 
 const defaultConfirm = {
-	title: 'Are you sure?',
-	text: 'This action cannot be undone',
+	title: 'title',
+	text: 'text',
 	onConfirm: () => undefined
 }
 

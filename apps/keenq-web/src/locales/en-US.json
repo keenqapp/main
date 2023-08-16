@@ -1,4 +1,17 @@
 {
+  "acquaintance": {
+    "before": "Before start matching you should fill your profile",
+    "doIt": "Do it"
+  },
+  "addMember": {
+    "find": "Find who you want"
+  },
+  "confirm": {
+    "no": "No",
+    "text": "This action cannot be undone",
+    "title": "Are you sure?",
+    "yes": "Yes"
+  },
   "gender": {
     "female": "Female",
     "flexible": "Flexible",
@@ -34,6 +47,13 @@
     "tags": "Select what you are looking for",
     "upload": "Upload at least three photos for better impression",
     "your": "Your"
+  },
+  "settings": {
+    "close": "Close my account",
+    "hidden": "If I am not visible i cant see others",
+    "logout": "Logout",
+    "showMe": "Show me",
+    "visible": "I am visible to others"
   },
   "tags": {
     "create": "Create",

@@ -11,6 +11,10 @@ import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
 import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
+
+import { IMatch } from '@/model/match'
+import { contactsgql, getAvatar, IMember, useCurrentMember } from '@/model/member'
 
 import Checkbox from '@/ui/Checkbox'
 import Container from '@/ui/Container'
@@ -23,8 +27,6 @@ import EmptyMembers from '@/components/EmptyMembers'
 
 import { useQuery } from '@/hooks/gql'
 import { useInput } from '@/hooks/useInput'
-import { IMatch } from '@/model/match'
-import { contactsgql, getAvatar, IMember, useCurrentMember } from '@/model/member'
 
 
 const StyledContainer = styled(Container)`
@@ -57,13 +59,14 @@ function MemberItem(member: IMember) {
 }
 function AddMemberToRoom() {
 
+	const { t } = useTranslate('addMember')
 	const { params, name, on } = useModal('addMemberToRoom')
 	const { id } = useCurrentMember()
 	const [ result ] = useQuery(contactsgql, { id })
 	const members = useMemo(() => result.data?.matches.map((match: IMatch) => match.member) || [], [ result.data ])
 
 	const nameInput = useInput({
-		label: 'Find who you want',
+		label: t`find`,
 		variant: 'outlined',
 		fullWidth: true,
 		InputProps: {

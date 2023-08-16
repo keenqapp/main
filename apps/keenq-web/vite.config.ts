@@ -1,4 +1,5 @@
 import preact from '@preact/preset-vite'
+// import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 import { defineConfig } from 'vite'
 import inspect from 'vite-plugin-inspect'

@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import BadgeTwoToneIcon from '@mui/icons-material/BadgeTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
 import Column from '@/ui/Column'
@@ -15,6 +16,7 @@ import Space from '@/ui/Space'
 
 
 function AcquaintanceDrawer() {
+	const { t } = useTranslate('acquaintance')
 	const navigate = useNavigate()
 	const { name, on } = useModal('acquaintance')
 
@@ -25,10 +27,10 @@ function AcquaintanceDrawer() {
 			<Container>
 				<Column>
 					<Card>
-						<Typography variant='overline' textAlign='center'>Before start matching you should fill your profile</Typography>
+						<Typography variant='overline' textAlign='center'>{t`before`}</Typography>
 					</Card>
 					<Space />
-					<Button startIcon={<BadgeTwoToneIcon />} onClick={on(doItClick)}>Do it</Button>
+					<Button startIcon={<BadgeTwoToneIcon />} onClick={on(doItClick)}>{t`doIt`}</Button>
 				</Column>
 			</Container>
 		</Drawer>
