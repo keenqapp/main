@@ -21,11 +21,11 @@ export function usePreload() {
 	const { position, permission, getPointAndLocation } = usePosition()
 
 	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
-	const [{ fetching: matchFetching, data }, match] = useQuery(matchgql, { id }, { pause: true })
+	const [{ fetching: matchFetching, data, error }, match] = useQuery(matchgql, { id }, { pause: true })
 	const [ _, update ] = useUpdate(updatemembergql)
 
 	useEffect(() => {
-		if (id && !matchFetching && !data) match()
+		if (id && !matchFetching && !data && !error) match()
 	}, [ id, matchFetching, data ])
 
 	useEffect(() => {

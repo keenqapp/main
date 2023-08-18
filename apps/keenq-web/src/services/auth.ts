@@ -32,12 +32,12 @@ export function useAuth() {
 	}
 }
 
-const sendGql = gql`
+const sendgql = gql`
   mutation Send($phone: String!) {
     send(phone: $phone) {
       success
 			data {
-				error
+				result
 				reason
 			}
     }
@@ -45,7 +45,7 @@ const sendGql = gql`
 `
 
 export function useSend() {
-	const [_, send, ] = useMutation(sendGql)
+	const [_, send, ] = useMutation(sendgql)
 	return {
 		send: async (phone: string) => {
 			const { data } = await send({ phone })
@@ -55,12 +55,11 @@ export function useSend() {
 }
 
 const verifyGql = gql`
-  mutation Verify($phone: String!, $code: String!) {
+	mutation Verify($phone: String!, $code: String!) {
     verify(phone: $phone, code: $code) {
       data {
         accessToken
         id
-        error
         reason
       }
       success

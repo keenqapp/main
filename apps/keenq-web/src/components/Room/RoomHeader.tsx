@@ -27,7 +27,7 @@ const NoWrap = styled(Typography)`
 	white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-	width: calc(100% - 2rem); // 40px - avatar width
+	max-width: calc(100% - 2rem); // 40px - avatar width
 `
 
 const Info = styled(Row)`
@@ -66,7 +66,7 @@ function RoomHeader() {
 			<Info gap={0.5} onClick={onNameClick} justify='start'>
 				<StyledAvatar src={image?.url} alt={name} />
 				<Wrap>
-					<Row gap={0.5}>
+					<Row gap={0.5} justify='start'>
 						<NoWrap variant='h6'>{name}</NoWrap>
 						{verified && <VerifiedTwoToneIcon color='primary' fontSize='small' />}
 					</Row>

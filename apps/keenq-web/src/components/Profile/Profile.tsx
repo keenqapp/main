@@ -168,7 +168,7 @@ function Profile() {
 
 	const nameInput = useInput({
 		value: name,
-		placeholder: t`match.name`,
+		placeholder: t`profile.name`,
 		disableUnderline: true,
 		validation: [isNotEmpty, isLengthLower(24)],
 		forceValid: true,
@@ -177,7 +177,7 @@ function Profile() {
 
 	const descriptionInput = useInput({
 		value: description,
-		placeholder: t`match.description`,
+		placeholder: t`profile.description`,
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
@@ -296,7 +296,7 @@ function Profile() {
 					align='baseline'
 				>
 					<Typography variant='h6'>{t`profile.in`}</Typography>
-					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city ? location.city : 'some city'}</Typography>
+					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city ? location.city : t`profile.somecity`}</Typography>
 					<Space grow />
 					<IconButton color='primary'><EditLocationTwoToneIcon /></IconButton>
 				</Row>

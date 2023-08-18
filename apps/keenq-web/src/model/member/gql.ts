@@ -14,8 +14,8 @@ export const memmberfragment = gql`
 		gender
 		done
 		location
-		tags
 		visible
+		tags
 	}
 `
 

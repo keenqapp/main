@@ -1,9 +1,9 @@
 import { gql } from 'urql'
 
 
-export const idgql = gql<{ id: { data: { id: string } } }>`
+export const getidgql = gql<{ getid: { data: { id: string } } }>`
 	query GetId {
-		id {
+		getid {
 			success
 			data {
 				id

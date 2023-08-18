@@ -91,7 +91,7 @@ export async function main(body) {
 		await save(phone, code, db)
 		await sendSMS(phone, code)
 
-		return success(true)
+		return success({ result: true })
 	}
 	catch(e) {
 		return error(e)

@@ -12,6 +12,11 @@ import VolumeUpTwoToneIcon from '@mui/icons-material/VolumeUpTwoTone'
 
 import { useModal } from '@/services/modals'
 
+import { getidgql } from '@/model/gql'
+import { useCurrentMember } from '@/model/member'
+import { createroomgql } from '@/model/room'
+import { joinroom } from '@/model/rooms_members'
+
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
@@ -20,17 +25,13 @@ import Space from '@/ui/Space'
 
 import { useInsert, useQuery } from '@/hooks/gql'
 import { inputsHasError, isNotEmpty, useInput } from '@/hooks/useInput'
-import { idgql } from '@/model/gql'
-import { useCurrentMember } from '@/model/member'
-import { createroomgql } from '@/model/room'
-import { joinroom } from '@/model/rooms_members'
 
 
 function CreateRoomModal() {
 	const { id: memberId } = useCurrentMember()
-	const { name, open } = useModal('createRoom')
+	const { name, open, on } = useModal('createRoom')
 	const [ type, setType ] = useState('private')
-	const [ result ] = useQuery(idgql)
+	const [ result ] = useQuery(getidgql)
 	const [ , create ] = useInsert(createroomgql)
 	const [ , join ] = useInsert(joinroom)
 
@@ -46,9 +47,9 @@ function CreateRoomModal() {
 
 	const onChange = (_: any, t: string) => t !== null && setType(t)
 
-	const onClick = async () => {
+	const click = async () => {
 		if (inputsHasError(nameInput)) return
-		const id = result.data?.id.data.id
+		const id = result.data?.getid.data.id
 		if (!id) return
 		const object = {
 			id,
@@ -83,7 +84,7 @@ function CreateRoomModal() {
 						<ToggleButton value='public'><QuestionAnswerTwoToneIcon fontSize='small' /><Space width={0.2}/>Public</ToggleButton>
 						<ToggleButton value='private'><VerifiedUserTwoToneIcon fontSize='small' /><Space width={0.2}/>Private</ToggleButton>
 					</ToggleButtonGroup>
-					<Button startIcon={<CheckTwoToneIcon />} onClick={onClick}>Okay</Button>
+					<Button startIcon={<CheckTwoToneIcon />} onClick={on(click)}>Okay</Button>
 				</Row>
 			</Container>
 		</Drawer>

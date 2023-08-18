@@ -14,7 +14,7 @@ import { useTranslate } from '@/services/translate'
 import { updatemembergql } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
 import { ITag } from '@/model/other'
-import { addtaggql, tagsgql } from '@/model/tags/gql'
+import { createtaggql, tagsgql } from '@/model/tags/gql'
 
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
@@ -47,7 +47,7 @@ function TagsDrawer() {
 	} = useCurrentMember()
 	const [ { data } ] = useQuery(tagsgql)
 	const [ , update ] = useUpdate(updatemembergql)
-	const [ , create ] = useInsert(addtaggql)
+	const [ , create ] = useInsert(createtaggql)
 	const drawer = useModal('tags')
 
 	const { t } = useTranslate('tags')

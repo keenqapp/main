@@ -106,7 +106,7 @@ export async function main(body) {
 		await ensureCreds(author)
 		await ensureCreds(member)
 
-		const test = await transaction(db, async trx => {
+		await transaction(db, async trx => {
 			await check(authorId, memberId, type, db, trx)
 			const room = await createRoom(db, trx)
 			await add(authorId, memberId, room, db, trx)
@@ -114,7 +114,7 @@ export async function main(body) {
 			return room
 		})
 
-		return success(test)
+		return success({ result: true })
 	}
 	catch(e) {
 		return error(e)

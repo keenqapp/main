@@ -2,6 +2,8 @@ import { useMemo } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { useStore } from '@nanostores/preact'
 
+import { IRoom, roomsgql } from '@/model/room'
+
 import Container from '@/ui/Container'
 import List from '@/ui/List'
 
@@ -12,7 +14,6 @@ import RoomsHeader from '@/components/Rooms/RoomsHeader'
 import { $showTabs, $tab } from '@/components/Rooms/store'
 
 import { useQuery } from '@/hooks/gql'
-import { IRoom, roomsgql } from '@/model/room'
 
 
 const RoomsList = styled(List)`

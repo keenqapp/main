@@ -14,6 +14,7 @@ export interface IMember {
 	visible?: boolean
 	done?: boolean
 
+	// Not implemented
 	prefs?: IMemberPrefs
 	meta?: IMemberMeta
 }

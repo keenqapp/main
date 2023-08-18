@@ -10,6 +10,7 @@ import NotListedLocationTwoToneIcon from '@mui/icons-material/NotListedLocationT
 
 import { usePosition } from '@/services/location'
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import { updatemembergql, useCurrentMember } from '@/model/member'
 
@@ -19,7 +20,6 @@ import { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Space from '@/ui/Space'
 
 import { useUpdate } from '@/hooks/gql'
-import { useTranslate } from '@/services/translate'
 
 
 const StyledCard = styled(Card)`
@@ -83,7 +83,7 @@ function LocationDrawer() {
 					onClick={onCurrentClick}
 				/>
 				<DrawerItem
-					// disabled={permission === 'granted'}
+					disabled={permission === 'granted'}
 					icon={<LocationCityTwoToneIcon color='secondary' />}
 					text={t`chooseCity`}
 					onClick={onClickCity}
