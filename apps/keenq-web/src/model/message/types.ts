@@ -22,7 +22,7 @@ export interface IMessage {
 	prevAuthorId?: string | null,
 	nextAuthorId?: string | null
 
-	content: (IMessageReply | IMessageText | IMessageImage | IMessageFile | IPartnerRequest | IGreeting) []
+	content: (IMessageReply | IMessageText | IMessageImage | IMessageFile | IPartnerRequest | IGreeting | IJoined) []
 	reactions?: IMessageReaction[]
 	reactionsCount?: IMessageReactionCount[]
 
@@ -78,6 +78,13 @@ export interface IGreeting {
 	type: 'greeting'
 	value: {
 		text: string
+	}
+}
+
+export interface IJoined {
+	type: 'joined'
+	value: {
+		memberId: string
 	}
 }
 

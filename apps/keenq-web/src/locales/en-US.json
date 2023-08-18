@@ -4,7 +4,8 @@
     "doIt": "Do it"
   },
   "addMember": {
-    "find": "Find who you want"
+    "find": "Find who you want",
+    "yeap": "Yeap"
   },
   "confirm": {
     "no": "No",
@@ -54,6 +55,9 @@
     "logout": "Logout",
     "showMe": "Show me",
     "visible": "I am visible to others"
+  },
+  "systemMessage": {
+    "joined": "Member {name} has joined"
   },
   "tags": {
     "create": "Create",

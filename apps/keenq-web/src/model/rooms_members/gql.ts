@@ -19,6 +19,16 @@ export const joinroom = gql`
 	}
 `
 
+export const addmembersgql = gql`
+	mutation AddMembers($objects: [rooms_members_insert_input!]!) {
+		insert_rooms_members(objects: $objects) {
+			returning {
+				id
+			}
+		}
+	}
+`
+
 export const undateroommember = gql`
 	mutation UpdateRoomMember($roomId: String!, $memberId: String!, $role: String!) {
 		update_rooms_members_by_pk(pk_columns: { roomId: $roomId, memberId: $memberId }, _set: { role: $role }) {

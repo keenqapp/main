@@ -64,6 +64,7 @@
     "eslint-plugin-react-pug": "^0.8.4",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unicorn": "^47.0.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.9",
     "vite-plugin-inspect": "^0.7.29"

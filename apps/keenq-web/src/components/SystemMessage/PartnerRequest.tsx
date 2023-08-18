@@ -11,13 +11,14 @@ import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 
 import { useModal } from '@/services/modals'
 
+import { getAvatar, membergql, useCurrentMember } from '@/model/member'
+import { deletemessagegql, IPartnerRequest } from '@/model/message'
+
 import Column from '@/ui/Column'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
 import { useMutation, useQuery } from '@/hooks/gql'
-import { getAvatar, membergql, useCurrentMember } from '@/model/member'
-import { deletemessagegql, IPartnerRequest } from '@/model/message'
 import { optional } from '@/utils/utils'
 
 

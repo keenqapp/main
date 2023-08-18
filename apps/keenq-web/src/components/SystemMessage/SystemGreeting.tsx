@@ -3,10 +3,11 @@ import { parseISO } from 'date-fns'
 
 import Typography from '@mui/material/Typography'
 
+import { getGreeting, IMessage } from '@/model/message'
+
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
-import { getGreeting, IMessage } from '@/model/message'
 import { formatDate } from '@/utils/formatters'
 
 

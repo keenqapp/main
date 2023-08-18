@@ -12,6 +12,7 @@ plugins:
   - "@typescript-eslint"
   - simple-import-sort
   - import
+  - unused-imports
 #  - react-pug
 extends:
   - eslint:recommended
@@ -61,10 +62,11 @@ rules:
   react/jsx-wrap-multilines: 1
   react/jsx-no-literals:
     - error
-  "@typescript-eslint/no-unused-vars":
-    - error
-    - varsIgnorePattern: "^_"
-      args: after-used
+#  "@typescript-eslint/no-unused-vars":
+#    - error
+#    - varsIgnorePattern: "^_"
+#      args: after-used
+  "@typescript-eslint/no-unused-vars": off
   import/newline-after-import:
     - error
     - count: 2
@@ -84,3 +86,11 @@ rules:
         - - "^@/components"
   no-multiple-empty-lines: error
   react/prop-types: off
+  no-unused-vars: off
+  unused-imports/no-unused-imports: error
+  unused-imports/no-unused-vars:
+    - warn
+    - vars: all
+      varsIgnorePattern: ^_
+      args: after-used
+      argsIgnorePattern: ^_

@@ -13,7 +13,12 @@ import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
 import { IRoom, useCurrentRoom } from '@/model/room'
+import styled from '@emotion/styled'
 
+
+const Title = styled(Typography)`
+	line-height: 1em;
+`
 
 function RoomInfoHeader(room: IRoom) {
 	const { name, verified } = room
@@ -29,7 +34,7 @@ function RoomInfoHeader(room: IRoom) {
 		<Row data-testid='RoomInfoHeader'>
 			<IconButton color='primary' onClick={handleBack}><ArrowBackIosTwoToneIcon /></IconButton>
 			<Row gap={0.5}>
-				<Typography variant='h5'>{name}</Typography>
+				<Title variant='h5'>{name}</Title>
 				{verified && <VerifiedTwoToneIcon color='primary' />}
 			</Row>
 			{isAdmin ? (

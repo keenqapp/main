@@ -1,6 +1,8 @@
 import { useMemo } from 'preact/hooks'
 import styled from '@emotion/styled'
-import { signal } from '@preact/signals'
+import { useStore } from '@nanostores/preact'
+import { atom } from 'nanostores'
+import { useMutation } from 'urql'
 
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
@@ -15,6 +17,8 @@ import { useTranslate } from '@/services/translate'
 
 import { IMatch } from '@/model/match'
 import { contactsgql, getAvatar, IMember, useCurrentMember } from '@/model/member'
+import { useCurrentRoom } from '@/model/room'
+import { addmembersgql } from '@/model/rooms_members'
 
 import Checkbox from '@/ui/Checkbox'
 import Container from '@/ui/Container'
@@ -25,8 +29,9 @@ import Space from '@/ui/Space'
 
 import EmptyMembers from '@/components/EmptyMembers'
 
-import { useQuery } from '@/hooks/gql'
+import { useInsert, useQuery } from '@/hooks/gql'
 import { useInput } from '@/hooks/useInput'
+import { insertmessagegql } from '@/model/message'
 
 
 const StyledContainer = styled(Container)`
@@ -41,29 +46,39 @@ const MemberItemContainer = styled(Row)`
 	padding: 0 1rem;
 `
 
-const selected = signal(new Set<string>())
+const $selected = atom(new Set<string>())
 
 function MemberItem(member: IMember) {
+	const selected = useStore($selected)
 	const { id, name } = member
 	const avatar = getAvatar(member)
-	const onChange = () => selected.value = selected.value.copyToggle(id)
+	const onChange = () => $selected.set(selected.copyToggle(id))
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={onChange}>
 			<Avatar src={avatar?.url} alt={name} />
 			<Row flex={1} >
 				<Typography variant='h6'>{name}</Typography>
 			</Row>
-			<Checkbox value={selected.value.has(id)} />
+			<Checkbox value={selected.has(id)} />
 		</MemberItemContainer>
 	)
 }
-function AddMemberToRoom() {
 
+function AddMemberToRoom() {
 	const { t } = useTranslate('addMember')
-	const { params, name, on } = useModal('addMemberToRoom')
+	const { name, on } = useModal('addMemberToRoom')
+	const selected = useStore($selected)
 	const { id } = useCurrentMember()
+	const { id: rid, membersIds } = useCurrentRoom()
 	const [ result ] = useQuery(contactsgql, { id })
-	const members = useMemo(() => result.data?.matches.map((match: IMatch) => match.member) || [], [ result.data ])
+	const [ , add ] = useMutation(addmembersgql)
+	const [ , insert ] = useInsert(insertmessagegql)
+
+	const members = useMemo(() => {
+		return result.data?.matches
+			.map((match: IMatch) => match.member)
+			.filter((m: IMember) => !membersIds?.includes(m.id)) || []
+	}, [ result.data, membersIds ])
 
 	const nameInput = useInput({
 		label: t`find`,
@@ -75,7 +90,17 @@ function AddMemberToRoom() {
 	})
 
 	const click = () => {
-		console.log('--- AddMemberToRoomDrawer.tsx:77 -> onClick ->', params.id, selected.value)
+		const objects = selected.toArray().map(mid => ({ roomId: rid, privateFor: rid, memberId: mid }))
+		add({ objects })
+		selected.toArray().forEach(mid => {
+			const systemMessage = {
+				roomId: rid,
+				type: 'system',
+				authorId: id,
+				content: [{ type: 'joined', value: { memberId: mid } }]
+			}
+			insert(systemMessage)
+		})
 	}
 
 	return (
@@ -88,7 +113,7 @@ function AddMemberToRoom() {
 					render={MemberItem}
 					empty={EmptyMembers}
 				/>
-				{members.length > 0 && <Button onClick={on(click)} fullWidth startIcon={<CheckTwoToneIcon />}>Yeap</Button>}
+				{members.length > 0 && <Button onClick={on(click)} fullWidth startIcon={<CheckTwoToneIcon />}>{t`yeap`}</Button>}
 			</StyledContainer>
 		</Drawer>
 	)
