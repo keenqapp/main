@@ -35,8 +35,7 @@ export const matchedgql = gql`
 		matched(authorId: $authorId, memberId: $memberId, type: $type) {
 			success
 			data {
-				id
-				name
+				result
 			}
 		}
 	}

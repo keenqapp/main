@@ -120,7 +120,7 @@ function Match() {
 		await update({ authorId: id, memberId: mid, data: { type: 'yes' } })
 		await match()
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
-		if (data?.matched.success) $unread.set(true)
+		if (data?.matched.data.result) $unread.set(true)
 		redirect()
 	}
 
