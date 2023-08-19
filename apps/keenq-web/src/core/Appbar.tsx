@@ -76,8 +76,6 @@ export default function Appbar() {
 		return () => clearInterval(interval)
 	}, [])
 
-	console.log('--- Appbar.tsx:73 -> Appbar ->', id)
-
 	return (
 		<StyledAppBar data-testid='Appbar'>
 			<Toolbar>
