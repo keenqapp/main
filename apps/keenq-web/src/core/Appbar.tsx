@@ -58,6 +58,8 @@ const ColorLogo = styled(Logo)`
 const Version = styled.sub`
 	color:#999;
 	letter-spacing: 0.1rem;
+	position:absolute;
+	bottom: 0;
 `
 
 export default function Appbar() {
@@ -81,7 +83,7 @@ export default function Appbar() {
 			<Toolbar>
 				<ColorLogo color={color} />
 				<HomeButton>{'keenq'}</HomeButton>
-				{id === 'boris' && <Version>{import.meta.env.VITE_REACT_APP_VERSION}</Version>}
+				{id === 'boris' && <Version>{import.meta.env.VITE_APP_VERSION}</Version>}
 				<Space grow />
 				<IconButton onClick={onClick} color={isProfile ? 'primary' : 'secondary'}>
 					<AccountCircleTwoToneIcon />
