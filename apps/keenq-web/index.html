@@ -19,10 +19,69 @@
         font-style: normal;
         font-display: swap;
       }
+      .mobile {
+        display: block;
+      }
+      .desktop {
+        display: none;
+      }
+      @media only screen and (min-width: 480px) {
+        .mobile {
+          display: none;
+        }
+        .desktop {
+          display: block;
+        }
+        body {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        iframe {
+          border: 10px solid #333;
+          border-radius: 16px;
+        }
+        .phone {
+          position: relative;
+        }
+        .button1, .button2, .button3, .button4 {
+          background: #000;
+          position: absolute;
+          width: 4px;
+        }
+        .button1 {
+          height: 50px;
+          left: -4px;
+          top: 100px;
+        }
+        .button2 {
+          height: 75px;
+          left: -4px;
+          top: 225px;
+        }
+        .button3 {
+          height: 75px;
+          left: -4px;
+          top: 315px;
+        }
+        .button4 {
+          height: 75px;
+          right: -4px;
+          top: 125px;
+        }
+      }
     </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app" class='mobile'></div>
     <script type="module" src="/src/main.tsx"></script>
+    <div class='desktop phone'>
+      <div class='button1'> </div>
+      <div class='button2'> </div>
+      <div class='button3'> </div>
+      <div class='button4'> </div>
+      <iframe class='desktop' src='https://keenq.app' frameborder='0' width='400px' height='760px'></iframe>
+    </div>
   </body>
 </html>
