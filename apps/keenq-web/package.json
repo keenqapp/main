@@ -1,7 +1,7 @@
 {
   "name": "keenq-web",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "license": "proprietary",
   "scripts": {
@@ -67,6 +67,7 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.3.9",
-    "vite-plugin-inspect": "^0.7.29"
+    "vite-plugin-inspect": "^0.7.29",
+    "vite-plugin-pwa": "^0.16.4"
   }
 }

@@ -10,6 +10,8 @@ import Toolbar from '@mui/material/Toolbar'
 
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 
+import { useCurrentMember } from '@/model/member'
+
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
@@ -53,7 +55,13 @@ const ColorLogo = styled(Logo)`
 	color: ${p => p.color};
 `
 
+const Version = styled.sub`
+	color:#999;
+	letter-spacing: 0.1rem;
+`
+
 export default function Appbar() {
+	const { id } = useCurrentMember()
 	const [ color, setColor ] = useState('gray')
 	const navigate = useNavigate()
 	const location = useLocation()
@@ -68,11 +76,14 @@ export default function Appbar() {
 		return () => clearInterval(interval)
 	}, [])
 
+	console.log('--- Appbar.tsx:73 -> Appbar ->', id)
+
 	return (
 		<StyledAppBar data-testid='Appbar'>
 			<Toolbar>
 				<ColorLogo color={color} />
-				<HomeButton>keenq</HomeButton>
+				<HomeButton>{'keenq'}</HomeButton>
+				{id === 'boris' && <Version>{import.meta.env.VITE_REACT_APP_VERSION}</Version>}
 				<Space grow />
 				<IconButton onClick={onClick} color={isProfile ? 'primary' : 'secondary'}>
 					<AccountCircleTwoToneIcon />
