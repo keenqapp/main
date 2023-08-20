@@ -52,7 +52,7 @@ declare global {
   interface String {
     capitalize(): string
     decapitalize(): string
-    cut(at: number): string
+    cut(at: number, ellipsis?: boolean): string
   }
 
   interface Set<T> {
@@ -148,8 +148,8 @@ Object.defineProperty(String.prototype, 'decapitalize', {
 })
 
 Object.defineProperty(String.prototype, 'cut', {
-	value: function(at: number) {
-		return this.length  > at ? this.slice(0, at) + '...' : this
+	value: function(at: number, ellipsis = false) {
+		return this.length  > at ? this.slice(0, at) + (ellipsis ? '...' : '') : this
 	}
 })
 

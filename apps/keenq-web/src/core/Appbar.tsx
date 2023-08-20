@@ -10,7 +10,7 @@ import Toolbar from '@mui/material/Toolbar'
 
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 
-import { useCurrentMember } from '@/model/member'
+import { useVersion } from '@/services/version'
 
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
@@ -56,17 +56,18 @@ const ColorLogo = styled(Logo)`
 `
 
 const Version = styled.sub`
+	margin-top: 4px;
 	color:#999;
 	letter-spacing: 0.1rem;
-	position:absolute;
-	bottom: 0;
+	//position:absolute;
+	//bottom: 0;
 `
 
 export default function Appbar() {
-	const { id } = useCurrentMember()
 	const [ color, setColor ] = useState('gray')
 	const navigate = useNavigate()
 	const location = useLocation()
+	const v = useVersion()
 
 	const onClick = () => navigate('/profile')
 	const isProfile = location.pathname === '/profile'
@@ -83,7 +84,7 @@ export default function Appbar() {
 			<Toolbar>
 				<ColorLogo color={color} />
 				<HomeButton>{'keenq'}</HomeButton>
-				{id === 'boris' && <Version>{import.meta.env.VITE_APP_VERSION}</Version>}
+				<Version>{v}</Version>
 				<Space grow />
 				<IconButton onClick={onClick} color={isProfile ? 'primary' : 'secondary'}>
 					<AccountCircleTwoToneIcon />
