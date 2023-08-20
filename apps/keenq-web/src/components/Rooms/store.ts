@@ -4,4 +4,4 @@ import { boolAtom } from '@/utils/utils'
 
 
 export const $showTabs = persistentAtom('$showTabs', false, boolAtom)
-export const $tab = persistentAtom('$roomsTab', 'personal')
+export const $tab = persistentAtom<string>('$roomsTab', 'personal')

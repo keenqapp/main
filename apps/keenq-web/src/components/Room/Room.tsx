@@ -1,11 +1,11 @@
 import styled from '@emotion/styled'
 
+import { $isPersonal, useCurrentRoom } from '@/model/room'
+
 import PersonalRoomHeader from '@/components/Room/PersonalRoomHeader'
 import RoomHeader from '@/components/Room/RoomHeader'
 import RoomInput from '@/components/Room/RoomInput'
 import PersonalMessages from '@/components/Room/RoomMessages'
-
-import { $isPersonal, useCurrentRoom } from '@/model/room'
 
 
 const StyledContainer = styled.div`

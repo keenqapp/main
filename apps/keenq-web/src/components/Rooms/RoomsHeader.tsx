@@ -8,6 +8,7 @@ import Tabs from '@mui/material/Tabs'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
@@ -43,10 +44,11 @@ const RoomInfoContainer = styled(Row)`
 `
 
 function RoomsHeader() {
+	const { t } = useTranslate('rooms')
 	const tab = useStore($tab)
 	const showTabs = useStore($showTabs)
 	const { onOpen } = useModal('rooms')
-	const onChange = (_: any, t: string) => $tab.set(t)
+	const onChange = (_: any, _tab: string) => $tab.set(_tab)
 
 	return (
 		<RoomInfoContainer data-testid='RoomsHeader'>
@@ -57,8 +59,8 @@ function RoomsHeader() {
 					variant='scrollable'
 					scrollButtons='auto'
 				>
-					<Folder value='personal' label='personal' />
-					<Folder value='rooms' label='rooms' />
+					<Folder value='personal' label={t`personal`} />
+					<Folder value='rooms' label={t`rooms`} />
 				</Folders>
 			)}
 			<Space grow />

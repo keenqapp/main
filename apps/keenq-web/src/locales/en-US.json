@@ -7,11 +7,18 @@
     "find": "Find who you want",
     "yeap": "Yeap"
   },
+  "app": {
+    "report": "Report"
+  },
   "confirm": {
     "no": "No",
     "text": "This action cannot be undone",
     "title": "Are you sure?",
     "yes": "Yes"
+  },
+  "events": {
+    "here": "Here you will be able to participate in community events",
+    "still": "We are still working on this page"
   },
   "gender": {
     "female": "Female",
@@ -49,6 +56,10 @@
     "tags": "Select what you are looking for",
     "upload": "Upload at least three photos for better impression",
     "your": "Your"
+  },
+  "rooms": {
+    "personal": "personal",
+    "rooms": "rooms"
   },
   "settings": {
     "close": "Close my account",

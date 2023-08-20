@@ -6,7 +6,7 @@ import { IRoomMember } from '@/model/rooms_members'
 
 export const roomsgql = gql<{ rooms: IRoom[] }>`
 	query Rooms {
-		rooms {
+		rooms(order_by: { updatedAt: desc_nulls_last }) {
 			id
 			name
 			image
