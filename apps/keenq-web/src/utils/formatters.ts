@@ -22,12 +22,21 @@ export function formatDate(date: string | Date, options?: formatDateOptions) {
 	}
 }
 
+function random(min: number, max: number) {
+	return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+// TODO move to reduce
 export function formatDistance(distance?: number) {
 	if (!distance) return 'Some distance'
 	const km = Math.floor(distance / 1000)
-	if (km < 10) return Math.floor(Math.random() * 10) + 1 + ' km'
-	if (km < 20) return Math.floor(Math.random() * 20) + 10 + ' km'
-	if (km < 100) return Math.floor(Math.random() * 100) + 20 + ' km'
-	if (km < 1000) return Math.floor(Math.random() * 1000) + 100 + ' km'
-	return Math.floor(Math.random() * 10000) + 1000 + ' km'
+	if (km < 10) return random(1, 10) + ' km'
+	if (km < 20) return random(10, 20) + ' km'
+	if (km < 100) return random(20, 100) + ' km'
+	if (km < 200) return random(100, 200) + ' km'
+	if (km < 500) return random(200, 500) + ' km'
+	if (km < 1000) return random(500, 1000) + ' km'
+	if (km < 1500) return random(1000, 1500) + ' km'
+	if (km < 2000) return random(1500, 2000) + ' km'
+	return random(2000, 10000) + ' km'
 }
