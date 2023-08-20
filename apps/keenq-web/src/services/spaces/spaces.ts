@@ -1,6 +1,7 @@
 import { S3 } from '@aws-sdk/client-s3'
 
 import { IImage } from '@/model/other'
+
 import { resize } from '@/utils/resize'
 
 
@@ -18,8 +19,8 @@ export default spaces
 
 export async function uploadImage(where: string, file: File, authorId?: string): Promise<IImage|undefined> {
 	try {
-		const resized = await resize(file, { maxHeight: 500, maxWidth: 500, prepare: true })
-		const fullUrl = `https://keenq.fra1.cdn.digitaloceanspaces.com/images/${where}/${resized.id}.webp`
+		const resized = await resize(file, { maxHeight: 1000, maxWidth: 1000, prepare: true })
+		const fullUrl = `https://cdn.keenq.app/images/${where}/${resized.id}.webp`
 		const params = {
 			Key: `images/${where}/${resized.id}.webp`,
 			Body: resized.data,
