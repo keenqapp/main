@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 
 
 const UploadContainer = styled.div`
-	//position: relative;
 	& input {
 		visibility: hidden;
 		position: absolute;

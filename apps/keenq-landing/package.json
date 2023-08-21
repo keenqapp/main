@@ -10,8 +10,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/partytown": "^1.2.3",
     "@astrojs/svelte": "^3.1.0",
     "@astrojs/ts-plugin": "^1.1.1",
+    "@builder.io/partytown": "^0.8.0",
     "astro": "^2.10.1",
     "normalize.css": "^8.0.1",
     "svelte": "^4.0.0",

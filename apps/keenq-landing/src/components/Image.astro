@@ -1,14 +1,33 @@
 ---
-let src = 'https://keenq.fra1.cdn.digitaloceanspaces.com/assets/images/keenq_min_ru.png'
+import { Image as AImage } from 'astro:assets'
+
+import keenq_eng from '@/assets/keenq_min_eng.png'
+import keenq_ru from '@/assets/keenq_min_ru.png'
+
 ---
-<img class="image" src={src} alt='Your keenq' />
+<div>
+	<AImage
+		id='ru'
+		class="image ru"
+		src={keenq_ru}
+		alt='Your keenq'
+	/>
+	<AImage
+		id='eng'
+		class="image eng hidden"
+		src={keenq_eng}
+		alt='Your keenq'
+	/>
+</div>
 
 <script>
 	if (navigator && document) {
-		let lang  = navigator.language
-		const el = document.querySelector('.image')
+		let lang = navigator.language
 		if (lang !== 'ru-RU') {
-			el.src = 'https://keenq.fra1.cdn.digitaloceanspaces.com/assets/images/keenq_min_eng.png'
+			const ru = document.getElementById('ru')
+			const eng = document.getElementById('eng')
+			ru.classList.toggle('hidden')
+			eng.classList.toggle('hidden')
 		}
 	}
 </script>
@@ -17,8 +36,12 @@ let src = 'https://keenq.fra1.cdn.digitaloceanspaces.com/assets/images/keenq_min
 	.image {
     padding: 1rem 0;
     max-height: 80vh;
+		max-width: 80vh;
     margin-top: -4rem;
     margin-bottom: -4rem;
 		margin-right: -0.5rem;
+	}
+	.hidden {
+    display: none;
 	}
 </style>
