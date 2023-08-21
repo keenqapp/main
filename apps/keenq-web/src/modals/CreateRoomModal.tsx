@@ -11,6 +11,7 @@ import VerifiedUserTwoToneIcon from '@mui/icons-material/VerifiedUserTwoTone'
 import VolumeUpTwoToneIcon from '@mui/icons-material/VolumeUpTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import { getidgql } from '@/model/gql'
 import { useCurrentMember } from '@/model/member'
@@ -28,6 +29,8 @@ import { inputsHasError, isNotEmpty, useInput } from '@/hooks/useInput'
 
 
 function CreateRoomModal() {
+	const { t } = useTranslate('rooms')
+	const { t: ta } = useTranslate('app')
 	const { id: memberId } = useCurrentMember()
 	const { name, open, on } = useModal('createRoom')
 	const [ type, setType ] = useState('private')
@@ -36,7 +39,7 @@ function CreateRoomModal() {
 	const [ , join ] = useInsert(joinroom)
 
 	const nameInput = useInput({
-		label: 'Name it',
+		label: t`name`,
 		placeholder: 'Fancy name',
 		validation: [ isNotEmpty ]
 	})
@@ -67,9 +70,11 @@ function CreateRoomModal() {
 				<Row direction='column' align='stretch' gap={2}>
 					<Card>
 						<Typography variant='overline'>
-							<b>Private</b> - only members can invite others<br />
-							<b>Public</b> - everyone can join<br />
-							<b>Channel</b> - only admins can write messages<br />
+							<b>{t`private`}</b> - {t`onlyMembers`}<br />
+							<Space height={0.4} />
+							<b>{t`public`}</b> - {t`everyone`}<br />
+							<Space height={0.4} />
+							<b>{t`channel`}</b> - {t`onlyAdmins`}<br />
 						</Typography>
 					</Card>
 					<TextField {...nameInput} />
@@ -80,11 +85,11 @@ function CreateRoomModal() {
 						fullWidth
 						exclusive
 					>
-						<ToggleButton value='channel'><VolumeUpTwoToneIcon fontSize='small' /><Space width={0.2}/>Channel</ToggleButton>
-						<ToggleButton value='public'><QuestionAnswerTwoToneIcon fontSize='small' /><Space width={0.2}/>Public</ToggleButton>
-						<ToggleButton value='private'><VerifiedUserTwoToneIcon fontSize='small' /><Space width={0.2}/>Private</ToggleButton>
+						<ToggleButton value='channel'><VolumeUpTwoToneIcon fontSize='small' /><Space width={0.2}/>{t`channel`}</ToggleButton>
+						<ToggleButton value='public'><QuestionAnswerTwoToneIcon fontSize='small' /><Space width={0.2}/>{t`public`}</ToggleButton>
+						<ToggleButton value='private'><VerifiedUserTwoToneIcon fontSize='small' /><Space width={0.2}/>{t`private`}</ToggleButton>
 					</ToggleButtonGroup>
-					<Button startIcon={<CheckTwoToneIcon />} onClick={on(click)}>Okay</Button>
+					<Button startIcon={<CheckTwoToneIcon />} onClick={on(click)}>{ta`okay`}</Button>
 				</Row>
 			</Container>
 		</Drawer>

@@ -8,6 +8,7 @@
     "yeap": "Yeap"
   },
   "app": {
+    "okay": "Okay",
     "report": "Report"
   },
   "confirm": {
@@ -58,8 +59,17 @@
     "your": "Your"
   },
   "rooms": {
+    "channel": "Channel",
+    "create": "Create room",
+    "everyone": "everyone can join",
+    "name": "Name it",
+    "onlyAdmins": "only admins can write messages",
+    "onlyMembers": "only members can invite others",
     "personal": "personal",
-    "rooms": "rooms"
+    "private": "Private",
+    "public": "Public",
+    "rooms": "rooms",
+    "toggle": "Toogle folders"
   },
   "settings": {
     "close": "Close my account",

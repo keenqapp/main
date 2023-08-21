@@ -6,6 +6,7 @@ import FolderCopyTwoToneIcon from '@mui/icons-material/FolderCopyTwoTone'
 import MapsUgcTwoToneIcon from '@mui/icons-material/MapsUgcTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import { Drawer, DrawerItem, DrawerList } from '@/ui/Drawer'
 
@@ -13,6 +14,7 @@ import { $showTabs } from '@/components/Rooms/store'
 
 
 function RoomsMenu() {
+	const { t } = useTranslate('rooms')
 	const { name, on } = useModal('rooms')
 	const { onOpen } = useModal('createRoom')
 	const showTabs = useStore($showTabs)
@@ -23,12 +25,12 @@ function RoomsMenu() {
 			<DrawerList>
 				<DrawerItem
 					icon={<FolderCopyTwoToneIcon color='primary' />}
-					text='Toogle folders'
+					text={t`toggle`}
 					action={<Switch onChange={tabs} checked={showTabs || false} />}
 				/>
 			</DrawerList>
 			<DrawerList>
-				<DrawerItem icon={<MapsUgcTwoToneIcon color='primary' />} text='Create room' onClick={on(onOpen)} />
+				<DrawerItem icon={<MapsUgcTwoToneIcon color='primary' />} text={t`create`} onClick={on(onOpen)} />
 			</DrawerList>
 		</Drawer>
 	)
