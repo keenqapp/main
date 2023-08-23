@@ -5,46 +5,48 @@ import inspect from 'vite-plugin-inspect'
 import { VitePWA } from 'vite-plugin-pwa'
 
 
+const manifest = {
+	theme_color: '#fff',
+	background_color: '#fff',
+	display: 'standalone',
+	scope: '/',
+	start_url: '/',
+	name: 'keenq',
+	short_name: 'keenq',
+	description: 'Dating app for special as you',
+	icons: [
+		{
+			src: '/keenq.svg',
+			type: 'image/svg+xml'
+		},
+		{
+			src: '/icon-192x192.png',
+			sizes: '192x192',
+			type: 'image/png'
+		},
+		{
+			src: '/icon-256x256.png',
+			sizes: '256x256',
+			type: 'image/png'
+		},
+		{
+			src: '/icon-384x384.png',
+			sizes: '384x384',
+			type: 'image/png'
+		},
+		{
+			src: '/icon-512x512.png',
+			sizes: '512x512',
+			type: 'image/png'
+		}
+	]
+}
+
 export default defineConfig(({ mode }) => ({
 	plugins: [
 		VitePWA({
 			registerType: 'autoUpdate',
-			manifest: {
-				theme_color: '#fff',
-				background_color: '#fff',
-				display: 'standalone',
-				scope: '/',
-				start_url: '/',
-				name: 'keenq',
-				short_name: 'keenq',
-				description: 'Dating app for special as you',
-				icons: [
-					{
-						src: '/keenq.svg',
-						type: 'image/svg+xml'
-					},
-					{
-						src: '/icon-192x192.png',
-						sizes: '192x192',
-						type: 'image/png'
-					},
-					{
-						src: '/icon-256x256.png',
-						sizes: '256x256',
-						type: 'image/png'
-					},
-					{
-						src: '/icon-384x384.png',
-						sizes: '384x384',
-						type: 'image/png'
-					},
-					{
-						src: '/icon-512x512.png',
-						sizes: '512x512',
-						type: 'image/png'
-					}
-				]
-			},
+			manifest,
 			manifestFilename: 'manifest.json',
 			devOptions: {
 				enabled: mode === 'development'
@@ -60,9 +62,6 @@ export default defineConfig(({ mode }) => ({
 			}
 		})
 	],
-	define: {
-
-	},
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),

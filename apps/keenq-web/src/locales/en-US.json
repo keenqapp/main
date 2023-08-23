@@ -8,8 +8,7 @@
     "yeap": "Yeap"
   },
   "app": {
-    "okay": "Okay",
-    "report": "Report"
+    "okay": "Okay"
   },
   "confirm": {
     "no": "No",
@@ -40,10 +39,16 @@
   "match": {
     "and": "and",
     "away": "away",
-    "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms",
-    "report": "Report"
+    "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms"
+  },
+  "member": {
+    "add": "Add member",
+    "notFound": "No members found",
+    "shouldMatch": "To choose member first you should match with them",
+    "try": "Try it!"
   },
   "messages": {
+    "reply": "Reply",
     "today": "Today"
   },
   "profile": {
@@ -55,6 +60,7 @@
     "in": "In",
     "name": "That is your name?",
     "partner": "Partner",
+    "profile": "Profile",
     "settings": "Settings",
     "somecity": "some city",
     "tags": "Select what you are looking for",
@@ -64,13 +70,21 @@
   "report": {
     "abuseDesc": "Unsafe behavior",
     "abuseTitle": "Abuse",
+    "report": "Report",
     "spamDesc": "Ads or some inappropriate offers",
     "spamTitle": "Spam",
     "violationDesc": "Violation of rules of Keenq or commuity",
     "violationTitle": "Violation"
   },
   "room": {
-    "join": "Join"
+    "deleteText": "Are you sure you want to delete this room?",
+    "deleteTitle": "Delete room",
+    "join": "Join",
+    "leave": "Leave",
+    "leaveText": "Are you sure you want to leave this room?",
+    "leaveTitle": "Leave room",
+    "room": "Room",
+    "share": "Share"
   },
   "rooms": {
     "channel": "Channel",
@@ -101,5 +115,9 @@
     "max": "Max 16 characters",
     "noTag": "Seems no tags, you can create a new one",
     "selected": "Selected"
+  },
+  "words": {
+    "delete": "Delete",
+    "edit": "Edit"
   }
 }

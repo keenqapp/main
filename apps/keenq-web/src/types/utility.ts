@@ -12,9 +12,9 @@ declare module 'react-router-dom' {
   export function useLoaderData<T = unknown>(): { data: T } | undefined
 }
 
-declare global {
-  type Timer = ReturnType<typeof setTimeout>
-}
+// declare global {
+//   type Timer = ReturnType<typeof setTimeout>
+// }
 
 export type Required<T> = {
   [P in keyof T]-?: T[P]

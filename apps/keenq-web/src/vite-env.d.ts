@@ -2,10 +2,10 @@
 
 import {
 	AnyComponent,
+	ComponentChild,
 	createElement,
 	FunctionalComponent,
-	RenderableProps,
-	ComponentChild
+	RenderableProps
 } from 'preact'
 
 export {

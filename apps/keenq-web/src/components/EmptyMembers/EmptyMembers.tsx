@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import ArrowBackIosTwoToneIcon from '@mui/icons-material/ArrowBackIosTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
 import Column from '@/ui/Column'
@@ -13,6 +14,7 @@ import Space from '@/ui/Space'
 
 
 function EmptyMembers() {
+	const { t } = useTranslate()
 	const navigate = useNavigate()
 	const { closeAll } = useModal('addPartner')
 	const onClick = () => {
@@ -23,12 +25,12 @@ function EmptyMembers() {
 		<>
 			<Card data-testid='EmptyMembers'>
 				<Column gap={1}>
-					<Typography variant='h6'>No members found</Typography>
-					<Typography variant='overline'>To choose member first you should match with them</Typography>
+					<Typography variant='h6'>{t`member.notFound`}</Typography>
+					<Typography variant='overline'>{t`member.shouldMatch`}</Typography>
 				</Column>
 			</Card>
 			<Space />
-			<Button startIcon={<ArrowBackIosTwoToneIcon color='primary' />} onClick={onClick} fullWidth>Try it!</Button>
+			<Button startIcon={<ArrowBackIosTwoToneIcon color='primary' />} onClick={onClick} fullWidth>{t`member.try`}</Button>
 		</>
 	)
 }

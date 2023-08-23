@@ -20,6 +20,7 @@ import Row from '@/ui/Row'
 import { $messageReplyOrEditId } from '@/components/Room/RoomInput/state'
 
 import { useMutation } from '@/hooks/gql'
+import { useTranslate } from '@/services/translate'
 
 
 const Reactions = styled(Row)`
@@ -40,6 +41,7 @@ const reactions = [
 ]
 
 function MessageMenu() {
+	const { t } = useTranslate()
 	const navigate = useNavigate()
 	const { id: mid } = useCurrentMember()
 	const { name, params, close, on } = useModal('message')
@@ -83,12 +85,12 @@ function MessageMenu() {
 	return (
 		<Drawer data-testid='MessageMenu' name={name}>
 			<DrawerList>
-				<DrawerItem icon={<ReportTwoToneIcon color='error' />} text='Report' onClick={reportClick} />
-				{(isAuthor || isAdmin) && <DrawerItem icon={<DeleteForeverTwoToneIcon color='warning' />} text='Delete' onClick={on(deleteClick)} />}
-				{!isAuthor && !isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Profile' onClick={on(profileClick)} />}
-				{isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Room' onClick={on(roomClick)} />}
-				{isEditable && <DrawerItem icon={<EditTwoToneIcon color='primary' />} text='Edit' onClick={on(editClick)} />}
-				{isReplyable && <DrawerItem icon={<FormatQuoteTwoToneIcon color='secondary' />} text='Reply' onClick={on(replyClick)} />}
+				<DrawerItem icon={<ReportTwoToneIcon color='error' />} text={t`report.report`} onClick={reportClick} />
+				{(isAuthor || isAdmin) && <DrawerItem icon={<DeleteForeverTwoToneIcon color='warning' />} text={t`words.delete`} onClick={on(deleteClick)} />}
+				{!isAuthor && !isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text={t`profile.profile`} onClick={on(profileClick)} />}
+				{isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text={t`room.room`} onClick={on(roomClick)} />}
+				{isEditable && <DrawerItem icon={<EditTwoToneIcon color='primary' />} text={t`words.edit`} onClick={on(editClick)} />}
+				{isReplyable && <DrawerItem icon={<FormatQuoteTwoToneIcon color='secondary' />} text={t`messages.reply`} onClick={on(replyClick)} />}
 				<DrawerItem>
 					<Reactions justify='between' flex={1}>
 						{reactions.map(({ id, emoji }) => <div key={id} onClick={on(reactionClick(id))}>{emoji}</div>)}

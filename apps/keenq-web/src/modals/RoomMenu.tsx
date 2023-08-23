@@ -9,6 +9,7 @@ import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
 
 import { useConfirm, useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import { useCurrentMember } from '@/model/member'
 import { removeroomgql, useCurrentRoom } from '@/model/room'
@@ -20,6 +21,7 @@ import { useMutation } from '@/hooks/gql/useMutation'
 
 
 function RoomMenu() {
+	const { t } = useTranslate()
 	const navigate = useNavigate()
 	const { name, on } = useModal('room')
 	const { onOpen: addMemberOpen } = useModal('addMemberToRoom')
@@ -33,8 +35,8 @@ function RoomMenu() {
 
 	const leaveClick = () => {
 		confirm({
-			title: 'Leave room',
-			text: 'Are you sure you want to leave this room?',
+			title: t`room.leaveTitle`,
+			text: t`room.leaveTitle`,
 			onConfirm: on(() => {
 				leave({ memberId, roomId: id })
 				navigate('/match')
@@ -53,8 +55,8 @@ function RoomMenu() {
 
 	const deleteClick = () => {
 		confirm({
-			title: 'Delete room',
-			text: 'Are you sure you want to delete this room?',
+			title: t`room.deleteTitle`,
+			text: t`room.deleteText`,
 			onConfirm: on(() => {
 				remove({ id, deletedAt: new Date().toISOString() })
 			})
@@ -71,20 +73,20 @@ function RoomMenu() {
 				{isOwner && (
 					<DrawerItem
 						icon={<HighlightOffTwoToneIcon color='error' />}
-						text='Delete'
+						text={t`words.delete`}
 						onClick={on(deleteClick)}
 					/>
 				)}
 				{isMember && (
 					<DrawerItem
 						icon={<DeleteTwoToneIcon color='secondary' />}
-						text='Leave'
+						text={t`room.leave`}
 						onClick={on(leaveClick)}
 					/>
 				)}
 				<DrawerItem
 					icon={<ReportTwoToneIcon color='error' />}
-					text='Report'
+					text={t`report.report`}
 					onClick={report}
 				/>
 				{/*<DrawerItem*/}
@@ -95,24 +97,24 @@ function RoomMenu() {
 				{isPersonal ? (
 					<DrawerItem
 						icon={<ForumTwoToneIcon color='primary' />}
-						text='Profile'
+						text={t`profile.profile`}
 						onClick={on(profileClick)}
 					/>
 				) : (
 					<DrawerItem
 						icon={<ForumTwoToneIcon color='primary' />}
-						text='Room'
+						text={t`room.room`}
 						onClick={on(roomClick)}
 					/>
 				)}
 				<DrawerItem
 					icon={<PersonAddTwoToneIcon color='primary' />}
-					text='Add member'
+					text={t`member.add`}
 					onClick={on(addMemberClick)}
 				/>
 				<DrawerItem
 					icon={<ShareTwoToneIcon color='primary' />}
-					text='Share link'
+					text={t`room.share`}
 					onClick={on(shareClick)}
 				/>
 			</DrawerList>

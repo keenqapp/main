@@ -172,7 +172,7 @@ function Match() {
 					onClick={onReportClick}
 					fullWidth
 					color='default'
-				>{t`match.report`}</Button>
+				>{t`report.report`}</Button>
 				<Space />
 			</Content>
 		</Container>
