@@ -48,10 +48,7 @@ const allreactions = [
 ]
 
 function Reaction({ id, emoji, isSelected, onClick }: any) {
-	const click = () => {
-		console.log('--- MessageMenu.tsx:52 -> click ->', 111, id, emoji, onClick)
-		onClick(id, emoji)
-	}
+	const click = () => onClick(id, emoji)
 	return <StyledReaction isSelected={isSelected} onClick={click}>{emoji}</StyledReaction>
 }
 

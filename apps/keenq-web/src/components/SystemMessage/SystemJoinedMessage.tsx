@@ -24,7 +24,6 @@ const SystemTextMessageContainer = styled.div`
 function SystemTextMessage({ joined }: { joined: string }) {
 	const { t } = useTranslate('systemMessage')
 	const [ result ] = useQuery(membergql, { id: joined })
-	console.log('--- SystemJoinedMessage.tsx:27 -> SystemTextMessage ->', result)
 	const member = optional(result.data?.members_by_pk)
 	return (
 		<>
