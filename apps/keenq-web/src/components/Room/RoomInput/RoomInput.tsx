@@ -26,7 +26,7 @@ import Row from '@/ui/Row'
 import RoomInputEditImage from '@/components/Room/RoomInput/RoomInputEditImage'
 import RoomInputNewFile from '@/components/Room/RoomInput/RoomInputNewFile'
 import RoomInputReply from '@/components/Room/RoomInput/RoomInputReply'
-import { $imagesToAdd, $imagesToEdit, $imagesToEditSetted, $messageReplyOrEditId, clear } from '@/components/Room/RoomInput/state'
+import { $imagesToAdd, $imagesToEdit, $imagesToEditSetted, $messageReplyOrEditId, $scroll, clear } from '@/components/Room/RoomInput/state'
 
 import { useQuery, useUpdate } from '@/hooks/gql'
 import { useInsert } from '@/hooks/gql/useInsert'
@@ -143,13 +143,17 @@ function RoomInput() {
 			content
 		} as Partial<IMessage>
 
-		if (shouldSave) {
-			if (isEdit) update(messageReplyOrEditId.id, newmessage)
-			else insert(newmessage)
-		}
-
 		clear()
 		textInput.onClear()
+
+		if (shouldSave) {
+			if (isEdit) await update(messageReplyOrEditId.id, newmessage)
+			else await insert(newmessage)
+		}
+		// REFACTOR add optimistic update
+		setTimeout(() => {
+			$scroll.get()?.scrollTo({ behavior: 'smooth', top: $scroll.get()?.scrollHeight || 0 })
+		}, 1000)
 	}
 
 	const [ , join ] = useInsert(joinroom)

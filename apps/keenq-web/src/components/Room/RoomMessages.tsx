@@ -3,13 +3,15 @@ import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
 import { useSubscription } from 'urql'
 
+import type { IMessage } from '@/model/message'
+import { messagesgql } from '@/model/message/gql'
+
 import List from '@/ui/List'
 
+import { $scroll } from '@/components/Room/RoomInput/state'
 import RoomMessage from '@/components/Room/RoomMessage'
 
 import { usePipe } from '@/hooks/usePipe'
-import type { IMessage } from '@/model/message'
-import { messagesgql } from '@/model/message/gql'
 import { reduce, sort } from '@/utils/utils'
 
 
@@ -55,6 +57,7 @@ function RoomMessages() {
 		if (result.data && !loaded) {
 			setLoaded(true)
 			ref.current?.scrollTo(0, ref.current.scrollHeight)
+			$scroll.set(ref.current)
 		}
 	}, [ result.data ])
 

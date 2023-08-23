@@ -1,6 +1,7 @@
 import { atom } from 'nanostores'
 
 import { IImage } from '@/model/other'
+
 import { resize, ResizeResult } from '@/utils/resize'
 
 
@@ -9,9 +10,7 @@ export const $messageReplyOrEditId = atom<{ mode: string, id: string }>({ mode: 
 export const $imagesToEdit = atom<IImage[]>([])
 export const $imagesToEditSetted = atom(false)
 
-export function buildContent() {
-
-}
+export const $scroll = atom<HTMLDivElement|null>(null)
 
 export async function prepareImageToUpload(image: File) {
 	const result = await resize(image, { maxHeight: 500, maxWidth: 500, output: 'dataURL', prepare: true })
