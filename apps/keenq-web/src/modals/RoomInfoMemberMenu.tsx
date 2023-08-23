@@ -7,13 +7,14 @@ import LocalPoliceTwoToneIcon from '@mui/icons-material/LocalPoliceTwoTone'
 
 import { useModal } from '@/services/modals'
 
+import { useCurrentMember } from '@/model/member/hooks'
+import { useCurrentRoom } from '@/model/room'
+import { undateroommember } from '@/model/rooms_members'
+
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 
 import { useMutation } from '@/hooks/gql'
 import { useIsAdmin, useIsOwner } from '@/hooks/useIsAdmin'
-import { useCurrentMember } from '@/model/member/hooks'
-import { useCurrentRoom } from '@/model/room'
-import { undateroommember } from '@/model/rooms_members'
 
 
 function RoomInfoMemberMenu() {

@@ -14,9 +14,9 @@ import Space from '@/ui/Space'
 
 function EmptyMembers() {
 	const navigate = useNavigate()
-	const { onCloseAll } = useModal('addPartner')
+	const { closeAll } = useModal('addPartner')
 	const onClick = () => {
-		onCloseAll()
+		closeAll()
 		navigate('/match')
 	}
 	return (

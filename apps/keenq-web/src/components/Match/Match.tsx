@@ -104,7 +104,9 @@ function Match() {
 	}, [ mid, fetching, error, id ])
 
 	const partner = getPartner(linked)
-	const onReportClick = () => onReportOpen()
+	const onReportClick = () => {
+		onReportOpen({ id: getId, entity: 'member' })
+	}
 
 	const onPartnerClick = () => {
 		if (!partner) return

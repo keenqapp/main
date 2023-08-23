@@ -14,7 +14,7 @@ import Space from '@/ui/Space'
 
 
 function InstallDrawer() {
-	const { name, onOpen, onClose } = useModal('install')
+	const { name, onOpen, close } = useModal('install')
 	const shouldShow = useStore($shouldShow)
 	useEffect(() => {
 		if (shouldShow) {
@@ -26,7 +26,7 @@ function InstallDrawer() {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		$pwa.get()?.prompt()
-		onClose()
+		close()
 	}
 	return (
 		<Drawer data-testid='InstallDrawer' name={name}>

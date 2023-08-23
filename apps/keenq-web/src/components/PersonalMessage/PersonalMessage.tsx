@@ -3,6 +3,10 @@ import styled from '@emotion/styled'
 import { differenceInCalendarDays, isBefore, isToday, parseISO, startOfDay } from 'date-fns'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
+
+import { useIsAuthor } from '@/model/member'
+import { IMessage } from '@/model/message'
 
 import Row from '@/ui/Row'
 import theme from '@/ui/theme'
@@ -14,8 +18,6 @@ import PersonalMessageReply from '@/components/PersonalMessage/PersonalMessageRe
 import PersonalMessageText from '@/components/PersonalMessage/PersonalMessageText'
 import PersonalMessageTime from '@/components/PersonalMessage/PersonalMessageTime'
 
-import { useIsAuthor } from '@/model/member'
-import { IMessage } from '@/model/message'
 import { formatDate } from '@/utils/formatters'
 
 
@@ -71,6 +73,7 @@ const SeparateDate = styled.div`
 `
 
 function DateSeparator({ date, prevDate }: IMessage) {
+	const { t } = useTranslate('messages')
 	const current = parseISO(date)
 	if (!prevDate && isToday(current)) return null
 	if (!prevDate) return <SeparateDate>{formatDate(date, { to: 'dd MMM' })}</SeparateDate>
@@ -78,7 +81,7 @@ function DateSeparator({ date, prevDate }: IMessage) {
 	const prev = parseISO(prevDate)
 	if (differenceInCalendarDays(current, prev) < 1) return null
 	if (!isToday(current)) return <SeparateDate>{formatDate(date, { to: 'dd MMM' })}</SeparateDate>
-	if (isBefore(prev, startOfDay(new Date()))) return <SeparateDate>Today</SeparateDate>
+	if (isBefore(prev, startOfDay(new Date()))) return <SeparateDate>{t`today`}</SeparateDate>
 
 	return null
 }

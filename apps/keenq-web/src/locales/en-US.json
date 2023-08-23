@@ -43,6 +43,9 @@
     "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms",
     "report": "Report"
   },
+  "messages": {
+    "today": "Today"
+  },
   "profile": {
     "addPhoto": "Add photo",
     "and": "And",
@@ -57,6 +60,17 @@
     "tags": "Select what you are looking for",
     "upload": "Upload at least three photos for better impression",
     "your": "Your"
+  },
+  "report": {
+    "abuseDesc": "Unsafe behavior",
+    "abuseTitle": "Abuse",
+    "spamDesc": "Ads or some inappropriate offers",
+    "spamTitle": "Spam",
+    "violationDesc": "Violation of rules of Keenq or commuity",
+    "violationTitle": "Violation"
+  },
+  "room": {
+    "join": "Join"
   },
   "rooms": {
     "channel": "Channel",

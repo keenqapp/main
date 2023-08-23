@@ -4,9 +4,10 @@ import axios from 'axios'
 import { atom } from 'nanostores'
 import { gql } from 'urql'
 
+import { useCurrentMember } from '@/model/member/hooks'
+
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
-import { useCurrentMember } from '@/model/member/hooks'
 
 
 interface LocalityInfo {

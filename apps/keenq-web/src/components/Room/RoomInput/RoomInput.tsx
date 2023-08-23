@@ -11,6 +11,15 @@ import SendTwoToneIcon from '@mui/icons-material/SendTwoTone'
 
 import { useModal } from '@/services/modals'
 import { uploadImage } from '@/services/spaces'
+import { useTranslate } from '@/services/translate'
+
+import { useCurrentMember } from '@/model/member/hooks'
+import { getImages, getReply, IMessage, messagegql, updatemessagegql } from '@/model/message'
+import { getText } from '@/model/message'
+import { insertmessagegql } from '@/model/message/gql'
+import { $isChannel } from '@/model/room'
+import { useCurrentRoom } from '@/model/room/hooks'
+import { joinroom } from '@/model/rooms_members'
 
 import Row from '@/ui/Row'
 
@@ -23,13 +32,6 @@ import { useQuery, useUpdate } from '@/hooks/gql'
 import { useInsert } from '@/hooks/gql/useInsert'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useInput } from '@/hooks/useInput'
-import { useCurrentMember } from '@/model/member/hooks'
-import { getImages, getReply, IMessage, messagegql, updatemessagegql } from '@/model/message'
-import { getText } from '@/model/message'
-import { insertmessagegql } from '@/model/message/gql'
-import { $isChannel } from '@/model/room'
-import { useCurrentRoom } from '@/model/room/hooks'
-import { joinroom } from '@/model/rooms_members'
 
 
 const RoomInputContainer = styled.div`
@@ -47,6 +49,7 @@ const Input = styled(TextField)`
 
 function RoomInput() {
 
+	const { t } = useTranslate('room')
 	const { onOpen } = useModal('attachment')
 	const messageReplyOrEditId = useStore($messageReplyOrEditId)
 
@@ -175,7 +178,7 @@ function RoomInput() {
 						</Row>
 					</>
 				)}
-				{showJoin && <Button onClick={onJoinClick} fullWidth>Join</Button>}
+				{showJoin && <Button onClick={onJoinClick} fullWidth>{t`join`}</Button>}
 			</Row>
 		</RoomInputContainer>
 	)

@@ -9,16 +9,17 @@ import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 
 import { useModal } from '@/services/modals'
 
+import { useIsAuthor } from '@/model/member'
+import { useCurrentMember } from '@/model/member/hooks'
+import { deletemessagegql } from '@/model/message'
+import { $isChannel, useCurrentRoom } from '@/model/room'
+
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Row from '@/ui/Row'
 
 import { $messageReplyOrEditId } from '@/components/Room/RoomInput/state'
 
 import { useMutation } from '@/hooks/gql'
-import { useIsAuthor } from '@/model/member'
-import { useCurrentMember } from '@/model/member/hooks'
-import { deletemessagegql } from '@/model/message'
-import { $isChannel, useCurrentRoom } from '@/model/room'
 
 
 const Reactions = styled(Row)`
@@ -41,14 +42,17 @@ const reactions = [
 function MessageMenu() {
 	const navigate = useNavigate()
 	const { id: mid } = useCurrentMember()
-	const { name, params, on } = useModal('message')
-	const { onOpen } = useModal('report')
+	const { name, params, close, on } = useModal('message')
+	const { open } = useModal('report')
 	const { id, authorId } = params
 	const { room, isAdmin } = useCurrentRoom()
 	const { id: rid } = room
 	const [ , remove ] = useMutation(deletemessagegql)
 
-	const reportClick = () => onOpen({ entity: 'message', id })
+	const reportClick = () => {
+		close()
+		open({ entity: 'message', id })
+	}
 
 	const profileClick = () => navigate(`/match/${authorId}`)
 
@@ -79,7 +83,7 @@ function MessageMenu() {
 	return (
 		<Drawer data-testid='MessageMenu' name={name}>
 			<DrawerList>
-				<DrawerItem icon={<ReportTwoToneIcon color='error' />} text='Report' onClick={on(reportClick)} />
+				<DrawerItem icon={<ReportTwoToneIcon color='error' />} text='Report' onClick={reportClick} />
 				{(isAuthor || isAdmin) && <DrawerItem icon={<DeleteForeverTwoToneIcon color='warning' />} text='Delete' onClick={on(deleteClick)} />}
 				{!isAuthor && !isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Profile' onClick={on(profileClick)} />}
 				{isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Room' onClick={on(roomClick)} />}

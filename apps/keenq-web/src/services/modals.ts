@@ -43,32 +43,39 @@ export interface ModalParamsMap {
 	roomInfo: IRoom
 }
 
-export const modalsStore = signal<ModalsState>(modals)
+export interface UseModalOptions {
+	onClose: () => void
+	onOpen: () => void
+}
 
+export const modalsStore = signal<ModalsState>(modals)
 let params = {} as any
-export function useModal<N extends ModalKeys>(name: N) {
-	const open = computed(() => modalsStore()[name]())
-	const onOpen = useCallback((dto: ModalParams<N> = {} as any) => {
+export function useModal<N extends ModalKeys>(name: N, options?: UseModalOptions) {
+	const isOpen = computed(() => modalsStore()[name]())
+	const open = useCallback((dto: ModalParams<N> = {} as any) => {
+		options?.onOpen?.()
 		params = dto
 		modalsStore()[name](true)
 	}, [])
-	const onClose = useCallback(() => {
+	const close = useCallback(() => {
+		options?.onClose?.()
 		params = {} as any
 		modalsStore()[name](false)
 	}, [])
 	const on = useCallback((fn: (e?: any) => void) => (e?: any) => {
 		fn(e)
-		onClose()
+		close()
 	}, [])
-	const onCloseAll = useCallback(() => modalsStore.clear(), [])
+	const closeAll = useCallback(() => modalsStore.clear(), [])
 	return {
 		name: name as Extract<ModalKeys, N>,
-		open: open.value,
+		isOpen: isOpen.value,
 		params: params as ModalParams<N>,
+		onOpen: open,
 		on,
-		onOpen,
-		onClose,
-		onCloseAll
+		open,
+		close,
+		closeAll
 	}
 }
 
@@ -96,11 +103,11 @@ export function useConfirm() {
 	const open = computed(() => modalsStore().confirm())
 
 	const onOpen = useCallback(() => modalsStore().confirm(true), [])
-	const onClose = useCallback(() => {
+	const close = useCallback(() => {
 		modalsStore().confirm(false)
 		options.clear()
 	}, [])
-	const onCloseAll = useCallback(() => modalsStore.clear(), [])
+	const closeAll = useCallback(() => modalsStore.clear(), [])
 	const confirm = useCallback((newOptions: ConfirmOptions) => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
@@ -111,10 +118,11 @@ export function useConfirm() {
 	return {
 		name: 'confirm',
 		open: open.value,
+		isOpen: open.value,
 		confirm,
 		options,
 		onOpen,
-		onClose,
-		onCloseAll
+		close,
+		closeAll
 	}
 }

@@ -16,7 +16,7 @@ function ConfirmDialog() {
 	const confirm = useConfirm()
 	const onConfirm = () => {
 		confirm.options().onConfirm()
-		confirm.onClose()
+		confirm.close()
 	}
 	return (
 		<Dialog data-testid='ConfirmDialog' {...confirm}>
@@ -31,7 +31,7 @@ function ConfirmDialog() {
 			<DialogActions>
 				<Button color='error' onClick={onConfirm}>{t`yes`}</Button>
 				<Space grow />
-				<Button color='primary' onClick={confirm.onClose}>{t`no`}</Button>
+				<Button color='primary' onClick={confirm.close}>{t`no`}</Button>
 			</DialogActions>
 		</Dialog>
 	)

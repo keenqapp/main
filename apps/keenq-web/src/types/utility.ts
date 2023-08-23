@@ -6,7 +6,7 @@ export type UID = Opaque<'UID', string>
 
 export type NotEmptyString = Opaque<'NotEmptyString', string>
 
-export type Dict<T extends Record<string, unknown>> = T
+export type Dict<T extends Record<string, unknown> = Record<string, unknown>> = T
 
 declare module 'react-router-dom' {
   export function useLoaderData<T = unknown>(): { data: T } | undefined
