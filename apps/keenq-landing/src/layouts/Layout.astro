@@ -18,13 +18,13 @@ const { gap } = Astro.props
 		<link rel="icon" type="image/svg+xml" href="/keenq.svg" />
 		<link
 			rel='preload'
-			href='https://keenq.fra1.cdn.digitaloceanspaces.com/assets/fonts/keenq-Bold.woff'
+			href='https://cdn.keenq.app/assets/fonts/keenq-Bold.woff'
 			as='font'
 			type='font/woff'
 		/>
 		<link
 			rel='preload'
-			href='https://keenq.fra1.cdn.digitaloceanspaces.com/assets/fonts/keenq-Bold.woff2'
+			href='https://cdn.keenq.app/assets/fonts/keenq-Bold.woff2'
 			as='font'
 			type='font/woff2'
 		/>
@@ -41,8 +41,8 @@ const { gap } = Astro.props
 <style is:global define:vars={{ gap }}>
 	@font-face {
     font-family: 'keenq';
-    src: url('https://keenq.fra1.cdn.digitaloceanspaces.com/assets/fonts/keenq-Bold.woff2') format('woff2'),
-    url('https://keenq.fra1.cdn.digitaloceanspaces.com/assets/fonts/keenq-Bold.woff') format('woff');
+    src: url('https://cdn.keenq.app/assets/fonts/keenq-Bold.woff2') format('woff2'),
+    url('https://cdn.keenq.app/assets/fonts/keenq-Bold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
