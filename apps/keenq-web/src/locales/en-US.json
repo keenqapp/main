@@ -30,6 +30,11 @@
     "nonBinary": "Non-binary",
     "sexuality": "Sexuality"
   },
+  "install": {
+    "do": "Do it",
+    "homescreen": " app to your homescreen",
+    "you": "You can add"
+  },
   "location": {
     "chooseCity": "Choose a city",
     "denied": "You have denied to share location",

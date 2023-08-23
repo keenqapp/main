@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 
 import { useModal } from '@/services/modals'
 import { $pwa, $shouldShow } from '@/services/pwa'
+import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
@@ -14,6 +15,7 @@ import Space from '@/ui/Space'
 
 
 function InstallDrawer() {
+	const { t } = useTranslate()
 	const { name, onOpen, close } = useModal('install')
 	const shouldShow = useStore($shouldShow)
 	useEffect(() => {
@@ -32,9 +34,9 @@ function InstallDrawer() {
 		<Drawer data-testid='InstallDrawer' name={name}>
 			<Container>
 				<Card>
-					<Typography variant='overline' align='center'>You can add <br /><b>Keenq</b><br /> app to your homescreen </Typography>
+					<Typography variant='overline' align='center'>{t`install.you`}<br /><b>Keenq</b><br />{t`install.homescreen`}</Typography>
 					<Space />
-					<Button variant='outlined' onClick={install}>Do it</Button>
+					<Button variant='outlined' onClick={install}>{t`install.do`}</Button>
 				</Card>
 			</Container>
 		</Drawer>
