@@ -89,7 +89,9 @@
   "rooms": {
     "channel": "Channel",
     "create": "Create room",
+    "empty": "And now you can join and read:",
     "everyone": "everyone can join",
+    "here": "Here will be\nchats with your matches\nand\nrooms for conversations!",
     "name": "Name it",
     "onlyAdmins": "only admins can write messages",
     "onlyMembers": "only members can invite others",

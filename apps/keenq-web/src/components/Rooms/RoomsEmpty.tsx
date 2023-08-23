@@ -2,6 +2,10 @@ import styled from '@emotion/styled'
 
 import Typography from '@mui/material/Typography'
 
+import { useTranslate } from '@/services/translate'
+
+import { getroomsgql } from '@/model/room'
+
 import Card from '@/ui/Card'
 import Column from '@/ui/Column'
 import List from '@/ui/List'
@@ -9,8 +13,11 @@ import List from '@/ui/List'
 import PublicRoomsItem from '@/components/Rooms/PublicRoomsItem'
 
 import { useQuery } from '@/hooks/gql'
-import { roomgql } from '@/model/room'
 
+
+const RoomsList = styled(List)`
+	gap: 1.5rem
+`
 
 const RoomsEmptyContainer = styled(Column)`
 	flex: 1;
@@ -20,10 +27,9 @@ const Content = styled(Column)`
 	padding: 0 2rem;
 `
 
-const DEFAULT_TEXT = 'Here will be\nchats with your matches\nand\nrooms for conversations!'
-
 function RoomsEmpty() {
-	const [ result ] = useQuery(roomgql, { id: 'keenq' })
+	const { t } = useTranslate()
+	const [ result ] = useQuery(getroomsgql, { ids: ['keenq', 'keenq_support' ] })
 	return (
 		<RoomsEmptyContainer data-testid='RoomsEmpty' gap={0.2}>
 			<Content gap={1}>
@@ -33,12 +39,12 @@ function RoomsEmpty() {
 						textAlign='center'
 						whiteSpace='pre-wrap'
 						lineHeight={1.5}
-					>{DEFAULT_TEXT}</Typography>
+					>{t`rooms.here`}</Typography>
 				</Card>
-				<Typography variant='h6'>And now you can join and read:</Typography>
+				<Typography variant='h6'>{t`rooms.empty`}</Typography>
 			</Content>
-			<List
-				data={result.data ? [result.data?.rooms_by_pk] : []}
+			<RoomsList
+				data={result.data ? result.data?.rooms : []}
 				render={PublicRoomsItem}
 			/>
 		</RoomsEmptyContainer>

@@ -46,7 +46,7 @@ declare global {
 		copyPush(item: T): Array<T>
 		toComponents<T>(render: (item: T, index: number) => VNode<T>): VNode[]
 		toIds(): string[]
-		excludeById(id: string): Array<T>
+		excludeById(id: string | string[]): Array<T>
 	}
 
   interface String {
@@ -104,8 +104,8 @@ Object.defineProperty(Array.prototype, 'last', {
 })
 
 Object.defineProperty(Array.prototype, 'excludeById', {
-	value: function(id: string) {
-		return this.filter((item: Entity) => item.id !== id)
+	value: function(id: string | string[]) {
+		return this.filter((item: Entity) => Array.isArray(id) ? !id.includes(item.id) : item.id !== id)
 	}
 })
 

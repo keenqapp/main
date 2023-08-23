@@ -30,8 +30,7 @@ function RoomsItems(room: IRoom) {
 }
 
 function addKeenq(rooms: IRoom[]) {
-	console.log('--- Rooms.tsx:33 -> addKeenq ->', rooms?.excludeById('keenq'))
-	return rooms?.length > 1 ? rooms : rooms?.excludeById('keenq')
+	return rooms?.length > 2 ? rooms : rooms?.excludeById(['keenq', 'keenq_support'])
 }
 
 function Rooms() {

@@ -21,6 +21,23 @@ export const roomsgql = gql<{ rooms: IRoom[] }>`
 	}
 `
 
+export const getroomsgql = gql<{ rooms: IRoom[] }>`
+	query Rooms($ids: [String!]!) {
+		rooms(where: { id: { _in: $ids }}) {
+			id
+			name
+			image
+			description
+			type
+			verified
+			lastMessage {
+				id
+				content
+			}
+		}
+	}
+`
+
 export const roomgql = gql<{ rooms_by_pk: IRoom }>`
 	query Room($id: String!) {
 		rooms_by_pk(id: $id) {
