@@ -83,12 +83,17 @@
   <body>
     <div id="app" class='mobile'></div>
     <script type="module" src="/src/main.tsx"></script>
-    <div class='desktop phone'>
+    <div id='desktopContainer' class='desktop phone'>
       <div class='button1'> </div>
       <div class='button2'> </div>
       <div class='button3'> </div>
       <div class='button4'> </div>
-<!--      <iframe class='desktop' src='https://keenq.app' frameborder='0' width='393px' height='852px'></iframe>-->
+      <iframe class='desktop' src='https://keenq.app' frameborder='0' width='393px' height='852px'></iframe>
+      <script>
+        if (%DEV% || window.innerWidth < 480) {
+          document.getElementById('desktopContainer').remove()
+        }
+      </script>
     </div>
   </body>
 </html>
