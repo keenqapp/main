@@ -1,4 +1,5 @@
 import { cloneElement, VNode } from 'preact'
+import _groupBy from 'lodash-es/groupBy'
 
 import { Entity, UID } from '@/types/utility'
 
@@ -31,6 +32,10 @@ export function pipe<Input, Output>(data: Input, ...fns: ((...args: any[]) => an
 export function map<Input, Output>(fn: (input: Input) => Output) {
 	return (input: Input[]) => input.map(fn)
 }
+
+// export function groupBy(key: string) {
+// 	return (input: any[]) => console.log('--- utils.ts:36 ->  ->', key, _groupBy(input))
+// }
 
 export function toComponent<Input extends Entity>(render: (item: Input, index: number) => VNode<Input>) {
 	return (input: Input[]) => input

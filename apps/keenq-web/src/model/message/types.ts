@@ -23,7 +23,9 @@ export interface IMessage {
 	nextAuthorId?: string | null
 
 	content: (IMessageReply | IMessageText | IMessageImage | IMessageFile | IPartnerRequest | IGreeting | IJoined) []
-	reactions?: IMessageReaction[]
+	reactions: IMessageReaction[]
+
+	// REFACTOR @deprecated
 	reactionsCount?: IMessageReactionCount[]
 
 	meta?: IMessageMeta
@@ -32,9 +34,10 @@ export interface IMessage {
 export interface IMessageReaction {
 	id: string
 	emoji: string
-	from: string
+	authorId: string
 }
 
+// REFACTOR @deprecated
 export interface IMessageReactionCount {
 	id: string
 	emoji: string

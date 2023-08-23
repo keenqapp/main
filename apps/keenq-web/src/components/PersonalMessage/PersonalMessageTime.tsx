@@ -3,6 +3,7 @@ import { parseISO } from 'date-fns'
 import Typography from '@mui/material/Typography'
 
 import { IMessage, shouldShowCheck } from '@/model/message'
+
 import { formatDate } from '@/utils/formatters'
 
 

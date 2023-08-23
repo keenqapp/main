@@ -2,16 +2,17 @@ import styled from '@emotion/styled'
 
 import Typography from '@mui/material/Typography'
 
+import { IMessage, IMessageReactionCount, shouldShowCheck } from '@/model/message'
+
 import Row from '@/ui/Row'
 
 import { usePipe } from '@/hooks/usePipe'
-import { IMessage, IMessageReactionCount } from '@/model/message'
 import { first, sort, toComponent } from '@/utils/utils'
 
 
 const PersonalMessageReactionsContainer = styled(Row)`
 	position: absolute;
-	bottom: 0.5rem;
+	bottom: ${p => p.shouldShow ? '0.75rem' : '-0.75rem'};
 	transform: scale(0.8);
 	transform-origin: center;
 `
@@ -26,6 +27,15 @@ function max(left: IMessageReactionCount, right: IMessageReactionCount) {
 	return right.count - left.count
 }
 
+function count(input: any[]) {
+	const counts = input.reduce((obj, curr) => {
+		if (obj[curr.id]) obj[curr.id] = { id: curr.id, emoji: curr.emoji, count: curr.count + 1 }
+		else obj[curr.id] = { id: curr.id, emoji: curr.emoji, count: 1 }
+		return obj
+	}, {})
+	return Object.values(counts)
+}
+
 function PersonalMessageReaction({ emoji, count }: IMessageReactionCount) {
 	return (
 		<Reaction gap={0.3}>
@@ -35,12 +45,13 @@ function PersonalMessageReaction({ emoji, count }: IMessageReactionCount) {
 	)
 }
 
-function PersonalMessageReactions({ reactionsCount }: IMessage) {
-	if (!reactionsCount?.length) return null
-	const reactions = usePipe(reactionsCount, sort(max), first(3), toComponent(PersonalMessageReaction))
+function PersonalMessageReactions(message: IMessage) {
+	const { reactions } = message
+	const result = usePipe(reactions, count, sort(max), first(3), toComponent(PersonalMessageReaction))
+	const shouldShow = shouldShowCheck(message)
 	return (
-		<PersonalMessageReactionsContainer data-testid='PersonalMessageReactions' className='reaction-container' gap={0.2}>
-			{reactions}
+		<PersonalMessageReactionsContainer shouldShow={shouldShow} data-testid='PersonalMessageReactions' className='reaction-container' gap={0.2}>
+			{result}
 		</PersonalMessageReactionsContainer>
 	)
 }

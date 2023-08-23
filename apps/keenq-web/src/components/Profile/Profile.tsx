@@ -158,11 +158,11 @@ function Profile() {
 
 	const partner = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value
 
-	const { onOpen: onLocationOpen } = useModal('location')
-	const { onOpen: onTagsOpen } = useModal('tags')
-	const { onOpen: onSettingsClick } = useModal('settings')
-	const { onOpen: onGenderClick } = useModal('gender')
-	const { onOpen: onAddPartnerClick } = useModal('addPartner')
+	const { open: onLocationOpen } = useModal('location')
+	const { open: onTagsOpen } = useModal('tags')
+	const { open: onSettingsClick } = useModal('settings')
+	const { open: onGenderClick } = useModal('gender')
+	const { open: onAddPartnerClick } = useModal('addPartner')
 
 	const [ , update ] = useDebounceMutation(updatemembergql)
 

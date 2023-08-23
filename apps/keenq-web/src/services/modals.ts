@@ -1,6 +1,7 @@
 import { useCallback } from 'preact/hooks'
 import { computed } from '@preact/signals'
 
+import { IMessage } from '@/model/message'
 import { IRoom } from '@/model/room'
 
 import { signal } from '@/utils/signals'
@@ -37,7 +38,7 @@ export type ModalParams<N> = N extends keyof ModalParamsMap ? ModalParamsMap[N] 
 
 export interface ModalParamsMap {
 	roomInfoMember: { id: string }
-	message: { id: string, authorId: string }
+	message: IMessage
 	report: { id: string, entity: string }
 	addMemberToRoom: { id?: string, to: string }
 	roomInfo: IRoom

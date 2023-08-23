@@ -61,3 +61,19 @@ export const updatemessagegql = gql`
 		}
 	}
 `
+
+export const updatereactiongql = gql`
+	mutation UpdateReaction($id: bigint!, $data: messages_set_input!) {
+		update_messages_by_pk(pk_columns: { id: $id }, _set: $data) {
+			id
+		}
+	}
+`
+
+export const replacereactiongql = gql`
+	mutation AddReaction($id: bigint!, $data: messages_append_input!) {
+		update_messages_by_pk(pk_columns: { id: $id }, _append: $data) {
+			id
+		}
+	}
+`
