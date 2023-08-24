@@ -36,7 +36,7 @@ function enrich(acc: IMessage[], message: IMessage, index: number, data: IMessag
 }
 
 const RoomMessagesContainer = styled.div`
-	flex: 0 1 auto;
+	flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
