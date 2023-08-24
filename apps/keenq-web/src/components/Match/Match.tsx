@@ -14,6 +14,7 @@ import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 
 import { useModal } from '@/services/modals'
+import { notify } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
 import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
@@ -31,7 +32,6 @@ import { $unread } from '@/core/BottomTabs'
 import { useInsert, useQuery } from '@/hooks/gql'
 import { useFormatDistance } from '@/hooks/useFormatDistance'
 import { useMember } from '@/hooks/useMember'
-import { notify } from '@/services/notifications'
 
 
 const Content = styled(Row)`
@@ -124,7 +124,6 @@ function Match() {
 		await match()
 
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
-		console.log('--- Match.tsx:127 -> onYesClick ->', data)
 		if (data?.matched.data.result) {
 			$unread.set(true)
 			notify()

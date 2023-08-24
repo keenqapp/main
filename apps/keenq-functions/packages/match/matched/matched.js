@@ -19,11 +19,12 @@ const config = {
 	pool: { min: 0, max: 2 }
 }
 
-async function check(authorId, memberId, type, db) {
+async function check(authorId, memberId, type, db, trx) {
 	if (type === 'no') throw { reason: 'This is "no" match' }
 
 	const first = await db
 		.table('matches')
+		.transacting(trx)
 		.select()
 		.where('authorId', authorId)
 		.where('memberId', memberId)
@@ -32,6 +33,7 @@ async function check(authorId, memberId, type, db) {
 
 	const second = await db
 		.table('matches')
+		.transacting(trx)
 		.select()
 		.where('authorId', memberId)
 		.where('memberId', authorId)
@@ -47,7 +49,7 @@ async function check(authorId, memberId, type, db) {
 		}
 	}
 
-	return true
+	return [first, second]
 }
 
 async function createRoom(db, trx) {
@@ -104,9 +106,8 @@ export async function main(body) {
 		await ensureCreds(author)
 		await ensureCreds(member)
 
-		const result = await check(authorId, memberId, type, db)
-
-		await transaction(db, async trx => {
+		const result = await transaction(db, async trx => {
+			await check(authorId, memberId, type, db, trx)
 			const room = await createRoom(db, trx)
 			await add(authorId, memberId, room, db, trx)
 			await hi(room, db, trx)
