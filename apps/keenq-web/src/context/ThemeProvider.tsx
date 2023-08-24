@@ -132,6 +132,7 @@ const theme = unstable_createMuiStrictModeTheme({
 		overline: {
 			fontFamily: 'system-ui',
 			lineHeight: 1.5,
+			whiteSpace: 'break-spaces'
 		},
 		caption: {
 			fontFamily: 'system-ui',

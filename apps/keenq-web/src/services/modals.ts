@@ -53,6 +53,7 @@ export interface UseModalOptions {
 
 export const modalsStore = signal<ModalsState>(modals)
 let params = {} as any
+
 export function useModal<N extends ModalKeys>(name: N, options?: UseModalOptions) {
 	const isOpen = computed(() => modalsStore()[name]())
 	const open = useCallback((dto: ModalParams<N> = {} as any) => {

@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'preact/hooks'
+import { useMemo } from 'preact/hooks'
 import styled from '@emotion/styled'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
@@ -45,11 +45,11 @@ const MemberItemContainer = styled(Row)`
 `
 
 function MemberItem(member: IMember) {
-	const [ r, setR ] = useState(false)
 	const { id: mid, name } = member
 	const avatar = getAvatar(member)
 	const { id: cid } = useCurrentMember()
 	const { on } = useModal('addPartner')
+	const navigate = useNavigate()
 	const [ result ] = useQuery(privateroomgql, { cid, mid })
 	const { id: rid } = optional(result.data?.rooms_members[0].room)
 	const [ , insert ] = useInsert(insertmessagegql)
@@ -63,10 +63,8 @@ function MemberItem(member: IMember) {
 			content: [{ type: 'partnerRequest', value: { from: cid, to: mid } }]
 		}
 		await insert(systemMessage)
-		setR(true)
+		navigate(`/room/${rid}`)
 	}
-
-	if (r) return <Navigate to={`/room/${rid}`} />
 
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={on(partnerClick)}>

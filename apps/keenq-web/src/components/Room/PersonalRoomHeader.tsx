@@ -11,13 +11,14 @@ import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 
 import { useModal } from '@/services/modals'
 
+import { getAvatar, useCurrentMember } from '@/model/member'
+import { useCurrentRoom } from '@/model/room/hooks'
+import { othermemberinprivategql } from '@/model/rooms_members'
+
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
 import { useQuery } from '@/hooks/gql'
-import { getAvatar, useCurrentMember } from '@/model/member'
-import { useCurrentRoom } from '@/model/room/hooks'
-import { othermemberinprivategql } from '@/model/rooms_members'
 
 
 const RoomInfoContainer = styled(Row)`
@@ -52,7 +53,7 @@ function PersonalRoomHeader() {
 						<Typography variant='h6'>{name}</Typography>
 						{verified && <VerifiedTwoToneIcon color='primary' fontSize='small' />}
 					</Row>
-					<Typography variant='body2'>{'Status'}</Typography>
+					{/*<Typography variant='body2'>{'Status'}</Typography>*/}
 				</div>
 			</Row>
 			<Space grow />

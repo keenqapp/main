@@ -1,4 +1,4 @@
-import { cloneElement, VNode } from 'preact'
+import { VNode } from 'preact'
 import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
 
@@ -77,9 +77,8 @@ function List<T extends Entity>({ data, render, scrollRef, empty, className, ...
 				<Fade position='start' />
 				<Scroll ref={scrollRef} height={height} className={className}>
 					{(data || []).map((item, index) => {
-						const component = render(item, index)
-						if (!component) return null
-						return cloneElement(component, { key: item.id })
+						const Component = render
+						return <Component key={item.id} index={index} {...item} />
 					})}
 				</Scroll>
 				<Fade position='end' />

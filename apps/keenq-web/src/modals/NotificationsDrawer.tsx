@@ -2,6 +2,7 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 
 import { useModal } from '@/services/modals'
+import { request } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
@@ -14,9 +15,7 @@ function NotificationsDrawer() {
 	const { t } = useTranslate()
 	const { name } = useModal('notifications')
 
-	const request = () => {
-
-	}
+	const onRequest = () => request()
 
 	return (
 		<Drawer data-testid='NotificationsDrawer' name={name}>
@@ -24,7 +23,7 @@ function NotificationsDrawer() {
 				<Card>
 					<Typography variant='overline' align='center'>{t`notify.has`}</Typography>
 					<Space />
-					<Button variant='outlined' onClick={request}>{t`app.doit`}</Button>
+					<Button variant='outlined' onClick={onRequest}>{t`app.doit`}</Button>
 				</Card>
 			</Container>
 		</Drawer>

@@ -126,10 +126,8 @@ function Match() {
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
 		if (data?.matched.data.result) {
 			$unread.set(true)
-			// notify()
+			notify()
 		}
-
-		notify()
 		redirect()
 	}
 

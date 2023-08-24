@@ -1,3 +1,5 @@
+import { modalsStore } from '@/services/modals'
+
 
 export async function request() {
 	await Notification.requestPermission()
@@ -8,5 +10,5 @@ export function check() {
 }
 
 export function notify() {
-	if (!check()) request()
+	if (check() !== 'granted') modalsStore()['notifications'](true)
 }
