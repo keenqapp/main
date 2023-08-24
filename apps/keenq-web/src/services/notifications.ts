@@ -10,5 +10,6 @@ export function check() {
 }
 
 export function notify() {
+	console.log('--- notifications.ts:13 -> notify ->', check() !== 'granted')
 	if (check() !== 'granted') modalsStore()['notifications'](true)
 }

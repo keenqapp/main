@@ -124,6 +124,7 @@ function Match() {
 		await match()
 
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
+		console.log('--- Match.tsx:127 -> onYesClick ->', data)
 		if (data?.matched.data.result) {
 			$unread.set(true)
 			notify()
