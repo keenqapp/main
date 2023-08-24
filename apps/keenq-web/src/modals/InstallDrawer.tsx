@@ -36,7 +36,7 @@ function InstallDrawer() {
 				<Card>
 					<Typography variant='overline' align='center'>{t`install.you`}<br /><b>Keenq</b><br />{t`install.homescreen`}</Typography>
 					<Space />
-					<Button variant='outlined' onClick={install}>{t`install.do`}</Button>
+					<Button variant='outlined' onClick={install}>{t`app.doit`}</Button>
 				</Card>
 			</Container>
 		</Drawer>

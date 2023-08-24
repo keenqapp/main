@@ -10,15 +10,16 @@ import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
-import { getAvatar, membergql, useCurrentMember } from '@/model/member'
+import { getAvatar, IMemberPartner, membergql, updatepartnergql, useCurrentMember } from '@/model/member'
 import { deletemessagegql, IPartnerRequest } from '@/model/message'
 
 import Column from '@/ui/Column'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
 
-import { useMutation, useQuery } from '@/hooks/gql'
+import { useMutation, useQuery, useUpdate } from '@/hooks/gql'
 import { optional } from '@/utils/utils'
 
 
@@ -41,19 +42,41 @@ const context = {
 }
 
 function PartnerRequest({ id, to, from }: IPartnerRequest['value'] & { id: string }) {
+
+	const { t } = useTranslate()
+
 	const [ result ] = useQuery(membergql, { id: to }, { context })
 	const { id: mid } = useCurrentMember()
 	const isSelf = mid === from
 	const member = optional(result.data?.members_by_pk)
 	const { name } = member
 	const avatar = getAvatar(member)
+
 	const { onOpen } = useModal('partnerRequest')
 	const [ , remove ] = useMutation(deletemessagegql)
+	const [ , link ] = useUpdate(updatepartnergql)
 
-	const requestClick = () => onOpen()
+	const requestClick = () => onOpen({ id: to })
 
-	const onYesClick = () => {}
-	const onNoClick = () => {}
+	const onYesClick = async () => {
+		const linkedTo = {
+			type: 'partner',
+			value: { id: to },
+		} as IMemberPartner
+		const linkedFrom = {
+			type: 'partner',
+			value: { id: from },
+		} as IMemberPartner
+		try {
+			await link(from, { linked: linkedTo })
+			await link(to, { linked: linkedFrom })
+			remove({ id })
+		}
+		catch (e) {
+			console.log('--- PartnerRequest.tsx:76 -> onYesClick ->', e)
+		}
+	}
+	const onNoClick = () => remove({ id })
 
 	const onCancelClick = () => remove({ id })
 
@@ -71,19 +94,19 @@ function PartnerRequest({ id, to, from }: IPartnerRequest['value'] & { id: strin
 					</Row>
 					<Typography variant='overline'>
 						{isSelf
-							? 'want to add a partner'
-							: 'wants to add you as a partner'}
+							? t`partner.want`
+							: t`partner.wants`}
 					</Typography>
 				</Content>
 				{isSelf
 					? (
 						<Buttons justify='end'>
-							<Button startIcon={<HighlightOffTwoToneIcon color='secondary' />} color='secondary' onClick={onCancelClick}>Cancel</Button>
+							<Button startIcon={<HighlightOffTwoToneIcon color='secondary' />} color='secondary' onClick={onCancelClick}>{t`words.cancel`}</Button>
 						</Buttons>
 					): (
 						<Buttons>
-							<Button startIcon={<HighlightOffTwoToneIcon color='secondary' />} color='secondary' onClick={onNoClick}>No</Button>
-							<Button startIcon={<DoneOutlineTwoToneIcon color='primary' />} onClick={onYesClick}>Yes</Button>
+							<Button startIcon={<HighlightOffTwoToneIcon color='secondary' />} color='secondary' onClick={onNoClick}>{t`words.no`}</Button>
+							<Button startIcon={<DoneOutlineTwoToneIcon color='primary' />} onClick={onYesClick}>{t`words.yes`}</Button>
 						</Buttons>
 					)}
 			</Column>

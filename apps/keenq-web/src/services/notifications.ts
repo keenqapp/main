@@ -1,4 +1,12 @@
-export async function useNotifications() {
-	const result = await Notification.requestPermission()
-	console.log('--- notifications.ts:3 -> useNotifications ->', result)
+
+export async function request() {
+	await Notification.requestPermission()
+}
+
+export function check() {
+	return Notification.permission
+}
+
+export function notify() {
+	if (!check()) request()
 }

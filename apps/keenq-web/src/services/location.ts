@@ -8,6 +8,8 @@ import { useCurrentMember } from '@/model/member/hooks'
 
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
+import { persistentAtom } from '@nanostores/persistent'
+import { boolAtom } from '@/utils/utils'
 
 
 interface LocalityInfo {
@@ -51,6 +53,7 @@ const $permission= atom<PermissionState|null>(null)
 const $status = atom<'pending'|'success'|'error'>('pending')
 const $position = atom<Position|null>(null)
 const $coords = atom<GeolocationPosition|null>(null)
+export const $shouldRequest = persistentAtom('$position:shouldRequest', false, boolAtom)
 
 function coordsToString(position: GeolocationPosition) {
 	if (!position) return ''
@@ -127,14 +130,15 @@ export function usePosition() {
 	const permission = useStore($permission)
 	const status = useStore($status)
 	const position = useStore($position)
+	const shouldRequest = useStore($shouldRequest)
 
 	useEffect(() => {
-		if (!permission) requestPermission()
-	}, [ permission ])
+		if (!permission && shouldRequest) requestPermission()
+	}, [ permission, shouldRequest ])
 
 	useAsyncEffect(async () => {
-		await getPosition()
-	}, [])
+		if (permission === 'granted') await getPosition()
+	}, [ permission ])
 
 	const getPointAndLocation = () => {
 		if (!position) return {}

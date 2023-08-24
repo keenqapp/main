@@ -31,6 +31,7 @@ import { $unread } from '@/core/BottomTabs'
 import { useInsert, useQuery } from '@/hooks/gql'
 import { useFormatDistance } from '@/hooks/useFormatDistance'
 import { useMember } from '@/hooks/useMember'
+import { notify } from '@/services/notifications'
 
 
 const Content = styled(Row)`
@@ -121,8 +122,14 @@ function Match() {
 		if (!done) return onAcquaintanceOpen()
 		await update({ authorId: id, memberId: mid, data: { type: 'yes' } })
 		await match()
+
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
-		if (data?.matched.data.result) $unread.set(true)
+		if (data?.matched.data.result) {
+			$unread.set(true)
+			// notify()
+		}
+
+		notify()
 		redirect()
 	}
 

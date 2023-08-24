@@ -29,7 +29,8 @@ const modals = {
 	permissionInstruction: false,
 	rooms: false,
 	createRoom: false,
-	install: false
+	install: false,
+	notifications: false
 }
 
 export type ModalsState = typeof modals
@@ -42,6 +43,7 @@ export interface ModalParamsMap {
 	report: { id: string, entity: string }
 	addMemberToRoom: { id?: string, to: string }
 	roomInfo: IRoom
+	partnerRequest: { id: string }
 }
 
 export interface UseModalOptions {

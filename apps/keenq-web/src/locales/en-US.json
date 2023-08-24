@@ -1,13 +1,13 @@
 {
   "acquaintance": {
-    "before": "Before start matching you should fill your profile",
-    "doIt": "Do it"
+    "before": "Before start matching you should fill your profile"
   },
   "addMember": {
     "find": "Find who you want",
     "yeap": "Yeap"
   },
   "app": {
+    "doit": "Do it",
     "okay": "Okay"
   },
   "confirm": {
@@ -31,7 +31,6 @@
     "sexuality": "Sexuality"
   },
   "install": {
-    "do": "Do it",
     "homescreen": " app to your homescreen",
     "you": "You can add"
   },
@@ -55,6 +54,9 @@
   "messages": {
     "reply": "Reply",
     "today": "Today"
+  },
+  "notify": {
+    "has": "Your have a Match! Allow notificatuons not to miss a new one"
   },
   "profile": {
     "addPhoto": "Add photo",
@@ -125,6 +127,13 @@
   },
   "words": {
     "delete": "Delete",
-    "edit": "Edit"
+    "edit": "Edit",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "partner": {
+    "want": "want to add a partner",
+    "wants": "wants to add you as a partner"
   }
 }

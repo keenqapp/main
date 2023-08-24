@@ -20,7 +20,7 @@ function AcquaintanceDrawer() {
 	const navigate = useNavigate()
 	const { name, on } = useModal('acquaintance')
 
-	const doItClick = () => navigate('/profile')
+	const doIt = () => navigate('/profile')
 
 	return (
 		<Drawer data-testid='AcquaintanceDrawer' name={name}>
@@ -30,7 +30,7 @@ function AcquaintanceDrawer() {
 						<Typography variant='overline' textAlign='center'>{t`before`}</Typography>
 					</Card>
 					<Space />
-					<Button startIcon={<BadgeTwoToneIcon />} onClick={on(doItClick)}>{t`doIt`}</Button>
+					<Button startIcon={<BadgeTwoToneIcon />} onClick={on(doIt)}>{t`app.doit`}</Button>
 				</Column>
 			</Container>
 		</Drawer>

@@ -43,6 +43,9 @@ const manifest = {
 }
 
 export default defineConfig(({ mode }) => ({
+	server: {
+		port: 9001
+	},
 	plugins: [
 		VitePWA({
 			registerType: 'autoUpdate',

@@ -66,3 +66,11 @@ export const contactsgql = gql`
 		}
 	}
 `
+
+export const updatepartnergql = gql`
+	mutation UpdatePartner($id: String!, $data: members_append_input!) {
+		update_members_by_pk(pk_columns: { id: $id }, _append: $data) {
+			id
+		}
+	}
+`

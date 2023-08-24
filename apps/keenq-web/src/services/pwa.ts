@@ -10,4 +10,4 @@ export function setPWA(e: any) {
 	$pwa.set(e)
 }
 
-export const $shouldShow = persistentAtom('shouldShow-pwa-install', true, boolAtom)
+export const $shouldShow = persistentAtom('shouldShow-pwa-install', false, boolAtom)

@@ -18,7 +18,9 @@ import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
 import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone'
 import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
 
+import { $shouldRequest } from '@/services/location'
 import { useModal } from '@/services/modals'
+import { $shouldShow } from '@/services/pwa'
 import { deleteImage, uploadImage } from '@/services/spaces'
 import { useTranslate } from '@/services/translate'
 
@@ -162,7 +164,7 @@ function Profile() {
 	const { open: onTagsOpen } = useModal('tags')
 	const { open: onSettingsClick } = useModal('settings')
 	const { open: onGenderClick } = useModal('gender')
-	const { open: onAddPartnerClick } = useModal('addPartner')
+	const { open: openAddPartner } = useModal('addPartner')
 
 	const [ , update ] = useDebounceMutation(updatemembergql)
 
@@ -198,10 +200,13 @@ function Profile() {
 
 	const onPartnerClick = () => {
 		if (partner) return console.log('--- Profile.tsx:118 -> onPartnerClick ->', 'unlink')
-		else onAddPartnerClick()
+		else openAddPartner()
 	}
 
-	const onLocationClick = () => onLocationOpen()
+	const onLocationClick = () => {
+		$shouldRequest.set(true)
+		onLocationOpen()
+	}
 
 	const onDescClick = () => descriptionInput.inputRef.current?.focus()
 
@@ -215,7 +220,10 @@ function Profile() {
 		&& !!tags && tags.length > 0
 
 	useEffect(() => {
-		if (isDone && !done) update(id, { done: true })
+		if (isDone && !done) {
+			$shouldShow.set(true)
+			update(id, { done: true })
+		}
 	}, [ isDone, done ])
 
 	return (

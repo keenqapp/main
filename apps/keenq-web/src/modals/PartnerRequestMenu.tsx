@@ -11,16 +11,20 @@ import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 function PartnerRequestMenu() {
 	const navigate = useNavigate()
 	const { onOpen } = useModal('report')
-	const { name, on, params } = useModal('partnerRequest')
+	const { name, on, params, close } = useModal('partnerRequest')
 	const { id } = params
 
-	const reportClick = () => onOpen({ entity: 'partnerRequest', id })
+	const reportClick = () => {
+		close()
+		onOpen({ entity: 'partnerRequest', id })
+	}
+
 	const profileClick = () => navigate(`/match/${id}`)
 
 	return (
 		<Drawer data-testid='PartnerRequestMenu' name={name}>
 			<DrawerList>
-				<DrawerItem icon={<ReportTwoToneIcon color='error' />} text='Report' onClick={on(reportClick)} />
+				<DrawerItem icon={<ReportTwoToneIcon color='error' />} text='Report' onClick={reportClick} />
 				<DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Profile' onClick={on(profileClick)} />
 			</DrawerList>
 		</Drawer>
