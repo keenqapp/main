@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography'
 import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
 
 import { authError, useSend, useVerify } from '@/services/auth'
+import { useTranslate } from '@/services/translate'
 
 import Container from '@/ui/Container'
 import Space from '@/ui/Space'
@@ -36,6 +37,7 @@ function f(s: any, prev: any) {
 }
 
 function LoginForm() {
+	const { t } = useTranslate()
 
 	const [ codeSent, setCodeSent ] = useState(false)
 	const loading = useSignal(false)
@@ -54,10 +56,10 @@ function LoginForm() {
 	}, [])
 
 	const phoneInput = useInput({
-		label: 'Phone',
+		label: t`auth.phone`,
 		fullWidth: true,
 		variant: 'outlined',
-		placeholder: 'Your phone number',
+		placeholder: t`auth.number`,
 		type: 'tel',
 		format: f,
 		validation: [isNotEmpty, isValidPhone],
@@ -76,11 +78,11 @@ function LoginForm() {
 	}
 
 	const codeInput = useInput({
-		label: 'Code',
+		label: t`auth.code`,
 		fullWidth: true,
 		variant: 'outlined',
 		type: 'number',
-		placeholder: 'Code that was sent to your phone',
+		placeholder: t`auth.wasSent`,
 		validation: [isNotEmpty],
 		error: authError.value,
 		onChange: handleChange,
@@ -114,7 +116,7 @@ function LoginForm() {
 	return (
 		<Container data-testid='LoginForm' flex={1} horizontal={3}>
 			<StyledStack justifyContent='center' alignItems='stretch' height={height}>
-				<Typography variant='h4' align='center'>Keenq</Typography>
+				<Typography variant='h4' align='center'>{t`app.keenq`}</Typography>
 				<Space height={2} />
 				<Card>
 					<StyledCardContent>
@@ -129,7 +131,7 @@ function LoginForm() {
 											onClick={onCodeSent}
 											loading={loading.value}
 											variant='outlined'
-										>Send code</LoadingButton>
+										>{t`auth.send`}</LoadingButton>
 									</Stack>
 								</>
 							)
@@ -143,13 +145,13 @@ function LoginForm() {
 											loading={loading.value}
 											variant='outlined'
 											fullWidth
-										>Verify code</LoadingButton>
+										>{t`auth.verify`}</LoadingButton>
 										<Button
 											color='secondary'
 											onClick={onRetry}
 											startIcon={<ChevronLeftTwoToneIcon />}
 											size='small'
-										>Use another phone number?</Button>
+										>{t`auth.another`}</Button>
 									</Stack>
 								</>
 							)}

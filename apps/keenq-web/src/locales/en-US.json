@@ -7,8 +7,18 @@
     "yeap": "Yeap"
   },
   "app": {
+    "keenq": "keenq",
     "doit": "Do it",
     "okay": "Okay"
+  },
+  "auth": {
+    "phone": "Phone",
+    "number": "Your phone number",
+    "code": "Code",
+    "wasSent": "Code that was sent to your phone",
+    "send": "Send code",
+    "verify": "Verify code",
+    "another": "Use another phone number?"
   },
   "confirm": {
     "no": "No",
