@@ -138,7 +138,7 @@ function Match() {
 	}
 
 	if (pid === id) return <Navigate to='/match' />
-	if (empty) return <EmptyMatch />
+	if (empty && !getId) return <EmptyMatch />
 
 	return (
 		<Container data-testid='Match'>

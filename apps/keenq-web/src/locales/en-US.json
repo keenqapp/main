@@ -101,7 +101,8 @@
     "leaveText": "Are you sure you want to leave this room?",
     "leaveTitle": "Leave room",
     "room": "Room",
-    "share": "Share"
+    "share": "Share",
+    "verification": "Request verification"
   },
   "rooms": {
     "channel": "Channel",

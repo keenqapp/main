@@ -26,6 +26,7 @@ function RoomsMenu() {
 				<DrawerItem
 					icon={<FolderCopyTwoToneIcon color='primary' />}
 					text={t`toggle`}
+					onClick={tabs}
 					action={<Switch onChange={tabs} checked={showTabs || false} />}
 				/>
 			</DrawerList>

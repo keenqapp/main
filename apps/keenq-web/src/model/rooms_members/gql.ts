@@ -41,6 +41,7 @@ export const othermemberinprivategql = gql`
 	query OtherMember($rid: String!, $mid: String!) {
 		rooms_members(where: { _and: { roomId: { _eq: $rid }, memberId: {_neq: $mid } } }) {
 			member {
+				id
 				name
 				images
 			}

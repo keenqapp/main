@@ -34,14 +34,14 @@ function PersonalRoomHeader() {
 
 	const [ mresult ] = useQuery(othermemberinprivategql, { rid, mid })
 	const member = mresult.data?.rooms_members[0].member || {}
-	const { name } = member
+	const { id, name } = member
 	const avatar = getAvatar(member)
 
 	const navigate = useNavigate()
 	const onBack = () => navigate(-1)
 
 	const onMenuClick = () => onOpen()
-	const onNameClick = () => navigate(`/match/${mid}`)
+	const onNameClick = () => navigate(`/match/${id}`)
 
 	return (
 		<RoomInfoContainer gap={0.5} data-testid='PersonalRoomHeader'>
