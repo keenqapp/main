@@ -12,6 +12,7 @@ const config = {
 	client: 'pg',
 	connection: {
 		connectionString: process.env.DB_CONNECTION_STRING,
+		application_name: 'keenq-functions_auth_verify',
 		ssl: { rejectUnauthorized: false }
 	},
 	pool: { min: 0, max: 2 }

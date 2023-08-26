@@ -11,6 +11,7 @@ const dbConfig = {
 	client: 'pg',
 	connection: {
 		connectionString: process.env.DB_CONNECTION_STRING,
+		application_name: 'keenq-functions_match_match',
 		ssl: { rejectUnauthorized: false },
 	},
 	pool: { min: 0, max: 2 }
