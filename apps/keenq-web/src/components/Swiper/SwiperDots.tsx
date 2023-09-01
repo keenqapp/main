@@ -9,7 +9,26 @@ const SwiperDotsContainer = styled(Row)`
 	bottom: 0;
 	top: 0;
 	right: 0.5rem;
-	gap: 1rem
+`
+
+const Background = styled(Row)`
+  gap: 1rem;
+	position: relative;
+	padding: 0.4rem 0.1rem;
+	border-radius: 8px;
+	overflow: hidden;
+`
+
+const Blur = styled.div`
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	right: -1px;
+	bottom: -1px;
+	filter: blur(2px);
+  background: rgba(0, 0, 0, 0.5);
+	z-index: 1;
+  //background: rgba(255, 255, 255, 0.5);
 `
 
 const active = css`
@@ -20,7 +39,7 @@ const active = css`
 `
 
 const not = css`
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.7);
   width: 0.5rem;
   height: 0.5rem;
 `
@@ -28,6 +47,8 @@ const not = css`
 const Dot = styled.div<{ active: boolean }>`
 	border-radius: 1rem;
 	transition: all 200ms ease-in-out;
+  position: relative;
+	z-index: 2;
 	${p => p.active ? active : not}
 `
 
@@ -39,7 +60,10 @@ interface SwiperDotsProps {
 function SwiperDots({ length, current }: SwiperDotsProps) {
 	return (
 		<SwiperDotsContainer data-testid='SwiperDots' direction='column' justify='center'>
-			{Array.create(length).map(index => <Dot key={index} active={current === index} />)}
+			<Background direction='column'>
+				<Blur />
+				{Array.create(length).map(index => <Dot key={index} active={current === index} />)}
+			</Background>
 		</SwiperDotsContainer>
 	)
 }

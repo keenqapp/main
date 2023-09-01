@@ -11,6 +11,7 @@ import ProfilePage from '@/pages/ProfilePage'
 import RoomInfoPage from '@/pages/RoomInfoPage'
 import RoomPage from '@/pages/RoomPage'
 import RoomsPage from '@/pages/RoomsPage'
+import TestPage from '@/pages/TestPage'
 
 
 const routes = createBrowserRouter([
@@ -54,6 +55,10 @@ const routes = createBrowserRouter([
 			{
 				path: '/profile',
 				element: <ProfilePage />,
+			},
+			{
+				path: '/test',
+				element: <TestPage />,
 			}
 		]
 	},
