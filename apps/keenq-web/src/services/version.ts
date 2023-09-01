@@ -1,7 +1,7 @@
 import { useCurrentMember } from '@/model/member'
 
 
- const testersIds = [ 'boris', 'illusha', import.meta.env.VITE_TEST_ID || '' ]
+const testersIds = [ 'boris', 'illusha', 'dEIhTak0', import.meta.env.VITE_TEST_ID || '' ]
 
 export function useVersion() {
 	const { id } = useCurrentMember()

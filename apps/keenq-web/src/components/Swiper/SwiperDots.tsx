@@ -28,7 +28,6 @@ const Blur = styled.div`
 	filter: blur(2px);
   background: rgba(0, 0, 0, 0.5);
 	z-index: 1;
-  //background: rgba(255, 255, 255, 0.5);
 `
 
 const active = css`
