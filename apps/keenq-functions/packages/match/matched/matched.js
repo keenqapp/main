@@ -93,7 +93,7 @@ async function hi(room, db, trx) {
 			roomId: room.id,
 			type: 'system',
 			authorId: 'keenq',
-			content: JSON.stringify([{ type: 'text', value: { text: 'match.newMatched' } }])
+			content: JSON.stringify([{ type: 'text', value: { text: 'match.youHave' } }])
 		})
 
 	await db

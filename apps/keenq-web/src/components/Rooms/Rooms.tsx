@@ -40,7 +40,7 @@ function Rooms() {
 	const tab = useStore($tab)
 
 	useEffect(() => {
-		load()
+		setTimeout(() => load(), 100)
 	}, [])
 
 	const data = useMemo(() => {
