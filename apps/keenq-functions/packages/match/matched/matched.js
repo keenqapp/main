@@ -53,7 +53,7 @@ async function check(authorId, memberId, type, db, trx) {
 	return [first, second]
 }
 
-async function createRoom(db, trx) {
+async function getRoom(authorId, memberId, db, trx) {
 	try {
 		const id = getId()
 		const name = generate({ exactly: 3, join: '-' })
@@ -93,7 +93,16 @@ async function hi(room, db, trx) {
 			roomId: room.id,
 			type: 'system',
 			authorId: 'keenq',
-			content: JSON.stringify([{ type: 'greeting', value: { text: 'Hi!' } }])
+			content: JSON.stringify([{ type: 'text', value: { text: 'match.newMatched' } }])
+		})
+	await db
+		.table('messages')
+		.transacting(trx)
+		.insert({
+			roomId: room.id,
+			type: 'system',
+			authorId: 'keenq',
+			content: JSON.stringify([{ type: 'greeting', value: { text: 'match.hi' } }])
 		})
 }
 
@@ -109,7 +118,7 @@ export async function main(body) {
 
 		const result = await transaction(db, async trx => {
 			await check(authorId, memberId, type, db, trx)
-			const room = await createRoom(db, trx)
+			const room = await getRoom(authorId, memberId, db, trx)
 			await add(authorId, memberId, room, db, trx)
 			await hi(room, db, trx)
 			return true

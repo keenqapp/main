@@ -12,7 +12,7 @@ import Space from '@/ui/Space'
 
 
 function ConfirmDialog() {
-	const { t } = useTranslate('confirm')
+	const { t } = useTranslate()
 	const confirm = useConfirm()
 	const onConfirm = () => {
 		confirm.options().onConfirm()
@@ -29,9 +29,9 @@ function ConfirmDialog() {
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
-				<Button color='error' onClick={onConfirm}>{t`yes`}</Button>
+				<Button color='error' onClick={onConfirm}>{t`words.yes`}</Button>
 				<Space grow />
-				<Button color='primary' onClick={confirm.close}>{t`no`}</Button>
+				<Button color='primary' onClick={confirm.close}>{t`words.no`}</Button>
 			</DialogActions>
 		</Dialog>
 	)

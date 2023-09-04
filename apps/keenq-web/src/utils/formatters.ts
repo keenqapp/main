@@ -27,8 +27,8 @@ function random(min: number, max: number) {
 }
 
 // TODO move to reduce
-export function formatDistance(distance?: number) {
-	if (!distance) return 'Some distance'
+export function formatDistance(distance?: number, t?: any) {
+	if (distance === undefined || distance === null) return t?.('match.someDistance')
 	const km = Math.floor(distance / 1000)
 	if (km < 10) return random(1, 10) + ' km'
 	if (km < 20) return random(10, 20) + ' km'

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { getGreeting, getJoined, getPartnerRequest, getText, IMessage } from '@/model/message'
+import { getGreeting, getJoined, getPartnerRequest, getSystemText, IMessage } from '@/model/message'
 
 import Column from '@/ui/Column'
 
@@ -18,13 +18,13 @@ const SystemMessageContainer = styled(Column)`
 
 function SystemMessage(message: IMessage) {
 	const request = getPartnerRequest(message)
-	const text = getText(message)
+	const text = getSystemText(message)
 	const greeting = getGreeting(message)
 	const joined = getJoined(message)
 	return (
 		<SystemMessageContainer data-testid='SystemMessage' aling='center'>
 			{request && <PartnerRequest id={message.id} {...request} />}
-			{text && <SystemTextMessage text={text} />}
+			{text && <SystemTextMessage value={text} />}
 			{joined && <SystemJoinedMessage joined={joined} />}
 			{greeting && <SystemGreeting message={message} />}
 		</SystemMessageContainer>

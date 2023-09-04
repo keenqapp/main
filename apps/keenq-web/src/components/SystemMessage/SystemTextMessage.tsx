@@ -2,6 +2,10 @@ import styled from '@emotion/styled'
 
 import Typography from '@mui/material/Typography'
 
+import { useTranslate } from '@/services/translate'
+
+import { IMessageText } from '@/model/message'
+
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
@@ -14,11 +18,12 @@ const SystemTextMessageContainer = styled.div`
 	padding: 0.2rem 1rem;
 `
 
-function SystemTextMessage({ text }: { text: string }) {
+function SystemTextMessage({ value }: IMessageText) {
+	const { t } = useTranslate()
 	return (
 		<>
 			<SystemTextMessageContainer data-testid='SystemTextMessage'>
-				<Typography variant='overline'>{text}</Typography>
+				<Typography variant='overline'>{t(value.text)}</Typography>
 			</SystemTextMessageContainer>
 			<Space height={0.2}  />
 		</>

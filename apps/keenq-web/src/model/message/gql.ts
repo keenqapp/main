@@ -69,11 +69,3 @@ export const updatereactiongql = gql`
 		}
 	}
 `
-
-export const replacereactiongql = gql`
-	mutation AddReaction($id: bigint!, $data: messages_append_input!) {
-		update_messages_by_pk(pk_columns: { id: $id }, _append: $data) {
-			id
-		}
-	}
-`

@@ -15,9 +15,11 @@ import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 
 import { useMutation } from '@/hooks/gql'
 import { useIsAdmin, useIsOwner } from '@/hooks/useIsAdmin'
+import { useTranslate } from '@/services/translate'
 
 
 function RoomInfoMemberMenu() {
+	const { t } = useTranslate()
 	const { id: cid } = useCurrentMember()
 	const { id: rid, isOwner, isAdmin } = useCurrentRoom()
 
@@ -72,15 +74,15 @@ function RoomInfoMemberMenu() {
 		<Drawer data-testid='RoomInfoMemberMenu' name={name}>
 			<DrawerList>
 				{canRemove() && (
-					<DrawerItem icon={<DeleteTwoToneIcon color='error' />} text='Ban' onClick={on(ban)} />
+					<DrawerItem icon={<DeleteTwoToneIcon color='error' />} text={t`room.ban`} onClick={on(ban)} />
 				)}
 				{canPromote() && (
-					<DrawerItem icon={<LocalPoliceTwoToneIcon color='primary' />} text={`Make ${memberIsAdmin ? 'Owner' : 'Admin'}`} onClick={on(promote)} />
+					<DrawerItem icon={<LocalPoliceTwoToneIcon color='primary' />} text={memberIsAdmin ? t`room.makeOwner` : t`room.makeAdmin`} onClick={on(promote)} />
 				)}
 				{canDowngrade() && (
-					<DrawerItem icon={<GppBadTwoToneIcon color='secondary' />} text='Downgrade' onClick={on(downgrade)} />
+					<DrawerItem icon={<GppBadTwoToneIcon color='secondary' />} text={t`room.downgrade`} onClick={on(downgrade)} />
 				)}
-				<DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text='Profile' onClick={on(profileClick)} />
+				<DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text={t`profile.profile`} onClick={on(profileClick)} />
 			</DrawerList>
 		</Drawer>
 	)

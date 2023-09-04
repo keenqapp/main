@@ -29,7 +29,7 @@ function interpolate(template: string, values: Record<string, string>) {
 	})
 }
 
-function translate({ namespace, key, locale, values }: { key: TemplateStringsArray | string, namespace?: string, locale: string, values?: string[] | Record<string, string>[]  }) {
+export function translate({ namespace, key, locale, values }: { key: TemplateStringsArray | string, namespace?: string, locale: string, values?: string[] | Record<string, string>[]  }) {
 	if (values && Array.isArray(key)) {
 		const result = (key as TemplateStringsArray).reduce((result, string, index) => result + string + (values[index] || ''), '')
 		const path = _path(result, namespace)

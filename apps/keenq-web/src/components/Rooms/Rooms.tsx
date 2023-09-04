@@ -1,4 +1,4 @@
-import { useMemo } from 'preact/hooks'
+import { useEffect, useMemo } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { useStore } from '@nanostores/preact'
 
@@ -21,8 +21,9 @@ const RoomsList = styled(List)`
 `
 
 const context = {
-	additionalTypenames: ['rooms']
-}
+	additionalTypenames: ['rooms'],
+	requestPolicy: 'cache-and-network',
+} as const
 
 function RoomsItems(room: IRoom) {
 	if (equals(room.type, 'personal')) return <PrivateRoomsItem {...room} />
@@ -34,9 +35,13 @@ function addKeenq(rooms: IRoom[]) {
 }
 
 function Rooms() {
-	const [ result ] = useQuery(roomsgql, null, { context })
+	const [ result, load ] = useQuery(roomsgql, null, context)
 	const showTabs = useStore($showTabs)
 	const tab = useStore($tab)
+
+	useEffect(() => {
+		load()
+	}, [])
 
 	const data = useMemo(() => {
 		const rooms = result.data?.rooms || []

@@ -37,6 +37,11 @@ export function getText(message?: IMessage) {
 	return message.content.find((c): c is IMessageText => c.type === 'text')?.value.text
 }
 
+export function getSystemText(message?: IMessage) {
+	if (!message) return ''
+	return message.content.find((c): c is IMessageText => c.type === 'text')?.value
+}
+
 export function getJoined(message?: IMessage) {
 	if (!message) return ''
 	return message.content.find((c): c is IJoined => c.type === 'joined')?.value.memberId
@@ -61,4 +66,13 @@ export function getImages(message?: IMessage) {
 
 export function getPartnerRequest(message?: IMessage) {
 	return message?.content.find((c): c is IPartnerRequest => c.type === 'partnerRequest')?.value
+}
+
+export function createPartnerRequestMessage(roomId: string, authorId: string, memberId: string, result = 'pending') {
+	return {
+		roomId,
+		type: 'system',
+		authorId,
+		content: [{ type: 'partnerRequest', value: { from: authorId, to: memberId, result } }]
+	}
 }

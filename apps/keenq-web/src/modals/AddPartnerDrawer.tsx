@@ -16,7 +16,7 @@ import { useTranslate } from '@/services/translate'
 import { IMatch } from '@/model/match'
 import { contactsgql, getAvatar, useCurrentMember } from '@/model/member'
 import { IMember } from '@/model/member'
-import { insertmessagegql } from '@/model/message'
+import { createPartnerRequestMessage, insertmessagegql } from '@/model/message'
 import { privateroomgql } from '@/model/rooms_members'
 
 import Container from '@/ui/Container'
@@ -56,13 +56,8 @@ function MemberItem(member: IMember) {
 
 	const partnerClick = async () => {
 		if (!rid) return
-		const systemMessage = {
-			roomId: rid,
-			type: 'system',
-			authorId: cid,
-			content: [{ type: 'partnerRequest', value: { from: cid, to: mid } }]
-		}
-		await insert(systemMessage)
+		const msg = createPartnerRequestMessage(rid, cid, mid)
+		await insert(msg)
 		navigate(`/room/${rid}`)
 	}
 

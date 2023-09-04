@@ -24,7 +24,7 @@ import { $shouldShow } from '@/services/pwa'
 import { deleteImage, uploadImage } from '@/services/spaces'
 import { useTranslate } from '@/services/translate'
 
-import { IMemberPartner, updatemembergql } from '@/model/member'
+import { IMemberPartner, membergql, updatemembergql } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Column from '@/ui/Column'
@@ -36,7 +36,7 @@ import Upload from '@/ui/Upload'
 import ProfileProgress from '@/components/Profile/ProfileProgress'
 import Swiper from '@/components/Swiper'
 
-import { useUpdate } from '@/hooks/gql'
+import { useQuery, useUpdate } from '@/hooks/gql'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
 
@@ -158,7 +158,9 @@ function Profile() {
 		document.body.scrollTo({ top: 0, behavior: 'smooth' })
 	}, [])
 
-	const partner = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value
+	const pid = linked?.find((l): l is IMemberPartner => l.type === 'partner')?.value.id
+	const [ result ] = useQuery(membergql, { id: pid })
+	const partner = result.data?.members_by_pk
 
 	const { open: onLocationOpen } = useModal('location')
 	const { open: onTagsOpen } = useModal('tags')
@@ -167,6 +169,7 @@ function Profile() {
 	const { open: openAddPartner } = useModal('addPartner')
 
 	const [ , update ] = useDebounceMutation(updatemembergql)
+	const [ , unlink ] = useUpdate(updatemembergql)
 
 	const nameInput = useInput({
 		value: name,
@@ -198,8 +201,11 @@ function Profile() {
 
 	const onNameClick = () => nameInput.inputRef.current?.focus()
 
-	const onPartnerClick = () => {
-		if (partner) return console.log('--- Profile.tsx:118 -> onPartnerClick ->', 'unlink')
+	const onPartnerClick = async () => {
+		if (partner) {
+			await unlink(id, { linked: linked?.filter(mp => mp.type === 'partner' && mp.value.id !== partner.id) })
+			await unlink(partner.id, { linked: linked?.filter(m => m.type === 'partner' && m.value.id !== id) })
+		}
 		else openAddPartner()
 	}
 

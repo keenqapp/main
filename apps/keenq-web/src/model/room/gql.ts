@@ -6,7 +6,7 @@ import { IRoomMember } from '@/model/rooms_members'
 
 export const roomsgql = gql<{ rooms: IRoom[] }>`
 	query Rooms {
-		rooms(order_by: { updatedAt: desc_nulls_last }) {
+		rooms(order_by: { updatedAt: desc_nulls_last }, where: {_and: {members_aggregate: {count: {predicate: {_gte: 1}}}, type: {_neq: "pesonal"}}}) {
 			id
 			name
 			image
@@ -105,8 +105,8 @@ export const createroomgql = gql`
 `
 
 export const removeroomgql = gql`
-	mutation RemoveRoom($id: String!, $data: rooms_set_input!) {
-		update_rooms_by_pk(pk_columns: { id: $id }, _set: $data) {
+	mutation RemoveRoom($id: String!) {
+		delete_rooms_by_pk(id: $id) {
 			id
 		}
 	}

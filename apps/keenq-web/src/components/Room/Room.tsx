@@ -28,7 +28,7 @@ function Room() {
 		}
 		window.addEventListener('resize', cb, true)
 		return () => window.removeEventListener('resize', cb, true)
-	}, [  ])
+	}, [])
 
 	return (
 		<StyledContainer data-testid='Room'>

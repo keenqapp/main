@@ -101,6 +101,17 @@ function RoomInput() {
 		return clear
 	}, [])
 
+	useEffect(() => {
+		const fn = (e: KeyboardEvent) => {
+			if (e.key === 'Enter' && (e.ctrlKey||e.metaKey)) {
+				e.preventDefault()
+				onSendClick()
+			}
+		}
+		window.addEventListener('keydown', fn)
+		return () => window.removeEventListener('keydown', fn)
+	}, [ textInput.value ])
+
 	const onSendClick = async () => {
 		const content: IMessage['content'] = []
 		const images: IMessage['content'] = []

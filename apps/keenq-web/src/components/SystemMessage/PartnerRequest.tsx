@@ -13,7 +13,8 @@ import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
 import { getAvatar, IMemberPartner, membergql, updatepartnergql, useCurrentMember } from '@/model/member'
-import { deletemessagegql, IPartnerRequest } from '@/model/message'
+import { createPartnerRequestMessage, deletemessagegql, IPartnerRequest, updatemessagegql } from '@/model/message'
+import { useCurrentRoom } from '@/model/room'
 
 import Column from '@/ui/Column'
 import Row from '@/ui/Row'
@@ -41,19 +42,22 @@ const context = {
 	additionalTypenames: ['members'],
 }
 
-function PartnerRequest({ id, to, from }: IPartnerRequest['value'] & { id: string }) {
+function PartnerRequest({ id, to, from, result }: IPartnerRequest['value'] & { id: string }) {
 
 	const { t } = useTranslate()
+	const { id: cid } = useCurrentMember()
+	const { id: rid } = useCurrentRoom()
+	const isSelf = cid === from
+	const mid = isSelf ? to : from
 
-	const [ result ] = useQuery(membergql, { id: to }, { context })
-	const { id: mid } = useCurrentMember()
-	const isSelf = mid === from
-	const member = optional(result.data?.members_by_pk)
+	const [ mresult ] = useQuery(membergql, { id: mid }, { context })
+	const member = optional(mresult.data?.members_by_pk)
 	const { name } = member
 	const avatar = getAvatar(member)
 
 	const { onOpen } = useModal('partnerRequest')
 	const [ , remove ] = useMutation(deletemessagegql)
+	const [ , update ] = useUpdate(updatemessagegql)
 	const [ , link ] = useUpdate(updatepartnergql)
 
 	const requestClick = () => onOpen({ id: to })
@@ -70,13 +74,16 @@ function PartnerRequest({ id, to, from }: IPartnerRequest['value'] & { id: strin
 		try {
 			await link(from, { linked: linkedTo })
 			await link(to, { linked: linkedFrom })
-			remove({ id })
+			const msg = createPartnerRequestMessage(rid, from, to, 'accepted')
+			update(id, msg)
 		}
 		catch (e) {
 			console.log('--- PartnerRequest.tsx:76 -> onYesClick ->', e)
 		}
 	}
-	const onNoClick = () => remove({ id })
+	const onNoClick = () => {
+		update(id, { value: { to, from, result: 'declined' } })
+	}
 
 	const onCancelClick = () => remove({ id })
 
@@ -93,22 +100,27 @@ function PartnerRequest({ id, to, from }: IPartnerRequest['value'] & { id: strin
 						<IconButton><MoreVertTwoToneIcon /></IconButton>
 					</Row>
 					<Typography variant='overline'>
-						{isSelf
-							? t`partner.want`
-							: t`partner.wants`}
+						{result === 'accepted' && t`partner.accepted`}
+						{result !== 'accepted' && (
+							isSelf
+								? t`partner.want`
+								: t`partner.wants`
+						)}
 					</Typography>
 				</Content>
-				{isSelf
-					? (
-						<Buttons justify='end'>
-							<Button startIcon={<HighlightOffTwoToneIcon color='secondary' />} color='secondary' onClick={onCancelClick}>{t`words.cancel`}</Button>
-						</Buttons>
-					): (
-						<Buttons>
-							<Button startIcon={<HighlightOffTwoToneIcon color='secondary' />} color='secondary' onClick={onNoClick}>{t`words.no`}</Button>
-							<Button startIcon={<DoneOutlineTwoToneIcon color='primary' />} onClick={onYesClick}>{t`words.yes`}</Button>
-						</Buttons>
-					)}
+				{result !== 'accepted' && (
+					isSelf
+						? (
+							<Buttons justify='end'>
+								<Button startIcon={<HighlightOffTwoToneIcon color='secondary' />} color='secondary' onClick={onCancelClick}>{t`words.cancel`}</Button>
+							</Buttons>
+						): (
+							<Buttons>
+								<Button startIcon={<HighlightOffTwoToneIcon color='secondary' />} color='secondary' onClick={onNoClick}>{t`words.no`}</Button>
+								<Button startIcon={<DoneOutlineTwoToneIcon color='primary' />} onClick={onYesClick}>{t`words.yes`}</Button>
+							</Buttons>
+						)
+				)}
 			</Column>
 			<Space />
 		</PartnerRequestContainer>

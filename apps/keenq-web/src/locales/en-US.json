@@ -53,7 +53,9 @@
   "match": {
     "and": "and",
     "away": "away",
-    "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms"
+    "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms",
+    "someDistance": "Some distance",
+    "youHave": "You have a new match!"
   },
   "member": {
     "add": "Add member",
@@ -102,7 +104,11 @@
     "leaveTitle": "Leave room",
     "room": "Room",
     "share": "Share",
-    "verification": "Request verification"
+    "verification": "Request verification",
+    "downgrade": "Downgrade",
+    "ban": "Ban",
+    "makeAdmin": "Make admin",
+    "makeOwner": "Make owner"
   },
   "rooms": {
     "channel": "Channel",
@@ -145,6 +151,7 @@
   },
   "partner": {
     "want": "want to add a partner",
-    "wants": "wants to add you as a partner"
+    "wants": "wants to add you as a partner",
+    "accepted": "You are partners now"
   }
 }

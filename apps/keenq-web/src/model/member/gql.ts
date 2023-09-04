@@ -16,6 +16,7 @@ export const memmberfragment = gql`
 		location
 		visible
 		tags
+		linked
 	}
 `
 

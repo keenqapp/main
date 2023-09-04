@@ -48,6 +48,7 @@ export interface IMessageText {
 	type: 'text'
 	value: {
 		text: string
+		color?: string
 	}
 }
 
@@ -74,6 +75,7 @@ export interface IPartnerRequest {
 	value: {
 		from: string
 		to: string
+		result: 'accepted' | 'declined' | 'pending'
 	}
 }
 

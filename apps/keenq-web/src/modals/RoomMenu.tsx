@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
 import ForumTwoToneIcon from '@mui/icons-material/ForumTwoTone'
+import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 // import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 // import NotificationsOffTwoToneIcon from '@mui/icons-material/NotificationsOffTwoTone'
 import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone'
@@ -13,7 +14,7 @@ import { useTranslate } from '@/services/translate'
 
 import { useCurrentMember } from '@/model/member'
 // import { removeroomgql, useCurrentRoom } from '@/model/room'
-import { useCurrentRoom } from '@/model/room'
+import { removeroomgql, useCurrentRoom } from '@/model/room'
 import { leaveroom } from '@/model/rooms_members'
 
 import { Drawer, DrawerItem, DrawerList } from '@/ui/Drawer'
@@ -29,11 +30,10 @@ function RoomMenu() {
 	const { open: openReport } = useModal('report')
 	const { confirm } = useConfirm()
 	const { id: memberId } = useCurrentMember()
-	// const { id, isMember, isPersonal, isOwner } = useCurrentRoom()
 	const { id, isMember, isPersonal } = useCurrentRoom()
 
 	const [ , leave ] = useMutation(leaveroom)
-	// const [ , remove ] = useMutation(removeroomgql)
+	const [ , remove ] = useMutation(removeroomgql)
 
 	const leaveClick = () => {
 		confirm({
@@ -55,15 +55,16 @@ function RoomMenu() {
 
 	const addMemberClick = () => addMemberOpen({ to: 'room', id })
 
-	// const deleteClick = () => {
-	// 	confirm({
-	// 		title: t`room.deleteTitle`,
-	// 		text: t`room.deleteText`,
-	// 		onConfirm: on(() => {
-	// 			remove({ id, deletedAt: new Date().toISOString() })
-	// 		})
-	// 	})
-	// }
+	const deleteClick = () => {
+		confirm({
+			title: t`room.deleteTitle`,
+			text: t`room.deleteText`,
+			onConfirm: on(() => {
+				navigate('/room')
+				remove({ id })
+			})
+		})
+	}
 
 	// const muteClick = () => {
 	// 	console.log('--- RoomMenu.tsx:44 -> muteClick ->', 'muteClick')
@@ -72,14 +73,14 @@ function RoomMenu() {
 	return (
 		<Drawer data-testid='RoomMenu' name={name}>
 			<DrawerList>
-				{/*{isOwner && (*/}
-				{/*	<DrawerItem*/}
-				{/*		icon={<HighlightOffTwoToneIcon color='error' />}*/}
-				{/*		text={t`words.delete`}*/}
-				{/*		onClick={on(deleteClick)}*/}
-				{/*	/>*/}
-				{/*)}*/}
-				{isMember && (
+				{isMember && isPersonal && (
+					<DrawerItem
+						icon={<HighlightOffTwoToneIcon color='error' />}
+						text={t`words.delete`}
+						onClick={on(deleteClick)}
+					/>
+				)}
+				{isMember && !isPersonal && (
 					<DrawerItem
 						icon={<DeleteTwoToneIcon color='secondary' />}
 						text={t`room.leave`}

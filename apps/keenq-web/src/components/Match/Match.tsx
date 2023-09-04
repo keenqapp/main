@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
-import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
+import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 
 import { useModal } from '@/services/modals'
@@ -126,7 +126,7 @@ function Match() {
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
 		if (data?.matched.data.result) {
 			$unread.set(true)
-			notify()
+			notify(t`match.youHave`)
 		}
 		redirect()
 	}
@@ -160,7 +160,7 @@ function Match() {
 				<Typography variant='overline'>{distance} {t`match.away`}</Typography>
 				<Space height={0.5} />
 				<Fabs justify='between' self='stretch'>
-					<IconButton onClick={onNoClick}><HighlightOffTwoToneIcon fontSize='large' color='secondary' /></IconButton>
+					<IconButton onClick={onNoClick}><RemoveCircleTwoToneIcon fontSize='large' color='secondary' /></IconButton>
 					<IconButton onClick={onYesClick}><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
 				</Fabs>
 				<Space />
