@@ -95,6 +95,7 @@ async function hi(room, db, trx) {
 			authorId: 'keenq',
 			content: JSON.stringify([{ type: 'text', value: { text: 'match.newMatched' } }])
 		})
+
 	await db
 		.table('messages')
 		.transacting(trx)
