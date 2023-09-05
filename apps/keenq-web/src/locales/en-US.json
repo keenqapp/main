@@ -55,7 +55,8 @@
     "away": "away",
     "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms",
     "someDistance": "Some distance",
-    "youHave": "You have a new match!"
+    "youHave": "You have a new match!",
+    "hi": "Hi!"
   },
   "member": {
     "add": "Add member",
@@ -133,7 +134,9 @@
     "visible": "I am visible to others"
   },
   "systemMessage": {
-    "joined": "Member {name} has joined"
+    "joined": "Member {name} has joined",
+    "joined_f": "Member {name} has joined",
+    "joined_m": "Member {name} has joined"
   },
   "tags": {
     "create": "Create",

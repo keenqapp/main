@@ -10,7 +10,6 @@ import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
 import { useQuery } from '@/hooks/gql'
-import { optional } from '@/utils/utils'
 
 
 const SystemTextMessageContainer = styled.div`
@@ -24,11 +23,13 @@ const SystemTextMessageContainer = styled.div`
 function SystemTextMessage({ joined }: { joined: string }) {
 	const { t } = useTranslate('systemMessage')
 	const [ result ] = useQuery(membergql, { id: joined })
-	const member = optional(result.data?.members_by_pk)
+	const member = result.data?.members_by_pk
+	if (!member) return null
+	const { name, gender } = member
 	return (
 		<>
 			<SystemTextMessageContainer data-testid='SystemTextMessage'>
-				<Typography variant='overline'>{t('joined', { name: member.name })}</Typography>
+				<Typography variant='overline'>{t(gender === 'female' ? 'joined_f' : 'joined_m', { name })}</Typography>
 			</SystemTextMessageContainer>
 			<Space height={0.2}  />
 		</>

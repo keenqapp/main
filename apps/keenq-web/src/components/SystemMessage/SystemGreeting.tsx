@@ -9,6 +9,7 @@ import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
 import { formatDate } from '@/utils/formatters'
+import { useTranslate } from '@/services/translate'
 
 
 const SystemTextMessageContainer = styled.div`
@@ -20,11 +21,12 @@ const SystemTextMessageContainer = styled.div`
 `
 
 function SystemGreeting({ message }: { message: IMessage }) {
+	const { t } = useTranslate()
 	const greeting = getGreeting(message)
 	return (
 		<>
 			<SystemTextMessageContainer data-testid='SystemGreeting'>
-				<Typography variant='overline'>{greeting}</Typography>
+				<Typography variant='overline'>{t(greeting!)}</Typography>
 			</SystemTextMessageContainer>
 			<Space height={0.2}  />
 			<Typography variant='caption'>{formatDate(parseISO(message.date), { to: 'HH:mm' })}</Typography>
