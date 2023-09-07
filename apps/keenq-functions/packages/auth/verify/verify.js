@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { object, string, number } from 'yup'
 
-import { getDb, ensureCreds, success, error, validate, testPhones } from './shared.js'
+import { getDb, ensureCreds, success, error, validate, testPhones, isTestPhone } from './shared.js'
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
@@ -41,7 +41,7 @@ async function getSaved(phone, db) {
 }
 
 async function checkCode(phone, code, saved, db) {
-	if (testPhones.includes(phone) || code === saved) {
+	if (isTestPhone(phone) || code === saved) {
 		try {
 			await db
 				.table('credentials')

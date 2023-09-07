@@ -1,6 +1,13 @@
+import { getMessaging, getToken } from 'firebase/messaging'
+
+import { app } from '@/services/firebase'
 import { modalsStore } from '@/services/modals'
 
 import icon from '@/assets/keenq.svg'
+
+
+export const messaging = getMessaging(app)
+console.log('--- notifications.ts:10 ->  ->', await getToken(messaging, import.meta.env.VITE_FIREBASE_PUSH_KEY))
 
 
 export async function request() {
@@ -25,7 +32,6 @@ export function notify(msg: string) {
 }
 
 export function useNotifications() {
-
 	return {
 		request,
 		check,
@@ -33,23 +39,23 @@ export function useNotifications() {
 	}
 }
 
-const options = {
-	userVisibleOnly: true,
-	applicationServerKey: import.meta.env.VITE_PUSH_KEY,
-}
+// const options = {
+// 	userVisibleOnly: true,
+// 	applicationServerKey: import.meta.env.VITE_PUSH_KEY,
+// }
 
-async function register() {
-	try {
-		const sw  = await navigator.serviceWorker.ready
-		const sub = await sw.pushManager.subscribe(options)
-		console.log('--- notifications.ts:45 -> register ->', sub)
-	}
-	catch(e) {
-		console.log('--- notifications.ts:41 -> register -> error', e)
-	}
-}
-
-register()
+// async function register() {
+// 	try {
+// 		const sw  = await navigator.serviceWorker.ready
+// 		const sub = await sw.pushManager.subscribe(options)
+// 		// console.log('--- notifications.ts:45 -> register ->', sub)
+// 	}
+// 	catch(e) {
+// 		console.log('--- notifications.ts:41 -> register -> error', e)
+// 	}
+// }
+//
+// register()
 
 // try {
 // 	navigator.serviceWorker.ready.then(async registration => {
