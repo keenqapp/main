@@ -29,9 +29,17 @@ export const addmembersgql = gql`
 	}
 `
 
-export const undateroommember = gql`
+export const updateroommember = gql`
 	mutation UpdateRoomMember($roomId: String!, $memberId: String!, $role: String!) {
 		update_rooms_members_by_pk(pk_columns: { roomId: $roomId, memberId: $memberId }, _set: { role: $role }) {
+			id
+		}
+	}
+`
+
+export const removeroommember = gql`
+	mutation UpdateRoomMember($roomId: String!, $memberId: String!) {
+		delete_rooms_members_by_pk(roomId: $roomId, memberId: $memberId) {
 			id
 		}
 	}

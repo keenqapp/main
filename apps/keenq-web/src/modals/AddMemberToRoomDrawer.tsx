@@ -77,7 +77,7 @@ function AddMemberToRoom() {
 	const members = useMemo(() => {
 		return result.data?.matches
 			.map((match: IMatch) => match.member)
-			.filter((m: IMember) => !membersIds?.includes(m.id)) || []
+			.filter((m: IMember) => m && !membersIds?.includes(m.id)) || []
 	}, [ result.data, membersIds ])
 
 	const nameInput = useInput({

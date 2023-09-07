@@ -15,8 +15,9 @@ const context = {
 export function useCurrentMember(): IMember {
 	const id = useStore($id)
 	const [ result ] = useQuery(currentmembergql, { id }, { context })
+	const { data, error, fetching } = result
 	useEffect(() => {
-		if (result.error) logout()
-	}, [ result ])
-	return result.data?.members_by_pk || {} as unknown as IMember
+		if (error || (!fetching && !data?.members_by_pk)) logout()
+	}, [ error ])
+	return data?.members_by_pk || {} as unknown as IMember
 }

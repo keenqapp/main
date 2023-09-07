@@ -109,7 +109,8 @@
     "downgrade": "Downgrade",
     "ban": "Ban",
     "makeAdmin": "Make admin",
-    "makeOwner": "Make owner"
+    "makeOwner": "Make owner",
+    "remove": "Remove"
   },
   "rooms": {
     "channel": "Channel",

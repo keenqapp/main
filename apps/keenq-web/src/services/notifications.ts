@@ -7,8 +7,6 @@ import icon from '@/assets/keenq.svg'
 
 
 export const messaging = getMessaging(app)
-console.log('--- notifications.ts:10 ->  ->', await getToken(messaging, import.meta.env.VITE_FIREBASE_PUSH_KEY))
-
 
 export async function request() {
 	await Notification.requestPermission()

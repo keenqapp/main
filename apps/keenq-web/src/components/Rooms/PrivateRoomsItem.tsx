@@ -7,13 +7,14 @@ import Typography from '@mui/material/Typography'
 
 import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 
-import Row from '@/ui/Row'
-
-import { useQuery } from '@/hooks/gql'
 import { getAvatar, useCurrentMember } from '@/model/member'
 import { getText } from '@/model/message'
 import { IRoom } from '@/model/room'
 import { othermemberinprivategql } from '@/model/rooms_members'
+
+import Row from '@/ui/Row'
+
+import { useQuery } from '@/hooks/gql'
 
 
 const RoomItemContainer = styled.div`

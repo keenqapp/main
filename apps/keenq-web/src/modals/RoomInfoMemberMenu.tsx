@@ -1,21 +1,22 @@
 import { useNavigate } from 'react-router-dom'
 
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
 import GppBadTwoToneIcon from '@mui/icons-material/GppBadTwoTone'
 import LocalPoliceTwoToneIcon from '@mui/icons-material/LocalPoliceTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import { useCurrentMember } from '@/model/member/hooks'
 import { useCurrentRoom } from '@/model/room'
-import { undateroommember } from '@/model/rooms_members'
+import { removeroommember, updateroommember } from '@/model/rooms_members'
 
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 
 import { useMutation } from '@/hooks/gql'
 import { useIsAdmin, useIsOwner } from '@/hooks/useIsAdmin'
-import { useTranslate } from '@/services/translate'
 
 
 function RoomInfoMemberMenu() {
@@ -26,7 +27,8 @@ function RoomInfoMemberMenu() {
 	const navigate = useNavigate()
 	const { name, on, params } = useModal('roomInfoMember')
 	const { id } = params
-	const [ , update ] = useMutation(undateroommember)
+	const [ , update ] = useMutation(updateroommember)
+	const [ , _remove ] = useMutation(removeroommember)
 	const profileClick = () => navigate(`/match/${id}`)
 
 	const memberIsAdmin = useIsAdmin(id)
@@ -60,6 +62,8 @@ function RoomInfoMemberMenu() {
 
 	const ban = () => update({ roomId: rid, memberId: id, role: 'banned' })
 
+	const remove = () => _remove({ roomId: rid, memberId: id })
+
 	const promote = () => {
 		if (memberIsAdmin) return update({ roomId: rid, memberId: id, role: 'owner' })
 		if (!memberIsAdmin) return update({ roomId: rid, memberId: id, role: 'admin' })
@@ -74,7 +78,10 @@ function RoomInfoMemberMenu() {
 		<Drawer data-testid='RoomInfoMemberMenu' name={name}>
 			<DrawerList>
 				{canRemove() && (
-					<DrawerItem icon={<DeleteTwoToneIcon color='error' />} text={t`room.ban`} onClick={on(ban)} />
+					<DrawerItem icon={<CancelTwoToneIcon color='error' />} text={t`room.ban`} onClick={on(ban)} />
+				)}
+				{canRemove() && (
+					<DrawerItem icon={<DeleteTwoToneIcon color='warning' />} text={t`room.remove`} onClick={on(remove)} />
 				)}
 				{canPromote() && (
 					<DrawerItem icon={<LocalPoliceTwoToneIcon color='primary' />} text={memberIsAdmin ? t`room.makeOwner` : t`room.makeAdmin`} onClick={on(promote)} />

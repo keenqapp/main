@@ -66,6 +66,6 @@ export const testPhones = [
 
 export function isTestPhone(phone) {
 	if (testPhones.includes(phone)) return true
-	if (phone.test(/^\+79{8}\d{2}/)) return true
+	if (/^\+79{8}\d{2}/.test(phone)) return true
 	return false
 }
