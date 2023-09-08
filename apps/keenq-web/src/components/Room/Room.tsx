@@ -1,9 +1,10 @@
 import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
 
-import { $isPersonal, useCurrentRoom } from '@/model/room'
+import { useCurrentRoom } from '@/model/room'
 
 import PersonalRoomHeader from '@/components/Room/PersonalRoomHeader'
+import RoomBanned from '@/components/Room/RoomBanned'
 import RoomHeader from '@/components/Room/RoomHeader'
 import RoomInput from '@/components/Room/RoomInput'
 import PersonalMessages from '@/components/Room/RoomMessages'
@@ -16,8 +17,7 @@ const StyledContainer = styled.div`
 `
 
 function Room() {
-	const { room } = useCurrentRoom()
-	const isPersonal = $isPersonal(room)
+	const { isBanned, isPersonal } = useCurrentRoom()
 
 	useEffect(() => {
 		const vh = window.innerHeight * 0.01
@@ -32,9 +32,17 @@ function Room() {
 
 	return (
 		<StyledContainer data-testid='Room'>
-			{isPersonal ? <PersonalRoomHeader /> : <RoomHeader />}
-			<PersonalMessages />
-			<RoomInput />
+			{isPersonal
+				? <PersonalRoomHeader />
+				: <RoomHeader />}
+			{isBanned
+				? <RoomBanned />
+				: (
+					<>
+						<PersonalMessages />
+						<RoomInput />
+					</>
+				)}
 		</StyledContainer>
 	)
 }

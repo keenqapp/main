@@ -4,14 +4,17 @@ import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
+
+import { $isAdmin, getAvatar, IMember, membersgql } from '@/model/member'
+import { useCurrentRoom } from '@/model/room'
+import { $isBanned } from '@/model/rooms_members'
 
 import Column from '@/ui/Column'
 import List from '@/ui/List'
 import Row from '@/ui/Row'
 
 import { useQuery } from '@/hooks/gql'
-import { getAvatar, IMember, membersgql } from '@/model/member'
-import { useCurrentRoom } from '@/model/room'
 
 
 const RoomInfoMembersContainer = styled(Column)`
@@ -27,26 +30,30 @@ const MemberContainer = styled(Row)`
 `
 
 function Member(member: IMember) {
+	const { t } = useTranslate()
 	const { id, name } = member
 	const avatar = getAvatar(member)
 	const { onOpen } = useModal('roomInfoMember')
-	const { adminsIds } = useCurrentRoom()
-	const isAdmin = adminsIds.includes(id)
+	const { adminsIds, allMembers } = useCurrentRoom()
+	const isAdmin = $isAdmin(id, adminsIds)
+	const isBanned = $isBanned(id, allMembers)
 	const onClick = () => onOpen({ id })
+
 	return (
 		<MemberContainer justify='start' gap={1} onClick={onClick}>
 			<Avatar src={avatar?.url} alt={name} />
 			<Column>
 				<Typography variant='h6'>{name}</Typography>
-				{isAdmin && <Typography variant='body2'>admin</Typography>}
+				{isAdmin && <Typography variant='body2'>{t`roomsMembers.admin`}</Typography>}
+				{isBanned && <Typography variant='body2'>{t`roomsMembers.banned`}</Typography>}
 			</Column>
 		</MemberContainer>
 	)
 }
 
 function RoomInfoMembers() {
-	const { membersIds } = useCurrentRoom()
-	const [ result ] = useQuery(membersgql, { ids: membersIds })
+	const { membersIds, allMembersIds, isAdmin } = useCurrentRoom()
+	const [ result ] = useQuery(membersgql, { ids: isAdmin ? allMembersIds : membersIds })
 	return (
 		<RoomInfoMembersContainer data-testid='RoomInfoMembers'>
 			<MembersList

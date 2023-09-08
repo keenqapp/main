@@ -19,7 +19,7 @@ function ConfirmDialog() {
 		confirm.close()
 	}
 	return (
-		<Dialog data-testid='ConfirmDialog' {...confirm}>
+		<Dialog data-testid='ConfirmDialog' onClose={confirm.close} {...confirm} >
 			<DialogTitle>
 				{t(confirm.options().title() as string)}
 			</DialogTitle>

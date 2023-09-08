@@ -96,8 +96,8 @@ export interface StrictConfirmOptions {
 }
 
 const defaultConfirm = {
-	title: 'title',
-	text: 'text',
+	title: 'confirm.title',
+	text: 'confirm.text',
 	onConfirm: () => undefined
 }
 

@@ -69,3 +69,11 @@ export const updatereactiongql = gql`
 		}
 	}
 `
+
+export const deleteallmsgsgql = gql`
+	mutation DeleteAllMsgs($roomId: String!, $authorId: String!) {
+		delete_messages(where: { roomId: { _eq: $roomId }, authorId: { _eq: $authorId } }) {
+			affected_rows
+		}
+	}
+`

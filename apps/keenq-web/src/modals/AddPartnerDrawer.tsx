@@ -76,7 +76,7 @@ function AddPartnerDrawer() {
 	const { t } = useTranslate('addMember')
 	const { name } = useModal('addPartner')
 	const { id } = useCurrentMember()
-	const [ result ] = useQuery(contactsgql, { id })
+	const [ result ] = useQuery(contactsgql, { id }, { requestPolicy: 'cache-and-network' })
 	const members = useMemo(() => result.data?.matches.map((match: IMatch) => match.member) || [], [ result.data ])
 
 	const nameInput = useInput({

@@ -11,10 +11,11 @@ import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 
 import { useModal } from '@/services/modals'
 
-import Row from '@/ui/Row'
-
 import { $isPersonal } from '@/model/room'
 import { useCurrentRoom } from '@/model/room/hooks'
+
+import Row from '@/ui/Row'
+import { useTranslate } from '@/services/translate'
 
 
 const RoomHeaderContainer = styled(Row)`
@@ -45,8 +46,9 @@ const StyledAvatar = styled(Avatar)`
 `
 
 function RoomHeader() {
+	const { t } = useTranslate()
 	const { onOpen } = useModal('room')
-	const { room, membersCount } = useCurrentRoom()
+	const { room, membersCount, isBanned } = useCurrentRoom()
 	const { id, verified, image, name } = room
 
 	const isPersonal = $isPersonal(room)
@@ -54,8 +56,9 @@ function RoomHeader() {
 	const navigate = useNavigate()
 	const onBack = () => navigate(-1)
 
-	const onMenuClick = () => onOpen()
+	const onMenuClick = () => !isBanned && onOpen()
 	const onNameClick = () => {
+		if (isBanned) return
 		if (isPersonal) navigate(`/match/${id}`)
 		else navigate(`/room/${id}/info`)
 	}
@@ -70,11 +73,10 @@ function RoomHeader() {
 						<NoWrap variant='h6'>{name}</NoWrap>
 						{verified && <VerifiedTwoToneIcon color='primary' fontSize='small' />}
 					</Row>
-					<Typography variant='body2'>{isPersonal ? 'Online' : `${membersCount} members`}</Typography>
+					<Typography variant='body2'>{isPersonal ? 'Online' : membersCount + ' ' + t`room.members`}</Typography>
 				</Wrap>
 			</Info>
-			{/*<Space grow />*/}
-			<IconButton onClick={onMenuClick}><MoreVertTwoToneIcon /></IconButton>
+			{!isBanned && <IconButton onClick={onMenuClick}><MoreVertTwoToneIcon /></IconButton>}
 		</RoomHeaderContainer>
 	)
 }

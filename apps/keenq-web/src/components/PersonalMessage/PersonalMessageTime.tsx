@@ -1,5 +1,3 @@
-import { parseISO } from 'date-fns'
-
 import Typography from '@mui/material/Typography'
 
 import { IMessage, shouldShowCheck } from '@/model/message'
@@ -11,7 +9,7 @@ function PersonalMessageTime(message: IMessage) {
 	const shouldShow = shouldShowCheck(message)
 	if (!shouldShow) return null
 	return (
-		<Typography variant='caption'>{formatDate(parseISO(message.date), { to: 'HH:mm' })}</Typography>
+		<Typography variant='caption'>{formatDate(message.date, { to: 'HH:mm' })}</Typography>
 	)
 }
 

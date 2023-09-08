@@ -19,7 +19,7 @@ import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserC
 import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
 
 import { $shouldRequest } from '@/services/location'
-import { useModal } from '@/services/modals'
+import { useConfirm, useModal } from '@/services/modals'
 import { $shouldShow } from '@/services/pwa'
 import { deleteImage, uploadImage } from '@/services/spaces'
 import { useTranslate } from '@/services/translate'
@@ -167,6 +167,7 @@ function Profile() {
 	const { open: onSettingsClick } = useModal('settings')
 	const { open: onGenderClick } = useModal('gender')
 	const { open: openAddPartner } = useModal('addPartner')
+	const { confirm } = useConfirm()
 
 	const [ , update ] = useDebounceMutation(updatemembergql)
 	const [ , unlink ] = useUpdate(updatemembergql)
@@ -203,8 +204,12 @@ function Profile() {
 
 	const onPartnerClick = async () => {
 		if (partner) {
-			await unlink(id, { linked: linked?.filter(mp => mp.type === 'partner' && mp.value.id !== partner.id) })
-			await unlink(partner.id, { linked: linked?.filter(m => m.type === 'partner' && m.value.id !== id) })
+			confirm({
+				onConfirm: async () => {
+					await unlink(id, { linked: linked?.filter(mp => mp.type === 'partner' && mp.value.id !== partner.id) })
+					await unlink(partner.id, { linked: linked?.filter(m => m.type === 'partner' && m.value.id !== id) })
+				}
+			})
 		}
 		else openAddPartner()
 	}

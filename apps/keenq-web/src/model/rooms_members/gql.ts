@@ -4,16 +4,24 @@ import { IRoomMember } from '@/model/rooms_members'
 
 
 export const leaveroom = gql`
-	mutation LeaveRoom($memberId: String!, $roomId: String!) {
-		delete_rooms_members_by_pk(memberId: $memberId, roomId: $roomId) {
+	mutation LeaveRoom($memberId: String!, $roomId: String!, $deletedAt: timestamptz!) {
+		update_rooms_members_by_pk(pk_columns: { roomId: $roomId, memberId: $memberId }, _set: { deletedAt: $deletedAt }) {
 			id
 		}
 	}
 `
 
-export const joinroom = gql`
-	mutation JoinRoom($object: rooms_members_insert_input!) {
+export const insertjoinroom = gql`
+	mutation InsertJoinRoom($object: rooms_members_insert_input!) {
 		insert_rooms_members_one(object: $object) {
+			id
+		}
+	}
+`
+
+export const updatejoinroom = gql`
+	mutation UpdateJoinRoom($memberId: String!, $roomId: String!) {
+		update_rooms_members_by_pk(pk_columns: { roomId: $roomId, memberId: $memberId }, _set: { deletedAt: null }) {
 			id
 		}
 	}

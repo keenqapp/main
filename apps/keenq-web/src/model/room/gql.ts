@@ -53,8 +53,9 @@ export const roomgql = gql<{ rooms_by_pk: IRoom }>`
 
 interface ICurrentroomgql {
 	rooms_by_pk: IRoom
-	rooms_members_aggregate: { aggregate: { count: number } }
+	rooms_members_excluded_aggregate: { aggregate: { count: number } }
 	rooms_members: IRoomMember[]
+	rooms_members_excluded: IRoomMember[]
 	rooms_admins: IRoomMember[]
 }
 
@@ -68,12 +69,12 @@ export const currentroomgql = gql<ICurrentroomgql>`
 			type
 			verified
 		}
-		rooms_members_aggregate(where: { roomId: { _eq: $id } }) {
-			aggregate {
-				count
-			}
-		}
 		rooms_members(where: { roomId: { _eq: $id } }) {
+			memberId
+			role
+			deletedAt
+		}
+		rooms_members_excluded(where: { roomId: { _eq: $id } }) {
 			memberId
 		}
 		rooms_admins(where: { roomId: { _eq: $id } }) {

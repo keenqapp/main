@@ -1,15 +1,15 @@
 import styled from '@emotion/styled'
 import { parseISO } from 'date-fns'
 
-import Typography from '@mui/material/Typography'
+import { useTranslate } from '@/services/translate'
 
 import { getGreeting, IMessage } from '@/model/message'
 
 import Space from '@/ui/Space'
+import Text from '@/ui/Text'
 import theme from '@/ui/theme'
 
 import { formatDate } from '@/utils/formatters'
-import { useTranslate } from '@/services/translate'
 
 
 const SystemTextMessageContainer = styled.div`
@@ -26,10 +26,10 @@ function SystemGreeting({ message }: { message: IMessage }) {
 	return (
 		<>
 			<SystemTextMessageContainer data-testid='SystemGreeting'>
-				<Typography variant='overline'>{t(greeting!)}</Typography>
+				<Text>{t(greeting!)}</Text>
 			</SystemTextMessageContainer>
 			<Space height={0.2}  />
-			<Typography variant='caption'>{formatDate(parseISO(message.date), { to: 'HH:mm' })}</Typography>
+			<Text variant='caption'>{formatDate(parseISO(message.date), { to: 'HH:mm' })}</Text>
 		</>
 	)
 }

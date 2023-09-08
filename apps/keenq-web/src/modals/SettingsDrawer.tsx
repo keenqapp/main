@@ -1,9 +1,11 @@
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
+import Select from '@mui/material/Select'
 import Switch from '@mui/material/Switch'
 
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone'
+import TranslateIcon from '@mui/icons-material/Translate'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
 
@@ -21,7 +23,7 @@ import { useUpdate } from '@/hooks/gql'
 
 
 function SettingsDrawer() {
-	const { t } = useTranslate('settings')
+	const { t, locale, change } = useTranslate()
 	const { name, on } = useModal('settings')
 	const {
 		id,
@@ -43,14 +45,29 @@ function SettingsDrawer() {
 			<DrawerList>
 				<DrawerItem
 					icon={<HighlightOffTwoToneIcon color='error' />}
-					text={t`close`}
+					text={t`settings.close`}
 					onClick={onCloseClick}
 				/>
 				<DrawerItem
 					icon={visible ? <VisibilityIcon color='primary' /> : <VisibilityOffIcon color='error' />}
-					text={t`showMe`}
-					subtext={visible ? t`visible` : t`hidden`}
+					text={t`settings.showMe`}
+					subtext={visible ? t`settings.visible` : t`settings.hidden`}
 					action={<Switch onChange={onShowChange} checked={visible || false} />}
+				/>
+				<DrawerItem
+					icon={<TranslateIcon color='primary' />}
+					text={t`lang.lang`}
+					action={(
+						<Select
+							native
+							defaultValue={locale}
+							onChange={(e: any) => change(e.target.value)}
+							variant='outlined'
+						>
+							<option value='en-US'>{t`lang.en-US`}</option>
+							<option value='ru-RU'>{t`lang.ru-RU`}</option>
+						</Select>
+					)}
 				/>
 				<Space />
 				<Divider />
@@ -62,7 +79,7 @@ function SettingsDrawer() {
 						startIcon={<LogoutTwoToneIcon />}
 						fullWidth
 						onClick={on(logout)}
-					>{t`logout`}</Button>
+					>{t`settings.logout`}</Button>
 				</DrawerItem>
 			</DrawerList>
 		</Drawer>

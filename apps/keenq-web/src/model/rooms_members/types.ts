@@ -8,4 +8,5 @@ export interface IRoomMember {
 	role: string
 	privateFor?: string
 	room?: IRoom
+	deletedAt?: Date | null
 }

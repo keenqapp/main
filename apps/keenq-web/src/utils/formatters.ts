@@ -1,5 +1,14 @@
 import { format, parse, parseISO } from 'date-fns'
+import ru from 'date-fns/locale/ru'
 
+import { $locale } from '@/services/translate'
+
+
+let locale: Locale | undefined = undefined
+
+$locale.subscribe((lang) => {
+	if (lang === 'ru-RU') locale = ru
+})
 
 export function formatNumber(number: number | string, currency?: string) {
 	if (!number) return ''
@@ -16,7 +25,7 @@ export function formatDate(date: string | Date, options?: formatDateOptions) {
 		const parsed = date instanceof Date
 			? date
 			: options?.from ? parse(date, options?.from, new Date()) : parseISO(date)
-		return format(parsed, options?.to || defaultDateFormat)
+		return format(parsed, options?.to || defaultDateFormat, { locale })
 	} catch(e) {
 		return date instanceof Date ? date.toLocaleString() : date
 	}

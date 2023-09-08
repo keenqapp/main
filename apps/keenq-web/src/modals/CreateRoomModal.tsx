@@ -16,7 +16,7 @@ import { useTranslate } from '@/services/translate'
 import { getidgql } from '@/model/gql'
 import { useCurrentMember } from '@/model/member'
 import { createroomgql } from '@/model/room'
-import { joinroom } from '@/model/rooms_members'
+import { insertjoinroom } from '@/model/rooms_members'
 
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
@@ -36,7 +36,7 @@ function CreateRoomModal() {
 	const [ type, setType ] = useState('private')
 	const [ result ] = useQuery(getidgql)
 	const [ , create ] = useInsert(createroomgql)
-	const [ , join ] = useInsert(joinroom)
+	const [ , join ] = useInsert(insertjoinroom)
 
 	const nameInput = useInput({
 		label: t`name`,

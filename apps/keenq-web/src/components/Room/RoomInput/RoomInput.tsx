@@ -2,7 +2,6 @@ import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
 import { useStore } from '@nanostores/preact'
 
-import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'
 
@@ -11,7 +10,6 @@ import SendTwoToneIcon from '@mui/icons-material/SendTwoTone'
 
 import { useModal } from '@/services/modals'
 import { uploadImage } from '@/services/spaces'
-import { useTranslate } from '@/services/translate'
 
 import { useCurrentMember } from '@/model/member/hooks'
 import { getImages, getReply, IMessage, messagegql, updatemessagegql } from '@/model/message'
@@ -19,13 +17,13 @@ import { getText } from '@/model/message'
 import { insertmessagegql } from '@/model/message/gql'
 import { $isChannel } from '@/model/room'
 import { useCurrentRoom } from '@/model/room/hooks'
-import { joinroom } from '@/model/rooms_members'
 
 import Row from '@/ui/Row'
 
 import RoomInputEditImage from '@/components/Room/RoomInput/RoomInputEditImage'
 import RoomInputNewFile from '@/components/Room/RoomInput/RoomInputNewFile'
 import RoomInputReply from '@/components/Room/RoomInput/RoomInputReply'
+import RoomJoin from '@/components/Room/RoomInput/RoomJoin'
 import { $imagesToAdd, $imagesToEdit, $imagesToEditSetted, $messageReplyOrEditId, $scroll, clear } from '@/components/Room/RoomInput/state'
 
 import { useQuery, useUpdate } from '@/hooks/gql'
@@ -49,7 +47,6 @@ const Input = styled(TextField)`
 
 function RoomInput() {
 
-	const { t } = useTranslate('room')
 	const { onOpen } = useModal('attachment')
 	const messageReplyOrEditId = useStore($messageReplyOrEditId)
 
@@ -73,7 +70,6 @@ function RoomInput() {
 	const imagesToEdit = useStore($imagesToEdit)
 	const imagesToEditSetted = useStore($imagesToEditSetted)
 	const imagesToAdd = useStore($imagesToAdd)
-
 
 	const textInput = useInput({
 		value: isEdit ? text : '',
@@ -167,12 +163,6 @@ function RoomInput() {
 		}, 1000)
 	}
 
-	const [ , join ] = useInsert(joinroom)
-
-	const onJoinClick = () => {
-		join({ memberId: mid, roomId: rid, privateFor: rid })
-	}
-
 	const showInput =  isAdmin || (!isChannel && isMember)
 	const showJoin = !isMember
 
@@ -193,7 +183,7 @@ function RoomInput() {
 						</Row>
 					</>
 				)}
-				{showJoin && <Button onClick={onJoinClick} fullWidth>{t`join`}</Button>}
+				{showJoin && <RoomJoin />}
 			</Row>
 		</RoomInputContainer>
 	)

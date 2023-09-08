@@ -7,11 +7,11 @@ import en from '@/locales/en-US.json'
 import ru from '@/locales/ru-RU.json'
 
 
-type Locale = 'ru-RU' | 'en-US'
+export type Locale = 'ru-RU' | 'en-US'
 // type Dict = typeof en | typeof ru
 // type Keys = keyof Dict
 
-const $locale = persistentAtom<Locale>('lang', navigator.language as Locale)
+export const $locale = persistentAtom<Locale>('lang', navigator.language as Locale)
 
 function _path(key: string, namespace?: string) {
 	return namespace ? `${namespace}.${key}` : key
@@ -49,7 +49,9 @@ export function translate({ namespace, key, locale, values }: { key: TemplateStr
 export function useTranslate(namespace?: string) {
 	const locale = useStore($locale)
 	const t = useCallback((key: TemplateStringsArray | string, ...values: string[] | Record<string, string>[]) => translate({ namespace, key, locale, values }), [ locale, namespace ])
-	const change = useCallback((locale: Locale) => $locale.set(locale), [])
+	const change = useCallback((locale: Locale) => {
+		$locale.set(locale)
+	}, [])
 	return {
 		t,
 		locale,

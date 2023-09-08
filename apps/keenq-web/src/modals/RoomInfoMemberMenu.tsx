@@ -10,8 +10,9 @@ import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
 import { useCurrentMember } from '@/model/member/hooks'
+import { deleteallmsgsgql } from '@/model/message'
 import { useCurrentRoom } from '@/model/room'
-import { removeroommember, updateroommember } from '@/model/rooms_members'
+import { $isBanned, leaveroom, updateroommember } from '@/model/rooms_members'
 
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 
@@ -22,18 +23,20 @@ import { useIsAdmin, useIsOwner } from '@/hooks/useIsAdmin'
 function RoomInfoMemberMenu() {
 	const { t } = useTranslate()
 	const { id: cid } = useCurrentMember()
-	const { id: rid, isOwner, isAdmin } = useCurrentRoom()
+	const { id: rid, isOwner, isAdmin, allMembers } = useCurrentRoom()
 
 	const navigate = useNavigate()
 	const { name, on, params } = useModal('roomInfoMember')
 	const { id } = params
 	const [ , update ] = useMutation(updateroommember)
-	const [ , _remove ] = useMutation(removeroommember)
+	const [ , deleteAllMsgs ] = useMutation(deleteallmsgsgql)
+	const [ , _remove ] = useMutation(leaveroom)
 	const profileClick = () => navigate(`/match/${id}`)
 
 	const memberIsAdmin = useIsAdmin(id)
 	const memberIsOwner = useIsOwner(id)
 	const isSelf = cid === id
+	const isBanned = $isBanned(id, allMembers)
 
 	function canRemove() {
 		if (isSelf) return false
@@ -43,9 +46,15 @@ function RoomInfoMemberMenu() {
 		return false
 	}
 
+	function canUnban() {
+		if (isSelf) return false
+		if ((isAdmin || isOwner) && isBanned) return true
+	}
+
 	function canPromote() {
 		if (isSelf) return false
 		if (memberIsOwner) return false
+		if (isBanned) return false
 		if (isOwner) return true
 		if (isAdmin && !memberIsOwner && !memberIsAdmin) return true
 		return false
@@ -60,9 +69,14 @@ function RoomInfoMemberMenu() {
 		return false
 	}
 
-	const ban = () => update({ roomId: rid, memberId: id, role: 'banned' })
+	const ban = () => {
+		update({ roomId: rid, memberId: id, role: 'banned' })
+		deleteAllMsgs({ roomId: rid, authorId: id })
+	}
 
-	const remove = () => _remove({ roomId: rid, memberId: id })
+	const unban = () => update({ roomId: rid, memberId: id, role: 'member' })
+
+	const remove = () => _remove({ roomId: rid, memberId: id, deletedAt: new Date().toISOString() })
 
 	const promote = () => {
 		if (memberIsAdmin) return update({ roomId: rid, memberId: id, role: 'owner' })
@@ -77,7 +91,10 @@ function RoomInfoMemberMenu() {
 	return (
 		<Drawer data-testid='RoomInfoMemberMenu' name={name}>
 			<DrawerList>
-				{canRemove() && (
+				{canUnban() && isBanned && (
+					<DrawerItem icon={<CancelTwoToneIcon color='primary' />} text={t`room.unban`} onClick={on(unban)} />
+				)}
+				{canRemove() && !isBanned && (
 					<DrawerItem icon={<CancelTwoToneIcon color='error' />} text={t`room.ban`} onClick={on(ban)} />
 				)}
 				{canRemove() && (

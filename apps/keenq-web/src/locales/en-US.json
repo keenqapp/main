@@ -18,7 +18,7 @@
     "wasSent": "Code that was sent to your phone",
     "send": "Send code",
     "verify": "Verify code",
-    "another": "Use another phone number?"
+    "another": "Use another phone number"
   },
   "confirm": {
     "no": "No",
@@ -108,9 +108,17 @@
     "verification": "Request verification",
     "downgrade": "Downgrade",
     "ban": "Ban",
+    "banText": "Are you sure?",
+    "unban": "Unban",
     "makeAdmin": "Make admin",
     "makeOwner": "Make owner",
-    "remove": "Remove"
+    "remove": "Remove",
+    "banned": "You have been banned from this room",
+    "members": "members"
+  },
+  "roomsMembers": {
+    "admin": "admin",
+    "banned": "banned"
   },
   "rooms": {
     "channel": "Channel",
@@ -157,5 +165,10 @@
     "want": "want to add a partner",
     "wants": "wants to add you as a partner",
     "accepted": "You are partners now"
+  },
+  "lang": {
+    "lang": "Language",
+    "en-US": "English",
+    "ru-RU": "Русский"
   }
 }

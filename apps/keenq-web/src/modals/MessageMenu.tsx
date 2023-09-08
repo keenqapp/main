@@ -2,18 +2,20 @@ import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
 import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import FormatQuoteTwoToneIcon from '@mui/icons-material/FormatQuoteTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 
-import { useModal } from '@/services/modals'
+import { useConfirm, useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
-import { useIsAuthor } from '@/model/member'
+import { $isOwner, useIsAuthor } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
-import { deletemessagegql, IMessageReaction, updatereactiongql } from '@/model/message'
+import { deleteallmsgsgql, deletemessagegql, IMessageReaction, updatereactiongql } from '@/model/message'
 import { $isChannel, useCurrentRoom } from '@/model/room'
+import { updateroommember } from '@/model/rooms_members'
 
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
 import Row from '@/ui/Row'
@@ -56,13 +58,17 @@ function MessageMenu() {
 	const { t } = useTranslate()
 	const navigate = useNavigate()
 	const { id: mid } = useCurrentMember()
+	const { confirm } = useConfirm()
 	const { name, params, close, on } = useModal('message')
 	const { open } = useModal('report')
 	const { id, authorId, reactions } = params
-	const { room, isAdmin } = useCurrentRoom()
+	const { room, isAdmin, allMembers } = useCurrentRoom()
 	const { id: rid } = room
+
 	const [ , remove ] = useMutation(deletemessagegql)
-	const [ , update ] = useUpdate(updatereactiongql)
+	const [ , react ] = useUpdate(updatereactiongql)
+	const [ , _ban ] = useMutation(updateroommember)
+	const [ , deleteAllMsgs ] = useMutation(deleteallmsgsgql)
 
 	const reportClick = () => {
 		close()
@@ -75,6 +81,16 @@ function MessageMenu() {
 
 	const deleteClick = () => {
 		remove({ id })
+	}
+
+	const ban = () => {
+		confirm({
+			text: t`room.banText`,
+			onConfirm: () => {
+				_ban({ roomId: rid, memberId: authorId, role: 'banned' })
+				deleteAllMsgs({ roomId: rid, authorId: authorId })
+			}
+		})
 	}
 
 	const replyClick = () => {
@@ -96,12 +112,13 @@ function MessageMenu() {
 			authorId: mid,
 		} as IMessageReaction
 		if (!isSame) next.push(reaction)
-		update(id, { reactions: next })
+		react(id, { reactions: next })
 		close()
 	}
 
 	const isAuthor = useIsAuthor(authorId)
 	const isChannel = $isChannel(room)
+	const authorIsOwner = $isOwner(authorId, allMembers)
 
 	const isEditable = (!isChannel && isAuthor) || (isChannel && isAdmin)
 	const isReplyable = !isChannel || (isChannel && isAdmin)
@@ -109,6 +126,7 @@ function MessageMenu() {
 	return (
 		<Drawer data-testid='MessageMenu' name={name}>
 			<DrawerList>
+				{isAdmin && !authorIsOwner && <DrawerItem icon={<CancelTwoToneIcon color='error' />} text={t`room.ban`} onClick={on(ban)} />}
 				<DrawerItem icon={<ReportTwoToneIcon color='error' />} text={t`report.report`} onClick={reportClick} />
 				{(isAuthor || isAdmin) && <DrawerItem icon={<DeleteForeverTwoToneIcon color='warning' />} text={t`words.delete`} onClick={on(deleteClick)} />}
 				{!isAuthor && !isChannel && <DrawerItem icon={<AccountCircleTwoToneIcon color='primary' />} text={t`profile.profile`} onClick={on(profileClick)} />}

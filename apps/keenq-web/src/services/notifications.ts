@@ -1,4 +1,4 @@
-import { getMessaging, getToken } from 'firebase/messaging'
+import { getMessaging } from 'firebase/messaging'
 
 import { app } from '@/services/firebase'
 import { modalsStore } from '@/services/modals'

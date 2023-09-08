@@ -1,7 +1,7 @@
+import { IMessage } from '@/model/message'
+
 import PersonalMessage from '@/components/PersonalMessage'
 import SystemMessage from '@/components/SystemMessage'
-
-import { IMessage } from '@/model/message'
 
 
 function RoomMessage(message: IMessage) {
