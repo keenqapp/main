@@ -62,12 +62,12 @@ interface DrawerProps {
 }
 
 function Drawer({ name, children, fullHeight }: DrawerProps) {
-	const { onOpen, close, isOpen } = useModal(name)
+	const { isOpen, open, close } = useModal(name)
 	return (
 		<StyledDrawer
 			anchor='bottom'
 			open={isOpen}
-			onOpen={onOpen}
+			onOpen={open}
 			onClose={close}
 			fullHeight={fullHeight}
 			disableSwipeToOpen

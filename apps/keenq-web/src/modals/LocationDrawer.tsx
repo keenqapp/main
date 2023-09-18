@@ -33,8 +33,8 @@ function LocationDrawer() {
 	const { id } = useCurrentMember()
 	const { position, permission, getPointAndLocation, onRequest } = usePosition()
 	const { close, name } = useModal('location')
-	const { onOpen: onCityOpen } = useModal('city')
-	const { onOpen: onInstructionOpen } = useModal('permissionInstruction')
+	const { open: onCityOpen } = useModal('city')
+	const { open: onInstructionOpen } = useModal('permissionInstruction')
 	const [ _, update ] = useUpdate(updatemembergql)
 
 	const onRequestClick = () => {

@@ -1,10 +1,12 @@
+import { useStore } from '@nanostores/preact'
 import { Navigate, Outlet } from 'react-router-dom'
 
 import { $isAuthed } from '@/services/auth'
 
 
 function AuthPage() {
-	if ($isAuthed.get()) return <Navigate to='/' />
+	const isAuthed = useStore($isAuthed)
+	if (isAuthed) return <Navigate to='/' />
 	return (
 		<div data-testid='AuthPage'>
 			<Outlet />

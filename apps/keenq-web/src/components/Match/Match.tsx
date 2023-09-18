@@ -60,8 +60,8 @@ function Match() {
 	const { id: pid } = useParams()
 	const { t } = useTranslate()
 
-	const { onOpen: onReportOpen } = useModal('report')
-	const { onOpen: onAcquaintanceOpen } = useModal('acquaintance')
+	const { open: onReportOpen } = useModal('report')
+	const { open: onAcquaintanceOpen } = useModal('acquaintance')
 	const navigate = useNavigate()
 	const { id, done } = useCurrentMember()
 

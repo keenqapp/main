@@ -11,12 +11,12 @@ import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
 import TextFieldsTwoToneIcon from '@mui/icons-material/TextFieldsTwoTone'
 import WcTwoToneIcon from '@mui/icons-material/WcTwoTone'
 
+import { useCurrentMember } from '@/model/member/hooks'
+
 import Card from '@/ui/Card'
 import Column from '@/ui/Column'
 import Row from '@/ui/Row'
 import Space from '@/ui/Space'
-
-import { useCurrentMember } from '@/model/member/hooks'
 
 
 const ProfileProgressContainer = styled.div`

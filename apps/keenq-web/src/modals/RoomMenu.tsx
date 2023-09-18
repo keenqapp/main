@@ -23,7 +23,7 @@ function RoomMenu() {
 	const { t } = useTranslate()
 	const navigate = useNavigate()
 	const { name, on } = useModal('room')
-	const { onOpen: addMemberOpen } = useModal('addMemberToRoom')
+	const { open: addMemberOpen } = useModal('addMemberToRoom')
 	const { open: openReport } = useModal('report')
 	const { confirm } = useConfirm()
 	const { id: memberId } = useCurrentMember()

@@ -47,7 +47,7 @@ const Input = styled(TextField)`
 
 function RoomInput() {
 
-	const { onOpen } = useModal('attachment')
+	const { open } = useModal('attachment')
 	const messageReplyOrEditId = useStore($messageReplyOrEditId)
 
 	const { id: mid } = useCurrentMember()
@@ -177,7 +177,7 @@ function RoomInput() {
 							{imagesToAdd.toFlatArray().map(file => <RoomInputNewFile key={file.id} {...file} />)}
 						</Row>
 						<Row justify='stretch' gap={1} align='end'>
-							<IconButton color='secondary' onClick={onOpen} ><AttachFileTwoToneIcon /></IconButton>
+							<IconButton color='secondary' onClick={open} ><AttachFileTwoToneIcon /></IconButton>
 							<Input {...textInput} />
 							<IconButton color='primary' onClick={onSendClick}><SendTwoToneIcon /></IconButton>
 						</Row>

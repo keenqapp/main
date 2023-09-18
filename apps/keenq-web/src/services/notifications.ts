@@ -1,7 +1,7 @@
 import { getMessaging } from 'firebase/messaging'
 
 import { app } from '@/services/firebase'
-import { modalsStore } from '@/services/modals'
+import { $modals } from '@/services/modals'
 
 import icon from '@/assets/keenq.svg'
 
@@ -25,7 +25,7 @@ export function spawn(body: string) {
 }
 
 export function notify(msg: string) {
-	if (check() !== 'granted') return modalsStore()['notifications'](true)
+	if (check() !== 'granted') return $modals.setKey('notifications', true)
 	spawn(msg)
 }
 

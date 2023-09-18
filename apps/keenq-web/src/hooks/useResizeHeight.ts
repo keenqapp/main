@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
-
-import { signal } from '@/utils/signals'
+import { useStore } from '@nanostores/preact'
+import { atom } from 'nanostores'
 
 
 function getHeight() {
@@ -9,11 +9,13 @@ function getHeight() {
 	return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
 }
 
-const height = signal(getHeight())
+const $height = atom(getHeight())
+
 function listener() {
-	if (height() !== getHeight()) height(getHeight())
+	if ($height.get() !== getHeight()) $height.set(getHeight())
 }
 export default function useResizeHeight() {
+	const height = useStore($height)
 	useEffect(() => {
 		window.addEventListener('resize', listener)
 		return () => window.removeEventListener('resize', listener)

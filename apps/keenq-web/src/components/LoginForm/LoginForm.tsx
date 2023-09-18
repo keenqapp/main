@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
+import { useStore } from '@nanostores/preact'
 import { useSignal } from '@preact/signals'
 import { useNavigate } from 'react-router-dom'
 
@@ -13,7 +14,7 @@ import Typography from '@mui/material/Typography'
 
 import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
 
-import { authError, useSend, useVerify } from '@/services/auth'
+import { $authError, useSend, useVerify } from '@/services/auth'
 import { useTranslate } from '@/services/translate'
 
 import Container from '@/ui/Container'
@@ -31,13 +32,14 @@ const StyledStack = styled(Stack)`
 	transition: height 300ms ease-in-out;
 `
 
-function f(s: any, prev: any) {
-	const sss = (s.length > 14 ? prev: s).replaceAll(/\D/g, '')
+function format(s: string, prev: any) {
+	const sss = (s.length > 14 ? prev : s).replaceAll(/\D/g, '')
 	return '+' + sss
 }
 
 function LoginForm() {
 	const { t } = useTranslate()
+	const authError = useStore($authError)
 
 	const [ codeSent, setCodeSent ] = useState(false)
 	const loading = useSignal(false)
@@ -61,10 +63,10 @@ function LoginForm() {
 		variant: 'outlined',
 		placeholder: t`auth.number`,
 		type: 'tel',
-		format: f,
+		format: format,
 		validation: [isNotEmpty, isValidPhone],
-		error: authError.value,
-		onFocus: () => authError.value = null,
+		error: authError,
+		onFocus: () => $authError.set(null),
 	})
 
 	const handleChange = ( _: any, code: string) => {
@@ -84,9 +86,9 @@ function LoginForm() {
 		type: 'number',
 		placeholder: t`auth.wasSent`,
 		validation: [isNotEmpty],
-		error: authError.value,
+		error: authError,
 		onChange: handleChange,
-		onFocus: () => authError.value = null
+		onFocus: () => $authError.set(null)
 	})
 
 	const onCodeSent = async () => {

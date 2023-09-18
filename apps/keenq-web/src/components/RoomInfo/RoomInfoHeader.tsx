@@ -24,11 +24,11 @@ function RoomInfoHeader(room: IRoom) {
 	const { name, verified } = room
 
 	const navigate = useNavigate()
-	const { onOpen } = useModal('roomInfo')
+	const { open } = useModal('roomInfo')
 
 	const { isAdmin } = useCurrentRoom()
 	const handleBack = () => navigate(-1)
-	const onClick = () => onOpen(room)
+	const onClick = () => open(room)
 
 	return (
 		<Row data-testid='RoomInfoHeader'>

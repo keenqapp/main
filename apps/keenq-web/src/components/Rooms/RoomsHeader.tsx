@@ -47,7 +47,7 @@ function RoomsHeader() {
 	const { t } = useTranslate('rooms')
 	const tab = useStore($tab)
 	const showTabs = useStore($showTabs)
-	const { onOpen } = useModal('rooms')
+	const { open } = useModal('rooms')
 	const onChange = (_: any, _tab: string) => $tab.set(_tab)
 
 	return (
@@ -64,7 +64,7 @@ function RoomsHeader() {
 				</Folders>
 			)}
 			<Space grow />
-			<IconButton onClick={onOpen}><MoreVertTwoToneIcon /></IconButton>
+			<IconButton onClick={open}><MoreVertTwoToneIcon /></IconButton>
 		</RoomInfoContainer>
 	)
 }

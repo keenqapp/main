@@ -1,14 +1,14 @@
 import { useCallback } from 'preact/hooks'
-import { computed } from '@preact/signals'
+import { useStore } from '@nanostores/preact'
+import { atom, computed, map } from 'nanostores'
 
 import { IMessage } from '@/model/message'
 import { IRoom } from '@/model/room'
 
-import { signal } from '@/utils/signals'
 import { merge } from '@/utils/utils'
 
 
-const modals = {
+const modalsInit = {
 	location: false,
 	appbar: false,
 	city: false,
@@ -33,8 +33,8 @@ const modals = {
 	notifications: false
 }
 
-export type ModalsState = typeof modals
-export type ModalKeys = keyof typeof modals
+export type ModalsState = typeof modalsInit
+export type ModalKeys = keyof typeof modalsInit
 export type ModalParams<N> = N extends keyof ModalParamsMap ? ModalParamsMap[N] : Record<string, never>
 
 export interface ModalParamsMap {
@@ -51,31 +51,30 @@ export interface UseModalOptions {
 	onOpen: () => void
 }
 
-export const modalsStore = signal<ModalsState>(modals)
+export const $modals = map<ModalsState>(modalsInit)
 let params = {} as any
 
 export function useModal<N extends ModalKeys>(name: N, options?: UseModalOptions) {
-	const isOpen = computed(() => modalsStore()[name]())
+	const isOpen = computed($modals, modals => modals[name])
 	const open = useCallback((dto: ModalParams<N> = {} as any) => {
 		options?.onOpen?.()
 		params = dto
-		modalsStore()[name](true)
+		$modals.setKey(name, true)
 	}, [])
 	const close = useCallback(() => {
 		options?.onClose?.()
 		params = {} as any
-		modalsStore()[name](false)
+		$modals.setKey(name, false)
 	}, [])
 	const on = useCallback((fn: (e?: any) => void) => (e?: any) => {
 		fn(e)
 		close()
 	}, [])
-	const closeAll = useCallback(() => modalsStore.clear(), [])
+	const closeAll = useCallback(() => $modals.set(modalsInit), [])
 	return {
 		name: name as Extract<ModalKeys, N>,
-		isOpen: isOpen.value,
 		params: params as ModalParams<N>,
-		onOpen: open,
+		isOpen,
 		on,
 		open,
 		close,
@@ -101,32 +100,31 @@ const defaultConfirm = {
 	onConfirm: () => undefined
 }
 
-const options = signal(defaultConfirm)
+const $options = atom(defaultConfirm)
 
 export function useConfirm() {
-	const open = computed(() => modalsStore().confirm())
-
-	const onOpen = useCallback(() => modalsStore().confirm(true), [])
+	const isOpen = computed($modals, modals => modals['confirm'])
+	const options = useStore($options)
+	const open = useCallback(() => $modals.setKey('confirm', true), [])
 	const close = useCallback(() => {
-		modalsStore().confirm(false)
-		options.clear()
+		$modals.setKey('confirm', false)
+		$options.set(defaultConfirm)
 	}, [])
-	const closeAll = useCallback(() => modalsStore.clear(), [])
+	const closeAll = useCallback(() => {
+		$modals.set(modalsInit)
+	}, [])
 	const confirm = useCallback((newOptions: ConfirmOptions) => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		options(merge(defaultConfirm, newOptions))
-		onOpen()
+		$options.set(merge(defaultConfirm, newOptions))
 	}, [])
-
 	return {
 		name: 'confirm',
-		open: open.value,
-		isOpen: open.value,
+		isOpen,
+		open,
+		close,
 		confirm,
 		options,
-		onOpen,
-		close,
 		closeAll
 	}
 }

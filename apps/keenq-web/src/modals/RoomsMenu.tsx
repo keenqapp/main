@@ -16,7 +16,7 @@ import { $showTabs } from '@/components/Rooms/store'
 function RoomsMenu() {
 	const { t } = useTranslate('rooms')
 	const { name, on } = useModal('rooms')
-	const { onOpen } = useModal('createRoom')
+	const { open } = useModal('createRoom')
 	const showTabs = useStore($showTabs)
 	const tabs = () => $showTabs.set(!$showTabs.get())
 
@@ -31,7 +31,7 @@ function RoomsMenu() {
 				/>
 			</DrawerList>
 			<DrawerList>
-				<DrawerItem icon={<MapsUgcTwoToneIcon color='primary' />} text={t`create`} onClick={on(onOpen)} />
+				<DrawerItem icon={<MapsUgcTwoToneIcon color='primary' />} text={t`create`} onClick={on(open)} />
 			</DrawerList>
 		</Drawer>
 	)

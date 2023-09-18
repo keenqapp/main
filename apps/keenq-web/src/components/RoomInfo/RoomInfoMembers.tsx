@@ -33,11 +33,11 @@ function Member(member: IMember) {
 	const { t } = useTranslate()
 	const { id, name } = member
 	const avatar = getAvatar(member)
-	const { onOpen } = useModal('roomInfoMember')
+	const { open } = useModal('roomInfoMember')
 	const { adminsIds, allMembers } = useCurrentRoom()
 	const isAdmin = $isAdmin(id, adminsIds)
 	const isBanned = $isBanned(id, allMembers)
-	const onClick = () => onOpen({ id })
+	const onClick = () => open({ id })
 
 	return (
 		<MemberContainer justify='start' gap={1} onClick={onClick}>

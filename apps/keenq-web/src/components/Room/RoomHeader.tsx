@@ -47,7 +47,7 @@ const StyledAvatar = styled(Avatar)`
 
 function RoomHeader() {
 	const { t } = useTranslate()
-	const { onOpen } = useModal('room')
+	const { open } = useModal('room')
 	const { room, membersCount, isBanned } = useCurrentRoom()
 	const { id, verified, image, name } = room
 
@@ -56,7 +56,7 @@ function RoomHeader() {
 	const navigate = useNavigate()
 	const onBack = () => navigate(-1)
 
-	const onMenuClick = () => !isBanned && onOpen()
+	const onMenuClick = () => !isBanned && open()
 	const onNameClick = () => {
 		if (isBanned) return
 		if (isPersonal) navigate(`/match/${id}`)

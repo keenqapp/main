@@ -27,7 +27,7 @@ const RoomInfoContainer = styled(Row)`
 `
 
 function PersonalRoomHeader() {
-	const { onOpen } = useModal('room')
+	const { open } = useModal('room')
 	const { room } = useCurrentRoom()
 	const { id: mid } = useCurrentMember()
 	const { id: rid, verified } = room
@@ -40,7 +40,7 @@ function PersonalRoomHeader() {
 	const navigate = useNavigate()
 	const onBack = () => navigate(-1)
 
-	const onMenuClick = () => onOpen()
+	const onMenuClick = () => open()
 	const onNameClick = () => navigate(`/match/${id}`)
 
 	return (

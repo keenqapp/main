@@ -16,11 +16,11 @@ import Space from '@/ui/Space'
 
 function InstallDrawer() {
 	const { t } = useTranslate()
-	const { name, onOpen, close } = useModal('install')
+	const { name, open, close } = useModal('install')
 	const shouldShow = useStore($shouldShow)
 	useEffect(() => {
 		if (shouldShow) {
-			onOpen()
+			open()
 			$shouldShow.set(false)
 		}
 	}, [])

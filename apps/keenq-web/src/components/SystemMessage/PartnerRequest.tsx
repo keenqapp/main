@@ -55,12 +55,12 @@ function PartnerRequest({ id, to, from, result }: IPartnerRequest['value'] & { i
 	const { name } = member
 	const avatar = getAvatar(member)
 
-	const { onOpen } = useModal('partnerRequest')
+	const { open } = useModal('partnerRequest')
 	const [ , remove ] = useMutation(deletemessagegql)
 	const [ , update ] = useUpdate(updatemessagegql)
 	const [ , link ] = useUpdate(updatepartnergql)
 
-	const requestClick = () => onOpen({ id: to })
+	const requestClick = () => open({ id: to })
 
 	const onYesClick = async () => {
 		const linkedTo = {

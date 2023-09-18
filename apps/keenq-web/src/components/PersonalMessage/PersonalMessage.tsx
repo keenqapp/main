@@ -88,11 +88,11 @@ function DateSeparator({ date, prevDate }: IMessage) {
 
 function PersonalMessage(message: IMessage) {
 	const { authorId, content } = message
-	const { onOpen } = useModal('message')
+	const { open } = useModal('message')
 	const isAuthor = useIsAuthor(authorId)
 	if (!content?.length) return null
 
-	const onMessageClick = () => onOpen(message)
+	const onMessageClick = () => open(message)
 
 	return (
 		<>
