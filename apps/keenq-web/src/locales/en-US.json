@@ -7,18 +7,18 @@
     "yeap": "Yeap"
   },
   "app": {
-    "keenq": "keenq",
     "doit": "Do it",
+    "keenq": "keenq",
     "okay": "Okay"
   },
   "auth": {
-    "phone": "Phone",
-    "number": "Your phone number",
+    "another": "Use another phone number",
     "code": "Code",
-    "wasSent": "Code that was sent to your phone",
+    "number": "Your phone number",
+    "phone": "Phone",
     "send": "Send code",
     "verify": "Verify code",
-    "another": "Use another phone number"
+    "wasSent": "Code that was sent to your phone"
   },
   "confirm": {
     "no": "No",
@@ -44,6 +44,11 @@
     "homescreen": " app to your homescreen",
     "you": "You can add"
   },
+  "lang": {
+    "en-US": "English",
+    "lang": "Language",
+    "ru-RU": "Русский"
+  },
   "location": {
     "chooseCity": "Choose a city",
     "denied": "You have denied to share location",
@@ -54,9 +59,9 @@
     "and": "and",
     "away": "away",
     "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms",
+    "hi": "Hi!",
     "someDistance": "Some distance",
-    "youHave": "You have a new match!",
-    "hi": "Hi!"
+    "youHave": "You have a new match!"
   },
   "member": {
     "add": "Add member",
@@ -70,6 +75,11 @@
   },
   "notify": {
     "has": "Your have a Match! Allow notificatuons not to miss a new one"
+  },
+  "partner": {
+    "accepted": "You are partners now",
+    "want": "want to add a partner",
+    "wants": "wants to add you as a partner"
   },
   "profile": {
     "addPhoto": "Add photo",
@@ -87,6 +97,15 @@
     "upload": "Upload at least three photos for better impression",
     "your": "Your"
   },
+  "progress": {
+    "before": "Before matching fill this:",
+    "description": "Description",
+    "desires": "Desires",
+    "identity": "Identity",
+    "location": "Location",
+    "name": "",
+    "photo": "Photo"
+  },
   "report": {
     "abuseDesc": "Unsafe behavior",
     "abuseTitle": "Abuse",
@@ -97,28 +116,24 @@
     "violationTitle": "Violation"
   },
   "room": {
+    "ban": "Ban",
+    "banText": "Are you sure?",
+    "banned": "You have been banned from this room",
     "deleteText": "Are you sure you want to delete this room?",
     "deleteTitle": "Delete room",
+    "downgrade": "Downgrade",
     "join": "Join",
     "leave": "Leave",
     "leaveText": "Are you sure you want to leave this room?",
     "leaveTitle": "Leave room",
-    "room": "Room",
-    "share": "Share",
-    "verification": "Request verification",
-    "downgrade": "Downgrade",
-    "ban": "Ban",
-    "banText": "Are you sure?",
-    "unban": "Unban",
     "makeAdmin": "Make admin",
     "makeOwner": "Make owner",
+    "members": "members",
     "remove": "Remove",
-    "banned": "You have been banned from this room",
-    "members": "members"
-  },
-  "roomsMembers": {
-    "admin": "admin",
-    "banned": "banned"
+    "room": "Room",
+    "share": "Share",
+    "unban": "Unban",
+    "verification": "Request verification"
   },
   "rooms": {
     "channel": "Channel",
@@ -134,6 +149,10 @@
     "public": "Public",
     "rooms": "rooms",
     "toggle": "Toogle folders"
+  },
+  "roomsMembers": {
+    "admin": "admin",
+    "banned": "banned"
   },
   "settings": {
     "close": "Close my account",
@@ -155,20 +174,10 @@
     "selected": "Selected"
   },
   "words": {
+    "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "cancel": "Cancel",
-    "yes": "Yes",
-    "no": "No"
-  },
-  "partner": {
-    "want": "want to add a partner",
-    "wants": "wants to add you as a partner",
-    "accepted": "You are partners now"
-  },
-  "lang": {
-    "lang": "Language",
-    "en-US": "English",
-    "ru-RU": "Русский"
+    "no": "No",
+    "yes": "Yes"
   }
 }

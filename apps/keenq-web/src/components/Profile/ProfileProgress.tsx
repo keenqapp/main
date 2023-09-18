@@ -11,6 +11,8 @@ import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
 import TextFieldsTwoToneIcon from '@mui/icons-material/TextFieldsTwoTone'
 import WcTwoToneIcon from '@mui/icons-material/WcTwoTone'
 
+import { useTranslate } from '@/services/translate'
+
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Card from '@/ui/Card'
@@ -27,6 +29,7 @@ function Done({ done, or }: { done: boolean, or: VNode }) {
 }
 
 function ProfileProgress() {
+	const { t } = useTranslate()
 	const {
 		name,
 		description,
@@ -41,31 +44,31 @@ function ProfileProgress() {
 		<ProfileProgressContainer>
 			<Card>
 				<Column gap={0.5}>
-					<Typography variant='h6'>Before matching fill this:</Typography>
+					<Typography variant='h6'>{t`progress.before`}</Typography>
 					<Space height={0.1} />
 					<Row gap={0.5} justify='start'>
 						<Done done={!!images && images.length > 0} or={<AddAPhotoTwoToneIcon fontSize='small' color='secondary' />} />
-						<Typography>Photo</Typography>
+						<Typography>{t`progress.photo`}</Typography>
 					</Row>
 					<Row gap={0.5} justify='start'>
 						<Done done={!!name} or={<TextFieldsTwoToneIcon fontSize='small' color='secondary' />} />
-						<Typography>Name</Typography>
+						<Typography>{t`progress.name`}</Typography>
 					</Row>
 					<Row gap={0.5} justify='start'>
 						<Done done={!!gender && !!sexuality} or={<WcTwoToneIcon fontSize='small' color='secondary' />} />
-						<Typography>Identity</Typography>
+						<Typography>{t`progress.identity`}</Typography>
 					</Row>
 					<Row gap={0.5} justify='start'>
 						<Done done={!!location} or={<NotListedLocationTwoToneIcon fontSize='small' color='secondary' />} />
-						<Typography>Location</Typography>
+						<Typography>{t`progress.location`}</Typography>
 					</Row>
 					<Row gap={0.5} justify='start'>
 						<Done done={!!description} or={<SubjectTwoToneIcon fontSize='small' color='secondary' />} />
-						<Typography>Description</Typography>
+						<Typography>{t`progress.description`}</Typography>
 					</Row>
 					<Row gap={0.5} justify='start'>
 						<Done done={!!tags && tags.length > 0} or={<TagTwoToneIcon fontSize='small' color='secondary' />} />
-						<Typography>Desires</Typography>
+						<Typography>{t`progress.desires`}</Typography>
 					</Row>
 				</Column>
 			</Card>
