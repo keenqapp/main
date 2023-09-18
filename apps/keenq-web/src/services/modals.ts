@@ -1,6 +1,6 @@
 import { useCallback } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
-import { atom, computed, map } from 'nanostores'
+import { atom, map } from 'nanostores'
 
 import { IMessage } from '@/model/message'
 import { IRoom } from '@/model/room'
@@ -55,8 +55,9 @@ export const $modals = map<ModalsState>(modalsInit)
 let params = {} as any
 
 export function useModal<N extends ModalKeys>(name: N, options?: UseModalOptions) {
-	const $isOpen = computed($modals, modals => modals[name])
-	const isOpen = useStore($isOpen)
+	// TODO check proper way to handle 'map' for reactivity
+	const modals = useStore($modals)
+	const isOpen = modals[name]
 	const open = useCallback((dto: ModalParams<N> = {} as any) => {
 		options?.onOpen?.()
 		params = dto
@@ -104,8 +105,8 @@ const defaultConfirm = {
 const $options = atom(defaultConfirm)
 
 export function useConfirm() {
-	const $isOpen = computed($modals, modals => modals['confirm'])
-	const isOpen = useStore($isOpen)
+	const modals = useStore($modals)
+	const isOpen = modals['confirm']
 	const options = useStore($options)
 	const open = useCallback(() => $modals.setKey('confirm', true), [])
 	const close = useCallback(() => {
