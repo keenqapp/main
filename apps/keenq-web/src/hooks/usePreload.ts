@@ -1,6 +1,7 @@
 import { useEffect } from 'preact/hooks'
 
 import { usePosition } from '@/services/location'
+import { usePushes } from '@/services/notifications'
 
 import { matchgql } from '@/model/match/gql'
 import { updatemembergql, useCurrentMember } from '@/model/member'
@@ -19,6 +20,8 @@ const roomsOptions = {
 export function usePreload() {
 	const { id } = useCurrentMember()
 	const { position, permission, getPointAndLocation } = usePosition()
+
+	usePushes()
 
 	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
 	const [{ fetching: matchFetching, data, error }, match] = useQuery(matchgql, { id }, { pause: true })

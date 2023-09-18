@@ -1,12 +1,28 @@
-import { getMessaging } from 'firebase/messaging'
+import { getMessaging, getToken, isSupported } from 'firebase/messaging'
 
 import { app } from '@/services/firebase'
 import { $modals } from '@/services/modals'
 
+import { updatemembergql, useCurrentMember } from '@/model/member'
+
 import icon from '@/assets/keenq.svg'
+import { useMutation } from '@/hooks/gql'
+import useAsyncEffect from '@/hooks/useAsyncEffect'
 
 
-export const messaging = getMessaging(app)
+const vapidKey = import.meta.env.VITE_VAPID_KEY
+
+export let messaging: any
+async function init() {
+	try {
+		const supported = await isSupported()
+		if (supported) messaging = getMessaging(app)
+	}
+	catch(e) {
+		throw { error: e }
+	}
+}
+init()
 
 export async function request() {
 	await Notification.requestPermission()
@@ -27,6 +43,22 @@ export function spawn(body: string) {
 export function notify(msg: string) {
 	if (check() !== 'granted') return $modals.setKey('notifications', true)
 	spawn(msg)
+}
+
+export function usePushes() {
+	const { id } = useCurrentMember()
+	const [ , update ] = useMutation(updatemembergql)
+	useAsyncEffect(async () => {
+		if (id && messaging) {
+			try {
+				const pushToken = await getToken(messaging, { vapidKey })
+				await update({ id, data: { pushToken } })
+			}
+			catch(e) {
+				throw { error: e }
+			}
+		}
+	}, [ id, messaging ])
 }
 
 export function useNotifications() {
