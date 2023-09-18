@@ -55,7 +55,8 @@ export const $modals = map<ModalsState>(modalsInit)
 let params = {} as any
 
 export function useModal<N extends ModalKeys>(name: N, options?: UseModalOptions) {
-	const isOpen = computed($modals, modals => modals[name])
+	const $isOpen = computed($modals, modals => modals[name])
+	const isOpen = useStore($isOpen)
 	const open = useCallback((dto: ModalParams<N> = {} as any) => {
 		options?.onOpen?.()
 		params = dto
@@ -103,7 +104,8 @@ const defaultConfirm = {
 const $options = atom(defaultConfirm)
 
 export function useConfirm() {
-	const isOpen = computed($modals, modals => modals['confirm'])
+	const $isOpen = computed($modals, modals => modals['confirm'])
+	const isOpen = useStore($isOpen)
 	const options = useStore($options)
 	const open = useCallback(() => $modals.setKey('confirm', true), [])
 	const close = useCallback(() => {
