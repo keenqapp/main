@@ -1,4 +1,3 @@
-import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
 
 import { useCurrentRoom } from '@/model/room'
@@ -18,18 +17,6 @@ const StyledContainer = styled.div`
 
 function Room() {
 	const { isBanned, isPersonal } = useCurrentRoom()
-
-	useEffect(() => {
-		const vh = window.innerHeight * 0.01
-		document.documentElement.style.setProperty('--vh', `${vh}px`)
-		const cb = function () {
-			const vh = window.innerHeight * 0.01
-			document.documentElement.style.setProperty('--vh', `${vh}px`)
-		}
-		window.addEventListener('resize', cb, true)
-		return () => window.removeEventListener('resize', cb, true)
-	}, [])
-
 	return (
 		<StyledContainer data-testid='Room'>
 			{isPersonal

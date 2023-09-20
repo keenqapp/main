@@ -1,4 +1,5 @@
 import { ComponentChildren } from 'preact'
+import { useEffect } from 'preact/hooks'
 
 import GlobalStyles from '@mui/material/GlobalStyles'
 import { css, Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles'
@@ -36,8 +37,8 @@ const globalStyles = css`
   }
   html {
     box-sizing: border-box;
-    max-width: 100vw;
-    min-height: 100vh;
+    width: 100vw;
+		height: calc(100 * var(--vh));
     user-select: none;
   }
   @media print {
@@ -157,6 +158,16 @@ const theme = unstable_createMuiStrictModeTheme({
 })
 
 function ThemeProvider({ children }: { children: ComponentChildren }) {
+	useEffect(() => {
+		const vh = window.innerHeight * 0.01
+		document.documentElement.style.setProperty('--vh', `${vh}px`)
+		const cb = function () {
+			const vh = window.innerHeight * 0.01
+			document.documentElement.style.setProperty('--vh', `${vh}px`)
+		}
+		window.addEventListener('resize', cb, true)
+		return () => window.removeEventListener('resize', cb, true)
+	}, [])
 	return (
 		<MUIThemeProvider theme={theme}>
 			<GlobalStyles styles={globalStyles} />

@@ -9,9 +9,8 @@ import Loading from '@/core/Loading'
 
 
 const StyledPage = styled.div<{ animation: PageProps['animation'], duration: PageProps['duration'] }>`
-  min-height: calc(100vh - var(--vertical-space) * 2);
+  height: calc(100 * var(--vh) - var(--appbar-height) - var(--vertical-space));
   animation: ${p => getKeyframes(p.animation)} ${p => p.duration}ms ease-in-out 1;
-  padding-bottom: var(--vertical-space);
 	width: 100vw;
 	display: flex;
 	flex-direction: column;
@@ -30,10 +29,8 @@ interface PageProps {
 	children: ComponentChildren
 	animation?: 'fadeInLeft' | 'fadeIn'
 	duration?: number
-  // isLoading?: boolean
 }
 
-// function Page({ isLoading = false, ...props }: Props) {
 function Page({ animation = 'fadeInLeft', duration = 200, ...props }: PageProps) {
 	const loader = useLoaderData()
 	return (

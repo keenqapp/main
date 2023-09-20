@@ -1,4 +1,4 @@
-import { getMessaging, getToken, isSupported } from 'firebase/messaging'
+import { getMessaging, getToken, isSupported, onMessage } from 'firebase/messaging'
 
 import { app } from '@/services/firebase'
 import { $modals } from '@/services/modals'
@@ -53,6 +53,10 @@ export function usePushes() {
 			try {
 				const pushToken = await getToken(messaging, { vapidKey })
 				await update({ id, data: { pushToken } })
+				console.log('--- notifications.ts:56 ->  ->', pushToken)
+				onMessage(messaging, msg => {
+					console.log('--- notifications.ts:57 ->  ->', msg)
+				})
 			}
 			catch(e) {
 				throw { error: e }

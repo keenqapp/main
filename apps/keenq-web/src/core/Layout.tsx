@@ -14,9 +14,8 @@ import Modals from '@/modals/Modals'
 
 const Main = styled.main`
   padding-top: var(--appbar-height);
-	position: relative;
-	overflow-x: hidden;
-  min-height: calc(100vh - var(--appbar-height));
+  position: relative;
+  overflow: hidden;
 `
 
 function Layout() {
