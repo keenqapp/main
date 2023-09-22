@@ -36,7 +36,7 @@ function enrich(acc: IMessage[], message: IMessage, index: number, data: IMessag
 }
 
 const RoomMessagesContainer = styled.div`
-	flex: 1;
+	flex: 2 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: stretch;
@@ -66,6 +66,7 @@ function RoomMessages() {
 	return (
 		<RoomMessagesContainer data-testid='RoomMessages'>
 			<RoomMessagesList
+				name='RoomMessages'
 				scrollRef={ref}
 				data={messages}
 				render={RoomMessage}

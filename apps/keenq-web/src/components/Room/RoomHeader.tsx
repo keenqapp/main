@@ -10,12 +10,12 @@ import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import { $isPersonal } from '@/model/room'
 import { useCurrentRoom } from '@/model/room/hooks'
 
 import Row from '@/ui/Row'
-import { useTranslate } from '@/services/translate'
 
 
 const RoomHeaderContainer = styled(Row)`

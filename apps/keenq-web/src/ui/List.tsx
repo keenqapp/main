@@ -9,7 +9,8 @@ import { Entity } from '@/types/utility'
 
 const ListContainer = styled.div<{ height: number }>`
 	position: relative;
-	${column}
+	width: 100%;
+	${column};
 `
 
 const ScrollContainer = styled.div`
@@ -43,12 +44,13 @@ const StyledAutosizer = styled.div`
 	flex: 1;
 `
 
-function Autosizer({ setHeight }: { setHeight: (height: number) => void }) {
+function Autosizer({ setHeight, name }: { setHeight: (height: number) => void, name?: string }) {
 	const ref = useRef<HTMLDivElement>(null)
 	useEffect(() => {
 		setHeight(ref.current?.clientHeight || 0)
 		if (!ref.current) return
 		const resizeObserver = new ResizeObserver(() => {
+			if (name) console.log('--- List.tsx:52 ->  ->', name, ref.current?.clientHeight)
 			setHeight(ref.current?.clientHeight || 0)
 		})
 		resizeObserver.observe(ref.current)
@@ -65,23 +67,24 @@ interface ListProps<P extends Entity, > {
 	className?: string
 	loading?: () => VNode
 	isLoading?: boolean
+	name?: string
 }
 
-function List<T extends Entity>({ data, render, scrollRef, empty, className, ...rest }: ListProps<T>) {
+function List<T extends Entity>({ data, render, scrollRef, empty, className, name, ...rest }: ListProps<T>) {
 	const [ height, setHeight ] = useState(0)
 	if (data && data?.length < 1 && empty) return empty()
 	return (
 		<ListContainer data-testid='List'>
-			<Autosizer setHeight={setHeight} />
+			<Autosizer setHeight={setHeight} name={name} />
 			<ScrollContainer {...rest}>
-				<Fade position='start' />
+				{/*<Fade position='start' />*/}
 				<Scroll ref={scrollRef} height={height} className={className}>
 					{(data || []).map((item, index) => {
 						const Component = render
 						return <Component key={item.id} index={index} {...item} />
 					})}
 				</Scroll>
-				<Fade position='end' />
+				{/*<Fade position='end' />*/}
 			</ScrollContainer>
 		</ListContainer>
 	)

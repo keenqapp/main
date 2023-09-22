@@ -72,7 +72,7 @@ function Drawer({ name, children, fullHeight }: DrawerProps) {
 			fullHeight={fullHeight}
 			disableSwipeToOpen
 		>
-			<IconButton><RemoveRoundedIcon /></IconButton>
+			<IconButton onClick={close}><RemoveRoundedIcon /></IconButton>
 			{children}
 		</StyledDrawer>
 	)

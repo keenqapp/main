@@ -5,6 +5,7 @@ import GlobalStyles from '@mui/material/GlobalStyles'
 import { css, Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles'
 
 import rawTheme from '@/ui/theme'
+import useResizeHeight from '@/hooks/useResizeHeight'
 
 
 declare module '@emotion/react' {
@@ -38,7 +39,6 @@ const globalStyles = css`
   html {
     box-sizing: border-box;
     width: 100vw;
-		height: calc(100 * var(--vh));
     user-select: none;
   }
   @media print {
@@ -51,7 +51,7 @@ const globalStyles = css`
     font-family: serif;
     color: ${rawTheme.color.base};
     background-color:#fefefe;
-		min-height: 100vh;
+    //height: calc(100 * var(--vh));
   }
   a {
     text-decoration: none;
@@ -158,16 +158,17 @@ const theme = unstable_createMuiStrictModeTheme({
 })
 
 function ThemeProvider({ children }: { children: ComponentChildren }) {
+	const height = useResizeHeight()
 	useEffect(() => {
-		const vh = window.innerHeight * 0.01
+		const vh = height * 0.01
 		document.documentElement.style.setProperty('--vh', `${vh}px`)
-		const cb = function () {
-			const vh = window.innerHeight * 0.01
-			document.documentElement.style.setProperty('--vh', `${vh}px`)
-		}
-		window.addEventListener('resize', cb, true)
-		return () => window.removeEventListener('resize', cb, true)
-	}, [])
+		// const cb = function () {
+		// 	const vh = height * 0.01
+		// 	document.documentElement.style.setProperty('--vh', `${vh}px`)
+		// }
+		// window.addEventListener('resize', cb, true)
+		// return () => window.removeEventListener('resize', cb, true)
+	}, [height])
 	return (
 		<MUIThemeProvider theme={theme}>
 			<GlobalStyles styles={globalStyles} />

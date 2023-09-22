@@ -11,14 +11,15 @@ function getHeight() {
 
 const $height = atom(getHeight())
 
-function listener() {
-	if ($height.get() !== getHeight()) $height.set(getHeight())
+function listener(e: any) {
+	const height = e.target.height
+	if ($height.get() !== height) $height.set(height)
 }
 export default function useResizeHeight() {
 	const height = useStore($height)
 	useEffect(() => {
-		window.addEventListener('resize', listener)
-		return () => window.removeEventListener('resize', listener)
+		window.visualViewport?.addEventListener('resize', listener)
+		return () => window.visualViewport?.removeEventListener('resize', listener)
 	}, [])
 	return height
 }

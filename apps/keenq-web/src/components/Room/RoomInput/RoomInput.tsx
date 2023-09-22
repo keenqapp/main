@@ -23,7 +23,6 @@ import Row from '@/ui/Row'
 import RoomInputEditImage from '@/components/Room/RoomInput/RoomInputEditImage'
 import RoomInputNewFile from '@/components/Room/RoomInput/RoomInputNewFile'
 import RoomInputReply from '@/components/Room/RoomInput/RoomInputReply'
-import RoomJoin from '@/components/Room/RoomInput/RoomJoin'
 import { $imagesToAdd, $imagesToEdit, $imagesToEditSetted, $messageReplyOrEditId, $scroll, clear } from '@/components/Room/RoomInput/state'
 
 import { useQuery, useUpdate } from '@/hooks/gql'
@@ -164,7 +163,6 @@ function RoomInput() {
 	}
 
 	const showInput =  isAdmin || (!isChannel && isMember)
-	const showJoin = !isMember
 
 	return (
 		<RoomInputContainer data-testid='RoomInput'>
@@ -183,7 +181,6 @@ function RoomInput() {
 						</Row>
 					</>
 				)}
-				{showJoin && <RoomJoin />}
 			</Row>
 		</RoomInputContainer>
 	)

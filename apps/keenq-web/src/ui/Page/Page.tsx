@@ -9,7 +9,7 @@ import Loading from '@/core/Loading'
 
 
 const StyledPage = styled.div<{ animation: PageProps['animation'], duration: PageProps['duration'] }>`
-  height: calc(100 * var(--vh) - var(--appbar-height) - var(--vertical-space));
+  min-height: calc(100 * var(--vh) - var(--appbar-height) - var(--vertical-space));
   animation: ${p => getKeyframes(p.animation)} ${p => p.duration}ms ease-in-out 1;
 	width: 100vw;
 	display: flex;
