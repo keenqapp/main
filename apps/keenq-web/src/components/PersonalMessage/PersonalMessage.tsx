@@ -7,6 +7,7 @@ import { useTranslate } from '@/services/translate'
 
 import { useIsAuthor } from '@/model/member'
 import { IMessage } from '@/model/message'
+import { useCurrentRoom } from '@/model/room'
 
 import Stack from '@/ui/Stack'
 import theme from '@/ui/theme'
@@ -59,9 +60,9 @@ const selfCss = css`
   }
 `
 
-const MessageContainer = styled.div<{ isAuthor: boolean }>`
+const MessageContainer = styled.div<{ isAuthor: boolean, isChannel: boolean }>`
 	padding: 0 1rem;
-  max-width: calc(100vw - 4rem);
+  max-width: calc(100vw - ${p => p.isChannel ? 0 : 4}rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;
 	}
@@ -90,6 +91,7 @@ function PersonalMessage(message: IMessage) {
 	const { authorId, content } = message
 	const { open } = useModal('message')
 	const isAuthor = useIsAuthor(authorId)
+	const { isChannel } = useCurrentRoom()
 	if (!content?.length) return null
 
 	const onMessageClick = () => open(message)
@@ -97,7 +99,12 @@ function PersonalMessage(message: IMessage) {
 	return (
 		<>
 			<DateSeparator {...message} />
-			<MessageContainer data-testid='PersonalMessage' isAuthor={isAuthor} onClick={onMessageClick}>
+			<MessageContainer
+				data-testid='PersonalMessage'
+				isAuthor={isAuthor}
+				isChannel={isChannel}
+				onClick={onMessageClick}
+			>
 				<Stack gap={0.5} align='end'>
 					<PersonalMessageAvatar {...message} />
 					<Stack direction='column' gap={0.2} relative>
