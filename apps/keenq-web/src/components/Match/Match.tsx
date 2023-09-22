@@ -147,17 +147,18 @@ function Match() {
 			<Space />
 			<Content direction='column' align='start'>
 				<Stack self='stretch' gap={0.5} align='baseline'>
-					<Typography variant='h5'>{name}</Typography>
-					{!!partner.id && (
-						<>
-							<Typography variant='overline'>{t`match.and`}</Typography>
-							<Partner variant='h6' onClick={onPartnerClick}>{partner.name}</Partner>
-						</>
-					)}
-					<Space grow />
+					<Stack align='center' justify='start' gap={0.2} wrap>
+						<Typography variant='h5'>{name}</Typography>
+						{!!partner.id && (
+							<>
+								<Typography variant='overline'>{t`match.and`}</Typography>
+								<Partner variant='h6' onClick={onPartnerClick}>{partner.name}</Partner>
+							</>
+						)}
+					</Stack>
 					<Typography variant='body2'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
 				</Stack>
-				<Space height={0.2} />
+				<Space height={0.5} />
 				<Typography variant='overline'>{distance} {t`match.away`}</Typography>
 				<Space height={0.5} />
 				<Fabs justify='between' self='stretch'>

@@ -12,7 +12,7 @@ export function useDebounceMutation<D = any, V extends AnyVariables = AnyVariabl
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
 			_mutate({ id, data })
-		}, 1000)
+		}, 2000)
 	}
 	return [ result, mutate ] as [ UseMutationState<D, V>, typeof mutate ]
 }

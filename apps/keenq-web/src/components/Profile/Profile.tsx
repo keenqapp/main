@@ -177,6 +177,10 @@ function Profile() {
 		disableUnderline: true,
 		validation: [isNotEmpty, isLengthLower(24)],
 		forceValid: true,
+		inputProps: {
+			maxlength: 24,
+		},
+		fullWidth: true,
 		onChange: (_:any, name: string) => update(id, { name }),
 	})
 
@@ -260,7 +264,7 @@ function Profile() {
 			<Space />
 			<Content direction='column' align='stretch'>
 				<Stack justify='between' onClick={onNameClick}>
-					<NameInput disableUnderline={true} {...nameInput} />
+					<NameInput {...nameInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
 				</Stack>
 				{partner

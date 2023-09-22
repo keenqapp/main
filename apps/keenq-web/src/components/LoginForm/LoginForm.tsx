@@ -66,7 +66,7 @@ function LoginForm() {
 		placeholder: t`auth.number`,
 		type: 'tel',
 		format: format,
-		validation: [isNotEmpty, isValidPhone],
+		validation: [isNotEmpty],
 		error: authError,
 		onFocus: () => $authError.set(null),
 	})
@@ -85,9 +85,11 @@ function LoginForm() {
 		label: t`auth.code`,
 		fullWidth: true,
 		variant: 'outlined',
-		type: 'number',
-		inputmode:'numeric',
-		pattern: '[0-9]*',
+		type: 'text',
+		inputProps: {
+			inputmode:'numeric',
+			pattern: '[0-9]*',
+		},
 		placeholder: t`auth.wasSent`,
 		validation: [isNotEmpty],
 		error: authError,
