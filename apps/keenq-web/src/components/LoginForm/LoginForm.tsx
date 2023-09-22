@@ -84,6 +84,8 @@ function LoginForm() {
 		fullWidth: true,
 		variant: 'outlined',
 		type: 'number',
+		inputmode:'numeric',
+		pattern: '[0-9]*',
 		placeholder: t`auth.wasSent`,
 		validation: [isNotEmpty],
 		error: authError,
