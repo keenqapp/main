@@ -18,6 +18,7 @@ function ConfirmDialog() {
 		options.onConfirm()
 		close()
 	}
+
 	return (
 		<Dialog
 			data-testid='ConfirmDialog'

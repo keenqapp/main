@@ -18,6 +18,7 @@ import { useQuery } from '@/hooks/gql'
 
 const RoomInfoMembersContainer = styled(Stack)`
 	flex: 1 0 auto;
+	align-items: stretch;
 `
 
 const MembersList = styled(List)`
@@ -41,7 +42,7 @@ function Member(member: IMember) {
 	return (
 		<MemberContainer justify='start' gap={1} onClick={onClick}>
 			<Avatar src={avatar?.url} alt={name} />
-			<Stack direction='column'>
+			<Stack direction='column' align='start'>
 				<Typography variant='h6'>{name}</Typography>
 				{isAdmin && <Typography variant='body2'>{t`roomsMembers.admin`}</Typography>}
 				{isBanned && <Typography variant='body2'>{t`roomsMembers.banned`}</Typography>}

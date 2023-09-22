@@ -18,7 +18,7 @@ const EmptyAvatar = styled.div`
 `
 
 function PersonalMessageAvatar(message: IMessage) {
-	const { authorId, author: { images } } = message
+	const { authorId, author: { images, name } } = message
 	const { room } = useCurrentRoom()
 	const { id } = useCurrentMember()
 
@@ -31,7 +31,7 @@ function PersonalMessageAvatar(message: IMessage) {
 	if (!shouldShow) return <EmptyAvatar />
 
 	return (
-		<StyledAvatar data-testid='PersonalMessageAvatar' src={images?.[0].url}  />
+		<StyledAvatar data-testid='PersonalMessageAvatar' src={images?.[0]?.url} alt={name}  />
 	)
 }
 

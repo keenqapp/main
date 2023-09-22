@@ -3,6 +3,8 @@ import ru from 'date-fns/locale/ru'
 
 import { $locale } from '@/services/translate'
 
+import { formats } from '@/utils/phoneFormats'
+
 
 let locale: Locale | undefined = undefined
 
@@ -48,4 +50,46 @@ export function formatDistance(distance?: number, t?: any) {
 	if (km < 1500) return random(1000, 1500) + ' km'
 	if (km < 2000) return random(1500, 2000) + ' km'
 	return random(2000, 10000) + ' km'
+}
+
+
+export function asYouType(input: string): string {
+	// Removing all non-numeric characters
+	const numericInput = input.replace(/\D+/g, '')
+
+	// Define some country code formats
+	// Find the matching format
+	let format
+	let skipDigits = 0 // This is used to skip the country code digits.
+	for (const countryCode in formats) {
+		if (numericInput.startsWith(countryCode)) {
+			format = formats[countryCode]
+			skipDigits = countryCode.length
+			break
+		}
+	}
+
+	// If no specific format is found, default to a generic one
+	if (!format) {
+		format = ['+', '##', ' ', '##########'] // Generic international
+	}
+
+	let result = ''
+	let index = skipDigits
+	for (const piece of format) {
+		if (piece.includes('#')) {
+			const chunkSize = piece.length
+			const chunk = numericInput.substring(index, index + chunkSize)
+			result += chunk
+			index += chunkSize
+		} else {
+			result += piece
+		}
+	}
+
+	while (result.endsWith(' ') || result.endsWith('-') || result.endsWith(')')) {
+		result = result.slice(0, -1)
+	}
+
+	return result
 }

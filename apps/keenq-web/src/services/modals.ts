@@ -117,6 +117,7 @@ export function useConfirm() {
 		$modals.set(modalsInit)
 	}, [])
 	const confirm = useCallback((newOptions: ConfirmOptions) => {
+		open()
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		$options.set(merge(defaultConfirm, newOptions))

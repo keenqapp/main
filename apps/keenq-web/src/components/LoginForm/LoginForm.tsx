@@ -21,6 +21,7 @@ import Container from '@/ui/Container'
 import Space from '@/ui/Space'
 
 import { inputsHasError, isNotEmpty, isValidPhone, useInput } from '@/hooks/useInput'
+import { asYouType } from '@/utils/formatters'
 
 
 const StyledCardContent = styled(CardContent)`
@@ -33,8 +34,9 @@ const StyledStack = styled(Stack)`
 `
 
 function format(s: string, prev: any) {
-	const sss = (s.length > 14 ? prev : s).replaceAll(/\D/g, '')
-	return '+' + sss
+	const ayt = asYouType(s)
+	console.log('--- LoginForm.tsx:38 -> format ->', `|${ayt}|`, '|end')
+	return ayt
 }
 
 function LoginForm() {

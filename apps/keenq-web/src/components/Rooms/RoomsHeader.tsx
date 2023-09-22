@@ -10,8 +10,8 @@ import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
-import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 import theme from '@/ui/theme'
 
 import { $showTabs, $tab } from '@/components/Rooms/store'

@@ -33,6 +33,7 @@ function RoomMenu() {
 	const [ , remove ] = useMutation(removeroomgql)
 
 	const leaveClick = () => {
+		console.log('--- RoomMenu.tsx:36 -> leaveClick ->', 111)
 		confirm({
 			title: t`room.leaveTitle`,
 			text: t`room.leaveTitle`,

@@ -28,7 +28,7 @@ function RoomInfo() {
 
 	return (
 		<RoomInfoContainer data-testid='RoomInfo' flex>
-			<Stack direction='column' gap={1} flex={1}>
+			<Stack direction='column' align='stretch' gap={1} flex={1}>
 				<RoomInfoHeader {...room} />
 				<RoomInfoImage {...room} />
 				<RoomInfoDetails {...room} />
