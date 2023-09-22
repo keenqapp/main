@@ -8,8 +8,6 @@ import ru from '@/locales/ru-RU.json'
 
 
 export type Locale = 'ru-RU' | 'en-US'
-// type Dict = typeof en | typeof ru
-// type Keys = keyof Dict
 
 export const $locale = persistentAtom<Locale>('lang', navigator.language as Locale)
 
@@ -18,9 +16,9 @@ function _path(key: string, namespace?: string) {
 }
 
 function getTranslation(path: string, locale: string) {
-	if (locale === 'ru-RU') return get(ru, path, path)
-	if (locale === 'en-US') return get(en, path, path)
-	return path
+	if (locale === 'ru-RU' || locale === 'ru' || locale === 'ruRU') return get(ru, path, path)
+	if (locale === 'en-US' || locale === 'en' || locale === 'enUS') return get(en, path, path)
+	return get(en, path, path)
 }
 
 function interpolate(template: string, values: Record<string, string>) {
