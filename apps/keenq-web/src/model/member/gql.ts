@@ -17,6 +17,7 @@ export const memmberfragment = gql`
 		visible
 		tags
 		linked
+		isTester
 	}
 `
 

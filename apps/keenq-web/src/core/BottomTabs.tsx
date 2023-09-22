@@ -13,6 +13,8 @@ import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone'
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone'
 import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone'
+import BugReportIcon from '@mui/icons-material/BugReport';
+import { useCurrentMember } from '@/model/member'
 
 
 const Nav = styled(BottomNavigation)`
@@ -63,6 +65,7 @@ function RoomsIcon() {
 export const $unread = atom<boolean>(false)
 
 function BottomTabs() {
+	const { isTester } = useCurrentMember()
 	const [ tab, setTab ] = useState<number|null>(null)
 	const navigate = useNavigate()
 	const { pathname } = useLocation()
@@ -71,6 +74,7 @@ function BottomTabs() {
 		if (pathname.includes('/match')) setTab(0)
 		else if (pathname.includes('/room')) setTab(1)
 		else if (pathname.includes('/event')) setTab(2)
+		else if (pathname.includes('/test')) setTab(3)
 		else setTab(null)
 	}, [ pathname ])
 
@@ -83,6 +87,7 @@ function BottomTabs() {
 				break
 			}
 			case 2: navigate('/event'); break
+			case 3: navigate('/test'); break
 		}
 	}
 
@@ -96,6 +101,7 @@ function BottomTabs() {
 			<BottomNavigationAction icon={<SupervisedUserCircleTwoToneIcon />} />
 			<BottomNavigationAction icon={<RoomsIcon />} />
 			<BottomNavigationAction icon={<DateRangeTwoToneIcon />} />
+			{isTester && <BottomNavigationAction icon={<BugReportIcon />} /> }
 		</Nav>
 	)
 }

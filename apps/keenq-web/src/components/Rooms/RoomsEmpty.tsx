@@ -21,11 +21,14 @@ const RoomsList = styled(List)`
 
 const RoomsEmptyContainer = styled(Stack)`
 	flex: 1;
+	justify-content: start;
+  flex-direction: column;
 `
 
 const Content = styled(Stack)`
 	padding: 0 2rem;
 	flex-direction: column;
+	justify-content: start;
 `
 
 function RoomsEmpty() {

@@ -8,4 +8,5 @@ export interface IMatch {
 	type: 'yes' | 'no'
 	result: boolean
 	member?: IMember
+	author?: IMember
 }

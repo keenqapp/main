@@ -173,6 +173,10 @@
     "noTag": "Seems no tags, you can create a new one",
     "selected": "Selected"
   },
+  "test": {
+    "my": "My matches",
+    "toMe": "Matches to me"
+  },
   "words": {
     "cancel": "Cancel",
     "delete": "Delete",

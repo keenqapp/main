@@ -1,76 +1,125 @@
 import styled from '@emotion/styled'
+import { gql } from 'urql'
 
-import TextField from '@mui/material/TextField'
+import IconButton from '@mui/material/IconButton'
+
+import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone'
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
+import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone'
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone'
+
+import { useTranslate } from '@/services/translate'
+
+import { IMatch } from '@/model/match'
+import { useCurrentMember } from '@/model/member'
 
 import Container from '@/ui/Container'
 import List from '@/ui/List'
 import Page from '@/ui/Page'
+import Space from '@/ui/Space'
 import Stack from '@/ui/Stack'
+import Text from '@/ui/Text'
 
-import { useInput } from '@/hooks/useInput'
+import { useMutation, useQuery } from '@/hooks/gql'
 
 
-const Item = styled.div`
-	background: lightgray;
-	padding: 1rem;
+const mymatches = gql`
+	query MyMatches($id: String!) {
+		matches(where: { authorId: { _eq: $id } }) {
+			id
+			authorId
+			memberId
+			type
+			member {
+				id
+				name
+			}
+		}
+	}
 `
 
-const Input = styled(TextField)`
-	flex-grow: 1;
+const tomematches = gql`
+	query ToMeMatches($id: String!) {
+		matches(where: { memberId: { _eq: $id } }) {
+			id
+			authorId
+			memberId
+			type
+			author {
+				id
+				name
+			}
+		}
+	}
 `
 
-const mock = [
-	{ id: '1', name: 'test1' },
-	{ id: '2', name: 'test2' },
-	{ id: '3', name: 'test3' },
-	{ id: '4', name: 'test4' },
-	{ id: '5', name: 'test5' },
-	{ id: '6', name: 'test6' },
-	{ id: '7', name: 'test7' },
-	{ id: '8', name: 'test8' },
-	{ id: '9', name: 'test9' },
-	{ id: '10', name: 'test10' },
-	{ id: '11', name: 'test11' },
-	{ id: '12', name: 'test12' },
-	{ id: '13', name: 'test13' },
-	{ id: '14', name: 'test14' },
-	{ id: '15', name: 'test15' },
-	{ id: '16', name: 'test16' },
-	{ id: '17', name: 'test17' },
-	{ id: '18', name: 'test18' },
-	{ id: '19', name: 'test19' },
-	{ id: '20', name: 'test20' },
-]
+const removematch = gql`
+	mutation RemoveMatch($id: uuid!) {
+		delete_matches(where: { id: { _eq: $id } }) {
+			affected_rows
+		}
+	}
+`
+
+const types = {
+	yes: <FavoriteTwoToneIcon color='primary' />,
+	no: <RemoveCircleTwoToneIcon color='secondary' />,
+	seen: <VisibilityTwoToneIcon />
+}
+
+const Item = styled(Stack)`
+	padding: 0.33rem 0;
+`
+
+function MyMatchesItem({ id, member, type, result }: IMatch) {
+	const [ , remove ] = useMutation(removematch)
+	return (
+		<Item>
+			<Stack justify='start' gap={0.5}>
+				{types[type]}
+				<Text>{member?.name || member?.id}</Text>
+			</Stack>
+			<IconButton color='error' onClick={() => remove({ id })}><DeleteForeverTwoToneIcon /></IconButton>
+		</Item>
+	)
+}
+
+function ToMeMatchesItem({ id, type, author }: IMatch) {
+	const [ , remove ] = useMutation(removematch)
+	return (
+		<Item>
+			<Stack justify='start' gap={0.5}>
+				{types[type]}
+				<Text>{author?.name || author?.id}</Text>
+			</Stack>
+			<IconButton color='error' onClick={() => remove({ id })}><DeleteForeverTwoToneIcon /></IconButton>
+		</Item>
+	)
+}
 
 function TestPage() {
-	// const { notify } = useNotifications()
-	const textInput = useInput({
-		value: '',
-		variant: 'outlined',
-		fullWidth: true,
-		autocomplete: 'off',
-		dense: true,
-		multiline: true,
-		maxRows: 3,
-	})
+	const { t } = useTranslate()
+	const { id } = useCurrentMember()
+	const [ myresult ] = useQuery(mymatches, { id })
+	const [ tomeresult ] = useQuery(tomematches, { id })
+	const myMatches = myresult.data?.matches || []
+	const toMeMatches = tomeresult.data?.matches || []
 	return (
 		<Page data-testid='TestPage'>
 			<Container flex>
-				<Stack direction='column' flex={1}>
-					<div>header</div>
-					<Stack direction='column' flex={1} gap={1}>
-						<List
-							name='test'
-							data={mock}
-							render={item => <Item key={item.id}>{item.name}</Item> }
-						/>
-					</Stack>
-					<div>
-						<Input
-							{...textInput}
-						/>
-					</div>
-				</Stack>
+				<Text variant='h6'>{t`test.my`}</Text>
+				<List
+					name='TestMyMatches'
+					data={myMatches}
+					render={MyMatchesItem}
+				/>
+				<Space width={2} />
+				<Text variant='h6'>{t`test.toMe`}</Text>
+				<List
+					name='TestMyMatches'
+					data={toMeMatches}
+					render={ToMeMatchesItem}
+				/>
 			</Container>
 		</Page>
 	)

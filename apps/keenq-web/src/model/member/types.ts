@@ -13,6 +13,7 @@ export interface IMember {
 	linked?: (IMemberPartner)[]
 	visible?: boolean
 	done?: boolean
+	isTester?: boolean
 
 	// Not implemented
 	prefs?: IMemberPrefs

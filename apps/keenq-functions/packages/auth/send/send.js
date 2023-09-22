@@ -38,9 +38,10 @@ async function getCreds(phone, db) {
 async function ensureCredsAndMember(creds, phone, db) {
 	try {
 	  if (!creds) {
+		  const isTester = isTestPhone(phone)
 			const id = getId()
-			await db.table('credentials').insert({ phone, id })
-		  await db.table('members').insert({ id })
+			await db.table('credentials').insert({ phone, id, isTester })
+		  await db.table('members').insert({ id, isTester })
 		  await db.table('links').insert({ entityId: id, type: 'member', link: id  })
 	  }
 		if (creds?.bannedAt) throw 'Member is banned'
