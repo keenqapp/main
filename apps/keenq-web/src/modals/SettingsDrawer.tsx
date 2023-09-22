@@ -27,7 +27,8 @@ function SettingsDrawer() {
 	const { name, on } = useModal('settings')
 	const {
 		id,
-		visible
+		visible,
+		isTester
 	} = useCurrentMember()
 	const { confirm } = useConfirm()
 	const [ , update ] = useUpdate(updatemembergql)
@@ -57,6 +58,7 @@ function SettingsDrawer() {
 				<DrawerItem
 					icon={<TranslateIcon color='primary' />}
 					text={t`lang.lang`}
+					subtext={isTester ? navigator.language : ''}
 					action={(
 						<Select
 							native
