@@ -10,14 +10,13 @@ import { $isAdmin, getAvatar, IMember, membersgql } from '@/model/member'
 import { useCurrentRoom } from '@/model/room'
 import { $isBanned } from '@/model/rooms_members'
 
-import Column from '@/ui/Column'
 import List from '@/ui/List'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 import { useQuery } from '@/hooks/gql'
 
 
-const RoomInfoMembersContainer = styled(Column)`
+const RoomInfoMembersContainer = styled(Stack)`
 	flex: 1 0 auto;
 `
 
@@ -25,7 +24,7 @@ const MembersList = styled(List)`
 	gap: 1rem;
 `
 
-const MemberContainer = styled(Row)`
+const MemberContainer = styled(Stack)`
 	padding: 0 2rem;
 `
 
@@ -42,11 +41,11 @@ function Member(member: IMember) {
 	return (
 		<MemberContainer justify='start' gap={1} onClick={onClick}>
 			<Avatar src={avatar?.url} alt={name} />
-			<Column>
+			<Stack direction='column'>
 				<Typography variant='h6'>{name}</Typography>
 				{isAdmin && <Typography variant='body2'>{t`roomsMembers.admin`}</Typography>}
 				{isBanned && <Typography variant='body2'>{t`roomsMembers.banned`}</Typography>}
-			</Column>
+			</Stack>
 		</MemberContainer>
 	)
 }

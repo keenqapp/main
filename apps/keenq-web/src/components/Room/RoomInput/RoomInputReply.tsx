@@ -6,7 +6,7 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import FormatQuoteTwoToneIcon from '@mui/icons-material/FormatQuoteTwoTone'
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 import PersonalMessageReply from '@/components/PersonalMessage/PersonalMessageReply'
@@ -35,12 +35,12 @@ function RoomInputReply() {
 	const isEdit = messageReplyOrEditId.mode === 'edit'
 
 	return (
-		<Row justify='start' gap={1}>
+		<Stack justify='start' gap={1}>
 			<IconButton color='primary'>{isEdit ? <EditTwoToneIcon /> : <FormatQuoteTwoToneIcon />}</IconButton>
 			<PersonalMessageReply {...replay} />
 			<Space grow />
 			<IconButton color='secondary' onClick={clear}><HighlightOffTwoToneIcon /></IconButton>
-		</Row>
+		</Stack>
 	)
 }
 

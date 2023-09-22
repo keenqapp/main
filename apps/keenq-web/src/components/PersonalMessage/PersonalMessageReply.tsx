@@ -3,7 +3,7 @@ import { parseISO } from 'date-fns'
 
 import Typography from '@mui/material/Typography'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 import { getImage, getReply, getText, IMessage } from '@/model/message'
 import { toColor } from '@/model/message'
@@ -26,7 +26,7 @@ const ReplyContainer = styled.div`
   align-self: flex-start;
 `
 
-const TextContainer = styled(Row)`
+const TextContainer = styled(Stack)`
 	padding: 0.1rem 0;
 `
 
@@ -50,13 +50,13 @@ function PersonalMessageReply(message: IMessage) {
 
 	return (
 		<ReplyContainer data-testid='PersonalMessageReply'>
-			<Row gap={1} align='stretch'>
+			<Stack gap={1} align='stretch'>
 				{image && <Image src={image.url} />}
 				<TextContainer direction='column' align='start' justify='between'>
 					<Typography variant='body2' color={toColor(name)} fontWeight={600}>{name}</Typography>
 					<Text variant={text ? 'body2' : 'caption'} color='text.secondary'>{text ? text : formatDate(parseISO(date), { to: 'HH:mm' })}</Text>
 				</TextContainer>
-			</Row>
+			</Stack>
 		</ReplyContainer>
 	)
 }

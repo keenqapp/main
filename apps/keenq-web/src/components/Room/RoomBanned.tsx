@@ -4,7 +4,7 @@ import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 import Text from '@/ui/Text'
 
@@ -15,10 +15,10 @@ function RoomBanned() {
 		<Container data-testid='RoomBanned'>
 			<Space height={2} />
 			<Card>
-				<Row direction='column' gap={1}>
+				<Stack direction='column' gap={1}>
 					<Text variant='overline' align='center'>{t`room.banned`}</Text>
 					<SentimentDissatisfiedTwoToneIcon color='secondary' />
-				</Row>
+				</Stack>
 			</Card>
 		</Container>
 	)

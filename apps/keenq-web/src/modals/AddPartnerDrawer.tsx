@@ -22,8 +22,8 @@ import { privateroomgql } from '@/model/rooms_members'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
 import List from '@/ui/List'
-import Row from '@/ui/Row'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
 import EmptyMembers from '@/components/EmptyMembers'
 
@@ -40,7 +40,7 @@ const MembersList = styled(List)`
 	gap: 1rem;
 `
 
-const MemberItemContainer = styled(Row)`
+const MemberItemContainer = styled(Stack)`
 	padding: 0 1rem;
 `
 
@@ -51,7 +51,7 @@ function MemberItem(member: IMember) {
 	const { on } = useModal('addPartner')
 	const navigate = useNavigate()
 	const [ result ] = useQuery(privateroomgql, { cid, mid })
-	const { id: rid } = optional(result.data?.rooms_members[0].room)
+	const { id: rid } = optional(result.data?.rooms_members[0]?.room)
 	const [ , insert ] = useInsert(insertmessagegql)
 
 	const partnerClick = async () => {
@@ -64,9 +64,9 @@ function MemberItem(member: IMember) {
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={on(partnerClick)}>
 			<Avatar src={avatar?.url} alt={name} />
-			<Row flex={1}>
+			<Stack flex={1}>
 				<Typography variant='h6'>{name}</Typography>
-			</Row>
+			</Stack>
 			<IconButton color='primary'><GroupAddTwoToneIcon /></IconButton>
 		</MemberItemContainer>
 	)

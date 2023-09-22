@@ -18,7 +18,7 @@ import { createtaggql, tagsgql } from '@/model/tags/gql'
 
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
@@ -91,11 +91,11 @@ function TagsDrawer() {
 			<StyledContainer data-testid='ChooseCityDrawerContainer'>
 				<TextField {...tagInput} />
 				<Space />
-				<Row justify='center'>
+				<Stack justify='center'>
 					<Typography variant='overline'>{t`selected`} {selected.size} {'/ 10'}</Typography>
-				</Row>
+				</Stack>
 				<Space />
-				<Row wrap gap={1} justify={alltags.length > 0 ? 'start' : 'stretch'}>
+				<Stack wrap gap={1} justify={alltags.length > 0 ? 'start' : 'stretch'}>
 					{alltags.length > 0
 						? alltags?.map((tag: ITag) => (
 							<TagChip
@@ -107,13 +107,13 @@ function TagsDrawer() {
 							/>
 						))
 						: (
-							<Row justify='center' direction='column'>
+							<Stack justify='center' direction='column'>
 								<Space height={0.5} />
 								<Typography variant='overline' textAlign='center'>{t`noTag`}</Typography>
-							</Row>
+							</Stack>
 						)}
 					{tagInput.value.length > 0 && !isExectExist && selected.size < 10 && <Button fullWidth onClick={onCreateClick}>{t`create`}</Button>}
-				</Row>
+				</Stack>
 			</StyledContainer>
 		</Drawer>
 	)

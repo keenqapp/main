@@ -16,8 +16,7 @@ import { useTranslate } from '@/services/translate'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Card from '@/ui/Card'
-import Column from '@/ui/Column'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 
@@ -43,34 +42,34 @@ function ProfileProgress() {
 	return (
 		<ProfileProgressContainer>
 			<Card>
-				<Column gap={0.5}>
+				<Stack direction='column' gap={0.5}>
 					<Typography variant='h6'>{t`progress.before`}</Typography>
 					<Space height={0.1} />
-					<Row gap={0.5} justify='start'>
+					<Stack gap={0.5} justify='start'>
 						<Done done={!!images && images.length > 0} or={<AddAPhotoTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.photo`}</Typography>
-					</Row>
-					<Row gap={0.5} justify='start'>
+					</Stack>
+					<Stack gap={0.5} justify='start'>
 						<Done done={!!name} or={<TextFieldsTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.name`}</Typography>
-					</Row>
-					<Row gap={0.5} justify='start'>
+					</Stack>
+					<Stack gap={0.5} justify='start'>
 						<Done done={!!gender && !!sexuality} or={<WcTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.identity`}</Typography>
-					</Row>
-					<Row gap={0.5} justify='start'>
+					</Stack>
+					<Stack gap={0.5} justify='start'>
 						<Done done={!!location} or={<NotListedLocationTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.location`}</Typography>
-					</Row>
-					<Row gap={0.5} justify='start'>
+					</Stack>
+					<Stack gap={0.5} justify='start'>
 						<Done done={!!description} or={<SubjectTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.description`}</Typography>
-					</Row>
-					<Row gap={0.5} justify='start'>
+					</Stack>
+					<Stack gap={0.5} justify='start'>
 						<Done done={!!tags && tags.length > 0} or={<TagTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.desires`}</Typography>
-					</Row>
-				</Column>
+					</Stack>
+				</Stack>
 			</Card>
 			<Space />
 		</ProfileProgressContainer>

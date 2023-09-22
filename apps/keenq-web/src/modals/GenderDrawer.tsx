@@ -16,7 +16,7 @@ import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 // import BiGenderIcon from '@/assets/BiGenderIcon'
@@ -24,7 +24,7 @@ import NonBinaryIcon from '@/assets/NonBinaryIcon'
 import { useUpdate } from '@/hooks/gql'
 
 
-const StyledItem = styled(Row)<{ active: boolean }>`
+const StyledItem = styled(Stack)<{ active: boolean }>`
 	white-space: nowrap;
   padding: 1rem;
   border-radius: 1rem;
@@ -55,7 +55,7 @@ function Item({ icon, active, onClick, value }: GenderItemProps) {
 	)
 }
 
-const Scroll = styled(Row)`
+const Scroll = styled(Stack)`
 	width: 100vw;
 	overflow-x: scroll;
 	margin-left: -1rem;

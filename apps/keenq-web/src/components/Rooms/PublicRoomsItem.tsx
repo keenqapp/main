@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 
 import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 import { IRoom } from '@/model/room'
 
@@ -37,18 +37,18 @@ function PublicRoomsItem(room: IRoom) {
 
 	return (
 		<RoomItemContainer data-testid='RoomsItem' onClick={onClick(rid)}>
-			<Row justify='start' gap={1}>
+			<Stack justify='start' gap={1}>
 				<SBadge badgeContent={unread} color='secondary'>
 					<Avatar src={image.url} alt={name} />
 				</SBadge>
-				<Row direction='column' align='start'>
-					<Row justify='start' gap={0.5}>
+				<Stack direction='column' align='start'>
+					<Stack justify='start' gap={0.5}>
 						<NoWrap variant='h6'>{name}</NoWrap>
 						{verified && <VerifiedTwoToneIcon fontSize='small' color='primary' />}
-					</Row>
+					</Stack>
 					<NoWrap variant='body2'>{description}</NoWrap>
-				</Row>
-			</Row>
+				</Stack>
+			</Stack>
 		</RoomItemContainer>
 	)
 }

@@ -9,7 +9,7 @@ import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 
 import { useModal } from '@/services/modals'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 import { IRoom, useCurrentRoom } from '@/model/room'
@@ -31,18 +31,18 @@ function RoomInfoHeader(room: IRoom) {
 	const onClick = () => open(room)
 
 	return (
-		<Row data-testid='RoomInfoHeader'>
+		<Stack data-testid='RoomInfoHeader'>
 			<IconButton color='primary' onClick={handleBack}><ArrowBackIosTwoToneIcon /></IconButton>
-			<Row gap={0.5}>
+			<Stack gap={0.5}>
 				<Title variant='h5'>{name}</Title>
 				{verified && <VerifiedTwoToneIcon color='primary' />}
-			</Row>
+			</Stack>
 			{isAdmin ? (
 				<IconButton onClick={onClick}><MoreVertTwoToneIcon /></IconButton>
 			) : (
 				<Space width={2.5} />
 			)}
-		</Row>
+		</Stack>
 	)
 }
 

@@ -15,10 +15,10 @@ import { useTranslate } from '@/services/translate'
 import { $isPersonal } from '@/model/room'
 import { useCurrentRoom } from '@/model/room/hooks'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 
-const RoomHeaderContainer = styled(Row)`
+const RoomHeaderContainer = styled(Stack)`
 	height: var(--vertical-space);
 	padding: 0 1rem;
 	width: 100vw;
@@ -31,7 +31,7 @@ const NoWrap = styled(Typography)`
 	max-width: calc(100% - 2rem); // 40px - avatar width
 `
 
-const Info = styled(Row)`
+const Info = styled(Stack)`
 	flex: 1 1 auto;
   min-width: 0;
 `
@@ -69,10 +69,10 @@ function RoomHeader() {
 			<Info gap={0.5} onClick={onNameClick} justify='start'>
 				<StyledAvatar src={image?.url} alt={name} />
 				<Wrap>
-					<Row gap={0.5} justify='start'>
+					<Stack gap={0.5} justify='start'>
 						<NoWrap variant='h6'>{name}</NoWrap>
 						{verified && <VerifiedTwoToneIcon color='primary' fontSize='small' />}
-					</Row>
+					</Stack>
 					<Typography variant='body2'>{isPersonal ? 'Online' : membersCount + ' ' + t`room.members`}</Typography>
 				</Wrap>
 			</Info>

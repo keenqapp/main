@@ -16,9 +16,8 @@ import { getAvatar, IMemberPartner, membergql, updatepartnergql, useCurrentMembe
 import { createPartnerRequestMessage, deletemessagegql, IPartnerRequest, updatemessagegql } from '@/model/message'
 import { useCurrentRoom } from '@/model/room'
 
-import Column from '@/ui/Column'
-import Row from '@/ui/Row'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
 import { useMutation, useQuery, useUpdate } from '@/hooks/gql'
 import { optional } from '@/utils/utils'
@@ -28,13 +27,13 @@ const PartnerRequestContainer = styled.div`
 	align-self: center;
 `
 
-const Content = styled(Column)`
+const Content = styled(Stack)`
 	border-radius: 1rem;
 	padding: 0.5rem 1rem 1rem;
 	background: ${p => p.theme.palette.primary.light};
 `
 
-const Buttons = styled(Row)`
+const Buttons = styled(Stack)`
 	padding: 0 1rem;
 `
 
@@ -89,16 +88,16 @@ function PartnerRequest({ id, to, from, result }: IPartnerRequest['value'] & { i
 
 	return (
 		<PartnerRequestContainer data-testid='PartnerRequest'>
-			<Column gap={0.5}>
+			<Stack gap={0.5}>
 				<Content gap={1} onClick={requestClick}>
-					<Row justify='start' gap={1}>
+					<Stack justify='start' gap={1}>
 						<Avatar src={avatar?.url} alt={name} />
-						<Column>
+						<Stack>
 							<Typography variant='h6'>{name}</Typography>
-						</Column>
+						</Stack>
 						<Space grow />
 						<IconButton><MoreVertTwoToneIcon /></IconButton>
-					</Row>
+					</Stack>
 					<Typography variant='overline'>
 						{result === 'accepted' && t`partner.accepted`}
 						{result !== 'accepted' && (
@@ -121,7 +120,7 @@ function PartnerRequest({ id, to, from, result }: IPartnerRequest['value'] & { i
 							</Buttons>
 						)
 				)}
-			</Column>
+			</Stack>
 			<Space />
 		</PartnerRequestContainer>
 	)

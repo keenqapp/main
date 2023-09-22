@@ -8,7 +8,7 @@ import { useTranslate } from '@/services/translate'
 import { useIsAuthor } from '@/model/member'
 import { IMessage } from '@/model/message'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import theme from '@/ui/theme'
 
 import PersonalMessageAvatar from '@/components/PersonalMessage/PersonalMessageAvatar'
@@ -98,16 +98,16 @@ function PersonalMessage(message: IMessage) {
 		<>
 			<DateSeparator {...message} />
 			<MessageContainer data-testid='PersonalMessage' isAuthor={isAuthor} onClick={onMessageClick}>
-				<Row gap={0.5} align='end'>
+				<Stack gap={0.5} align='end'>
 					<PersonalMessageAvatar {...message} />
-					<Row direction='column' gap={0.2} relative>
+					<Stack direction='column' gap={0.2} relative>
 						<PersonalMessageReply {...message} />
 						<PersonalMessageImages {...message} />
 						<PersonalMessageText {...message} />
 						<PersonalMessageReactions {...message} />
 						<PersonalMessageTime {...message} />
-					</Row>
-				</Row>
+					</Stack>
+				</Stack>
 			</MessageContainer>
 		</>
 	)

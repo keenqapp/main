@@ -21,7 +21,7 @@ import { insertjoinroom } from '@/model/rooms_members'
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 import { useInsert, useQuery } from '@/hooks/gql'
@@ -67,7 +67,7 @@ function CreateRoomModal() {
 	return (
 		<Drawer data-testid='CreateRoomModal' name={name}>
 			<Container>
-				<Row direction='column' align='stretch' gap={2}>
+				<Stack direction='column' align='stretch' gap={2}>
 					<Card>
 						<Typography variant='overline'>
 							<b>{t`private`}</b> - {t`onlyMembers`}<br />
@@ -90,7 +90,7 @@ function CreateRoomModal() {
 						<ToggleButton value='private'><VerifiedUserTwoToneIcon fontSize='small' /><Space width={0.2}/>{t`private`}</ToggleButton>
 					</ToggleButtonGroup>
 					<Button startIcon={<CheckTwoToneIcon />} onClick={on(click)}>{ta`okay`}</Button>
-				</Row>
+				</Stack>
 			</Container>
 		</Drawer>
 	)

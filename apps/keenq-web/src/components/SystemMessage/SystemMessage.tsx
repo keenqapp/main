@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 import { getGreeting, getJoined, getPartnerRequest, getSystemText, IMessage } from '@/model/message'
 
-import Column from '@/ui/Column'
+import Stack from '@/ui/Stack'
 
 import PartnerRequest from '@/components/SystemMessage/PartnerRequest'
 import SystemGreeting from '@/components/SystemMessage/SystemGreeting'
@@ -10,7 +10,7 @@ import SystemJoinedMessage from '@/components/SystemMessage/SystemJoinedMessage'
 import SystemTextMessage from '@/components/SystemMessage/SystemTextMessage'
 
 
-const SystemMessageContainer = styled(Column)`
+const SystemMessageContainer = styled(Stack)`
 	padding: 0 2rem;
 	display: flex;
 	flex-direction: column;

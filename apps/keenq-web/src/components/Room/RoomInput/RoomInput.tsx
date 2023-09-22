@@ -18,7 +18,7 @@ import { insertmessagegql } from '@/model/message/gql'
 import { $isChannel } from '@/model/room'
 import { useCurrentRoom } from '@/model/room/hooks'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 import RoomInputEditImage from '@/components/Room/RoomInput/RoomInputEditImage'
 import RoomInputNewFile from '@/components/Room/RoomInput/RoomInputNewFile'
@@ -166,22 +166,22 @@ function RoomInput() {
 
 	return (
 		<RoomInputContainer data-testid='RoomInput'>
-			<Row direction='column' align='stretch' gap={0.2}>
+			<Stack direction='column' align='stretch' gap={0.2}>
 				<RoomInputReply />
 				{showInput && (
 					<>
-						<Row gap={0.2} direction='column' align='stretch'>
+						<Stack gap={0.2} direction='column' align='stretch'>
 							{imagesToEdit.map((image) => <RoomInputEditImage key={image.id} {...image} />)}
 							{imagesToAdd.toFlatArray().map(file => <RoomInputNewFile key={file.id} {...file} />)}
-						</Row>
-						<Row justify='stretch' gap={1} align='end'>
+						</Stack>
+						<Stack justify='stretch' gap={1} align='end'>
 							<IconButton color='secondary' onClick={open} ><AttachFileTwoToneIcon /></IconButton>
 							<Input {...textInput} />
 							<IconButton color='primary' onClick={onSendClick}><SendTwoToneIcon /></IconButton>
-						</Row>
+						</Stack>
 					</>
 				)}
-			</Row>
+			</Stack>
 		</RoomInputContainer>
 	)
 }

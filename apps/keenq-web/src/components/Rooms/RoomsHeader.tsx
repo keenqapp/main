@@ -10,7 +10,7 @@ import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 import theme from '@/ui/theme'
 
@@ -38,7 +38,7 @@ const Folder = styled(Tab)`
   }
 `
 
-const RoomInfoContainer = styled(Row)`
+const RoomInfoContainer = styled(Stack)`
 	height: var(--vertical-space);
 	padding: 0 1rem;
 `

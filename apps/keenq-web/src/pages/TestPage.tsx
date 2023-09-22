@@ -1,15 +1,14 @@
-import Button from '@mui/material/Button'
+import styled from '@emotion/styled'
+
 import TextField from '@mui/material/TextField'
 
-import { useNotifications } from '@/services/notifications'
-
-import Column from '@/ui/Column'
 import Container from '@/ui/Container'
-import Page from '@/ui/Page'
-import styled from '@emotion/styled'
-import { useInput } from '@/hooks/useInput'
-import Row from '@/ui/Row'
 import List from '@/ui/List'
+import Page from '@/ui/Page'
+import Stack from '@/ui/Stack'
+
+import { useInput } from '@/hooks/useInput'
+
 
 const Item = styled.div`
 	background: lightgray;
@@ -44,7 +43,7 @@ const mock = [
 ]
 
 function TestPage() {
-	const { notify } = useNotifications()
+	// const { notify } = useNotifications()
 	const textInput = useInput({
 		value: '',
 		variant: 'outlined',
@@ -57,21 +56,21 @@ function TestPage() {
 	return (
 		<Page data-testid='TestPage'>
 			<Container flex>
-				<Column flex={1}>
+				<Stack direction='column' flex={1}>
 					<div>header</div>
-					<Row direction='column' flex={1} gap={1}>
+					<Stack direction='column' flex={1} gap={1}>
 						<List
 							name='test'
 							data={mock}
 							render={item => <Item key={item.id}>{item.name}</Item> }
 						/>
-					</Row>
+					</Stack>
 					<div>
 						<Input
 							{...textInput}
 						/>
 					</div>
-				</Column>
+				</Stack>
 			</Container>
 		</Page>
 	)

@@ -13,7 +13,7 @@ import { useCurrentMember } from '@/model/member/hooks'
 import Container from '@/ui/Container'
 import Drawer, { DrawerItem } from '@/ui/Drawer'
 import List from '@/ui/List'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 import json from '@/assets/cities.json'
@@ -86,7 +86,7 @@ function ChooseCityDrawer() {
 			<StyledContainer data-testid='ChooseCityDrawerContainer'>
 				<TextField {...cityInput} />
 				<Space />
-				{fetching && <Row justify='center'><Loading /></Row>}
+				{fetching && <Stack justify='center'><Loading /></Stack>}
 				<CitiesList
 					data={cities}
 					render={CitiesListItem}

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
 
-import Column from '@/ui/Column'
+import Stack from '@/ui/Stack'
 import Container from '@/ui/Container'
 
 import RoomInfoDetails from '@/components/RoomInfo/RoomInfoDetails'
@@ -28,12 +28,12 @@ function RoomInfo() {
 
 	return (
 		<RoomInfoContainer data-testid='RoomInfo' flex>
-			<Column gap={1} flex={1}>
+			<Stack direction='column' gap={1} flex={1}>
 				<RoomInfoHeader {...room} />
 				<RoomInfoImage {...room} />
 				<RoomInfoDetails {...room} />
 				<RoomInfoMembers />
-			</Column>
+			</Stack>
 		</RoomInfoContainer>
 	)
 }

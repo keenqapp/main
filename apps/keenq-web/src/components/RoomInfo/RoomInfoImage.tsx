@@ -7,14 +7,14 @@ import MmsTwoToneIcon from '@mui/icons-material/MmsTwoTone'
 
 import { uploadImage } from '@/services/spaces'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Upload from '@/ui/Upload'
 
 import { useUpdate } from '@/hooks/gql'
 import { IRoom, updateroomgql, useCurrentRoom } from '@/model/room'
 
 
-const RoomInfoImageContainer = styled(Row)`
+const RoomInfoImageContainer = styled(Stack)`
 	position: relative;
 `
 

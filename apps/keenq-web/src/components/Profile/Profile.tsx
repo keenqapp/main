@@ -27,9 +27,8 @@ import { useTranslate } from '@/services/translate'
 import { IMemberPartner, membergql, updatemembergql } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
 
-import Column from '@/ui/Column'
 import Container from '@/ui/Container'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 import Upload from '@/ui/Upload'
 
@@ -41,11 +40,11 @@ import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
 
 
-const Content = styled(Row)`
+const Content = styled(Stack)`
 	padding: 0 1rem;
 `
 
-const Fabs = styled(Row)`
+const Fabs = styled(Stack)`
 	position: absolute;
 	left: 1rem;
 	bottom: 1rem;
@@ -113,11 +112,11 @@ function EmptyImages() {
 	return (
 		<EmptyImagesContainer>
 			<Upload onChange={onChange} accept='image/*' multiple>
-				<Column>
+				<Stack direction='column'>
 					<Typography textAlign='center' variant='overline'>{t`profile.upload`}</Typography>
 					<Space />
 					<Button startIcon={<PhotoCameraTwoToneIcon />} component='span'>{t`profile.addPhoto`}</Button>
-				</Column>
+				</Stack>
 			</Upload>
 		</EmptyImagesContainer>
 	)
@@ -250,31 +249,31 @@ function Profile() {
 							buttons={<Buttons />}
 							scrollOnAdd
 						/>
-						<Row justify='end'>
+						<Stack justify='end'>
 							<Upload accept='image/*' onChange={onUploadChange}>
 								<AddButton startIcon={<PhotoCameraTwoToneIcon />} component='span'>{t`profile.addPhoto`}</AddButton>
 							</Upload>
-						</Row>
+						</Stack>
 					</SwiperContainer>
 				)
 				: <EmptyImages />}
 			<Space />
 			<Content direction='column' align='stretch'>
-				<Row justify='between' onClick={onNameClick}>
+				<Stack justify='between' onClick={onNameClick}>
 					<NameInput disableUnderline={true} {...nameInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
-				</Row>
+				</Stack>
 				{partner
 					? (
-						<Row onClick={onPartnerClick} gap={0.5} align='baseline'>
+						<Stack onClick={onPartnerClick} gap={0.5} align='baseline'>
 							<Typography variant='h6'>{t`profile.and`}</Typography>
 							<Typography variant='overline'>{partner.name}</Typography>
 							<Space grow />
 							<IconButton color='secondary'><GroupRemoveTwoToneIcon /></IconButton>
-						</Row>
+						</Stack>
 					)
 					: (
-						<Row
+						<Stack
 							justify='between'
 							onClick={onPartnerClick}
 							gap={0.5}
@@ -284,9 +283,9 @@ function Profile() {
 							<Typography variant='overline' color='#B2ADBB'>{t`profile.partner`}</Typography>
 							<Space grow />
 							<IconButton color='primary'><SupervisedUserCircleTwoToneIcon /></IconButton>
-						</Row>
+						</Stack>
 					)}
-				<Row
+				<Stack
 					justify='between'
 					onClick={onGenderClick}
 					gap={0.5}
@@ -307,8 +306,8 @@ function Profile() {
 						)}
 					<Space grow />
 					<IconButton color='primary'><InterestsTwoToneIcon /></IconButton>
-				</Row>
-				<Row
+				</Stack>
+				<Stack
 					justify='between'
 					onClick={onLocationClick}
 					gap={0.5}
@@ -318,21 +317,21 @@ function Profile() {
 					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city ? location.city : t`profile.somecity`}</Typography>
 					<Space grow />
 					<IconButton color='primary'><EditLocationTwoToneIcon /></IconButton>
-				</Row>
+				</Stack>
 				<Space />
-				<Row justify='between' align='start' onClick={onDescClick}>
+				<Stack justify='between' align='start' onClick={onDescClick}>
 					<Input {...descriptionInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
-				</Row>
+				</Stack>
 				<Space />
-				<Row justify='between' align={tags?.length > 0 ? 'start' : 'center'} onClick={onTagsClick}>
-					<Row gap={0.5} wrap justify='start'>
+				<Stack justify='between' align={tags?.length > 0 ? 'start' : 'center'} onClick={onTagsClick}>
+					<Stack gap={0.5} wrap justify='start'>
 						{tags?.length > 0
 							? tags.map(({ id, label }) => <Chip key={id} label={label} />)
 							: <Typography color='#B2ADBB'>{t`profile.tags`}</Typography>}
-					</Row>
+					</Stack>
 					<IconButton color='primary'><TagTwoToneIcon /></IconButton>
-				</Row>
+				</Stack>
 				<Space />
 				<Divider />
 				<Space />

@@ -18,7 +18,7 @@ import { $isChannel, useCurrentRoom } from '@/model/room'
 import { updateroommember } from '@/model/rooms_members'
 
 import Drawer, { DrawerItem, DrawerList } from '@/ui/Drawer'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import theme from '@/ui/theme'
 
 import { $messageReplyOrEditId } from '@/components/Room/RoomInput/state'
@@ -26,7 +26,7 @@ import { $messageReplyOrEditId } from '@/components/Room/RoomInput/state'
 import { useMutation, useUpdate } from '@/hooks/gql'
 
 
-const Reactions = styled(Row)`
+const Reactions = styled(Stack)`
 	margin: 0 0.5rem;
 	border-radius: 8px;
 	padding: 0.2rem 0;

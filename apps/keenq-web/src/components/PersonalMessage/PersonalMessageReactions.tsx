@@ -4,20 +4,20 @@ import Typography from '@mui/material/Typography'
 
 import { IMessage, IMessageReactionCount, shouldShowCheck } from '@/model/message'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 import { usePipe } from '@/hooks/usePipe'
 import { first, sort, toComponent } from '@/utils/utils'
 
 
-const PersonalMessageReactionsContainer = styled(Row)`
+const PersonalMessageReactionsContainer = styled(Stack)`
 	position: absolute;
 	bottom: ${p => p.shouldShow ? '0.75rem' : '-0.75rem'};
 	transform: scale(0.8);
 	transform-origin: center;
 `
 
-const Reaction = styled(Row)`
+const Reaction = styled(Stack)`
   background: rgba(220, 244, 227, 0.85);
   padding: 0.2rem 0.5rem;
   border-radius: 1rem;

@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import HandymanTwoToneIcon from '@mui/icons-material/HandymanTwoTone'
 
 import Container from '@/ui/Container'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 
 interface UnderConstructionProps {
@@ -34,7 +34,7 @@ interface UnderConstructionProps {
 function UnderConstruction({ text, subtext }: UnderConstructionProps) {
 	return pug`
 		Container(flex=1 horizontal=4)
-			Row(
+			Stack(
 				justify='center'
 				align='center'
 				direction='column'

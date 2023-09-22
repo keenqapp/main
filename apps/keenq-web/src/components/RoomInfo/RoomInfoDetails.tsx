@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 
 import Container from '@/ui/Container'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
@@ -49,16 +49,16 @@ function RoomInfoDetails({ id, name, description }: IRoom) {
 	return (
 		<Container data-testid='RoomInfoDetails' horizontal={2}>
 			{isAdmin && (
-				<Row onClick={onNameClick}>
+				<Stack onClick={onNameClick}>
 					<NameInput {...nameInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
-				</Row>
+				</Stack>
 			)}
 			{isAdmin ? (
-				<Row onClick={onDescClick} align='start'>
+				<Stack onClick={onDescClick} align='start'>
 					<Input {...descriptionInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
-				</Row>
+				</Stack>
 			) : (
 				<Typography>{description}</Typography>
 			)}

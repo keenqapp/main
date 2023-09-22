@@ -9,7 +9,7 @@ import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
-import Column from '@/ui/Column'
+import Stack from '@/ui/Stack'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
 import Space from '@/ui/Space'
@@ -25,13 +25,13 @@ function AcquaintanceDrawer() {
 	return (
 		<Drawer data-testid='AcquaintanceDrawer' name={name}>
 			<Container>
-				<Column>
+				<Stack direction='column'>
 					<Card>
 						<Typography variant='overline' textAlign='center'>{t`before`}</Typography>
 					</Card>
 					<Space />
 					<Button startIcon={<BadgeTwoToneIcon />} onClick={on(doIt)}>{t`app.doit`}</Button>
-				</Column>
+				</Stack>
 			</Container>
 		</Drawer>
 	)

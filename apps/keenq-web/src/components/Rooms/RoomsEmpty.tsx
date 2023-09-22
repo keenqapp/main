@@ -7,7 +7,7 @@ import { useTranslate } from '@/services/translate'
 import { getroomsgql } from '@/model/room'
 
 import Card from '@/ui/Card'
-import Column from '@/ui/Column'
+import Stack from '@/ui/Stack'
 import List from '@/ui/List'
 
 import PublicRoomsItem from '@/components/Rooms/PublicRoomsItem'
@@ -19,12 +19,13 @@ const RoomsList = styled(List)`
 	gap: 1.5rem
 `
 
-const RoomsEmptyContainer = styled(Column)`
+const RoomsEmptyContainer = styled(Stack)`
 	flex: 1;
 `
 
-const Content = styled(Column)`
+const Content = styled(Stack)`
 	padding: 0 2rem;
+	flex-direction: column;
 `
 
 function RoomsEmpty() {

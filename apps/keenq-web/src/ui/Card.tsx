@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import MUICard from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 
-import Column from '@/ui/Column'
+import Stack from '@/ui/Stack'
 import theme from '@/ui/theme'
 
 
@@ -34,9 +34,9 @@ function Card({ children, color, align, ...props }: CardProps) {
 	return (
 		<StyledCard data-testid='Card' color={color} {...props}>
 			<CardContent>
-				<Column align={align}>
+				<Stack direction='column' align={align}>
 					{children}
-				</Column>
+				</Stack>
 			</CardContent>
 		</StyledCard>
 	)

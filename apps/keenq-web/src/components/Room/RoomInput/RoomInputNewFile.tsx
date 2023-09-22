@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton'
 
 import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import theme from '@/ui/theme'
 
 import { $imagesToAdd } from '@/components/Room/RoomInput/state'
@@ -12,7 +12,7 @@ import { $imagesToAdd } from '@/components/Room/RoomInput/state'
 import { ResizeResult } from '@/utils/resize'
 
 
-const ImageContainer = styled(Row)`
+const ImageContainer = styled(Stack)`
 	${theme.boxShadow};
 	border-radius: 8px;
 	padding: 0.2rem;

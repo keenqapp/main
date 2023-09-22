@@ -9,13 +9,13 @@ import { checkShowName, getText, IMessage } from '@/model/message'
 import { toColor } from '@/model/message'
 import { useCurrentRoom } from '@/model/room'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import theme from '@/ui/theme'
 
 import { useIsAdmin } from '@/hooks/useIsAdmin'
 
 
-const MessageContainerContent = styled(Row)`
+const MessageContainerContent = styled(Stack)`
   padding: 0.5rem 1rem;
   box-shadow: ${theme.boxShadow};
 `
@@ -52,10 +52,10 @@ function PersonalMessageText(message: IMessage) {
 		>
 			{shouldShowName
 				? (
-					<Row>
+					<Stack>
 						<Typography color={toColor(name)} fontWeight={600}>{name}</Typography>
 						{isAdmin && !isChannel && <Typography variant='caption'>{t`roomsMembers.admin`}</Typography>}
-					</Row>
+					</Stack>
 				)
 				: null}
 			{text ? <Text>{text}</Text> : null}

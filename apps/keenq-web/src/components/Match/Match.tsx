@@ -22,7 +22,7 @@ import { getPartner } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 import EmptyMatch from '@/components/Match/EmptyMatch'
@@ -34,11 +34,11 @@ import { useFormatDistance } from '@/hooks/useFormatDistance'
 import { useMember } from '@/hooks/useMember'
 
 
-const Content = styled(Row)`
+const Content = styled(Stack)`
 	padding: 0 1rem;
 `
 
-const Fabs = styled(Row)`
+const Fabs = styled(Stack)`
 	svg {
     filter: drop-shadow(0px 2px 8px currentColor);
     backdrop-filter: blur(1px);
@@ -145,7 +145,7 @@ function Match() {
 			<Swiper images={images} />
 			<Space />
 			<Content direction='column' align='start'>
-				<Row self='stretch' gap={0.5} align='baseline'>
+				<Stack self='stretch' gap={0.5} align='baseline'>
 					<Typography variant='h5'>{name}</Typography>
 					{partner && (
 						<>
@@ -155,7 +155,7 @@ function Match() {
 					)}
 					<Space grow />
 					<Typography variant='body2'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
-				</Row>
+				</Stack>
 				<Space height={0.2} />
 				<Typography variant='overline'>{distance} {t`match.away`}</Typography>
 				<Space height={0.5} />
@@ -166,9 +166,9 @@ function Match() {
 				<Space />
 				<Typography>{description}</Typography>
 				<Space height={2} />
-				<Row gap={0.5} wrap>
+				<Stack gap={0.5} wrap>
 					{tags?.map((tag) => <Chip key={tag.id} label={tag.label} />)}
-				</Row>
+				</Stack>
 				<Space height={2} />
 				<StyledDivider />
 				<Space />

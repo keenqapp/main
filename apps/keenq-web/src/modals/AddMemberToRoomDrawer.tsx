@@ -24,7 +24,7 @@ import Checkbox from '@/ui/Checkbox'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
 import List from '@/ui/List'
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 import EmptyMembers from '@/components/EmptyMembers'
@@ -42,7 +42,7 @@ const MembersList = styled(List)`
 	gap: 1rem;
 `
 
-const MemberItemContainer = styled(Row)`
+const MemberItemContainer = styled(Stack)`
 	padding: 0 1rem;
 `
 
@@ -56,9 +56,9 @@ function MemberItem(member: IMember) {
 	return (
 		<MemberItemContainer gap={1} justify='start' onClick={onChange}>
 			<Avatar src={avatar?.url} alt={name} />
-			<Row flex={1} >
+			<Stack flex={1} >
 				<Typography variant='h6'>{name}</Typography>
-			</Row>
+			</Stack>
 			<Checkbox value={selected.has(id)} />
 		</MemberItemContainer>
 	)

@@ -9,7 +9,7 @@ import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
-import Column from '@/ui/Column'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 
@@ -24,10 +24,10 @@ function EmptyMembers() {
 	return (
 		<>
 			<Card data-testid='EmptyMembers'>
-				<Column gap={1}>
+				<Stack direction='column' gap={1}>
 					<Typography variant='h6'>{t`member.notFound`}</Typography>
 					<Typography variant='overline'>{t`member.shouldMatch`}</Typography>
-				</Column>
+				</Stack>
 			</Card>
 			<Space />
 			<Button startIcon={<ArrowBackIosTwoToneIcon color='primary' />} onClick={onClick} fullWidth>{t`member.try`}</Button>

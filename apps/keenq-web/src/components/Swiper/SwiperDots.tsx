@@ -1,17 +1,17 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 
 
-const SwiperDotsContainer = styled(Row)`
+const SwiperDotsContainer = styled(Stack)`
 	position: absolute;
 	bottom: 0;
 	top: 0;
 	right: 0.5rem;
 `
 
-const Background = styled(Row)`
+const Background = styled(Stack)`
   gap: 1rem;
 	position: relative;
 	padding: 0.4rem 0.1rem;

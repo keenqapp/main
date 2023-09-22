@@ -2,7 +2,7 @@ import { ComponentChildren } from 'preact'
 import styled from '@emotion/styled'
 
 
-interface RowProps {
+interface StackProps {
 	flex?: number
 	justify?: 'start' | 'end' | 'stretch' | 'between' | 'center' | 'around'
 	align?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'
@@ -46,7 +46,7 @@ function a(align: Align) {
 	return ai[align]
 }
 
-const StyledRow = styled.div<RowProps>`
+const StyledRow = styled.div<StackProps>`
   display: flex;
   flex-direction: ${p => p.direction || 'row'};
   align-items: ${p => p.align ? a(p.align) : 'center'};
@@ -61,7 +61,7 @@ const StyledRow = styled.div<RowProps>`
 	${p => p.relative && 'position: relative'};
 `
 
-function Row({ wrap, ...props }: RowProps) {
+function Stack({ wrap, ...props }: StackProps) {
 	return <StyledRow wrap={wrap ? 1 : 0} {...props} />
 }
-export default Row
+export default Stack

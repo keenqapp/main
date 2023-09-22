@@ -30,27 +30,27 @@ const Scroll = styled.div`
   height: ${p => p.height}px;
 `
 
-const Fade = styled.div<{ position: 'start' | 'end' }>`
-	position: absolute;
-	left: 0;
-	right: 0;
-	height: 1rem;
-	z-index: 2;
-  background: linear-gradient(${p => p.position === 'start' ? 0 : 180}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 75%);
-	${p => p.position === 'start' ? 'top: 0;' : 'bottom: 0;'}
-`
+// const Fade = styled.div<{ position: 'start' | 'end' }>`
+// 	position: absolute;
+// 	left: 0;
+// 	right: 0;
+// 	height: 1rem;
+// 	z-index: 2;
+//   background: linear-gradient(${p => p.position === 'start' ? 0 : 180}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 75%);
+// 	${p => p.position === 'start' ? 'top: 0;' : 'bottom: 0;'}
+// `
 
 const StyledAutosizer = styled.div`
 	flex: 1;
 `
 
-function Autosizer({ setHeight, name }: { setHeight: (height: number) => void, name?: string }) {
+function Autosizer({ setHeight, name, debug }: { setHeight: (height: number) => void, name?: string, debug?: boolean }) {
 	const ref = useRef<HTMLDivElement>(null)
 	useEffect(() => {
 		setHeight(ref.current?.clientHeight || 0)
 		if (!ref.current) return
 		const resizeObserver = new ResizeObserver(() => {
-			if (name) console.log('--- List.tsx:52 ->  ->', name, ref.current?.clientHeight)
+			if (name && debug) console.log('--- List.tsx:52 ->', name, ref.current?.clientHeight)
 			setHeight(ref.current?.clientHeight || 0)
 		})
 		resizeObserver.observe(ref.current)
@@ -77,14 +77,12 @@ function List<T extends Entity>({ data, render, scrollRef, empty, className, nam
 		<ListContainer data-testid='List'>
 			<Autosizer setHeight={setHeight} name={name} />
 			<ScrollContainer {...rest}>
-				{/*<Fade position='start' />*/}
 				<Scroll ref={scrollRef} height={height} className={className}>
 					{(data || []).map((item, index) => {
 						const Component = render
 						return <Component key={item.id} index={index} {...item} />
 					})}
 				</Scroll>
-				{/*<Fade position='end' />*/}
 			</ScrollContainer>
 		</ListContainer>
 	)

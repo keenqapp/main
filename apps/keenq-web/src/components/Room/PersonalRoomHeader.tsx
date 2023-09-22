@@ -15,13 +15,13 @@ import { getAvatar, useCurrentMember } from '@/model/member'
 import { useCurrentRoom } from '@/model/room/hooks'
 import { othermemberinprivategql } from '@/model/rooms_members'
 
-import Row from '@/ui/Row'
+import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
 
 import { useQuery } from '@/hooks/gql'
 
 
-const RoomInfoContainer = styled(Row)`
+const RoomInfoContainer = styled(Stack)`
 	height: var(--vertical-space);
 	padding: 0 1rem;
 `
@@ -46,16 +46,16 @@ function PersonalRoomHeader() {
 	return (
 		<RoomInfoContainer gap={0.5} data-testid='PersonalRoomHeader'>
 			<IconButton color='primary' onClick={onBack}><ArrowBackIosTwoToneIcon /></IconButton>
-			<Row gap={1} onClick={onNameClick}>
+			<Stack gap={1} onClick={onNameClick}>
 				<Avatar src={avatar?.url} alt={name} />
 				<div>
-					<Row gap={0.5}>
+					<Stack gap={0.5}>
 						<Typography variant='h6'>{name}</Typography>
 						{verified && <VerifiedTwoToneIcon color='primary' fontSize='small' />}
-					</Row>
+					</Stack>
 					{/*<Typography variant='body2'>{'Status'}</Typography>*/}
 				</div>
-			</Row>
+			</Stack>
 			<Space grow />
 			<IconButton onClick={onMenuClick}><MoreVertTwoToneIcon /></IconButton>
 		</RoomInfoContainer>
