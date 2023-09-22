@@ -5,11 +5,21 @@ import { IImage } from '@/model/other'
 import { useCurrentRoom } from '@/model/room'
 
 
+function getWidth(width: number, height: number, isChannel?: boolean) {
+	return width > height
+		? `calc(100vw - ${isChannel ? 2 : 6}rem)`
+		: `calc(${width} / ${height} * 100vw)`
+}
+
+
 const Image = styled.div<{ width: number, height: number, src: string, isChannel?: boolean }>`
   aspect-ratio: ${p => p.width / p.height};
-	width: calc(100vw - ${p => p.isChannel ? 2 : 6 }rem);
+	width: ${p => getWidth(p.width, p.height, p.isChannel)};
+	max-height: 60vh;
 	background-image:url(${p => p.src});
-	background-size: contain;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
   box-shadow: 1px 1px 6px rgba(0,0,0,0.07);
 `
 

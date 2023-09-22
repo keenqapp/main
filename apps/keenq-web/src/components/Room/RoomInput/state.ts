@@ -10,6 +10,8 @@ export const $messageReplyOrEditId = atom<{ mode: string, id: string }>({ mode: 
 export const $imagesToEdit = atom<IImage[]>([])
 export const $imagesToEditSetted = atom(false)
 
+export const $sending = atom(false)
+
 export const $scroll = atom<HTMLDivElement|null>(null)
 
 export async function prepareImageToUpload(image: File) {

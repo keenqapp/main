@@ -1,10 +1,10 @@
 import CircularProgress from '@mui/material/CircularProgress'
 
 
-function Loading() {
+function Loading({ size }: { size?: number | string }) {
 	return (
 		<div data-testid='Loading'>
-			<CircularProgress />
+			<CircularProgress size={size} />
 		</div>
 	)
 }

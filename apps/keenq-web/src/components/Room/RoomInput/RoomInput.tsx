@@ -23,12 +23,13 @@ import Stack from '@/ui/Stack'
 import RoomInputEditImage from '@/components/Room/RoomInput/RoomInputEditImage'
 import RoomInputNewFile from '@/components/Room/RoomInput/RoomInputNewFile'
 import RoomInputReply from '@/components/Room/RoomInput/RoomInputReply'
-import { $imagesToAdd, $imagesToEdit, $imagesToEditSetted, $messageReplyOrEditId, $scroll, clear } from '@/components/Room/RoomInput/state'
+import { $imagesToAdd, $imagesToEdit, $imagesToEditSetted, $messageReplyOrEditId, $scroll, $sending, clear } from '@/components/Room/RoomInput/state'
 
 import { useQuery, useUpdate } from '@/hooks/gql'
 import { useInsert } from '@/hooks/gql/useInsert'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useInput } from '@/hooks/useInput'
+import Loading from '@/core/Loading'
 
 
 const RoomInputContainer = styled.div`
@@ -46,6 +47,7 @@ const Input = styled(TextField)`
 
 function RoomInput() {
 
+	const sending = useStore($sending)
 	const { open } = useModal('attachment')
 	const messageReplyOrEditId = useStore($messageReplyOrEditId)
 
@@ -108,58 +110,68 @@ function RoomInput() {
 	}, [ textInput.value ])
 
 	const onSendClick = async () => {
-		const content: IMessage['content'] = []
-		const images: IMessage['content'] = []
-		let shouldSave = false
+		if (sending) return
+		$sending.set(true)
+		try {
+			const content: IMessage['content'] = []
+			const images: IMessage['content'] = []
+			let shouldSave = false
 
-		if (textInput.value) {
-			shouldSave = true
-			content.push({ type: 'text', value: { text: textInput.value } })
-		}
-		if (imagesToAdd.size > 0) {
-			shouldSave = true
-			for await (const [_, data] of imagesToAdd) {
-				const uploaded = await uploadImage(`room/${rid}/messages`, data.file)
-				images.push({ type: 'image', value: uploaded! })
+			if (textInput.value) {
+				shouldSave = true
+				content.push({ type: 'text', value: { text: textInput.value } })
 			}
-		}
-		if (imagesToEdit.length > 0) {
-			shouldSave = true
-			for await (const image of imagesToEdit) {
-				images.push({ type: 'image', value: image })
+			if (imagesToAdd.size > 0) {
+				shouldSave = true
+				for await (const [_, data] of imagesToAdd) {
+					const uploaded = await uploadImage(`room/${rid}/messages`, data.file)
+					images.push({ type: 'image', value: uploaded! })
+				}
 			}
-		}
-		if (images.length > 0) {
-			content.push(...images.slice(0, 3))
-		}
-		if (isReply) {
-			shouldSave = true
-			content.push({ type: 'reply', value: message })
-		}
-		if (reply) {
-			shouldSave = true
-			content.push({ type: 'reply', value: reply })
-		}
+			if (imagesToEdit.length > 0) {
+				shouldSave = true
+				for await (const image of imagesToEdit) {
+					images.push({ type: 'image', value: image })
+				}
+			}
+			if (images.length > 0) {
+				content.push(...images.slice(0, 3))
+			}
+			if (isReply) {
+				shouldSave = true
+				content.push({ type: 'reply', value: message })
+			}
+			if (reply) {
+				shouldSave = true
+				content.push({ type: 'reply', value: reply })
+			}
 
-		const newmessage = {
-			authorId: mid,
-			roomId: rid,
-			date: new Date().toISOString(),
-			type: 'personal',
-			content
-		} as Partial<IMessage>
+			const newmessage = {
+				authorId: mid,
+				roomId: rid,
+				date: new Date().toISOString(),
+				type: 'personal',
+				content
+			} as Partial<IMessage>
 
-		clear()
-		textInput.onClear()
+			clear()
+			textInput.onClear()
 
-		if (shouldSave) {
-			if (isEdit) await update(messageReplyOrEditId.id, newmessage)
-			else await insert(newmessage)
+			if (shouldSave) {
+				if (isEdit) await update(messageReplyOrEditId.id, newmessage)
+				else await insert(newmessage)
+			}
+			// REFACTOR add optimistic update
+			setTimeout(() => {
+				$scroll.get()?.scrollTo({ behavior: 'smooth', top: $scroll.get()?.scrollHeight || 0 })
+			}, 1000)
 		}
-		// REFACTOR add optimistic update
-		setTimeout(() => {
-			$scroll.get()?.scrollTo({ behavior: 'smooth', top: $scroll.get()?.scrollHeight || 0 })
-		}, 1000)
+		catch(e) {
+			throw { error: e }
+		}
+		finally {
+			$sending.set(false)
+		}
 	}
 
 	const showInput =  isAdmin || (!isChannel && isMember)
@@ -177,7 +189,9 @@ function RoomInput() {
 						<Stack justify='stretch' gap={1} align='end'>
 							<IconButton color='secondary' onClick={open} ><AttachFileTwoToneIcon /></IconButton>
 							<Input {...textInput} />
-							<IconButton color='primary' onClick={onSendClick}><SendTwoToneIcon /></IconButton>
+							{sending
+								? <IconButton color='primary'><Loading size={'1.5rem'} /></IconButton>
+								: <IconButton color='primary' onClick={onSendClick}><SendTwoToneIcon /></IconButton>}
 						</Stack>
 					</>
 				)}
