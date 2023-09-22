@@ -22,8 +22,8 @@ import { getPartner } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
-import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
 import EmptyMatch from '@/components/Match/EmptyMatch'
 import Swiper from '@/components/Swiper'
@@ -104,7 +104,8 @@ function Match() {
 		}
 	}, [ mid, fetching, error, id ])
 
-	const partner = getPartner(linked)
+	const partpartner = getPartner(linked)
+	const partner = useMember(partpartner?.id)
 	const onReportClick = () => {
 		onReportOpen({ id: getId, entity: 'member' })
 	}
