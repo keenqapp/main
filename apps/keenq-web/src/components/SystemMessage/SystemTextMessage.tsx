@@ -18,7 +18,7 @@ const SystemTextMessageContainer = styled.div`
 	padding: 0.2rem 1rem;
 `
 
-function SystemTextMessage({ value }: IMessageText) {
+function SystemTextMessage({ value }: Pick<IMessageText, 'value'>) {
 	const { t } = useTranslate()
 	return (
 		<>

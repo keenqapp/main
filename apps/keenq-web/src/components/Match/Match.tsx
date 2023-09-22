@@ -148,7 +148,7 @@ function Match() {
 			<Content direction='column' align='start'>
 				<Stack self='stretch' gap={0.5} align='baseline'>
 					<Typography variant='h5'>{name}</Typography>
-					{partner && (
+					{!!partner.id && (
 						<>
 							<Typography variant='overline'>{t`match.and`}</Typography>
 							<Partner variant='h6' onClick={onPartnerClick}>{partner.name}</Partner>

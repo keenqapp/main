@@ -28,8 +28,8 @@ import { IMemberPartner, membergql, updatemembergql } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
-import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 import Upload from '@/ui/Upload'
 
 import ProfileProgress from '@/components/Profile/ProfileProgress'

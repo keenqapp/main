@@ -71,7 +71,7 @@ const Item = styled(Stack)`
 	padding: 0.33rem 0;
 `
 
-function MyMatchesItem({ id, member, type, result }: IMatch) {
+function MyMatchesItem({ id, member, type }: IMatch) {
 	const [ , remove ] = useMutation(removematch)
 	return (
 		<Item>

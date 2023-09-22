@@ -29,7 +29,7 @@ function max(left: IMessageReactionCount, right: IMessageReactionCount) {
 
 function count(input: any[]) {
 	const counts = input.reduce((obj, curr) => {
-		if (obj[curr.id]) obj[curr.id] = { id: curr.id, emoji: curr.emoji, count: curr.count + 1 }
+		if (obj[curr.id]) obj[curr.id] = { id: curr.id, emoji: curr.emoji, count: obj[curr.id].count + 1 }
 		else obj[curr.id] = { id: curr.id, emoji: curr.emoji, count: 1 }
 		return obj
 	}, {})
@@ -47,7 +47,8 @@ function PersonalMessageReaction({ emoji, count }: IMessageReactionCount) {
 
 function PersonalMessageReactions(message: IMessage) {
 	const { reactions } = message
-	const result = usePipe(reactions, count, sort(max), first(3), toComponent(PersonalMessageReaction))
+	// const result = usePipe(reactions, count, sort(max), first(3), toComponent(PersonalMessageReaction))
+	const result = usePipe(reactions, count, sort(max), toComponent(PersonalMessageReaction))
 	const shouldShow = shouldShowCheck(message)
 	return (
 		<PersonalMessageReactionsContainer shouldShow={shouldShow} data-testid='PersonalMessageReactions' className='reaction-container' gap={0.2}>

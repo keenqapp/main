@@ -69,6 +69,11 @@ export function match(input: string, str: string) {
 	return re.test(str)
 }
 
+export function log(input: any) {
+	console.log('--- utils.ts:73 -> log ->', input)
+	return input
+}
+
 export function merge(left: object, right: object) {
 	return { ...left, ...right }
 }
