@@ -20,7 +20,7 @@ import { useTranslate } from '@/services/translate'
 import Container from '@/ui/Container'
 import Space from '@/ui/Space'
 
-import { inputsHasError, isNotEmpty, isValidPhone, useInput } from '@/hooks/useInput'
+import { inputsHasError, isNotEmpty, useInput } from '@/hooks/useInput'
 import { asYouType } from '@/utils/formatters'
 
 
@@ -33,10 +33,8 @@ const StyledStack = styled(Stack)`
 	transition: height 300ms ease-in-out;
 `
 
-function format(s: string, prev: any) {
-	const ayt = asYouType(s)
-	console.log('--- LoginForm.tsx:38 -> format ->', `|${ayt}|`, '|end')
-	return ayt
+function format(s: string, _: any) {
+	return asYouType(s)
 }
 
 function LoginForm() {
