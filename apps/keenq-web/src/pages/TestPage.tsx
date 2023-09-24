@@ -71,28 +71,45 @@ const Item = styled(Stack)`
 	padding: 0.33rem 0;
 `
 
+const context = {
+	requestPolicy: 'cache-and-network',
+	additionalTypenames: ['matches'],
+}
+
 function MyMatchesItem({ id, member, type }: IMatch) {
+	const { id: mid } = useCurrentMember()
 	const [ , remove ] = useMutation(removematch)
+	const [ , refetchmy ] = useQuery(mymatches, { id: mid }, { context })
+	const onClick= async () => {
+		await remove({ id })
+		refetchmy()
+	}
 	return (
 		<Item>
 			<Stack justify='start' gap={0.5}>
 				{types[type]}
 				<Text>{member?.name || member?.id}</Text>
 			</Stack>
-			<IconButton color='error' onClick={() => remove({ id })}><DeleteForeverTwoToneIcon /></IconButton>
+			<IconButton color='error' onClick={onClick}><DeleteForeverTwoToneIcon /></IconButton>
 		</Item>
 	)
 }
 
 function ToMeMatchesItem({ id, type, author }: IMatch) {
+	const { id: mid } = useCurrentMember()
 	const [ , remove ] = useMutation(removematch)
+	const [ , refetchtome ] = useQuery(tomematches, { id: mid })
+	const onClick= async () => {
+		await remove({ id })
+		refetchtome()
+	}
 	return (
 		<Item>
 			<Stack justify='start' gap={0.5}>
 				{types[type]}
 				<Text>{author?.name || author?.id}</Text>
 			</Stack>
-			<IconButton color='error' onClick={() => remove({ id })}><DeleteForeverTwoToneIcon /></IconButton>
+			<IconButton color='error' onClick={onClick}><DeleteForeverTwoToneIcon /></IconButton>
 		</Item>
 	)
 }
@@ -100,10 +117,11 @@ function ToMeMatchesItem({ id, type, author }: IMatch) {
 function TestPage() {
 	const { t } = useTranslate()
 	const { id } = useCurrentMember()
-	const [ myresult ] = useQuery(mymatches, { id })
+	const [ myresult ] = useQuery(mymatches, { id }, { context })
 	const [ tomeresult ] = useQuery(tomematches, { id })
 	const myMatches = myresult.data?.matches || []
 	const toMeMatches = tomeresult.data?.matches || []
+
 	return (
 		<Page data-testid='TestPage'>
 			<Container flex>
