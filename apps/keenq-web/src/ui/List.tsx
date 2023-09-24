@@ -7,7 +7,7 @@ import { column } from '@/ui/css'
 import { Entity } from '@/types/utility'
 
 
-const ListContainer = styled.div<{ height: number }>`
+const ListContainer = styled.div<{ height?: number }>`
 	position: relative;
 	width: 100%;
 	${column};
@@ -28,17 +28,8 @@ const Scroll = styled.div`
   padding-top: 1rem;
   padding-bottom: 1rem;
   height: ${p => p.height}px;
+	scroll-behavior: smooth;
 `
-
-// const Fade = styled.div<{ position: 'start' | 'end' }>`
-// 	position: absolute;
-// 	left: 0;
-// 	right: 0;
-// 	height: 1rem;
-// 	z-index: 2;
-//   background: linear-gradient(${p => p.position === 'start' ? 0 : 180}deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 75%);
-// 	${p => p.position === 'start' ? 'top: 0;' : 'bottom: 0;'}
-// `
 
 const StyledAutosizer = styled.div`
 	flex: 1;

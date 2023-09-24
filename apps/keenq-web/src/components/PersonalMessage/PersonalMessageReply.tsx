@@ -3,10 +3,11 @@ import { parseISO } from 'date-fns'
 
 import Typography from '@mui/material/Typography'
 
-import Stack from '@/ui/Stack'
-
 import { getImage, getReply, getText, IMessage } from '@/model/message'
 import { toColor } from '@/model/message'
+
+import Stack from '@/ui/Stack'
+
 import { formatDate } from '@/utils/formatters'
 
 
@@ -48,8 +49,14 @@ function PersonalMessageReply(message: IMessage) {
 	const image = getImage(reply)
 	const text = getText(reply)
 
+	const onClick = (e: any) => {
+		e.preventDefault()
+		e.stopPropagation()
+		location.replace(`/room/${message.roomId}#${reply.id}`)
+	}
+
 	return (
-		<ReplyContainer data-testid='PersonalMessageReply'>
+		<ReplyContainer data-testid='PersonalMessageReply' onClick={onClick}>
 			<Stack gap={1} align='stretch'>
 				{image && <Image src={image.url} />}
 				<TextContainer direction='column' align='start' justify='between'>

@@ -40,6 +40,7 @@ const globalStyles = css`
     box-sizing: border-box;
     width: 100vw;
     user-select: none;
+    scroll-behavior: smooth;
   }
   @media print {
     html,

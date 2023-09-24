@@ -100,6 +100,7 @@ function PersonalMessage(message: IMessage) {
 		<>
 			<DateSeparator {...message} />
 			<MessageContainer
+				id={message.id}
 				data-testid='PersonalMessage'
 				isAuthor={isAuthor}
 				isChannel={isChannel}
