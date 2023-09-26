@@ -61,6 +61,6 @@ packages:
       VAPID_PUBLIC_KEY: "${VAPID_PUBLIC_KEY}"
       VAPID_PRIVATE_KEY: "${VAPID_PRIVATE_KEY}"
     functions:
-      - name: push
+      - name: send
         runtime: nodejs:18
         web: true

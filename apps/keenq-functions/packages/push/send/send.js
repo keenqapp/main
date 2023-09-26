@@ -1,4 +1,6 @@
 import { object, string } from 'yup'
+import webpush from 'web-push'
+
 import { getDb, getCreds, ensureCreds, success, error, validate } from './shared.js'
 
 const schema = object({
@@ -15,12 +17,17 @@ const config = {
 	pool: { min: 0, max: 2 }
 }
 
+const vapidPublicKey = process.env.VAPID_PUBLIC_KEY
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY
+
+const details = webpush.setVapidDetails('your@keenq.app', vapidPublicKey, vapidPrivateKey)
+
 async function getMember(id, db) {
-	return db.table('members').select('push').where('id', id).first()
+	return db.table('members').select().where('id', id).first()
 }
 
 async function send(payload, endpoint) {
-
+	return
 }
 
 export async function main(body) {
@@ -34,7 +41,7 @@ export async function main(body) {
 
 		const endpoint = await getMember(id, db)
 
-		await send(payload, endpoint)
+		// await send(payload, endpoint)
 
 		return success({ endpoint })
 	}
