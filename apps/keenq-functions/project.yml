@@ -55,3 +55,12 @@ packages:
       - name: test
         runtime: nodejs:18
         web: true
+  - name: push
+    environment:
+      DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
+      VAPID_PUBLIC_KEY: "${VAPID_PUBLIC_KEY}"
+      VAPID_PRIVATE_KEY: "${VAPID_PRIVATE_KEY}"
+    functions:
+      - name: push
+        runtime: nodejs:18
+        web: true

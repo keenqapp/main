@@ -1,6 +1,3 @@
-import { getMessaging, getToken, isSupported, onMessage } from 'firebase/messaging'
-
-import { app } from '@/services/firebase'
 import { $modals } from '@/services/modals'
 
 import { updatemembergql, useCurrentMember } from '@/model/member'
@@ -10,19 +7,12 @@ import { useMutation } from '@/hooks/gql'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 
 
-const vapidKey = import.meta.env.VITE_VAPID_KEY
-
 export let messaging: any
-async function init() {
-	try {
-		const supported = await isSupported()
-		if (supported) messaging = getMessaging(app)
-	}
-	catch(e) {
-		throw { error: e }
-	}
+
+const options = {
+	userVisibleOnly: true,
+	applicationServerKey: import.meta.env.VITE_VAPID_KEY,
 }
-init()
 
 export async function request() {
 	await Notification.requestPermission()
@@ -48,21 +38,21 @@ export function notify(msg: string) {
 export function usePushes() {
 	const { id } = useCurrentMember()
 	const [ , update ] = useMutation(updatemembergql)
+
 	useAsyncEffect(async () => {
-		if (id && messaging) {
+		if (id) {
 			try {
-				const pushToken = await getToken(messaging, { vapidKey })
-				await update({ id, data: { pushToken } })
-				console.log('--- notifications.ts:56 ->  ->', pushToken)
-				onMessage(messaging, msg => {
-					console.log('--- notifications.ts:57 ->  ->', msg)
-				})
+				const registration = await navigator.serviceWorker.ready
+				const state = await registration.pushManager.permissionState(options)
+				if (state !== 'granted') return
+				const sub = await registration.pushManager.subscribe(options)
+				await update({ id, data: { push: sub.endpoint } })
 			}
 			catch(e) {
 				throw { error: e }
 			}
 		}
-	}, [ id, messaging ])
+	}, [ id ])
 }
 
 export function useNotifications() {
@@ -72,34 +62,3 @@ export function useNotifications() {
 		notify,
 	}
 }
-
-// const options = {
-// 	userVisibleOnly: true,
-// 	applicationServerKey: import.meta.env.VITE_PUSH_KEY,
-// }
-
-// async function register() {
-// 	try {
-// 		const sw  = await navigator.serviceWorker.ready
-// 		const sub = await sw.pushManager.subscribe(options)
-// 		// console.log('--- notifications.ts:45 -> register ->', sub)
-// 	}
-// 	catch(e) {
-// 		console.log('--- notifications.ts:41 -> register -> error', e)
-// 	}
-// }
-//
-// register()
-
-// try {
-// 	navigator.serviceWorker.ready.then(async registration => {
-// 		console.log('--- notifications.ts:38 ->  ->', Notification.permission)
-// 		console.log('--- notifications.ts:38 ->  ->', registration.pushManager)
-// 		const p = await registration.pushManager.permissionState()
-// 		console.log('--- notifications.ts:38 ->  ->', p)
-// 	})
-// }
-// catch(e) {
-// 	console.log('--- notifications.ts:43 ->  ->', e)
-// }
-
