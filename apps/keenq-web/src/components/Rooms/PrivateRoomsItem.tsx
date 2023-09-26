@@ -39,7 +39,6 @@ function PrivateRoomsItem(room: IRoom) {
 	const navigate = useNavigate()
 	const { id: rid, unread = 0, verified, lastMessage } = room
 	const text = getText(lastMessage)
-
 	const { id: mid } = useCurrentMember()
 	const [ mresult ] = useQuery(othermemberinprivategql, { rid, mid })
 	const member = mresult.data?.rooms_members[0].member || {}

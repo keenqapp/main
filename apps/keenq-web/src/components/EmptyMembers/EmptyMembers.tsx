@@ -9,8 +9,8 @@ import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
-import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
 
 function EmptyMembers() {

@@ -4,51 +4,50 @@ import { IRoom } from '@/model/room/types'
 import { IRoomMember } from '@/model/rooms_members'
 
 
-export const roomsgql = gql<{ rooms: IRoom[] }>`
-	query Rooms {
-		rooms(order_by: { updatedAt: desc_nulls_last }, where: {_and: {members_aggregate: {count: {predicate: {_gte: 1}}}, type: {_neq: "pesonal"}}}) {
+export const roomfragment = gql`
+	fragment RoomFragment on rooms {
+		id
+		type
+		name
+		description
+		image
+		verified
+		createdAt
+		updatedAt
+		lastMessageId
+		deletedAt
+		lastMessage {
 			id
-			name
-			image
-			description
-			type
-			verified
-			lastMessage {
-				id
-				content
-			}
+			content
 		}
 	}
+`
+
+export const roomsgql = gql<{ rooms: IRoom[] }>`
+	query Rooms {
+		rooms(order_by: { updatedAt: desc_nulls_last }) {
+			...RoomFragment
+		}
+	}
+	${roomfragment}
 `
 
 export const getroomsgql = gql<{ rooms: IRoom[] }>`
 	query Rooms($ids: [String!]!) {
 		rooms(where: { id: { _in: $ids }}) {
-			id
-			name
-			image
-			description
-			type
-			verified
-			lastMessage {
-				id
-				content
-			}
+			...RoomFragment
 		}
 	}
+	${roomfragment}
 `
 
 export const roomgql = gql<{ rooms_by_pk: IRoom }>`
 	query Room($id: String!) {
 		rooms_by_pk(id: $id) {
-			id
-			name
-			image
-			description
-			type
-			verified
+			...RoomFragment
 		}
 	}
+	${roomfragment}
 `
 
 interface ICurrentroomgql {
@@ -62,12 +61,7 @@ interface ICurrentroomgql {
 export const currentroomgql = gql<ICurrentroomgql>`
 	query CurrentRoom($id: String!) {
 		rooms_by_pk(id: $id) {
-			id
-			name
-			image
-			description
-			type
-			verified
+			...RoomFragment
 		}
 		rooms_members(where: { roomId: { _eq: $id } }) {
 			memberId
@@ -82,33 +76,32 @@ export const currentroomgql = gql<ICurrentroomgql>`
 			role
 		}
 	}
+	${roomfragment}
 `
 
 export const updateroomgql = gql`
 	mutation UpdateRoom($id: String!, $data: rooms_set_input!) {
 		update_rooms_by_pk(pk_columns: { id: $id }, _set: $data) {
-			id
-			name
-			image
-			description
-			type
-			verified
+			...RoomFragment
 		}
 	}
+	${roomfragment}
 `
 
 export const createroomgql = gql`
 	mutation CreateRoom($object: rooms_insert_input!) {
 		insert_rooms_one(object: $object) {
-			id
+			...RoomFragment
 		}
 	}
+	${roomfragment}
 `
 
 export const removeroomgql = gql`
 	mutation RemoveRoom($id: String!) {
 		delete_rooms_by_pk(id: $id) {
-			id
+			...RoomFragment
 		}
 	}
+	${roomfragment}
 `

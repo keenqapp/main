@@ -7,6 +7,7 @@
     "yeap": "Yeap"
   },
   "app": {
+    "404": "Seems nothing here",
     "doit": "Do it",
     "keenq": "keenq",
     "okay": "Okay"

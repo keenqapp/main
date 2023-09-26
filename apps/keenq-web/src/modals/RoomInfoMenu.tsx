@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone'
 import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
@@ -15,6 +15,7 @@ import { useMutation } from '@/hooks/gql'
 
 function RoomInfoMenu() {
 	const { t } = useTranslate()
+	const navigate = useNavigate()
 	const { id } = useParams()
 	const { name, on } = useModal('roomInfo')
 	const { confirm } = useConfirm()
@@ -26,7 +27,8 @@ function RoomInfoMenu() {
 			title: t`room.deleteTitle`,
 			text: t`room.deleteText`,
 			onConfirm: on(() => {
-				remove({ id, deletedAt: new Date().toISOString() })
+				remove({ id })
+				navigate('/room')
 			})
 		})
 	}
