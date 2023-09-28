@@ -7,6 +7,18 @@ import { useMutation } from '@/hooks/gql'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 
 
+export interface ISub {
+	type: 'sub'
+	data: any
+}
+
+export interface IMsg {
+	type: 'msg'
+	data: any
+}
+
+export type IPush = ISub | IMsg
+
 export let messaging: any
 
 const options = {
@@ -39,9 +51,13 @@ export function usePushes() {
 	const { id } = useCurrentMember()
 	const [ , update ] = useMutation(updatemembergql)
 
-	async function onMessage({ data: sub }: any) {
-		console.log('--- notifications.ts:43 -> onMessage ->', sub)
-		await update({ id, data: { sub } })
+	async function onMessage({ data }: IPush) {
+		if (data.type === 'sub') {
+			await update({ id, data: { sub: data.sub } })
+		}
+		else if (data.type === 'msg') {
+			notify(data.msg)
+		}
 	}
 
 	useAsyncEffect(async () => {

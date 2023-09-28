@@ -2,6 +2,14 @@ importScripts(
 	'https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-sw.js'
 )
 
+async function postMessage(msg) {
+	await self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then(clients => {
+		clients.forEach(client => {
+			client.postMessage(msg)
+		})
+	})
+}
+
 // This is your Service Worker, you can put any of your custom Service Worker
 // code in this file, above the `precacheAndRoute` line.
 
@@ -32,7 +40,8 @@ self.addEventListener('activate', async (event) => {
 })
 
 self.addEventListener('push', (event) => {
-	console.log('--- sw.js:100 ->  ->', event)
+	const text = event?.data?.text()
+	text && postMessage({ type: 'msg', data: text })
 })
 
 const updateWidget = async (event) => {
@@ -80,10 +89,6 @@ function urlBase64ToUint8Array(base64String) {
 	return outputArray
 }
 
-async function notifications() {
-	console.log('--- sw.js:61 -> notifications ->', Notification.permission)
-}
-
 const publicKey = 'BLcppKuyf4h6nMpnYzmfebRvs8WvVwM6PV_G13Bg00Hpau02gPri2PYNsXYp5Ld4TNlmThHy-omjIy1kWI3Sbos'
 
 const options = {
@@ -93,15 +98,7 @@ const options = {
 
 async function subscribe() {
 	const sub = await self.registration.pushManager.subscribe(options)
-	console.log('--- sw.js:88 -> subscribe ->', sub)
-	await self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then(clients => {
-		clients.forEach(client => {
-			client.postMessage(sub.toJSON())
-		})
-	})
-}
-async function init() {
-	const r = await subscribe()
+	postMessage({ type: 'sub', data: sub.toJSON() })
 }
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST || [])
