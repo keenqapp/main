@@ -46,7 +46,7 @@ export function usePushes() {
 				const state = await registration.pushManager.permissionState(options)
 				if (state !== 'granted') return
 				const sub = await registration.pushManager.subscribe(options)
-				await update({ id, data: { push: sub.endpoint } })
+				await update({ id, data: { sub } })
 			}
 			catch(e) {
 				throw { error: e }

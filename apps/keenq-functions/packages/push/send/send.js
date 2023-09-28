@@ -30,8 +30,8 @@ async function getMember(id, db) {
 	return db.table('members').select().where('id', id).first()
 }
 
-async function send(payload, endpoint) {
-	return
+async function send(payload, endpoint, provider) {
+	provider()
 }
 
 export async function main(body) {
@@ -44,11 +44,12 @@ export async function main(body) {
 		const creds = await getCreds(id, db)
 		await ensureCreds(creds)
 
-		const member = await getMember(id, db)
+		const { sub } = await getMember(id, db)
 
 		const pushes = getPushes()
+		await send(payload, sub, pushes)
 
-		return success({ member })
+		return success(true)
 	}
 	catch(e) {
 		return error(e)
