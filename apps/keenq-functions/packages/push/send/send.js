@@ -1,11 +1,15 @@
 import { object, string } from 'yup'
-import { setVapidDetails } from 'web-push'
+import webpush from 'web-push'
 
 import { getDb, getCreds, ensureCreds, success, error, validate } from './shared.js'
 
+
 const schema = object({
 	id: string().required(),
-	payload: object()
+	payload: object({
+		title: string().required(),
+		body: string().required(),
+	})
 })
 
 const config = {
@@ -20,7 +24,10 @@ const config = {
 const vapidPublicKey = process.env.VAPID_PUBLIC_KEY
 const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY
 
-setVapidDetails('your@keenq.app', vapidPublicKey, vapidPrivateKey)
+function getPushes() {
+	webpush.setVapidDetails('https://keenq.app', vapidPublicKey, vapidPrivateKey)
+	return webpush.sendNotification
+}
 
 async function getMember(id, db) {
 	return db.table('members').select().where('id', id).first()
@@ -34,14 +41,15 @@ export async function main(body) {
 	let db
 	try {
 		const { id, payload } = validate(schema, body)
-		db = getDb(config)
 
+		// db = getDb(config)
+		//
 		// const creds = await getCreds(id, db)
 		// await ensureCreds(creds)
+		//
+		// const member = await getMember(id, db)
 
-		// const endpoint = await getMember(id, db)
-
-		// await send(payload, endpoint)
+		// const pushes = getPushes()
 
 		return success({ id })
 	}
