@@ -31,7 +31,7 @@ async function getMember(id, db) {
 }
 
 async function send(payload, sub, provider) {
-	provider(sub, payload)
+	provider(sub, JSON.stringify(payload))
 }
 
 export async function main(body) {
