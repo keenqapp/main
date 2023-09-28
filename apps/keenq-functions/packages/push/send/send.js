@@ -30,8 +30,8 @@ async function getMember(id, db) {
 	return db.table('members').select().where('id', id).first()
 }
 
-async function send(payload, endpoint, provider) {
-	provider()
+async function send(payload, sub, provider) {
+	provider(sub, payload)
 }
 
 export async function main(body) {
@@ -49,7 +49,7 @@ export async function main(body) {
 		const pushes = getPushes()
 		await send(payload, sub, pushes)
 
-		return success(true)
+		return success({ sub, payload })
 	}
 	catch(e) {
 		return error(e)

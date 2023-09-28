@@ -48,15 +48,19 @@ export default defineConfig(({ mode }) => ({
 	},
 	plugins: [
 		VitePWA({
+			strategies: 'injectManifest',
+			injectManifest: {
+				swSrc: 'public/sw.js',
+				swDest: 'dist/sw.js',
+				globDirectory: 'dist',
+				globPatterns: ['**/*.{woff,woff2,png,jpeg,webm,svg}']
+			},
 			registerType: 'autoUpdate',
 			manifest,
 			manifestFilename: 'manifest.json',
 			devOptions: {
 				enabled: mode === 'development'
 			},
-			workbox: {
-				globPatterns: ['**/*.{woff,woff2,png,jpeg,webm,svg}']
-			}
 		}),
 		inspect(),
 		preact({

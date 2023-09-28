@@ -39,14 +39,22 @@ export function usePushes() {
 	const { id } = useCurrentMember()
 	const [ , update ] = useMutation(updatemembergql)
 
+	async function onMessage({ data: sub }: any) {
+		console.log('--- notifications.ts:43 -> onMessage ->', sub)
+		await update({ id, data: { sub } })
+	}
+
 	useAsyncEffect(async () => {
 		if (id) {
 			try {
 				const registration = await navigator.serviceWorker.ready
-				const state = await registration.pushManager.permissionState(options)
+				const manager = registration.pushManager
+				const state = await manager.permissionState(options)
 				if (state !== 'granted') return
-				const sub = await registration.pushManager.subscribe(options)
-				await update({ id, data: { sub } })
+				navigator.serviceWorker.addEventListener('message', onMessage)
+				return () => {
+					navigator.serviceWorker.removeEventListener('message', onMessage)
+				}
 			}
 			catch(e) {
 				throw { error: e }
