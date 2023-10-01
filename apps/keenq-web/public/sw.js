@@ -2,6 +2,21 @@ importScripts(
 	'https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-sw.js'
 )
 
+
+const publicKey = 'BLcppKuyf4h6nMpnYzmfebRvs8WvVwM6PV_G13Bg00Hpau02gPri2PYNsXYp5Ld4TNlmThHy-omjIy1kWI3Sbos'
+const icon = 'https://cdn.keenq.app/assets/images/keenq_padding.png'
+
+const options = {
+	userVisibleOnly: true,
+	applicationServerKey: urlBase64ToUint8Array(publicKey),
+}
+
+async function subscribe() {
+	let sub = await self.registration.pushManager.getSubscription()
+	if (!sub) sub = await self.registration.pushManager.subscribe(options)
+	postMessage({ type: 'sub', data: sub.toJSON() })
+}
+
 async function postMessage(msg) {
 	await self.clients.matchAll({ includeUncontrolled: true, type: 'window' }).then(clients => {
 		clients.forEach(client => {
@@ -10,67 +25,90 @@ async function postMessage(msg) {
 	})
 }
 
-// This is your Service Worker, you can put any of your custom Service Worker
-// code in this file, above the `precacheAndRoute` line.
+let granted = false
 
-// When widget is installed/pinned, push initial state.
+async function check() {
+	const pushState = await self.registration.pushManager.permissionState(options)
+	const notifyState = Notification.permission
+	const result = pushState === 'granted' && notifyState === 'granted'
+	granted = result
+	return result
+}
+
+async function request() {
+	const perm = await Notification.requestPermission()
+	if (perm === 'granted') {
+		await subscribe()
+	}
+}
+
+function spawn({ title, body }) {
+	const options = {
+		icon,
+		body,
+	}
+	new Notification(title, options)
+}
+
 self.addEventListener('widgetinstall', (event) => {
 	event.waitUntil(updateWidget(event))
 })
 
-// When widget is shown, update content to ensure it is up-to-date.
 self.addEventListener('widgetresume', (event) => {
 	event.waitUntil(updateWidget(event))
 })
 
-// When the user clicks an element with an associated Action.Execute,
-// handle according to the 'verb' in event.action.
 self.addEventListener('widgetclick', (event) => {
 	if (event.action == 'updateName') {
 		event.waitUntil(updateName(event))
 	}
 })
 
-// When the widget is uninstalled/unpinned, clean up any unnecessary
-// periodic sync or widget-related state.
 self.addEventListener('widgetuninstall', (event) => {})
 
-self.addEventListener('activate', async (event) => {
-	await subscribe()
+self.addEventListener('message', async (event) => {
+	const granted = await check()
+	const payload = event.data.data || {}
+	if (event.data.type === 'sub') {
+		if (!granted) await request()
+		await subscribe()
+	}
+	else if (event.data.type === 'msg') {
+		event.waitUntil(
+			self.registration.showNotification(payload.title || 'keenq', {
+				icon,
+				body: payload.body,
+			})
+		)
+	}
 })
 
-self.addEventListener('push', (event) => {
-	const text = event?.data?.text()
-	text && postMessage({ type: 'msg', data: text })
+self.addEventListener('push', async function(event) {
+	const payload = event.data?.json()
+	event.waitUntil(
+		self.registration.showNotification(payload.title || 'keenq', {
+			icon,
+			body: payload.body,
+		})
+	)
 })
 
 const updateWidget = async (event) => {
-// The widget definition represents the fields specified in the manifest.
 	const widgetDefinition = event.widget.definition
-
-	// Fetch the template and data defined in the manifest to generate the payload.
 	const payload = {
 		template: JSON.stringify(await (await fetch(widgetDefinition.msAcTemplate)).json()),
 		data: JSON.stringify(await (await fetch(widgetDefinition.data)).json()),
 	}
-
-	// Push payload to widget.
 	await self.widgets.updateByInstanceId(event.instanceId, payload)
 }
 
 const updateName = async (event) => {
 	const name = event.data.json().name
-
-	// The widget definition represents the fields specified in the manifest.
 	const widgetDefinition = event.widget.definition
-
-	// Fetch the template and data defined in the manifest to generate the payload.
 	const payload = {
 		template: JSON.stringify(await (await fetch(widgetDefinition.msAcTemplate)).json()),
 		data: JSON.stringify({ name }),
 	}
-
-	// Push payload to widget.
 	await self.widgets.updateByInstanceId(event.instanceId, payload)
 }
 
@@ -87,18 +125,6 @@ function urlBase64ToUint8Array(base64String) {
 		outputArray[i] = rawData.charCodeAt(i)
 	}
 	return outputArray
-}
-
-const publicKey = 'BLcppKuyf4h6nMpnYzmfebRvs8WvVwM6PV_G13Bg00Hpau02gPri2PYNsXYp5Ld4TNlmThHy-omjIy1kWI3Sbos'
-
-const options = {
-	userVisibleOnly: true,
-	applicationServerKey: urlBase64ToUint8Array(publicKey),
-}
-
-async function subscribe() {
-	const sub = await self.registration.pushManager.subscribe(options)
-	postMessage({ type: 'sub', data: sub.toJSON() })
 }
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST || [])

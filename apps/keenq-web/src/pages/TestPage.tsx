@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import { gql } from 'urql'
 
+import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 
 import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone'
@@ -8,6 +9,7 @@ import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone'
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone'
 
+import { notify } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
 import { IMatch } from '@/model/match'
@@ -116,7 +118,7 @@ function ToMeMatchesItem({ id, type, author }: IMatch) {
 
 function TestPage() {
 	const { t } = useTranslate()
-	const { id } = useCurrentMember()
+	const { id, name } = useCurrentMember()
 	const [ myresult ] = useQuery(mymatches, { id }, { context })
 	const [ tomeresult ] = useQuery(tomematches, { id })
 	const myMatches = myresult.data?.matches || []
@@ -138,6 +140,7 @@ function TestPage() {
 					data={toMeMatches}
 					render={ToMeMatchesItem}
 				/>
+				<Button onClick={() => notify({ title: name + ' says:', body: 'I\'m cool' })}>Send notification to yourself</Button>
 			</Container>
 		</Page>
 	)

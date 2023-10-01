@@ -21,7 +21,7 @@ function NotificationsDrawer() {
 		<Drawer data-testid='NotificationsDrawer' name={name}>
 			<Container>
 				<Card>
-					<Typography variant='overline' align='center'>{t`notify.has`}</Typography>
+					<Typography variant='overline' align='center'>{t`notify.allow`}</Typography>
 					<Space />
 					<Button variant='outlined' onClick={onRequest}>{t`app.doit`}</Button>
 				</Card>

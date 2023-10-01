@@ -75,6 +75,7 @@
     "today": "Today"
   },
   "notify": {
+    "allow": "Allow notifications not to miss new metch or message",
     "has": "Your have a Match! Allow notificatuons not to miss a new one"
   },
   "partner": {

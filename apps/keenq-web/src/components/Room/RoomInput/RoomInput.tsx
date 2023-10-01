@@ -9,6 +9,7 @@ import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone'
 import SendTwoToneIcon from '@mui/icons-material/SendTwoTone'
 
 import { useModal } from '@/services/modals'
+import { ask } from '@/services/notifications'
 import { uploadImage } from '@/services/spaces'
 
 import { useCurrentMember } from '@/model/member/hooks'
@@ -25,11 +26,11 @@ import RoomInputNewFile from '@/components/Room/RoomInput/RoomInputNewFile'
 import RoomInputReply from '@/components/Room/RoomInput/RoomInputReply'
 import { $imagesToAdd, $imagesToEdit, $imagesToEditSetted, $messageReplyOrEditId, $scroll, $sending, clear } from '@/components/Room/RoomInput/state'
 
+import Loading from '@/core/Loading'
 import { useQuery, useUpdate } from '@/hooks/gql'
 import { useInsert } from '@/hooks/gql/useInsert'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useInput } from '@/hooks/useInput'
-import Loading from '@/core/Loading'
 
 
 const RoomInputContainer = styled.div`
@@ -170,6 +171,7 @@ function RoomInput() {
 			throw { error: e }
 		}
 		finally {
+			ask()
 			$sending.set(false)
 		}
 	}

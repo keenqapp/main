@@ -1,88 +1,86 @@
+import { persistentAtom } from '@nanostores/persistent'
+import { atom } from 'nanostores'
+
 import { $modals } from '@/services/modals'
 
 import { updatemembergql, useCurrentMember } from '@/model/member'
 
-import icon from '@/assets/keenq.svg'
 import { useMutation } from '@/hooks/gql'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
+import { boolAtom } from '@/utils/utils'
 
 
 export interface ISub {
 	type: 'sub'
-	data: any
 }
 
-export interface IMsg {
+export interface INotification {
 	type: 'msg'
+	data: {
+		title?: string
+		body: string
+	}
+}
+
+export interface ICheck {
+	type: 'check'
 	data: any
 }
 
-export type IPush = ISub | IMsg
+export type IPush = ISub | INotification | ICheck
 
-export let messaging: any
+export const $granted = atom(false)
+export const $asked = persistentAtom('$asked', false, boolAtom)
 
-const options = {
-	userVisibleOnly: true,
-	applicationServerKey: import.meta.env.VITE_VAPID_KEY,
+export function postMessage(data: IPush) {
+	navigator.serviceWorker.ready.then(registration => {
+		registration.active?.postMessage(data)
+	})
+}
+
+export function notify(data: INotification['data']) {
+	postMessage({ type: 'msg', data })
+}
+
+let counter = 0
+
+export function ask() {
+	if (!$asked.get() || (!$granted.get() && counter > 2)) {
+		$modals.setKey('notifications', true)
+		counter = 0
+	}
+	else counter++
 }
 
 export async function request() {
-	await Notification.requestPermission()
-}
-
-export function check() {
-	return Notification.permission
-}
-
-export function spawn(body: string) {
-	const options = {
-		icon,
-		body,
+	const perm = await Notification.requestPermission()
+	if (perm === 'granted') {
+		$granted.set(true)
+		postMessage({ type: 'sub' })
 	}
-	new Notification('keenq', options)
+	return perm
 }
 
-export function notify(msg: string) {
-	if (check() !== 'granted') return $modals.setKey('notifications', true)
-	spawn(msg)
+function check() {
+	const perm = Notification.permission === 'granted'
+	$granted.set(perm)
+	return perm
 }
 
 export function usePushes() {
 	const { id } = useCurrentMember()
 	const [ , update ] = useMutation(updatemembergql)
 
-	async function onMessage({ data }: IPush) {
+	async function onMessage({ data }: any) {
 		if (data.type === 'sub') {
-			await update({ id, data: { sub: data.sub } })
-		}
-		else if (data.type === 'msg') {
-			notify(data.msg)
+			await update({ id, data: { sub: data.data } })
 		}
 	}
 
 	useAsyncEffect(async () => {
-		if (id) {
-			try {
-				const registration = await navigator.serviceWorker.ready
-				const manager = registration.pushManager
-				const state = await manager.permissionState(options)
-				if (state !== 'granted') return
-				navigator.serviceWorker.addEventListener('message', onMessage)
-				return () => {
-					navigator.serviceWorker.removeEventListener('message', onMessage)
-				}
-			}
-			catch(e) {
-				throw { error: e }
-			}
-		}
+		if (!id) return
+		if (check()) postMessage({ type: 'sub' })
+		navigator.serviceWorker.addEventListener('message', onMessage)
+		return () => navigator.serviceWorker.removeEventListener('message', onMessage)
 	}, [ id ])
-}
-
-export function useNotifications() {
-	return {
-		request,
-		check,
-		notify,
-	}
 }

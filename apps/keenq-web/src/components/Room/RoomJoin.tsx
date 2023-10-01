@@ -1,14 +1,17 @@
+import { useNavigate } from 'react-router-dom'
+
 import Button from '@mui/material/Button'
 
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+
+import { ask } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
 import { useCurrentMember } from '@/model/member'
 import { useCurrentRoom } from '@/model/room'
 import { insertjoinroom, updatejoinroom } from '@/model/rooms_members'
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
 
 import { useInsert, useMutation } from '@/hooks/gql'
-import { useNavigate } from 'react-router-dom'
 
 
 function RoomJoin() {
@@ -21,6 +24,7 @@ function RoomJoin() {
 	const [ , updateJoin ] = useMutation(updatejoinroom)
 
 	const onJoinClick = () => {
+		ask()
 		if (isSoftDeleted) updateJoin({ memberId: mid, roomId: rid })
 		else insertJoin({ memberId: mid, roomId: rid, privateFor: rid })
 	}

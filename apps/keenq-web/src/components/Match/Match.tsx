@@ -14,7 +14,7 @@ import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 
 import { useModal } from '@/services/modals'
-import { notify } from '@/services/notifications'
+import { ask } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
 import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
@@ -127,8 +127,8 @@ function Match() {
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
 		if (data?.matched.data.result) {
 			$unread.set(true)
-			notify(t`match.youHave`)
 		}
+		ask()
 		redirect()
 	}
 
@@ -147,7 +147,12 @@ function Match() {
 			<Space />
 			<Content direction='column' align='start'>
 				<Stack self='stretch' gap={0.5} align='baseline'>
-					<Stack align='center' justify='start' gap={0.2} wrap>
+					<Stack
+						align='center'
+						justify='start'
+						gap={0.2}
+						wrap
+					>
 						<Typography variant='h5'>{name}</Typography>
 						{!!partner.id && (
 							<>
