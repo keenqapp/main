@@ -1,7 +1,8 @@
 import { devtoolsExchange } from '@urql/devtools'
 import { persistedExchange } from '@urql/exchange-persisted'
 import { createClient as createWSClient } from 'graphql-ws'
-import { cacheExchange, Client, fetchExchange, subscriptionExchange } from 'urql'
+import { Client, fetchExchange, subscriptionExchange } from 'urql'
+import { cacheExchange } from '@urql/exchange-graphcache'
 
 import { $accessToken } from '@/services/auth'
 
@@ -19,7 +20,7 @@ const client = new Client({
 	url: import.meta.env.VITE_GRAPHQL_ENDPOINT,
 	exchanges: [
 		devtoolsExchange,
-		cacheExchange,
+		cacheExchange({}),
 		fetchExchange,
 		subscriptionExchange({
 			forwardSubscription(request) {

@@ -19,6 +19,7 @@ export const messagesgql = gql<{ messages: IMessage }>`
 				name
 				images
 			}
+			seen @client
 		}
 	}
 `

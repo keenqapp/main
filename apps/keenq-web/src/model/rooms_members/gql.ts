@@ -56,6 +56,7 @@ export const removeroommember = gql`
 export const othermemberinprivategql = gql`
 	query OtherMember($rid: String!, $mid: String!) {
 		rooms_members(where: { _and: { roomId: { _eq: $rid }, memberId: {_neq: $mid } } }) {
+			id
 			member {
 				id
 				name
@@ -68,6 +69,7 @@ export const othermemberinprivategql = gql`
 export const privateroomgql = gql<{ rooms_members: IRoomMember[] }, { cid: string, mid: string }>`
 	query PrivateRoom($cid: String!, $mid: String!) {
 		rooms_members(where: { _and: { memberId: { _eq: $cid }, privateFor: { _eq: $mid } } }) {
+			id
 			room {
 				id
 			}

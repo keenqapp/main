@@ -64,14 +64,17 @@ export const currentroomgql = gql<ICurrentroomgql>`
 			...RoomFragment
 		}
 		rooms_members(where: { roomId: { _eq: $id } }) {
+			id
 			memberId
 			role
 			deletedAt
 		}
 		rooms_members_excluded(where: { roomId: { _eq: $id } }) {
+			id
 			memberId
 		}
 		rooms_admins(where: { roomId: { _eq: $id } }) {
+			id
 			memberId
 			role
 		}

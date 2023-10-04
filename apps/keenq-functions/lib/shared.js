@@ -30,7 +30,7 @@ export function ensureCreds(creds) {
 }
 
 export function success(data) {
-	return { body: { success: true, data } }
+	return { body: { success: true, data, ...(data.id ? { id: data.id } : {}) } }
 }
 
 export function error(data) {
