@@ -1,11 +1,15 @@
 import { devtoolsExchange } from '@urql/devtools'
-import { persistedExchange } from '@urql/exchange-persisted'
+import { cacheExchange, offlineExchange } from '@urql/exchange-graphcache'
+import { makeDefaultStorage } from '@urql/exchange-graphcache/default-storage'
 import { createClient as createWSClient } from 'graphql-ws'
 import { Client, fetchExchange, subscriptionExchange } from 'urql'
-import { cacheExchange } from '@urql/exchange-graphcache'
 
 import { $accessToken } from '@/services/auth'
 
+
+const storage = makeDefaultStorage({
+	idbName: 'keenq',
+})
 
 const wsClient = createWSClient({
 	url: import.meta.env.VITE_GRAPHQL_ENDPOINT.replace('http', 'ws'),
@@ -20,7 +24,17 @@ const client = new Client({
 	url: import.meta.env.VITE_GRAPHQL_ENDPOINT,
 	exchanges: [
 		devtoolsExchange,
-		cacheExchange({}),
+		cacheExchange({
+			directives: {
+				local(directiveArgs)  {
+					console.log('--- urql.ts:30 -> local ->', directiveArgs)
+					return (parent, args, cache, info) => {
+						console.log('--- urql.ts:32 ->  ->', parent, args, cache, info)
+						return null
+					}
+				}
+			}
+		}),
 		fetchExchange,
 		subscriptionExchange({
 			forwardSubscription(request) {
@@ -33,9 +47,7 @@ const client = new Client({
 				}
 			},
 		}),
-		persistedExchange({
-			preferGetForPersistedQueries: true,
-		})
+		offlineExchange({ storage }),
 	],
 	fetchOptions: () => ({
 		headers: {

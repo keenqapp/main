@@ -4,6 +4,7 @@ import { gql } from 'urql'
 export const matchgql = gql`
 	query Match($id: String!) {
 		match(id: $id) {
+			id
 			success
 			data {
 				id
@@ -33,6 +34,7 @@ export const updatematchgql = gql`
 export const matchedgql = gql`
 	mutation Matched($authorId: String!, $memberId: String!, $type: String!) {
 		matched(authorId: $authorId, memberId: $memberId, type: $type) {
+			id
 			success
 			data {
 				result
