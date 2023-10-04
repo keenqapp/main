@@ -45,7 +45,7 @@ export function notify(data: INotification['data']) {
 let counter = 0
 
 export function ask() {
-	if (!$asked.get() || (!$granted.get() && counter > 2)) {
+	if (!$asked.get() || (!$granted.get() && counter > 100)) {
 		$modals.setKey('notifications', true)
 		counter = 0
 	}
