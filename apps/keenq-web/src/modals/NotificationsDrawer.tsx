@@ -13,9 +13,12 @@ import Space from '@/ui/Space'
 
 function NotificationsDrawer() {
 	const { t } = useTranslate()
-	const { name } = useModal('notifications')
+	const { name, close } = useModal('notifications')
 
-	const onRequest = () => request()
+	const onRequest = () => {
+		close()
+		request()
+	}
 
 	return (
 		<Drawer data-testid='NotificationsDrawer' name={name}>
