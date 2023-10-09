@@ -20,7 +20,7 @@ import Stack from '@/ui/Stack'
 
 const RoomHeaderContainer = styled(Stack)`
 	height: var(--vertical-space);
-	padding: 0 1rem;
+	padding: 0 1rem 2px;
 	width: 100vw;
 `
 
