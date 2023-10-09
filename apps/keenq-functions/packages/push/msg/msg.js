@@ -45,11 +45,10 @@ export async function main(body) {
 	let db
 	try {
 		const { msg } = validate(body, schema)
-		const { roomId } = event
 
 		db = getDb(config)
 
-		const subs = await getMembers(roomId, db)
+		const subs = await getMembers(msg.roomId, db)
 		const pushes = getPushes()
 
 		await push(subs, msg, pushes)
