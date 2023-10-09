@@ -85,13 +85,14 @@ self.addEventListener('message', async (event) => {
 
 function getPayload(event) {
 	const payload = event.data?.json()
+	console.log('--- sw.js:88 -> getPayload ->', payload)
 	if (payload.type === 'roomMsg') return {
 		title: payload.data.title,
 		body: payload.data.body,
 	}
 	return {
-		title: payload?.title || 'keenq',
-		body: payload?.body || 'newmsg',
+		title: payload?.data.title || 'keenq',
+		body: payload?.data.body || 'newmsg',
 	}
 }
 

@@ -20,10 +20,6 @@ const config = {
 const vapidPublicKey = process.env.VAPID_PUBLIC_KEY
 const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY
 
-function ensureMsg(msg) {
-	if (msg.type !== 'personal') throw new Error('msg.type must be "personal"')
-}
-
 function getPushes() {
 	webpush.setVapidDetails('https://keenq.app', vapidPublicKey, vapidPrivateKey)
 	return webpush.sendNotification
@@ -68,7 +64,6 @@ export async function main(body) {
 	let db
 	try {
 		const { msg } = validate(body, schema)
-		ensureMsg(msg)
 
 		db = getDb(config)
 		const pushes = getPushes()
