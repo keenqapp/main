@@ -41,16 +41,20 @@ function getTitle(room, author) {
 	if (room.type === 'channel') return room.name
 }
 
+function getData(members, room, msg) {
+	const author = members.find(member => member.id === msg.authorId)
+	const body = msg.content.find(item => item.type === 'text')?.value.text || 'notext'
+	const title = getTitle(room, author)
+	return {
+		body,
+		title,
+		url: 'some_url'
+	}
+}
+
 async function push(room, members, msg, provider) {
 	try {
-		const author = members.find(member => member.id === msg.authorId)
-		const body = msg.content.find(item => item.type === 'text')?.value.text || 'notext'
-		const title = getTitle(room, author)
-		const data = {
-			body,
-			title,
-			url: 'some_url'
-		}
+		const data = getData(members, room)
 		for (const member of members) {
 			provider(member.sub, JSON.stringify({ type: 'roomMsg', data }), { topic: room.id })
 		}
