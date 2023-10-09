@@ -48,6 +48,7 @@ function getData(members, room, msg) {
 	return {
 		body,
 		title,
+		topic: room.id,
 		url: 'some_url'
 	}
 }

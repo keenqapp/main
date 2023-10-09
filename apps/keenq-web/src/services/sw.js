@@ -26,6 +26,7 @@ async function postMessage(msg) {
 }
 
 let granted = false
+let topics = new Set()
 
 async function check() {
 	const pushState = await self.registration.pushManager.permissionState(options)
@@ -73,6 +74,9 @@ self.addEventListener('message', async (event) => {
 		if (!granted) await request()
 		await subscribe()
 	}
+	else if (event.data.type === 'topics') {
+		topics = new Set(payload)
+	}
 	else if (event.data.type === 'msg') {
 		event.waitUntil(
 			self.registration.showNotification(payload.title || 'keenq', {
@@ -85,19 +89,25 @@ self.addEventListener('message', async (event) => {
 
 function getPayload(event) {
 	const payload = event.data?.json()
-	console.log('--- sw.js:88 -> getPayload ->', payload)
 	if (payload.type === 'roomMsg') return {
 		title: payload.data.title,
 		body: payload.data.body,
+		topic: payload.data.topic,
+		url: payload.data.url,
 	}
 	return {
 		title: payload?.data.title || 'keenq',
 		body: payload?.data.body || 'newmsg',
+		topic: payload.data.topic,
+		url: payload.data.url,
 	}
 }
 
 self.addEventListener('push', async function(event) {
-	const { title, body } = getPayload(event)
+	const { title, body, topic } = getPayload(event)
+	console.log('--- sw.js:108 ->  ->', topics, topic, topics.has(topic))
+	if (topics.has(topic)) return
+
 	event.waitUntil(
 		self.registration.showNotification(title, {
 			icon,
