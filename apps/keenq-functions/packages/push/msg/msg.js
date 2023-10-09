@@ -54,7 +54,7 @@ function getData(members, room, msg) {
 
 async function push(room, members, msg, provider) {
 	try {
-		const data = getData(members, room)
+		const data = getData(members, room, msg)
 		for (const member of members) {
 			provider(member.sub, JSON.stringify({ type: 'roomMsg', data }), { topic: room.id })
 		}
@@ -74,11 +74,10 @@ export async function main(body) {
 
 		const room = await getRoom(msg.roomId, db)
 		const members = await getMembers(msg.roomId, db)
-		const data = getData(members, room)
 
-		// await push(room, members, msg, pushes)
+		await push(room, members, msg, pushes)
 
-		return success(data)
+		return success(true)
 	}
 	catch(e) {
 		return error(e)
