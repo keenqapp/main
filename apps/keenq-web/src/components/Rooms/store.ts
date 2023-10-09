@@ -1,7 +1,7 @@
 import { persistentAtom } from '@nanostores/persistent'
 
-import { boolAtom } from '@/utils/utils'
+import { json } from '@/utils/utils'
 
 
-export const $showTabs = persistentAtom('$showTabs', false, boolAtom)
+export const $showTabs = persistentAtom('$showTabs', false, json)
 export const $tab = persistentAtom<string>('$roomsTab', 'personal')

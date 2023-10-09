@@ -132,10 +132,12 @@
     "makeAdmin": "Make admin",
     "makeOwner": "Make owner",
     "members": "members",
+    "mute": "Mute",
     "remove": "Remove",
     "room": "Room",
     "share": "Share",
     "unban": "Unban",
+    "unmute": "Unmute",
     "verification": "Request verification"
   },
   "rooms": {

@@ -9,7 +9,7 @@ import { useCurrentMember } from '@/model/member/hooks'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { persistentAtom } from '@nanostores/persistent'
-import { boolAtom } from '@/utils/utils'
+import { json } from '@/utils/utils'
 
 
 interface LocalityInfo {
@@ -53,7 +53,7 @@ const $permission= atom<PermissionState|null>(null)
 const $status = atom<'pending'|'success'|'error'>('pending')
 const $position = atom<Position|null>(null)
 const $coords = atom<GeolocationPosition|null>(null)
-export const $shouldRequest = persistentAtom('$position:shouldRequest', false, boolAtom)
+export const $shouldRequest = persistentAtom('$position:shouldRequest', false, json)
 
 function coordsToString(position: GeolocationPosition) {
 	if (!position) return ''

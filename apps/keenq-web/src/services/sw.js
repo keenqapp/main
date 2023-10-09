@@ -27,6 +27,7 @@ async function postMessage(msg) {
 
 let granted = false
 let topics = new Set()
+let online = false
 
 async function check() {
 	const pushState = await self.registration.pushManager.permissionState(options)
@@ -77,6 +78,9 @@ self.addEventListener('message', async (event) => {
 	else if (event.data.type === 'topics') {
 		topics = new Set(payload)
 	}
+	else if (event.data.type === 'online') {
+		online = payload
+	}
 	else if (event.data.type === 'msg') {
 		event.waitUntil(
 			self.registration.showNotification(payload.title || 'keenq', {
@@ -105,9 +109,8 @@ function getPayload(event) {
 
 self.addEventListener('push', async function(event) {
 	const { title, body, topic } = getPayload(event)
-	console.log('--- sw.js:108 ->  ->', topics, topic, topics.has(topic))
-	if (topics.has(topic)) return
-
+	const isVisible = (await self.clients.matchAll({ includeUncontrolled: true, type: 'window' })).some(c => c.visibilityState === 'visible')
+	if (topics.has(topic) || isVisible) return
 	event.waitUntil(
 		self.registration.showNotification(title, {
 			icon,

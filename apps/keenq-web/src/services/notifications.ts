@@ -1,4 +1,5 @@
 import { persistentAtom } from '@nanostores/persistent'
+import { useStore } from '@nanostores/preact'
 import { atom } from 'nanostores'
 
 import { $modals } from '@/services/modals'
@@ -7,11 +8,16 @@ import { updatemembergql, useCurrentMember } from '@/model/member'
 
 import { useMutation } from '@/hooks/gql'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
-import { boolAtom } from '@/utils/utils'
+import { json } from '@/utils/utils'
 
 
 export interface ISub {
 	type: 'sub'
+}
+
+export interface ITopics {
+	type: 'topics'
+	data: string[]
 }
 
 export interface INotification {
@@ -27,10 +33,24 @@ export interface ICheck {
 	data: any
 }
 
-export type IPush = ISub | INotification | ICheck
+export type IPush = ISub | INotification | ICheck | ITopics | { type: string, data: any }
 
 export const $granted = atom(false)
-export const $asked = persistentAtom('$asked', false, boolAtom)
+export const $asked = persistentAtom('$asked', false, json)
+export const $topics = persistentAtom<string[]>('$topics', [], json)
+$topics.subscribe(topics => postMessage({ type: 'topics', data: topics }))
+
+export function useTopic(name: string) {
+	const topics = useStore($topics)
+	const isSub = !topics.includes(name)
+
+	function toggle() {
+		if (isSub) $topics.set([ ...topics, name ])
+		else $topics.set(topics.filter(t => t !== name))
+	}
+
+	return [ isSub, toggle ] as const
+}
 
 export function postMessage(data: IPush) {
 	navigator.serviceWorker.ready.then(registration => {
@@ -79,7 +99,10 @@ export function usePushes() {
 
 	useAsyncEffect(async () => {
 		if (!id) return
-		if (check()) postMessage({ type: 'sub' })
+		if (check()) {
+			postMessage({ type: 'sub' })
+			postMessage({ type: 'topics', data: $topics.get() })
+		}
 		navigator.serviceWorker.addEventListener('message', onMessage)
 		return () => navigator.serviceWorker.removeEventListener('message', onMessage)
 	}, [ id ])

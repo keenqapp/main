@@ -6,8 +6,11 @@ import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone'
 import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
+import VolumeOffTwoToneIcon from '@mui/icons-material/VolumeOffTwoTone'
+import VolumeUpTwoToneIcon from '@mui/icons-material/VolumeUpTwoTone';
 
 import { useConfirm, useModal } from '@/services/modals'
+import { useTopic } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
 import { useCurrentMember } from '@/model/member'
@@ -28,12 +31,12 @@ function RoomMenu() {
 	const { confirm } = useConfirm()
 	const { id: memberId } = useCurrentMember()
 	const { id, isMember, isPersonal } = useCurrentRoom()
+	const [ isSub, toggle ] = useTopic(id)
 
 	const [ , leave ] = useMutation(leaveroom)
 	const [ , remove ] = useMutation(removeroomgql)
 
 	const leaveClick = () => {
-		console.log('--- RoomMenu.tsx:36 -> leaveClick ->', 111)
 		confirm({
 			title: t`room.leaveTitle`,
 			text: t`room.leaveTitle`,
@@ -86,6 +89,21 @@ function RoomMenu() {
 					text={t`report.report`}
 					onClick={report}
 				/>
+				{isSub ? (
+					<DrawerItem
+						icon={<VolumeOffTwoToneIcon color='secondary' />}
+						text={t`room.mute`}
+						onClick={toggle}
+					/>
+				)
+					: (
+						<DrawerItem
+							icon={<VolumeUpTwoToneIcon color='primary' />}
+							text={t`room.unmute`}
+							onClick={toggle}
+						/>
+					)}
+
 				{isPersonal ? (
 					<DrawerItem
 						icon={<ForumTwoToneIcon color='primary' />}

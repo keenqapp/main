@@ -20,7 +20,6 @@ const roomsOptions = {
 export function usePreload() {
 	const { id } = useCurrentMember()
 	const { position, permission, getPointAndLocation } = usePosition()
-
 	usePushes()
 
 	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
