@@ -5,7 +5,7 @@ import { getDb, getCreds, ensureCreds, success, error, validate } from './shared
 
 
 const schema = object({
-	event: mixed().required(),
+	msg: mixed().required(),
 })
 
 const config = {
@@ -25,20 +25,18 @@ function getPushes() {
 	return webpush.sendNotification
 }
 
-async function getMember(id, db) {
-	return db.table('members').select().where('id', id).first()
-}
-
 async function getMembers(id, db) {
-	return db.table('rooms_members').select().where('roomId', id)
+	const ids = (await db.table('rooms_members').select().where('roomId', id)).map(roomMember => roomMember.memberId)
+	return (await db.table('members').select().whereIn('id', ids).whereNotNull('sub')).map(member => member.sub)
 }
 
-async function msg(payload, sub, provider) {
+async function push(subs, msg, provider) {
 	try {
-		provider(sub, JSON.stringify(payload))
+		for (const sub of subs) {
+			provider(sub, JSON.stringify(msg))
+		}
 	}
 	catch(e) {
-		console.log('--- send.js:38 -> send ->', e)
 		throw { error: e }
 	}
 }
@@ -46,16 +44,17 @@ async function msg(payload, sub, provider) {
 export async function main(body) {
 	let db
 	try {
-		const { event } = validate(body, schema)
-		const { roomId } = event.data.new
+		const { msg } = validate(body, schema)
+		const { roomId } = event
 
 		db = getDb(config)
 
-		const members = await getMembers(roomId, db)
+		const subs = await getMembers(roomId, db)
+		const pushes = getPushes()
 
-		// await msg(sub, pushes)
+		await push(subs, msg, pushes)
 
-		return success({ members })
+		return success(true)
 	}
 	catch(e) {
 		console.log('--- send.js:65 -> main ->', e)
