@@ -64,3 +64,6 @@ packages:
       - name: send
         runtime: nodejs:18
         web: true
+      - name: msg
+        runtime: nodejs:18
+        web: true
