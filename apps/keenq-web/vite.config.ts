@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => ({
 		VitePWA({
 			strategies: 'injectManifest',
 			injectManifest: {
-				swSrc: 'public/sw.js',
+				swSrc: 'src/services/sw.js',
 				swDest: 'dist/sw.js',
 				globDirectory: 'dist',
 				globPatterns: ['**/*.{woff,woff2,png,jpeg,webm,svg}']

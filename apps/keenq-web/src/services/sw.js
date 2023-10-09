@@ -83,12 +83,24 @@ self.addEventListener('message', async (event) => {
 	}
 })
 
-self.addEventListener('push', async function(event) {
+function getPayload(event) {
 	const payload = event.data?.json()
+	if (payload.type === 'roomMsg') return {
+		title: payload.data.title,
+		body: payload.data.body,
+	}
+	return {
+		title: payload?.title || 'keenq',
+		body: payload?.body || 'newmsg',
+	}
+}
+
+self.addEventListener('push', async function(event) {
+	const { title, body } = getPayload(event)
 	event.waitUntil(
-		self.registration.showNotification(payload.title || 'keenq', {
+		self.registration.showNotification(title, {
 			icon,
-			body: payload.body,
+			body,
 		})
 	)
 })
