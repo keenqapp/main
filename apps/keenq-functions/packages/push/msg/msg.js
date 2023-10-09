@@ -74,10 +74,11 @@ export async function main(body) {
 
 		const room = await getRoom(msg.roomId, db)
 		const members = await getMembers(msg.roomId, db)
+		const data = getData(members, room)
 
-		await push(room, members, msg, pushes)
+		// await push(room, members, msg, pushes)
 
-		return success(true)
+		return success(data)
 	}
 	catch(e) {
 		return error(e)
