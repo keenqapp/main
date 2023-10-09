@@ -33,7 +33,7 @@ async function getMembers(id, db) {
 async function push(subs, msg, provider) {
 	try {
 		for (const sub of subs) {
-			provider(sub, JSON.stringify(msg))
+			provider(sub, JSON.stringify({ type: 'roomMsg', data: msg }))
 		}
 	}
 	catch(e) {
