@@ -1,0 +1,11 @@
+{
+  "name": "keenq",
+  "private": true,
+  "workspaces": [
+    "apps/keenq-functions/packages/**/*",
+    "apps/keenq-web",
+    "apps/keenq-landing",
+    "apps/keenq-admin"
+  ],
+  "packageManager": "yarn@3.6.4"
+}
