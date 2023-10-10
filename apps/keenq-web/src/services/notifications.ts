@@ -66,6 +66,7 @@ let counter = 0
 
 export function ask() {
 	if (!$asked.get() || (!$granted.get() && counter > 100)) {
+		$asked.set(true)
 		$modals.setKey('notifications', true)
 		counter = 0
 	}
