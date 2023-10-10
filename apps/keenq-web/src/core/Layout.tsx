@@ -9,6 +9,7 @@ import { useTranslate } from '@/services/translate'
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
 import Loadable from '@/ui/Loadable'
+import Space from '@/ui/Space'
 import Stack from '@/ui/Stack'
 import Text from '@/ui/Text'
 
@@ -16,15 +17,36 @@ import Appbar from '@/core/Appbar'
 import BottomTabs from '@/core/BottomTabs'
 import { usePreload } from '@/hooks/usePreload'
 import Modals from '@/modals/Modals'
-import Space from '@/ui/Space'
 
 
 const Main = styled.main`
-  padding-top: var(--appbar-height);
   padding-bottom: var(--vertical-space);
   position: relative;
   overflow: hidden;
 `
+
+const Wrap = styled.div<{ isIOS: boolean }>`
+	${p => p.isIOS && `
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: calc(100 * var(--vh));
+	`}
+`
+
+function iOS() {
+	return [
+		'iPad Simulator',
+		'iPhone Simulator',
+		'iPod Simulator',
+		'iPad',
+		'iPhone',
+		'iPod'
+	].includes(navigator.platform)
+		// iPad on iOS 13 detection
+		|| (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+}
 
 function Page404() {
 	const { t } = useTranslate()
@@ -54,7 +76,7 @@ function Layout() {
 	const loading = usePreload()
 
 	return (
-		<div data-testid='Layout'>
+		<Wrap data-testid='Layout' isIOS={iOS()}>
 			<Loadable loading={loading && !is404} fullHeight>
 				<Appbar />
 				<Main>
@@ -65,7 +87,7 @@ function Layout() {
 				<BottomTabs />
 				<Modals />
 			</Loadable>
-		</div>
+		</Wrap>
 	)
 }
 

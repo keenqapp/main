@@ -24,6 +24,7 @@ const StyledAppBar = styled(AppBar)`
   backdrop-filter: blur(6px);
   color: ${({ theme }) => theme.palette.primary.contrastText};
   box-shadow: none;
+	position: relative;
 `
 
 const fadeInTop = keyframes`
@@ -59,8 +60,6 @@ const Version = styled.sub`
 	margin-top: 4px;
 	color:#999;
 	letter-spacing: 0.1rem;
-	//position:absolute;
-	//bottom: 0;
 `
 
 export default function Appbar() {
