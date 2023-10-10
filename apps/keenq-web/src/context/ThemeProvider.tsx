@@ -34,7 +34,7 @@ declare module '@mui/material/styles' {
 const globalStyles = css`
   :root {
 		--appbar-height: 56px;
-    --vertical-space: 40px;
+    --vertical-space: 44px;
   }
   html {
     box-sizing: border-box;

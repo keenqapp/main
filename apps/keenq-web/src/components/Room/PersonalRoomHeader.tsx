@@ -15,15 +15,15 @@ import { getAvatar, useCurrentMember } from '@/model/member'
 import { useCurrentRoom } from '@/model/room/hooks'
 import { othermemberinprivategql } from '@/model/rooms_members'
 
-import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
 import { useQuery } from '@/hooks/gql'
 
 
 const RoomInfoContainer = styled(Stack)`
 	height: var(--vertical-space);
-	padding: 0 1rem;
+  padding: 0 1rem 4px;
 `
 
 function PersonalRoomHeader() {
