@@ -25,8 +25,6 @@ const Scroll = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
   height: ${p => p.height}px;
 	scroll-behavior: smooth;
 `
@@ -64,6 +62,11 @@ interface ListProps<P extends Entity, > {
 function List<T extends Entity>({ data, render, scrollRef, empty, className, name, ...rest }: ListProps<T>) {
 	const [ height, setHeight ] = useState(0)
 	if (data && data?.length < 1 && empty) return empty()
+
+	// useEffect(() => {
+	// 	console.log('--- List.tsx:70 ->  ->', scrollRef.current)
+	// }, [])
+
 	return (
 		<ListContainer data-testid='List'>
 			<Autosizer setHeight={setHeight} name={name} />

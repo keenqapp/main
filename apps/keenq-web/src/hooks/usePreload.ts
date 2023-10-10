@@ -27,10 +27,6 @@ export function usePreload() {
 	const [ _, update ] = useUpdate(updatemembergql)
 
 	useEffect(() => {
-		screen.orientation.lock('portrait')
-	}, [])
-
-	useEffect(() => {
 		if (id && !matchFetching && !data && !error) match()
 	}, [ id, matchFetching, data ])
 

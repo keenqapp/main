@@ -5,6 +5,7 @@ import GlobalStyles from '@mui/material/GlobalStyles'
 import { css, Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles'
 
 import rawTheme from '@/ui/theme'
+
 import useResizeHeight from '@/hooks/useResizeHeight'
 
 
@@ -163,12 +164,7 @@ function ThemeProvider({ children }: { children: ComponentChildren }) {
 	useEffect(() => {
 		const vh = height * 0.01
 		document.documentElement.style.setProperty('--vh', `${vh}px`)
-		// const cb = function () {
-		// 	const vh = height * 0.01
-		// 	document.documentElement.style.setProperty('--vh', `${vh}px`)
-		// }
-		// window.addEventListener('resize', cb, true)
-		// return () => window.removeEventListener('resize', cb, true)
+		screen.orientation?.lock?.('portrait')
 	}, [height])
 	return (
 		<MUIThemeProvider theme={theme}>

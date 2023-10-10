@@ -82,16 +82,12 @@ self.addEventListener('message', async (event) => {
 		online = payload
 	}
 	else if (event.data.type === 'msg') {
-		event.waitUntil(
-			self.registration.showNotification(payload.title || 'keenq', {
-				icon,
-				body: payload.body,
-			})
-		)
+		const { title, body } = payload
+		event.waitUntil(self.registration.showNotification(title || 'keenq', { icon, body }))
 	}
 })
 
-function getPayload(event) {
+function getPushPayload(event) {
 	const payload = event.data?.json()
 	if (payload.type === 'roomMsg') return {
 		title: payload.data.title,
@@ -108,15 +104,10 @@ function getPayload(event) {
 }
 
 self.addEventListener('push', async function(event) {
-	const { title, body, topic } = getPayload(event)
+	const { title, body, topic } = getPushPayload(event)
 	const isVisible = (await self.clients.matchAll({ includeUncontrolled: true, type: 'window' })).some(c => c.visibilityState === 'visible')
 	if (topics.has(topic) || isVisible) return
-	event.waitUntil(
-		self.registration.showNotification(title, {
-			icon,
-			body,
-		})
-	)
+	event.waitUntil(self.registration.showNotification(title, { icon, body, }))
 })
 
 const updateWidget = async (event) => {
