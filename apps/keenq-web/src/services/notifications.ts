@@ -74,6 +74,7 @@ export function ask() {
 }
 
 export async function request() {
+	if (!('Notification' in window)) return
 	const perm = await Notification.requestPermission()
 	if (perm === 'granted') {
 		$granted.set(true)
@@ -83,6 +84,7 @@ export async function request() {
 }
 
 function check() {
+	if (!('Notification' in window)) return
 	const perm = Notification.permission === 'granted'
 	$granted.set(perm)
 	return perm
