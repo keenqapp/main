@@ -56,7 +56,8 @@ function getData(members, room, msg) {
 async function push(room, members, msg, provider) {
 	try {
 		const data = getData(members, room, msg)
-		for (const member of members) {
+		const list = members.filter(member => member.id !== msg.authorId)
+		for (const member of list) {
 			provider(member.sub, JSON.stringify({ type: 'roomMsg', data }), { topic: room.id })
 		}
 	}
