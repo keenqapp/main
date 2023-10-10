@@ -32,6 +32,7 @@ const Wrap = styled.div<{ isIOS: boolean }>`
 		left: 0;
 		right: 0;
 		height: calc(100 * var(--vh));
+		padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 	`}
 `
 

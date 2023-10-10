@@ -9,7 +9,6 @@ const StyledPage = styled(Page)`
 	padding-bottom: 0;
 `
 
-
 function LoginPage() {
 	return (
 		<StyledPage data-testid='LoginPage'>
