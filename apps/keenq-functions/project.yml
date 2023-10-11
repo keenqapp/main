@@ -2,6 +2,8 @@ packages:
   - name: auth
     environment:
       DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
+      TWILIO_ACCOUNT_SID: "${TWILIO_ACCOUNT_SID}"
+      TWILIO_AUTH_TOKEN: "${TWILIO_AUTH_TOKEN}"
     functions:
       - name: send
         runtime: nodejs:18

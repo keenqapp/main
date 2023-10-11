@@ -1,11 +1,10 @@
-import knex from 'knex'
 import http from 'axios'
 import { object, string } from 'yup'
-import { customAlphabet } from 'nanoid'
+import client from 'twilio'
 
 import { success, error, validate, getDb, getId, isTestPhone } from './shared.js'
 
-const url = (phone, code) => `https://sms.ru/sms/send?api_id=A80649CB-0FF7-B273-E2A3-64F7CCFE904D&to=${phone}&msg=Код+для+входа+в+ваш+keenq:+${code}&json=1`
+
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
@@ -19,6 +18,14 @@ const config = {
 		ssl: { rejectUnauthorized: false },
 	},
 	pool: { min: 0, max: 2 }
+}
+
+// TODO move all crap to adapter
+function getProvider() {
+	return client(
+		process.env.TWILIO_ACCOUNT_SID,
+		process.env.TWILIO_AUTH_TOKEN
+	)
 }
 
 async function getCreds(phone, db) {
@@ -70,10 +77,16 @@ async function save(phone, code, db) {
 		.merge()
 }
 
-async function sendSMS(phone, code) {
+// TODO move all crap to adapter
+async function sendSMS(phone, code, provider) {
 	try {
 		if (isTestPhone(phone)) return true
-		else return await http.get(url(phone, code))
+		else return provider
+			.verify
+			.v2
+			.services(process.env.TWILIO_SERVICE_SID)
+			.verifications
+			.create({ to: phone, channel: 'sms', customCode: code })
 	}
 	catch(e) {
 		throw { reason: 'Could not send SMS', error: e }
@@ -91,7 +104,8 @@ export async function main(body) {
 
 		const code = getCode()
 		await save(phone, code, db)
-		await sendSMS(phone, code)
+		const provider = getProvider()
+		await sendSMS(phone, code, provider)
 
 		return success({ result: true })
 	}
