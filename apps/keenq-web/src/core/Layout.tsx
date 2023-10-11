@@ -25,15 +25,15 @@ const Main = styled.main`
   overflow: hidden;
 `
 
-const Wrap = styled.div<{ isIOS: boolean }>`
+const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>`
 	${p => p.isIOS && `
 		position: fixed;
-		bottom: 0;
+		bottom: 20px;
 		left: 0;
 		right: 0;
 		height: calc(100 * var(--vh));
-		padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 	`}
+  ${p => p.isPWA && p.isIOS && 'padding-bottom: 20px;'}
 `
 
 function iOS() {
@@ -45,8 +45,11 @@ function iOS() {
 		'iPhone',
 		'iPod'
 	].includes(navigator.platform)
-		// iPad on iOS 13 detection
 		|| (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+}
+
+function isPWA() {
+	return window.matchMedia('(display-mode: standalone)').matches
 }
 
 function Page404() {
@@ -77,7 +80,7 @@ function Layout() {
 	const loading = usePreload()
 
 	return (
-		<Wrap data-testid='Layout' isIOS={iOS()}>
+		<Wrap data-testid='Layout' isIOS={iOS()} isPWA={isPWA()}>
 			<Loadable loading={loading && !is404} fullHeight>
 				<Appbar />
 				<Main>

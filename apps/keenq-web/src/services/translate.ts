@@ -15,7 +15,7 @@ function _path(key: string, namespace?: string) {
 	return namespace ? `${namespace}.${key}` : key
 }
 
-function getTranslation(path: string, locale: string) {
+function getTranslation(path: string, locale: string): string {
 	if (locale === 'ru-RU' || locale === 'ru' || locale === 'ruRU') return get(ru, path, path)
 	if (locale === 'en-US' || locale === 'en' || locale === 'enUS') return get(en, path, path)
 	return get(en, path, path)
@@ -27,7 +27,7 @@ function interpolate(template: string, values: Record<string, string>) {
 	})
 }
 
-export function translate({ namespace, key, locale, values }: { key: TemplateStringsArray | string, namespace?: string, locale: string, values?: string[] | Record<string, string>[]  }) {
+export function translate({ namespace, key, locale, values }: { key: TemplateStringsArray | string, namespace?: string, locale: string, values?: string[] | Record<string, string>[]  }): string {
 	if (values && Array.isArray(key)) {
 		const result = (key as TemplateStringsArray).reduce((result, string, index) => result + string + (values[index] || ''), '')
 		const path = _path(result, namespace)

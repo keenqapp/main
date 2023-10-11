@@ -9,17 +9,18 @@ import Badge from '@mui/material/Badge'
 import BottomNavigation from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 
+import BugReportIcon from '@mui/icons-material/BugReport'
 import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone'
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone'
 import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone'
-import BugReportIcon from '@mui/icons-material/BugReport';
+
 import { useCurrentMember } from '@/model/member'
 
 
 const Nav = styled(BottomNavigation)`
   position: fixed;
-  bottom: 0;
+  bottom: 20px;
   left: 0;
   right: 0;
   background-color: rgba(255, 255, 255, 0.33);

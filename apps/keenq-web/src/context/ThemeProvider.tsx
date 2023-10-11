@@ -53,7 +53,6 @@ const globalStyles = css`
     font-family: serif;
     color: ${rawTheme.color.base};
     background-color:#fefefe;
-    //height: calc(100 * var(--vh));
   }
   a {
     text-decoration: none;
