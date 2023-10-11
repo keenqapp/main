@@ -1,5 +1,4 @@
 import { cloneElement, VNode } from 'preact'
-import _groupBy from 'lodash-es/groupBy'
 
 import { Entity, UID } from '@/types/utility'
 
@@ -107,4 +106,20 @@ export function loadScript(src: string, position: HTMLElement | null, id: string
 export const json = {
 	encode: JSON.stringify,
 	decode: JSON.parse,
+}
+
+export function isIOS() {
+	return [
+		'iPad Simulator',
+		'iPhone Simulator',
+		'iPod Simulator',
+		'iPad',
+		'iPhone',
+		'iPod'
+	].includes(navigator.platform)
+		|| (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+}
+
+export function isPWA() {
+	return window.matchMedia('(display-mode: standalone)').matches
 }

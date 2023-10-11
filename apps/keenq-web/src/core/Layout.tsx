@@ -17,6 +17,7 @@ import Appbar from '@/core/Appbar'
 import BottomTabs from '@/core/BottomTabs'
 import { usePreload } from '@/hooks/usePreload'
 import Modals from '@/modals/Modals'
+import { isIOS, isPWA } from '@/utils/utils'
 
 
 const Main = styled.main`
@@ -35,22 +36,6 @@ const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>`
 	`}
   ${p => p.isPWA && p.isIOS && 'padding-bottom: 20px;'}
 `
-
-function iOS() {
-	return [
-		'iPad Simulator',
-		'iPhone Simulator',
-		'iPod Simulator',
-		'iPad',
-		'iPhone',
-		'iPod'
-	].includes(navigator.platform)
-		|| (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
-}
-
-function isPWA() {
-	return window.matchMedia('(display-mode: standalone)').matches
-}
 
 function Page404() {
 	const { t } = useTranslate()
@@ -80,7 +65,7 @@ function Layout() {
 	const loading = usePreload()
 
 	return (
-		<Wrap data-testid='Layout' isIOS={iOS()} isPWA={isPWA()}>
+		<Wrap data-testid='Layout' isIOS={isIOS()} isPWA={isPWA()}>
 			<Loadable loading={loading && !is404} fullHeight>
 				<Appbar />
 				<Main>

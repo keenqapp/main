@@ -17,10 +17,12 @@ import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserC
 
 import { useCurrentMember } from '@/model/member'
 
+import { isIOS, isPWA } from '@/utils/utils'
+
 
 const Nav = styled(BottomNavigation)`
   position: fixed;
-  bottom: 20px;
+  bottom: ${isIOS() && isPWA() ? '20px' : '0'};
   left: 0;
   right: 0;
   background-color: rgba(255, 255, 255, 0.33);
