@@ -1,5 +1,6 @@
 {
   "name": "keenq",
+  "type": "module",
   "private": true,
   "workspaces": [
     "apps/keenq-functions/packages/**/*",

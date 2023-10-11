@@ -37,6 +37,7 @@ export function useSend() {
 	return {
 		send: async (phone: string) => {
 			const { data } = await send({ phone })
+			if (!data.send?.success) $authError.set(data.send?.data.reason)
 			return data.send?.success
 		},
 	}

@@ -4,6 +4,7 @@ packages:
       DB_CONNECTION_STRING: "${DB_CONNECTION_STRING}"
       TWILIO_ACCOUNT_SID: "${TWILIO_ACCOUNT_SID}"
       TWILIO_AUTH_TOKEN: "${TWILIO_AUTH_TOKEN}"
+      TWILIO_SERVICE_SID: "${TWILIO_SERVICE_SID}"
     functions:
       - name: send
         runtime: nodejs:18

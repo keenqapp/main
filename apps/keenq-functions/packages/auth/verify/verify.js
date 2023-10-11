@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken'
 import { object, string, number } from 'yup'
+import client from 'twilio'
 
-import { getDb, ensureCreds, success, error, validate, testPhones, isTestPhone } from './shared.js'
+import { getDb, ensureCreds, success, error, validate, isTestPhone } from './shared.js'
+
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
@@ -18,6 +20,13 @@ const config = {
 	pool: { min: 0, max: 2 }
 }
 
+function getProvider() {
+	return client(
+		process.env.TWILIO_ACCOUNT_SID,
+		process.env.TWILIO_AUTH_TOKEN
+	)
+}
+
 async function getCreds(phone, db) {
 	try {
 		return await db
@@ -32,32 +41,25 @@ async function getCreds(phone, db) {
 	}
 }
 
-async function getSaved(phone, db) {
-	return db
-		.select()
-		.from('codes')
-		.where('phone', phone)
-		.first()
-}
+async function checkCode(to, code, provider, db) {
+	if (isTestPhone(to)) return true
+	try {
+		const result = await provider
+			.verify.v2.services(process.env.TWILIO_SERVICE_SID)
+			.verificationChecks
+			.create({ to, code })
 
-async function checkCode(phone, code, saved, db) {
-	if (isTestPhone(phone) || code === saved) {
-		try {
-			await db
-				.table('credentials')
-				.update({ verified: true, lastLoginAt: new Date().toISOString() })
-				.where('phone', phone)
-				.where('deletedAt', null)
-			await db
-				.table('codes')
-				.delete()
-				.where('phone', phone)
-			return true
-		} catch(e) {
-			throw { error: e }
-		}
+		if (result.status !== 'approved') throw { reason: 'error.wrongCreds' }
+
+		await db
+			.table('credentials')
+			.update({ verified: true, lastLoginAt: new Date().toISOString() })
+			.where('phone', to)
+			.where('deletedAt', null)
 	}
-	else throw { error: 'Wrong credentials' }
+	catch(e) {
+		throw { error: e }
+	}
 }
 
 function getPayload(member) {
@@ -93,8 +95,8 @@ export async function main(body) {
 		const creds = await getCreds(phone, db)
 		await ensureCreds(creds)
 
-		const saved = await getSaved(phone, db)
-		await checkCode(phone, code, saved.code, db)
+		const provider = getProvider()
+		await checkCode(phone, code, provider, db)
 
 		const accessToken = await generateJWT(creds)
 
