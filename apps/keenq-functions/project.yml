@@ -1,5 +1,3 @@
-environment:
-  LOG_DESTINATIONS: '${LOG_DESTINATIONS}'
 packages:
   - name: auth
     environment:
