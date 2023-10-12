@@ -95,20 +95,17 @@ export async function main(body) {
 	let db
 	try {
 		const { phone, code } = validate(body, schema)
-	  // db = getDb(config)
+	  db = getDb(config)
 
-		// const creds = await getCreds(phone, db)
-		// await ensureCreds(creds)
-		//
-		// const provider = getProvider()
-		// await checkCode(phone, code, provider, db)
+		const creds = await getCreds(phone, db)
+		await ensureCreds(creds)
 
-		// const accessToken = await generateJWT(creds)
+		const provider = getProvider()
+		await checkCode(phone, code, provider, db)
 
-		// const saved = await db.table('codes').select().where('phone', phone).first()
+		const accessToken = await generateJWT(creds)
 
-		// return success({ accessToken, id: creds.id })
-		return success({ phone, code })
+		return success({ accessToken, id: creds.id })
 	}
 	catch(e) {
 		console.error(e)
