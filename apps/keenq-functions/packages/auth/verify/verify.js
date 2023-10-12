@@ -111,6 +111,7 @@ export async function main(body) {
 		return success({ saved, code })
 	}
 	catch(e) {
+		console.error(e)
 		return error(e)
 	}
 	finally {
