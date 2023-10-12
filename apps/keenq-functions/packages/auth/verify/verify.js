@@ -97,10 +97,10 @@ export async function main(body) {
 		const { phone, code } = validate(body, schema)
 	  db = getDb(config)
 
-		const creds = await getCreds(phone, db)
-		await ensureCreds(creds)
-
-		const provider = getProvider()
+		// const creds = await getCreds(phone, db)
+		// await ensureCreds(creds)
+		//
+		// const provider = getProvider()
 		// await checkCode(phone, code, provider, db)
 
 		// const accessToken = await generateJWT(creds)
