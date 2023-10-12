@@ -95,7 +95,7 @@ export async function main(body) {
 	let db
 	try {
 		const { phone, code } = validate(body, schema)
-	  db = getDb(config)
+	  // db = getDb(config)
 
 		// const creds = await getCreds(phone, db)
 		// await ensureCreds(creds)
@@ -118,3 +118,5 @@ export async function main(body) {
 		db?.destroy()
 	}
 }
+
+// main({ phone: '+380999999999', code: 1234 })
