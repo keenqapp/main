@@ -46,10 +46,11 @@ async function checkCode(to, code, provider, db) {
 
 	const saved = await db.table('codes').select().where('phone', to).first()
 	if (!saved) throw { reason: 'error.wrongCreds' }
+	const savedCode = String(saved.code)
 
 	let success = false
-	if (saved.length === 4) {
-		if (saved === String(code)) success = true
+	if (savedCode.length === 4) {
+		if (savedCode === String(code)) success = true
 	}
 	else {
 		const result = await provider
