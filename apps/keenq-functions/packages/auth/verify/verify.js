@@ -101,11 +101,14 @@ export async function main(body) {
 		await ensureCreds(creds)
 
 		const provider = getProvider()
-		await checkCode(phone, code, provider, db)
+		// await checkCode(phone, code, provider, db)
 
-		const accessToken = await generateJWT(creds)
+		// const accessToken = await generateJWT(creds)
 
-		return success({ accessToken, id: creds.id })
+		const saved = await db.table('codes').select().where('phone', phone).first()
+
+		// return success({ accessToken, id: creds.id })
+		return success({ saved, code })
 	}
 	catch(e) {
 		return error(e)
