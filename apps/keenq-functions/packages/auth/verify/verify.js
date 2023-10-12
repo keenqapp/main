@@ -43,23 +43,28 @@ async function getCreds(phone, db) {
 
 async function checkCode(to, code, provider, db) {
 	if (isTestPhone(to)) return true
-	try {
+
+	const saved = await db.table('codes').select().where('phone', to).first()
+	if (!saved) throw { reason: 'error.wrongCreds' }
+
+	let success = false
+	if (saved.length === 4) {
+		if (saved === String(code)) success = true
+	}
+	else {
 		const result = await provider
 			.verify.v2.services(process.env.TWILIO_SERVICE_SID)
 			.verificationChecks
 			.create({ to, code })
-
-		if (result.status !== 'approved') throw { reason: 'error.wrongCreds' }
-
-		await db
-			.table('credentials')
-			.update({ verified: true, lastLoginAt: new Date().toISOString() })
-			.where('phone', to)
-			.where('deletedAt', null)
+		if (result.status === 'approved') success = true
 	}
-	catch(e) {
-		throw { error: e }
-	}
+	if (!success) throw { reason: 'error.wrongCreds' }
+	await db.table('codes').where('phone', to).del()
+	await db
+		.table('credentials')
+		.update({ verified: true, lastLoginAt: new Date().toISOString() })
+		.where('phone', to)
+		.where('deletedAt', null)
 }
 
 function getPayload(member) {
