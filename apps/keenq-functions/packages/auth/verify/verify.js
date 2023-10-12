@@ -105,10 +105,10 @@ export async function main(body) {
 
 		// const accessToken = await generateJWT(creds)
 
-		const saved = await db.table('codes').select().where('phone', phone).first()
+		// const saved = await db.table('codes').select().where('phone', phone).first()
 
 		// return success({ accessToken, id: creds.id })
-		return success({ saved, code })
+		return success({ phone, code })
 	}
 	catch(e) {
 		console.error(e)
