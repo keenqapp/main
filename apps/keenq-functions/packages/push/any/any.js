@@ -18,7 +18,9 @@ const config = {
 	client: 'pg',
 	connection: {
 		connectionString: process.env.DB_CONNECTION_STRING,
+		application_name: 'keenq-functions_push_any',
 		ssl: { rejectUnauthorized: false },
+
 	},
 	pool: { min: 0, max: 2 }
 }
@@ -56,13 +58,13 @@ export async function main(data) {
 	try {
 		const { memberId, title, body, topic, type, url } = validate(data, schema)
 
-		db = getDb(config)
-		const provider = getProvider()
+		// db = getDb(config)
+		// const provider = getProvider()
 
-		const member = await getMember(memberId, db)
+		// const member = await getMember(memberId, db)
 		// await push({ member, title, body, topic, type, url, provider })
 
-		return success(member)
+		return success({ memberId, title, body, topic, type, url })
 	}
 	catch(e) {
 		return error(e)
