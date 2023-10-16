@@ -107,7 +107,7 @@ function LoginForm() {
 	const onVerify = async () => {
 		if (!inputsHasError(codeInput)) {
 			loading.value = true
-			await verify(phoneInput.value.replace(/(?!^\+)\D/g, ''), codeInput.value) && navigate('/match')
+			await verify(phoneInput.value.replace(/(?!^\+)\D/g, ''), String(codeInput.value)) && navigate('/match')
 			loading.value = false
 		}
 	}
