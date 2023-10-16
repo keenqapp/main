@@ -1,5 +1,7 @@
 import { object, string,  } from 'yup'
 import { generate } from 'random-words'
+import axios from 'axios'
+
 
 import { getDb, ensureCreds, success, error, getId, validate, getCreds, transaction } from './shared.js'
 
@@ -18,6 +20,12 @@ const config = {
 		ssl: { rejectUnauthorized: false },
 	},
 	pool: { min: 0, max: 2 }
+}
+
+function getProvider() {
+	return {
+		send: (data) => axios.post('https://fns.keenq.app/push/any', data)
+	}
 }
 
 async function check(authorId, memberId, type, db, trx) {
@@ -107,6 +115,21 @@ async function hi(room, db, trx) {
 		})
 }
 
+async function getMember(id, db) {
+	return db.table('members').select().where('id', id).first()
+}
+
+async function notify(member, room, provider) {
+	const data = {
+		title: 'event.newMatchTitle',
+		body: member.name,
+		topic: 'newMatch',
+		type: 'newMatch',
+		url: `https://keenq.app/rooms/${room.id}`
+	}
+	await provider.send(data)
+}
+
 export async function main(body) {
 	let db
 	try {
@@ -122,6 +145,9 @@ export async function main(body) {
 			const room = await getRoom(authorId, memberId, db, trx)
 			await add(authorId, memberId, room, db, trx)
 			await hi(room, db, trx)
+			const member = await getMember(memberId, db)
+			const provider = getProvider()
+			await notify(member, room, provider)
 			return true
 		})
 

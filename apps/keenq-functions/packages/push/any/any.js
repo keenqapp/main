@@ -9,7 +9,8 @@ const schema = object({
 	title: string().required(),
 	body: string().required(),
 	topic: string().required(),
-	type:string().required(),
+	type: string().required(),
+	url: string(),
 })
 
 
@@ -36,30 +37,30 @@ async function getMember(id, db) {
 	return member
 }
 
-function getData(title, body, topic) {
+function getData(title, body, topic, url = 'https://keenq.app/') {
 	return {
 		body,
 		title,
 		topic,
-		url: 'https://keenq.app/'
+		url
 	}
 }
 
-async function push(member, title, body, topic, type, provider) {
-	const data = getData(title, body, topic)
+async function push({ member, title, body, topic, type, url, provider }) {
+	const data = getData(title, body, topic, url)
 	await provider(member.sub, JSON.stringify({ type, data }), { topic })
 }
 
 export async function main(data) {
 	let db
 	try {
-		const { memberId, title, body, topic, type } = validate(data, schema)
+		const { memberId, title, body, topic, type, url } = validate(data, schema)
 
 		db = getDb(config)
 		const provider = getProvider()
 
 		const member = await getMember(memberId, db)
-		await push(member, title, body, topic, type, provider)
+		await push({ member, title, body, topic, type, url, provider })
 
 		return success(true)
 	}
