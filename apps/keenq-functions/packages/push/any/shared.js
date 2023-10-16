@@ -34,6 +34,7 @@ export function success(data) {
 }
 
 export function error(data) {
+	console.error(data)
 	return { body: { success: false, data } }
 }
 

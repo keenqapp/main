@@ -20,7 +20,7 @@ const config = {
 const vapidPublicKey = process.env.VAPID_PUBLIC_KEY
 const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY
 
-function getPushes() {
+function getProvider() {
 	webpush.setVapidDetails('https://keenq.app', vapidPublicKey, vapidPrivateKey)
 	return webpush.sendNotification
 }
@@ -29,8 +29,8 @@ async function getRoom(roomId, db) {
 	return (await db.table('rooms').select().where('id', roomId).first())
 }
 
-async function getMembers(id, db) {
-	const ids = (await db.table('rooms_members').select().where('roomId', id)).map(roomMember => roomMember.memberId)
+async function getMembers(roomId, db) {
+	const ids = (await db.table('rooms_members').select().where('roomId', roomId)).map(roomMember => roomMember.memberId)
 	return (await db.table('members').select().whereIn('id', ids).whereNotNull('sub'))
 }
 
@@ -49,7 +49,7 @@ function getData(members, room, msg) {
 		body,
 		title,
 		topic: room.id,
-		url: 'some_url'
+		url: `https://keenq.app/rooms/${room.id}`
 	}
 }
 
@@ -72,12 +72,12 @@ export async function main(body) {
 		const { msg } = validate(body, schema)
 
 		db = getDb(config)
-		const pushes = getPushes()
+		const provider = getProvider()
 
 		const room = await getRoom(msg.roomId, db)
 		const members = await getMembers(msg.roomId, db)
 
-		await push(room, members, msg, pushes)
+		await push(room, members, msg, provider)
 
 		return success(true)
 	}
