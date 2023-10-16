@@ -1,5 +1,5 @@
 {
-  "name": "any",
+  "name": "push",
   "version": "1.0.0",
   "main": "msg.js",
   "license": "MIT",
@@ -13,6 +13,6 @@
     "yup": "^1.3.2"
   },
   "scripts": {
-    "main": "set -a && source ./.env && node any.js"
+    "main": "set -a && source ./.env && node push.js"
   }
 }
