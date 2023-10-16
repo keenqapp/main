@@ -70,5 +70,3 @@ export function isTestPhone(phone) {
 	if (/^\+79{8}\d{2}/.test(phone)) return true
 	return false
 }
-
-//test
