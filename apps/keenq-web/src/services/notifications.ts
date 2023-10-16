@@ -53,7 +53,7 @@ export function useTopic(name: string) {
 }
 
 export function postMessage(data: IPush) {
-	navigator.serviceWorker.ready.then(registration => {
+	navigator.serviceWorker?.ready.then(registration => {
 		registration.active?.postMessage(data)
 	})
 }
@@ -106,7 +106,7 @@ export function usePushes() {
 			postMessage({ type: 'sub' })
 			postMessage({ type: 'topics', data: $topics.get() })
 		}
-		navigator.serviceWorker.addEventListener('message', onMessage)
-		return () => navigator.serviceWorker.removeEventListener('message', onMessage)
+		navigator.serviceWorker?.addEventListener('message', onMessage)
+		return () => navigator.serviceWorker?.removeEventListener('message', onMessage)
 	}, [ id ])
 }
