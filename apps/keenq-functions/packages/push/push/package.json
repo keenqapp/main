@@ -1,7 +1,7 @@
 {
   "name": "push",
   "version": "1.0.0",
-  "main": "msg.js",
+  "main": "push.js",
   "license": "MIT",
   "type": "module",
   "dependencies": {
