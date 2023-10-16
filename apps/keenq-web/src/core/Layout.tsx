@@ -26,9 +26,7 @@ const Main = styled.main`
 	bottom: 0;
 `
 
-const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>`
-
-`
+const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>``
 
 function Page404() {
 	const { t } = useTranslate()

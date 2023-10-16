@@ -7,7 +7,7 @@ import { getDb, ensureCreds, success, error, validate, isTestPhone } from './sha
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
-	code: string().required().min(1000).max(9999)
+	code: string().required()
 })
 
 const config = {
