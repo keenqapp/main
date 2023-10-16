@@ -52,33 +52,23 @@ function getProvider(phone) {
 }
 
 async function getCreds(phone, db) {
-	try {
-		return await db
-			.table('credentials')
-			.select()
-			.where('phone', phone)
-			.where('deletedAt', null)
-			.first()
-	}
-	catch(e) {
-		throw { error: e }
-	}
+	return db
+		.table('credentials')
+		.select()
+		.where('phone', phone)
+		.where('deletedAt', null)
+		.first()
 }
 
 async function ensureCredsAndMember(creds, phone, db) {
-	try {
-	  if (!creds) {
-		  const isTester = isTestPhone(phone)
-			const id = getId()
-			await db.table('credentials').insert({ phone, id, isTester })
-		  await db.table('members').insert({ id, isTester })
-		  await db.table('links').insert({ entityId: id, type: 'member', link: id  })
-	  }
-		if (creds?.bannedAt) throw 'Member is banned'
+	if (!creds) {
+		const isTester = isTestPhone(phone)
+		const id = getId()
+		await db.table('credentials').insert({ phone, id, isTester })
+		await db.table('members').insert({ id, isTester })
+		await db.table('links').insert({ entityId: id, type: 'member', link: id  })
 	}
-	catch(e) {
-		throw { error: e }
-	}
+	if (creds?.bannedAt) throw 'Member is banned'
 }
 
 async function save(phone, code, db) {
@@ -109,7 +99,6 @@ export async function main(body) {
 		return success({ phone, code })
 	}
 	catch(e) {
-		console.error(e)
 		return error(e)
 	}
 	finally {
