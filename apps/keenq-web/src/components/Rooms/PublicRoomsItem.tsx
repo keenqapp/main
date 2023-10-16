@@ -7,13 +7,13 @@ import Typography from '@mui/material/Typography'
 
 import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 
-import Stack from '@/ui/Stack'
-
 import { IRoom } from '@/model/room'
+
+import Stack from '@/ui/Stack'
 
 
 const RoomItemContainer = styled.div`
-	padding: 0 2rem;
+  padding: 0.75rem 2rem;
 `
 
 const NoWrap = styled(Typography)`

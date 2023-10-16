@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from 'preact/hooks'
-import styled from '@emotion/styled'
 import { useStore } from '@nanostores/preact'
 
 import { IRoom, roomsgql } from '@/model/room'
@@ -15,10 +14,6 @@ import { $showTabs, $tab } from '@/components/Rooms/store'
 
 import { useQuery } from '@/hooks/gql'
 
-
-const RoomsList = styled(List)`
-	gap: 1.5rem
-`
 
 const context = {
 	additionalTypenames: ['rooms'],
@@ -53,7 +48,7 @@ function Rooms() {
 	return (
 		<Container data-testid='Rooms' horizontal={0} flex>
 			<RoomsHeader />
-			<RoomsList
+			<List
 				data={data}
 				render={RoomsItems}
 				empty={RoomsEmpty}

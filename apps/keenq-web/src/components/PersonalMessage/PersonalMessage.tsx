@@ -61,7 +61,7 @@ const selfCss = css`
 `
 
 const MessageContainer = styled.div<{ isAuthor: boolean, isChannel: boolean }>`
-	padding: 0 1rem;
+	padding: 0 1rem 1rem;
   max-width: calc(100vw - ${p => p.isChannel ? 0 : 4}rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;

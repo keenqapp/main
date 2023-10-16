@@ -49,7 +49,7 @@ function Autosizer({ setHeight, name, debug }: { setHeight: (height: number) => 
 }
 
 interface ListProps<P extends Entity, > {
-	data?: P[]
+	data: P[]
 	render: (item: P, index: number) => VNode<P> | VNode
 	empty?: () => VNode
 	scrollRef?: any
@@ -59,22 +59,25 @@ interface ListProps<P extends Entity, > {
 	name?: string
 }
 
-function List<T extends Entity>({ data, render, scrollRef, empty, className, name, ...rest }: ListProps<T>) {
+function List<T extends Entity>({ data = [], render, scrollRef, empty, className, name, ...rest }: ListProps<T>) {
 	const [ height, setHeight ] = useState(0)
-	if (data && data?.length < 1 && empty) return empty()
 
-	// useEffect(() => {
-	// 	console.log('--- List.tsx:70 ->  ->', scrollRef.current)
-	// }, [])
+	if (data && data?.length < 1 && empty) return empty()
 
 	return (
 		<ListContainer data-testid='List'>
 			<Autosizer setHeight={setHeight} name={name} />
 			<ScrollContainer {...rest}>
 				<Scroll ref={scrollRef} height={height} className={className}>
-					{(data || []).map((item, index) => {
+					{data.map((item, index) => {
 						const Component = render
-						return <Component key={item.id} index={index} {...item} />
+						return (
+							<Component
+								key={item.id}
+								index={index}
+								{...item}
+							/>
+						)
 					})}
 				</Scroll>
 			</ScrollContainer>

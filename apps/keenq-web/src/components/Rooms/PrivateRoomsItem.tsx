@@ -18,7 +18,7 @@ import { useQuery } from '@/hooks/gql'
 
 
 const RoomItemContainer = styled.div`
-	padding: 0 2rem;
+  padding: 0.5rem 2rem;
 `
 
 const NoWrap = styled(Typography)`
