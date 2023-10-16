@@ -60,9 +60,9 @@ export async function main(data) {
 		const provider = getProvider()
 
 		const member = await getMember(memberId, db)
-		await push({ member, title, body, topic, type, url, provider })
+		// await push({ member, title, body, topic, type, url, provider })
 
-		return success(true)
+		return success(member)
 	}
 	catch(e) {
 		return error(e)

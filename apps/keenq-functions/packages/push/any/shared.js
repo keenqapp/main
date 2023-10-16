@@ -60,3 +60,8 @@ export async function transaction(db, fn) {
 		throw { error: e }
 	}
 }
+
+export function assert(data) {
+	if (!data) throw { error: 'Assertion failed' }
+	return data
+}
