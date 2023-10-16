@@ -2,7 +2,6 @@ import { object, string } from 'yup'
 import webpush from 'web-push'
 
 import { getDb, success, error, validate } from './shared.js'
-import { success } from './shared.js'
 
 
 const schema = object({
@@ -13,7 +12,6 @@ const schema = object({
 	type: string().required(),
 	url: string(),
 })
-
 
 const config = {
 	client: 'pg',
