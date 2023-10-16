@@ -2,7 +2,7 @@
 // import webpush from 'web-push'
 
 // import { getDb, success, error, validate } from './shared.js'
-import { success } from './shared.js'
+// import { success } from './shared.js'
 
 
 // const schema = object({
@@ -73,5 +73,5 @@ export async function main(data) {
 	// finally {
 	// 	db?.destroy()
 	// }
-	return success(data)
+	return { body: { data } }
 }
