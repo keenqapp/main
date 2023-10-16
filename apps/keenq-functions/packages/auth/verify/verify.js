@@ -45,7 +45,7 @@ async function checkCode(to, code, provider, db) {
 	if (isTestPhone(to)) return true
 
 	const saved = await db.table('codes').select().where('phone', to).first()
-	if (!saved) throw { reason: 'error.wrongCreds' }
+	if (!saved) throw { reason: 'error.noSaved' }
 	const savedCode = String(saved.code)
 
 	let success = false
