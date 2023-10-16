@@ -22,19 +22,12 @@ import { isIOS, isPWA } from '@/utils/utils'
 
 const Main = styled.main`
   padding-bottom: var(--vertical-space);
-  position: relative;
-  overflow: hidden;
+  position: var(--main-position);
+	bottom: 0;
 `
 
 const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>`
-	${p => p.isIOS && `
-		position: fixed;
-		bottom: 20px;
-		left: 0;
-		right: 0;
-		height: calc(100 * var(--vh));
-	`}
-  ${p => p.isPWA && p.isIOS && 'padding-bottom: 20px;'}
+
 `
 
 function Page404() {
@@ -57,11 +50,7 @@ function Layout() {
 	const error = useRouteError()
 
 	if (!isAuthed) return <Navigate to='/auth/login' />
-
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	const is404 = useMemo(() => error?.status === 404, [error])
-
 	const loading = usePreload()
 
 	return (

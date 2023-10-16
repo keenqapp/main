@@ -81,6 +81,16 @@ function RoomInput() {
 		dense: true,
 		multiline: true,
 		maxRows: 3,
+		onFocus: () => {
+			const r = document.querySelector(':root')
+			r?.style.setProperty('--main-position', 'fixed')
+			r?.style.setProperty('--appbar-height', '0px')
+		},
+		onBlur: () => {
+			const r = document.querySelector(':root')
+			r?.style.setProperty('--main-position', 'relative')
+			r?.style.setProperty('--appbar-height', '56px')
+		}
 	})
 
 	useAsyncEffect(async () => {

@@ -18,7 +18,7 @@ export interface UseInputProps extends Dict {
   caption?: string;
   // onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onChange?: any;
-  onFocus?: () => void;
+  onFocus?: (e: any) => void;
   onBlur?: () => void;
   type?: string;
   validation?: Validator | Validator[];
@@ -78,9 +78,9 @@ export function useInput(props: UseInputProps) {
 	}
 
 	// Automatically clear error on focus
-	const handleFocus = () => {
+	const handleFocus = (e: any) => {
 		if (typeof onFocus === 'function') {
-			onFocus()
+			onFocus(e)
 		}
 		setError('')
 	}

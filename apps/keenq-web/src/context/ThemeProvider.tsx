@@ -36,6 +36,7 @@ const globalStyles = css`
   :root {
 		--appbar-height: 56px;
     --vertical-space: 44px;
+    --main-position: relative;
   }
   html {
     box-sizing: border-box;

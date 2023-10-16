@@ -25,6 +25,7 @@ const StyledAppBar = styled(AppBar)`
   color: ${({ theme }) => theme.palette.primary.contrastText};
   box-shadow: none;
 	position: relative;
+	overflow: hidden;
 `
 
 const fadeInTop = keyframes`
