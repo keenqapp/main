@@ -32,7 +32,7 @@ async function getRoom(roomId, db) {
 
 async function getMembers(roomId, db) {
 	const ids = (await db.table('rooms_members').select().where('roomId', roomId)).map(roomMember => roomMember.memberId)
-	return (await db.table('members').select().whereIn('id', ids).whereNotNull('sub'))
+	return db.table('members').select().whereIn('id', ids)
 }
 
 function getTitle(room, author) {
