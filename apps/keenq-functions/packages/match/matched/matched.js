@@ -121,7 +121,7 @@ async function getMember(id, db) {
 
 async function notify(member, room, provider) {
 	const data = {
-		title: 'event.newMatchTitle',
+		title: 'newMatchTitle',
 		body: member.name,
 		topic: 'newMatch',
 		type: 'newMatch',
@@ -135,6 +135,7 @@ export async function main(body) {
 	try {
 		const { authorId, memberId, type } = validate(body, schema)
 	  db = getDb(config)
+		const provider = getProvider()
 
 		const [authorCreds, memberCreds] = await Promise.all([getCreds(authorId, db), getCreds(memberId, db)])
 		await ensureCreds(authorCreds, authorId)
@@ -146,6 +147,7 @@ export async function main(body) {
 			await add(authorId, memberId, room, db, trx)
 			const member = await getMember(memberId, db)
 			await hi(room, member, db, trx)
+			await notify(member, room, provider)
 
 			return true
 		})

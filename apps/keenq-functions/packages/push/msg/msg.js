@@ -71,6 +71,7 @@ export async function main(body) {
 	let db
 	try {
 		const { msg } = validate(body, schema)
+		if (msg.type !== 'personal') return error({ reason: 'msg is not personal' })
 
 		db = getDb(config)
 		const provider = getProvider()
