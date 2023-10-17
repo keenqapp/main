@@ -15,7 +15,7 @@ const StyledPage = styled.div<{ animation: PageProps['animation'], duration: Pag
 	display: flex;
 	flex-direction: column;
 	position: relative;
-	will-change: left, transform;
+	will-change: transform;
 `
 
 const LoadingPage = styled(StyledPage)`

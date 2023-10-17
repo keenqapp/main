@@ -4,11 +4,11 @@ import { keyframes } from '@emotion/react'
 export const fadeInLeft = keyframes`
   0% {
     opacity: 0.01;
-		left: 50px;
+    transform: translateX(50px);
   }
   100% {
     opacity: 1;
-    left: 0;
+    transform: translateX(0);
   }
 `
 
