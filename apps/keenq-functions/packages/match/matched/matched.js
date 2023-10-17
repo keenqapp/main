@@ -22,7 +22,7 @@ const config = {
 	pool: { min: 0, max: 2 }
 }
 
-function getProvider() {
+function getPushProvider() {
 	return {
 		send: (data) => axios.post('https://fns.keenq.app/push/push', data)
 	}
@@ -121,8 +121,9 @@ async function getMember(id, db) {
 
 async function notify(member, room, provider) {
 	const data = {
+		memberId: member.id,
 		title: 'newMatchTitle',
-		body: member.name,
+		body: 'newMatchBody',
 		topic: 'newMatch',
 		type: 'newMatch',
 		url: `https://keenq.app/rooms/${room.id}`
@@ -135,7 +136,7 @@ export async function main(body) {
 	try {
 		const { authorId, memberId, type } = validate(body, schema)
 	  db = getDb(config)
-		const provider = getProvider()
+		const provider = getPushProvider()
 
 		const [authorCreds, memberCreds] = await Promise.all([getCreds(authorId, db), getCreds(memberId, db)])
 		await ensureCreds(authorCreds, authorId)
