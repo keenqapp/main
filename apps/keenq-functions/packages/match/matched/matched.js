@@ -93,14 +93,14 @@ async function add(authorId, memberId, room, db, trx) {
 	}
 }
 
-async function hi(room, member, db, trx) {
+async function hi(room, db, trx) {
 	await db
 		.table('messages')
 		.transacting(trx)
 		.insert({
 			roomId: room.id,
 			type: 'system',
-			authorId: member.name,
+			authorId: 'keenq',
 			content: JSON.stringify([{ type: 'text', value: { text: 'match.youHave' } }])
 		})
 
@@ -119,10 +119,10 @@ async function getMember(id, db) {
 	return db.table('members').select().where('id', id).first()
 }
 
-async function notify(member, room, provider) {
+async function notify(author, member, room, provider) {
 	const data = {
 		memberId: member.id,
-		title: member.name,
+		title: author?.name,
 		body: 'newMatch',
 		topic: 'newMatch',
 		type: 'newMatch',
@@ -142,13 +142,18 @@ export async function main(body) {
 		await ensureCreds(authorCreds, authorId)
 		await ensureCreds(memberCreds, memberId)
 
+		let m
+
 		const result = await transaction(db, async trx => {
 			await check(authorId, memberId, type, db, trx)
 			const room = await getRoom(authorId, memberId, db, trx)
 			await add(authorId, memberId, room, db, trx)
+
+			const author = await getMember(authorId, db)
 			const member = await getMember(memberId, db)
-			await hi(room, member, db, trx)
-			await notify(member, room, provider)
+			await hi(room, db, trx)
+
+			await notify(author, member, room, provider)
 
 			return true
 		})
