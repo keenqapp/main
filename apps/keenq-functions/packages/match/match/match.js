@@ -91,7 +91,7 @@ export async function main(body) {
 	  db = getDb(dbConfig)
 
 		const creds = await getCreds(id, db)
-		await ensureCreds(creds)
+		await ensureCreds(creds, id)
 
 		const match = await getMatch(id, db)
 

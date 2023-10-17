@@ -137,8 +137,8 @@ export async function main(body) {
 	  db = getDb(config)
 
 		const [author, member] = await Promise.all([getCreds(authorId, db), getCreds(memberId, db)])
-		await ensureCreds(author)
-		await ensureCreds(member)
+		await ensureCreds(author, authorId)
+		await ensureCreds(member, memberId)
 
 		const result = await transaction(db, async trx => {
 			await check(authorId, memberId, type, db, trx)

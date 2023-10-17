@@ -24,13 +24,13 @@ export async function getCreds(id, db) {
 	}
 }
 
-export function ensureCreds(creds) {
-	if (!creds) throw { error: 'Wrong credentials' }
-	if (creds?.bannedAt) throw { error: 'Member is banned' }
+export function ensureCreds(creds, uid) {
+	if (!creds) throw { error: 'error.wrongCreds', reason: `${uid} is not exist` }
+	if (creds?.bannedAt) throw { error: 'error.wrongCreds', reason: `${uid} is banned`  }
 }
 
 export function success(data) {
-	return { body: { success: true, data } }
+	return { body: { success: true, data, ...(data.id ? { id: data.id } : {}) } }
 }
 
 export function error(data) {
@@ -60,4 +60,13 @@ export async function transaction(db, fn) {
 	}
 }
 
-export const testPhones = [ '+79500131700', '+79312096251' ]
+export const testPhones = [
+	// '+79500131700',
+	'+79312096251',
+]
+
+export function isTestPhone(phone) {
+	if (testPhones.includes(phone)) return true
+	if (/^\+79{8}\d{2}/.test(phone)) return true
+	return false
+}

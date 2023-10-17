@@ -99,7 +99,7 @@ export async function main(body) {
 	  db = getDb(config)
 
 		const creds = await getCreds(phone, db)
-		await ensureCreds(creds)
+		await ensureCreds(creds, phone)
 
 		const provider = getProvider()
 		await checkCode(phone, code, provider, db)
