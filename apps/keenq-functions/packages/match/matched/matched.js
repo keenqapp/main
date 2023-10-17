@@ -151,6 +151,7 @@ export async function main(body) {
 
 			const author = await getMember(authorId, db)
 			const member = await getMember(memberId, db)
+			m = { member, author }
 			await hi(room, db, trx)
 
 			await notify(author, member, room, provider)
@@ -158,7 +159,7 @@ export async function main(body) {
 			return true
 		})
 
-		return success({ result })
+		return success(m)
 	}
 	catch(e) {
 		return error(e)
