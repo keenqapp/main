@@ -159,6 +159,4 @@ function urlBase64ToUint8Array(base64String) {
 	return outputArray
 }
 
-console.log('--- sw.js:155 ->  ->', navigator.language)
-
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST || [])
