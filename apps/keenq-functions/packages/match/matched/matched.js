@@ -122,8 +122,8 @@ async function getMember(id, db) {
 async function notify(member, room, provider) {
 	const data = {
 		memberId: member.id,
-		title: 'newMatchTitle',
-		body: 'newMatchBody',
+		title: member.name,
+		body: 'newMatch',
 		topic: 'newMatch',
 		type: 'newMatch',
 		url: `https://keenq.app/rooms/${room.id}`

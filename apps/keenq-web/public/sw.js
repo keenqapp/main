@@ -2,6 +2,15 @@ importScripts(
 	'https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-sw.js'
 )
 
+const translations = {
+	'ru-RU': {
+		newMatchBody: 'У тебя есть новый метч!',
+	},
+	'en-US': {
+		newMatchBody: 'New Match!',
+	},
+}
+
 
 const publicKey = 'BLcppKuyf4h6nMpnYzmfebRvs8WvVwM6PV_G13Bg00Hpau02gPri2PYNsXYp5Ld4TNlmThHy-omjIy1kWI3Sbos'
 const icon = 'https://cdn.keenq.app/assets/images/keenq_padding.png'
@@ -97,7 +106,7 @@ function getPushPayload(event) {
 	}
 	if (payload.type === 'newMatch') return {
 		title: payload.data.title,
-		body: payload.data.body,
+		body: translations[navigator.language]?.newMatchBody || 'New Match!',
 		topic: payload.data.topic,
 		url: payload.data.url,
 	}
@@ -149,5 +158,7 @@ function urlBase64ToUint8Array(base64String) {
 	}
 	return outputArray
 }
+
+console.log('--- sw.js:155 ->  ->', navigator.language)
 
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST || [])
