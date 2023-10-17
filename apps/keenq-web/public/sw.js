@@ -53,13 +53,25 @@ async function request() {
 	}
 }
 
-function spawn({ title, body }) {
-	const options = {
-		icon,
-		body,
-	}
-	new Notification(title, options)
-}
+// function spawn({ title, body, topic, url }) {
+// 	const options = {
+// 		icon,
+// 		body,
+// 		tag: topic,
+// 		data: {
+// 			url
+// 		}
+// 	}
+// 	new Notification(title, options)
+// }
+
+self.addEventListener('notificationclick', async function(event) {
+	event.notification.close()
+	const clients = await self.clients.matchAll({ includeUncontrolled: true, type: 'window' })
+	event.waitUntil(
+		clients.openWindow(event.notification.data.url || 'https://keenq.app')
+	)
+})
 
 self.addEventListener('widgetinstall', (event) => {
 	event.waitUntil(updateWidget(event))
@@ -112,17 +124,17 @@ function getPushPayload(event) {
 	}
 	return {
 		title: payload?.data.title || 'keenq',
-		body: payload?.data.body || 'newmsg',
+		body: payload?.data.body || 'Your have a new message!',
 		topic: payload.data.topic,
 		url: payload.data.url,
 	}
 }
 
 self.addEventListener('push', async function(event) {
-	const { title, body, topic } = getPushPayload(event)
+	const { title, body, topic, url } = getPushPayload(event)
 	const isVisible = (await self.clients.matchAll({ includeUncontrolled: true, type: 'window' })).some(c => c.visibilityState === 'visible')
 	if (topics.has(topic) || isVisible) return
-	event.waitUntil(self.registration.showNotification(title, { icon, body, }))
+	event.waitUntil(self.registration.showNotification(title, { icon, body, tag: topic, data: { url } }))
 })
 
 const updateWidget = async (event) => {

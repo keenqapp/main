@@ -31,10 +31,14 @@ const Content = styled(Stack)`
 	border-radius: 1rem;
 	padding: 0.5rem 1rem 1rem;
 	background: ${p => p.theme.palette.primary.light};
+	flex-direction: column;
 `
 
 const Buttons = styled(Stack)`
 	padding: 0 1rem;
+	flex: 1;
+	justify-content: space-around;
+	align-self: stretch;
 `
 
 const context = {
@@ -88,9 +92,9 @@ function PartnerRequest({ id, to, from, result }: IPartnerRequest['value'] & { i
 
 	return (
 		<PartnerRequestContainer data-testid='PartnerRequest'>
-			<Stack gap={0.5}>
+			<Stack gap={0.5} direction='column'>
 				<Content gap={1} onClick={requestClick}>
-					<Stack justify='start' gap={1}>
+					<Stack justify='between' gap={1} self='stretch'>
 						<Avatar src={avatar?.url} alt={name} />
 						<Stack>
 							<Typography variant='h6'>{name}</Typography>
