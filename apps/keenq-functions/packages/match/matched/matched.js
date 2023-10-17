@@ -93,14 +93,14 @@ async function add(authorId, memberId, room, db, trx) {
 	}
 }
 
-async function hi(room, db, trx) {
+async function hi(room, member, db, trx) {
 	await db
 		.table('messages')
 		.transacting(trx)
 		.insert({
 			roomId: room.id,
 			type: 'system',
-			authorId: 'keenq',
+			authorId: member.name,
 			content: JSON.stringify([{ type: 'text', value: { text: 'match.youHave' } }])
 		})
 
@@ -136,18 +136,17 @@ export async function main(body) {
 		const { authorId, memberId, type } = validate(body, schema)
 	  db = getDb(config)
 
-		const [author, member] = await Promise.all([getCreds(authorId, db), getCreds(memberId, db)])
-		await ensureCreds(author, authorId)
-		await ensureCreds(member, memberId)
+		const [authorCreds, memberCreds] = await Promise.all([getCreds(authorId, db), getCreds(memberId, db)])
+		await ensureCreds(authorCreds, authorId)
+		await ensureCreds(memberCreds, memberId)
 
 		const result = await transaction(db, async trx => {
 			await check(authorId, memberId, type, db, trx)
 			const room = await getRoom(authorId, memberId, db, trx)
 			await add(authorId, memberId, room, db, trx)
-			await hi(room, db, trx)
 			const member = await getMember(memberId, db)
-			const provider = getProvider()
-			await notify(member, room, provider)
+			await hi(room, member, db, trx)
+
 			return true
 		})
 

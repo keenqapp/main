@@ -95,6 +95,12 @@ function getPushPayload(event) {
 		topic: payload.data.topic,
 		url: payload.data.url,
 	}
+	if (payload.type === 'newMatch') return {
+		title: payload.data.title,
+		body: payload.data.body,
+		topic: payload.data.topic,
+		url: payload.data.url,
+	}
 	return {
 		title: payload?.data.title || 'keenq',
 		body: payload?.data.body || 'newmsg',
