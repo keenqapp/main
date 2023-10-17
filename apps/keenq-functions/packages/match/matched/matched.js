@@ -24,7 +24,7 @@ const config = {
 
 function getProvider() {
 	return {
-		send: (data) => axios.post('https://fns.keenq.app/push/any', data)
+		send: (data) => axios.post('https://fns.keenq.app/push/push', data)
 	}
 }
 
