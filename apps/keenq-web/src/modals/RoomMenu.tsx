@@ -7,7 +7,7 @@ import PersonAddTwoToneIcon from '@mui/icons-material/PersonAddTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
 import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
 import VolumeOffTwoToneIcon from '@mui/icons-material/VolumeOffTwoTone'
-import VolumeUpTwoToneIcon from '@mui/icons-material/VolumeUpTwoTone';
+import VolumeUpTwoToneIcon from '@mui/icons-material/VolumeUpTwoTone'
 
 import { useConfirm, useModal } from '@/services/modals'
 import { useTopic } from '@/services/notifications'
@@ -117,11 +117,13 @@ function RoomMenu() {
 						onClick={on(roomClick)}
 					/>
 				)}
-				<DrawerItem
-					icon={<PersonAddTwoToneIcon color='primary' />}
-					text={t`member.add`}
-					onClick={on(addMemberClick)}
-				/>
+				{!isPersonal && (
+					<DrawerItem
+						icon={<PersonAddTwoToneIcon color='primary' />}
+						text={t`member.add`}
+						onClick={on(addMemberClick)}
+					/>
+				)}
 				<DrawerItem
 					icon={<ShareTwoToneIcon color='primary' />}
 					text={t`room.share`}
