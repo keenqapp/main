@@ -65,6 +65,8 @@ export function notify(data: INotification['data']) {
 let counter = 0
 
 export function ask() {
+	check()
+	if ($granted.get()) return
 	if (!$asked.get() || (!$granted.get() && counter > 100)) {
 		$asked.set(true)
 		$modals.setKey('notifications', true)
