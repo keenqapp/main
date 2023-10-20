@@ -226,12 +226,11 @@ function Profile() {
 
 	const onTagsClick = () => onTagsOpen()
 
-	const isDone = !!images && images.length > 0
+	const isDone = !!images
+		&& images.length > 0
 		&& !!name
 		&& !!gender && !!sexuality
 		&& !!location
-		&& !!description
-		&& !!tags && tags.length > 0
 
 	useEffect(() => {
 		if (isDone && !done) {
