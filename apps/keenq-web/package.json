@@ -44,6 +44,7 @@
     "preact": "^10.15.1",
     "react-google-autocomplete": "^2.7.3",
     "react-router-dom": "^6.12.1",
+    "react-swipeable": "^7.0.1",
     "scroll-snap": "^4.0.3",
     "system-font-css": "^2.0.2",
     "tiny-storage-client": "^2.2.4",

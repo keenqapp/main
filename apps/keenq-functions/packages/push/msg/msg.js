@@ -44,7 +44,9 @@ function getTitle(room, author) {
 
 function getData(members, room, msg) {
 	const author = members.find(member => member.id === msg.authorId)
-	const body = msg.content.find(item => item.type === 'text')?.value.text || 'notext'
+	const text = msg.content.find(item => item.type === 'text')?.value.text || 'notext'
+	const img = msg.content.some(item => item.type === 'image')
+	const body = `${img ? '📷 ' : ''}${text || ''}`
 	const title = getTitle(room, author)
 	return {
 		body,

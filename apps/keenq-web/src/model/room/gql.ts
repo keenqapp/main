@@ -32,6 +32,15 @@ export const roomsgql = gql<{ rooms: IRoom[] }>`
 	${roomfragment}
 `
 
+export const roomssubgql = gql<{ rooms: IRoom[] }>`
+	subscription Rooms {
+		rooms(order_by: { updatedAt: desc_nulls_last }) {
+			...RoomFragment
+		}
+	}
+	${roomfragment}
+`
+
 export const getroomsgql = gql<{ rooms: IRoom[] }>`
 	query Rooms($ids: [String!]!) {
 		rooms(where: { id: { _in: $ids }}) {

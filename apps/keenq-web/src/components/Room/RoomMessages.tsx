@@ -43,7 +43,7 @@ const RoomMessagesContainer = styled.div`
 `
 
 const RoomMessagesList = styled(List<IMessage>)<{ height: number }>`
-	gap: 1rem;
+	gap: 0.1rem;
 `
 
 function RoomMessages() {

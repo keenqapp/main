@@ -20,6 +20,7 @@ import PersonalMessageText from '@/components/PersonalMessage/PersonalMessageTex
 import PersonalMessageTime from '@/components/PersonalMessage/PersonalMessageTime'
 
 import { formatDate } from '@/utils/formatters'
+import { useSwipeable } from 'react-swipeable'
 
 
 const notSelfCss = css`
@@ -61,7 +62,7 @@ const selfCss = css`
 `
 
 const MessageContainer = styled.div<{ isAuthor: boolean, isChannel: boolean }>`
-	padding: 0 1rem 1rem;
+	padding: 0 1rem 0rem;
   max-width: calc(100vw - ${p => p.isChannel ? 0 : 4}rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;
@@ -71,6 +72,7 @@ const MessageContainer = styled.div<{ isAuthor: boolean, isChannel: boolean }>`
 
 const SeparateDate = styled.div`
 	align-self: center;
+	padding-bottom: 1rem;
 `
 
 function DateSeparator({ date, prevDate }: IMessage) {
@@ -92,6 +94,9 @@ function PersonalMessage(message: IMessage) {
 	const { open } = useModal('message')
 	const isAuthor = useIsAuthor(authorId)
 	const { isChannel } = useCurrentRoom()
+
+	const handlers = useSwipeable({})
+
 	if (!content?.length) return null
 
 	const onMessageClick = () => open(message)

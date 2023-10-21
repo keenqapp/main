@@ -11,7 +11,7 @@ import SystemTextMessage from '@/components/SystemMessage/SystemTextMessage'
 
 
 const SystemMessageContainer = styled(Stack)`
-	padding: 0 2rem;
+	padding: 0 2rem 1rem;
 	display: flex;
 	flex-direction: column;
 `

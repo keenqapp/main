@@ -9837,6 +9837,7 @@ __metadata:
     preact: ^10.15.1
     react-google-autocomplete: ^2.7.3
     react-router-dom: ^6.12.1
+    react-swipeable: ^7.0.1
     scroll-snap: ^4.0.3
     system-font-css: ^2.0.2
     tiny-storage-client: ^2.2.4
@@ -11082,6 +11083,15 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: a23a0f2e6635eba19aec8d50b9126f61663d1e6ee6e69d6b2ca6e5dd678496b54d925f0d86a375270646da11cc12be66ac5e6ebf73962957af91ac828b63d10b
+  languageName: node
+  linkType: hard
+
+"react-swipeable@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "react-swipeable@npm:7.0.1"
+  peerDependencies:
+    react: ^16.8.3 || ^17 || ^18
+  checksum: 1cd19275c5608cb202ca7717afc73e336fb51d6ae4c9353ef409e1779dfb90f36ac4c06aa870d3d862f15fb439f82b96d41395738d04b8d2290aefc670fd6b5b
   languageName: node
   linkType: hard
 
