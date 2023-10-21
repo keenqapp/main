@@ -12,6 +12,7 @@ import { sort, toComponent } from '@/utils/utils'
 
 const PersonalMessageReactionsContainer = styled(Stack)`
 	position: absolute;
+	z-index: 2;
 	bottom: ${p => p.shouldShow ? '0.75rem' : '-0.75rem'};
 	transform: scale(0.8);
 	transform-origin: center;

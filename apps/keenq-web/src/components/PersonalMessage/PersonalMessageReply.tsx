@@ -25,6 +25,7 @@ const ReplyContainer = styled.div`
   background: rgb(244,244,244);
 	opacity: 0.9;
   align-self: flex-start;
+	margin-top: 0.2rem;
 `
 
 const TextContainer = styled(Stack)`
