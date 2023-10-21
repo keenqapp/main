@@ -120,7 +120,7 @@ function TestPage() {
 	const { t } = useTranslate()
 	const { id, name } = useCurrentMember()
 	const [ myresult ] = useQuery(mymatches, { id }, { context })
-	const [ tomeresult ] = useQuery(tomematches, { id })
+	const [ tomeresult ] = useQuery(tomematches, { id }, { context })
 	const myMatches = myresult.data?.matches || []
 	const toMeMatches = tomeresult.data?.matches || []
 
