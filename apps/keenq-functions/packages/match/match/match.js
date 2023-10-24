@@ -78,8 +78,8 @@ async function search(id, seen, db) {
 
 async function getMatch(id, db) {
 	let match = await search(id, false, db)
-	if (!match) match = await search(id, true, db)
-	if (!match) throw { reason: 'No match found' }
+	if (match.length === 0) match = await search(id, true, db)
+	if (match.length === 0) throw { reason: 'No match found' }
 	return match
 }
 
