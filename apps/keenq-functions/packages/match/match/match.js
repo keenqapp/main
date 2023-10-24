@@ -63,13 +63,13 @@ const sql = (seen = false) => `
   and matchable.id not in (
     select "authorId" from matches where "memberId" = :id and type = 'no'
   )
-	limit 1
+	limit 10
 `
 
 async function search(id, seen, db) {
 	try {
 		const result = await db.raw(sql(seen), { id })
-		return result.rows?.[0]
+		return result.rows
 	}
 	catch (e) {
 		throw e
