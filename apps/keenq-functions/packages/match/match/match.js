@@ -94,8 +94,9 @@ export async function main(body) {
 		await ensureCreds(creds, id)
 
 		// const match = await getMatch(id, db)
-		let match = await search(id, false, db)
-		return success(match)
+		let notSeen = await search(id, false, db)
+		let seen = await search(id, true, db)
+		return success({ notSeen, seen })
 	}
 	catch(e) {
 		return error(e)

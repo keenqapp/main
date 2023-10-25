@@ -30,8 +30,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/knex", "npm:0.16.1"],\
             ["jsonwebtoken", "npm:9.0.0"],\
-            ["knex", "virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:2.5.1"],\
-            ["nanoid", "npm:5.0.1"],\
+            ["knex", "virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:3.0.1"],\
+            ["nanoid", "npm:5.0.2"],\
             ["pg", "virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:8.11.3"],\
             ["twilio", "npm:4.18.1"],\
             ["yup", "npm:1.3.2"]\
@@ -333,13 +333,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["knex", [\
-        ["npm:2.5.1", {\
-          "packageLocation": "./.yarn/cache/knex-npm-2.5.1-b988b29845-4f2da7fda5.zip/node_modules/knex/",\
-          "packageDependencies": [\
-            ["knex", "npm:2.5.1"]\
-          ],\
-          "linkType": "SOFT"\
-        }],\
         ["npm:3.0.1", {\
           "packageLocation": "./.yarn/cache/knex-npm-3.0.1-cc91fa07c1-bcfc3f8da9.zip/node_modules/knex/",\
           "packageDependencies": [\
@@ -398,10 +391,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:2.5.1", {\
-          "packageLocation": "./.yarn/__virtual__/knex-virtual-dccd4433fc/0/cache/knex-npm-2.5.1-b988b29845-4f2da7fda5.zip/node_modules/knex/",\
+        ["virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:3.0.1", {\
+          "packageLocation": "./.yarn/__virtual__/knex-virtual-7beef4b218/0/cache/knex-npm-3.0.1-cc91fa07c1-bcfc3f8da9.zip/node_modules/knex/",\
           "packageDependencies": [\
-            ["knex", "virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:2.5.1"],\
+            ["knex", "virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:3.0.1"],\
             ["@types/better-sqlite3", null],\
             ["@types/mysql", null],\
             ["@types/mysql2", null],\
@@ -486,10 +479,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["nanoid", [\
-        ["npm:5.0.1", {\
-          "packageLocation": "./.yarn/cache/nanoid-npm-5.0.1-3b97be5eee-fb5a57ec05.zip/node_modules/nanoid/",\
+        ["npm:5.0.2", {\
+          "packageLocation": "./.yarn/cache/nanoid-npm-5.0.2-2802fdb2f8-fa6908c2c6.zip/node_modules/nanoid/",\
           "packageDependencies": [\
-            ["nanoid", "npm:5.0.1"]\
+            ["nanoid", "npm:5.0.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -883,8 +876,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["verify", "workspace:."],\
             ["@types/knex", "npm:0.16.1"],\
             ["jsonwebtoken", "npm:9.0.0"],\
-            ["knex", "virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:2.5.1"],\
-            ["nanoid", "npm:5.0.1"],\
+            ["knex", "virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:3.0.1"],\
+            ["nanoid", "npm:5.0.2"],\
             ["pg", "virtual:b85cc39ecfa99bb39451e2bd140973845b7310aea3fabd89da5153259932dd201ba5a5239396a1b07ef346bdd6a91f7ed958f7e5e06ab0edc608508ca1f0c85b#npm:8.11.3"],\
             ["twilio", "npm:4.18.1"],\
             ["yup", "npm:1.3.2"]\
