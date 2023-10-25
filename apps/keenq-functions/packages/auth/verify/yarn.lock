@@ -237,7 +237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knex@npm:*":
+"knex@npm:*, knex@npm:^3.0.1":
   version: 3.0.1
   resolution: "knex@npm:3.0.1"
   dependencies:
@@ -276,45 +276,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knex@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "knex@npm:2.5.1"
-  dependencies:
-    colorette: 2.0.19
-    commander: ^10.0.0
-    debug: 4.3.4
-    escalade: ^3.1.1
-    esm: ^3.2.25
-    get-package-type: ^0.1.0
-    getopts: 2.3.0
-    interpret: ^2.2.0
-    lodash: ^4.17.21
-    pg-connection-string: 2.6.1
-    rechoir: ^0.8.0
-    resolve-from: ^5.0.0
-    tarn: ^3.0.2
-    tildify: 2.0.0
-  peerDependenciesMeta:
-    better-sqlite3:
-      optional: true
-    mysql:
-      optional: true
-    mysql2:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    sqlite3:
-      optional: true
-    tedious:
-      optional: true
-  bin:
-    knex: bin/cli.js
-  checksum: 4f2da7fda51a450de25274eb76034c869de0427c17831dc8472b8116e879d23aae0592c2ce4e9b2a473417867063ac6e7b29021b39b4a4d502335017a5a09278
-  languageName: node
-  linkType: hard
-
 "lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
@@ -345,12 +306,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "nanoid@npm:5.0.1"
+"nanoid@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "nanoid@npm:5.0.2"
   bin:
     nanoid: bin/nanoid.js
-  checksum: fb5a57ec0563f12f101129b2f11fe50505e5f1219760c43e6ae30fc0a0d2aa269985f6d07ddea15e3bd4b24751c9ef14fa8117cbc80d410726429e2b37a4b13f
+  checksum: fa6908c2c6a7a9e91e02b98cb0b9b829454d390a63f83c1798f0c504d07b536d99cad3e975e5014b176534e67e234ff66bccd4610bf3ffb2cf0d6d932a73f3a8
   languageName: node
   linkType: hard
 
@@ -684,8 +645,8 @@ __metadata:
   dependencies:
     "@types/knex": ^0.16.1
     jsonwebtoken: ^9.0.0
-    knex: ^2.5.1
-    nanoid: ^5.0.1
+    knex: ^3.0.1
+    nanoid: ^5.0.2
     pg: ^8.11.3
     twilio: ^4.18.1
     yup: ^1.3.2
