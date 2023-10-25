@@ -93,8 +93,8 @@ export async function main(body) {
 		const creds = await getCreds(id, db)
 		await ensureCreds(creds, id)
 
-		const match = await getMatch(id, db)
-
+		// const match = await getMatch(id, db)
+		let match = await search(id, false, db)
 		return success(match)
 	}
 	catch(e) {
