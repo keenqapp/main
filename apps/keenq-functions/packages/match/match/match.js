@@ -18,52 +18,64 @@ const dbConfig = {
 }
 
 const sql = (seen = false) => `
-  with current_member as (
-    select * from members where members.id = :id
-  )
-  select matchable.id, matchable.distance
-  from (
-		select
-		 members.id,
-		 members.name,
-		 ST_DistanceSphere(
-		   current_member.point,
-		   members.point
-		   ) as distance
-		from
-		 members,
-		 current_member
-		where members.id != :id
-		 and members."deletedAt" is null
-		 and members."bannedAt" is null
-		 and members.visible = true
-		 and members.done = true
-		 and (
-		 	case
-		   when (current_member.gender = 'male' and current_member.sexuality = 'hetero') then members.gender != 'male'
-		   when (current_member.gender = 'female' and current_member.sexuality = 'hetero') then members.gender != 'female'
-		   when current_member.gender is null then true
-		 	 else true
-		  end
-		 )
-		order by distance
-	) as matchable, 
-    current_member
-  where (
-    case
-      when current_member.point is null then true
-      when matchable.distance is not null then true
+with current_member as (
+  select * from members where members.id = :id
+)
+select
+  matchable.id,
+  matchable.distance,
+  match_type.type as match_type
+from current_member, lateral (
+       select
+         members.id,
+         members.name,
+         ST_DistanceSphere(
+           current_member.point,
+           members.point
+         ) as distance
+       from
+         members,
+         current_member
+       where members.id != :id
+         and members."deletedAt" is null
+         and members."bannedAt" is null
+         and members.visible = true
+         and members.done = true
+         and (
+         case
+           when (current_member.gender = 'male' and current_member.sexuality = 'hetero') then members.gender != 'male'
+           when (current_member.gender = 'female' and current_member.sexuality = 'hetero') then members.gender != 'female'
+           when current_member.gender is null then true
+           else true
+           end
+         )
+       order by distance
+     ) as matchable
+left join (
+  select "memberId", type
+  from matches
+  where "authorId" = :id
+) as match_type on matchable.id = match_type."memberId"
+where (
+  case
+    when current_member.point is null then true
+    when matchable.distance is not null then true
     end
   )
   and matchable.id not in (
-    ${seen 
-	    ? `select "memberId" from matches where "authorId" = :id and type in ('no', 'yes')`
-	    : 'select "memberId" from matches where "authorId" = :id'}
-  )
+  select "memberId" from matches where "authorId" = :id and type in ('no', 'yes')
+)
   and matchable.id not in (
-    select "authorId" from matches where "memberId" = :id and type = 'no'
-  )
-	limit 10
+  select "authorId" from matches where "memberId" = :id and type = 'no'
+)
+order by
+  case
+    when match_type.type is null then 1
+    when match_type.type = 'seen' then 2
+    else 3
+  end,
+  matchable.distance
+limit 10
 `
 
 async function search(id, seen, db) {
@@ -78,7 +90,6 @@ async function search(id, seen, db) {
 
 async function getMatch(id, db) {
 	let match = await search(id, false, db)
-	if (match.length === 0) match = await search(id, true, db)
 	if (match.length === 0) throw { reason: 'No match found' }
 	return match
 }
@@ -93,10 +104,9 @@ export async function main(body) {
 		const creds = await getCreds(id, db)
 		await ensureCreds(creds, id)
 
-		// const match = await getMatch(id, db)
-		let notSeen = await search(id, false, db)
-		let seen = await search(id, true, db)
-		return success({ notSeen, seen })
+		const match = await getMatch(id, db)
+
+		return success(match)
 	}
 	catch(e) {
 		return error(e)
