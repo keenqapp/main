@@ -4,10 +4,13 @@ import styled from '@emotion/styled'
 
 import { IImage } from '@/model/other'
 
+import Container from '@/ui/Container'
 import Loadable from '@/ui/Loadable'
 
 import SwiperDots from '@/components/Swiper/SwiperDots'
 import { checkSnap } from '@/components/Swiper/utils'
+
+import { useSwipe } from '@/hooks/useSwipe'
 
 
 const SwiperContainer = styled.div`
@@ -47,7 +50,12 @@ interface SwiperProps {
 	scrollOnAdd?: boolean
 }
 
-function Swiper({ images, buttons, onScroll, loading = false, scrollOnAdd = false }: SwiperProps) {
+const Swipeable = styled(Container)<{ transform: number }>`
+	transform: translateX(${({ transform }) => transform}px);
+	will-change: transform;
+`
+
+function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd = false }: SwiperProps) {
 	const [ dot, setDot ] = useState(0)
 	const ref = useRef<HTMLDivElement>(null)
 

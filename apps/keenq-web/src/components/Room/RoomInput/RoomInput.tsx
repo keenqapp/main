@@ -31,6 +31,7 @@ import { useQuery, useUpdate } from '@/hooks/gql'
 import { useInsert } from '@/hooks/gql/useInsert'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { useInput } from '@/hooks/useInput'
+import { isIOS } from '@/utils/utils'
 
 
 const RoomInputContainer = styled.div`
@@ -82,11 +83,13 @@ function RoomInput() {
 		multiline: true,
 		maxRows: 3,
 		onFocus: () => {
+			if (!isIOS()) return
 			const r = document.querySelector(':root')
 			r?.style.setProperty('--main-position', 'fixed')
 			r?.style.setProperty('--appbar-height', '0px')
 		},
 		onBlur: () => {
+			if (!isIOS()) return
 			const r = document.querySelector(':root')
 			r?.style.setProperty('--main-position', 'relative')
 			r?.style.setProperty('--appbar-height', '56px')

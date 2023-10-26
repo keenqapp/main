@@ -1,5 +1,5 @@
 import { useCurrentMember } from '@/model/member/hooks'
-import { IMember } from '@/model/member/types'
+import { IMember, IMemberPartner } from '@/model/member/types'
 import { IRoomMember } from '@/model/rooms_members'
 
 
@@ -22,8 +22,11 @@ export function $isOwner(id: string|null, admins?: IRoomMember[]) {
 	return admins.find(({ memberId }) => memberId === id)?.role === 'owner'
 }
 
-export function getPartner(linked: IMember['linked']) {
-	return linked?.find(({ type }) => type === 'partner')?.value
+export function getPartner(member: IMember): IMember {
+	// FIXME dont know why typings cause error
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	return member.linked?.find((link: IMemberPartner) => link.type === 'partner')?.value
 }
 
 export function getAvatar(member: IMember) {

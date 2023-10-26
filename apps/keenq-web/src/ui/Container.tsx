@@ -1,4 +1,5 @@
 import { ComponentChildren } from 'preact'
+import { forwardRef } from 'preact/compat'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
@@ -24,10 +25,10 @@ interface ContainerProps {
 	horizontal?: number
 }
 
-function Container(props: ContainerProps) {
+function Container(props: ContainerProps, ref) {
 	return (
-		<StyledContainer {...props} />
+		<StyledContainer ref={ref} {...props} />
 	)
 }
 
-export default Container
+export default forwardRef(Container)

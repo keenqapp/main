@@ -15,6 +15,7 @@ import { othermemberinprivategql } from '@/model/rooms_members'
 import Stack from '@/ui/Stack'
 
 import { useQuery } from '@/hooks/gql'
+import { useTransition } from 'react'
 
 
 const RoomItemContainer = styled.div`

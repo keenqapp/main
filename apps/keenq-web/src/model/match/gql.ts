@@ -9,7 +9,7 @@ export const matchgql = gql`
 			data {
 				id
 				distance
-				reason
+				match_type
 			}
 		}
 	}

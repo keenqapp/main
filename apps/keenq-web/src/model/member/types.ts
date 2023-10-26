@@ -9,8 +9,8 @@ export interface IMember {
 	sexuality: 'hetero' | 'homo' | 'flexible'
 	location: ILocation
 	tags: ITag[]
-	images?: IImage[]
-	linked?: (IMemberPartner)[]
+	images: IImage[]
+	linked?: IMemberPartner[]
 	visible?: boolean
 	done?: boolean
 	isTester?: boolean

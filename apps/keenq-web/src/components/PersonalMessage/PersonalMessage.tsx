@@ -1,6 +1,8 @@
+import { useState } from 'preact/hooks'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { differenceInCalendarDays, isBefore, isToday, parseISO, startOfDay } from 'date-fns'
+import { SwipeEventData, useSwipeable } from 'react-swipeable'
 
 import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
@@ -18,9 +20,10 @@ import PersonalMessageReactions from '@/components/PersonalMessage/PersonalMessa
 import PersonalMessageReply from '@/components/PersonalMessage/PersonalMessageReply'
 import PersonalMessageText from '@/components/PersonalMessage/PersonalMessageText'
 import PersonalMessageTime from '@/components/PersonalMessage/PersonalMessageTime'
+import { $messageReplyOrEditId } from '@/components/Room/RoomInput/state'
 
 import { formatDate } from '@/utils/formatters'
-import { useSwipeable } from 'react-swipeable'
+import { useSwipe } from '@/hooks/useSwipe'
 
 
 const notSelfCss = css`
@@ -61,12 +64,14 @@ const selfCss = css`
   }
 `
 
-const MessageContainer = styled.div<{ isAuthor: boolean, isChannel: boolean }>`
+const MessageContainer = styled.div<{ isAuthor: boolean, isChannel: boolean, left: number }>`
 	padding: 0 1rem 0rem;
   max-width: calc(100vw - ${p => p.isChannel ? 0 : 4}rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;
 	}
+	transform: translateX(${p => p.left}px);
+	will-change: transform;
 	${p => p.isAuthor ? selfCss : notSelfCss}
 `
 
@@ -90,12 +95,31 @@ function DateSeparator({ date, prevDate }: IMessage) {
 }
 
 function PersonalMessage(message: IMessage) {
+	const [ left, setLeft ] = useState(0)
 	const { authorId, content } = message
 	const { open } = useModal('message')
 	const isAuthor = useIsAuthor(authorId)
 	const { isChannel } = useCurrentRoom()
 
-	const handlers = useSwipeable({})
+	// const swipes = useSwipeable({
+	// 	onSwiping: (e: SwipeEventData) => {
+	// 		if (e.dir !== 'Left') return
+	// 		setLeft(e.deltaX)
+	// 		if (e.deltaX < -75) {
+	// 			setLeft(0)
+	// 			$messageReplyOrEditId.set({ mode: 'reply', id: message.id })
+	// 		}
+	// 	},
+	// 	onSwipedLeft: () => {
+	// 		setLeft(0)
+	// 	}
+	// })
+
+	const swipes = useSwipe({
+		onLeft: (e) => {
+			if (e.deltaX < -75) $messageReplyOrEditId.set({ mode: 'reply', id: message.id })
+		}
+	})
 
 	if (!content?.length) return null
 
@@ -110,6 +134,8 @@ function PersonalMessage(message: IMessage) {
 				isAuthor={isAuthor}
 				isChannel={isChannel}
 				onClick={onMessageClick}
+				left={left}
+				{...swipes}
 			>
 				<Stack gap={0.5} align='end'>
 					<PersonalMessageAvatar {...message} />

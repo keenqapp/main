@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { useMutation } from 'urql'
 
 import Button from '@mui/material/Button'
@@ -17,8 +17,7 @@ import { useModal } from '@/services/modals'
 import { ask } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
-import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
-import { getPartner } from '@/model/member'
+import { addmatchgql, matchedgql, updatematchgql } from '@/model/match/gql'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
@@ -29,9 +28,10 @@ import EmptyMatch from '@/components/Match/EmptyMatch'
 import Swiper from '@/components/Swiper'
 
 import { $unread } from '@/core/BottomTabs'
-import { useInsert, useQuery } from '@/hooks/gql'
-import { useFormatDistance } from '@/hooks/useFormatDistance'
-import { useMember } from '@/hooks/useMember'
+import { useInsert } from '@/hooks/gql'
+import { useMatch } from '@/hooks/useMatch'
+import { useSwipe } from '@/hooks/useSwipe'
+import { formatDistance } from '@/utils/formatters'
 
 
 const Content = styled(Stack)`
@@ -56,8 +56,13 @@ const Partner = styled(Typography)`
 	border-bottom: 1px solid currentColor;
 `
 
+const Swipeable = styled(Container)<{ transform: number }>`
+	transform: translateX(${({ transform }) => transform}px);
+	will-change: transform;
+`
+
 function Match() {
-	const { id: pid } = useParams()
+
 	const { t } = useTranslate()
 
 	const { open: onReportOpen } = useModal('report')
@@ -65,38 +70,13 @@ function Match() {
 	const navigate = useNavigate()
 	const { id, done } = useCurrentMember()
 
-	const [ result, match ] = useQuery(matchgql, { id }, { requestPolicy: 'cache-and-network', pause: true })
-	const { data, fetching, error } = result
-
-	useEffect(() => {
-		if (!pid && !data && !fetching && !error && id) {
-			match()
-		}
-	}, [ result ])
-
 	const [ , add ] = useInsert(addmatchgql)
 	const [ , update ] = useMutation(updatematchgql)
 	const [ , matched ] = useMutation(matchedgql)
 
-	const [ empty, setEmpty ] = useState(false)
-
-	const getId = pid || data?.match?.data.id
-	const distance = useFormatDistance(data?.match?.data.distance)
-
-	const {
-		id: mid,
-		name,
-		images = [],
-		description,
-		gender,
-		sexuality,
-		tags,
-		linked
-	} = useMember(getId)
-
-	useEffect(() => {
-		setEmpty(!getId)
-	}, [ getId ])
+	const { member, partner, fetching, error, next, prev, empty } = useMatch()
+	const { id: mid, name, images, gender, sexuality, distance, description, tags } = member
+	const { id: pid, name: pname } = partner
 
 	useEffect(() => {
 		if (id && mid && !fetching && !error) {
@@ -104,11 +84,7 @@ function Match() {
 		}
 	}, [ mid, fetching, error, id ])
 
-	const partpartner = getPartner(linked)
-	const partner = useMember(partpartner?.id)
-	const onReportClick = () => {
-		onReportOpen({ id: getId, entity: 'member' })
-	}
+	const onReportClick = () => onReportOpen({ id: mid, entity: 'member', from: 'match' })
 
 	const onPartnerClick = () => {
 		if (!partner) return
@@ -122,30 +98,36 @@ function Match() {
 	const onYesClick = async () => {
 		if (!done) return onAcquaintanceOpen()
 		await update({ authorId: id, memberId: mid, data: { type: 'yes' } })
-		await match()
-
 		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
-		if (data?.matched.data.result) {
-			$unread.set(true)
-		}
+		if (data?.matched.data.result) $unread.set(true)
+		next()
 		ask()
 		redirect()
 	}
 
 	const onNoClick = async () => {
 		update({ authorId: id, memberId: mid, data: { type: 'no' } })
-		await match()
+		next()
 		redirect()
 	}
 
-	if (pid === id) return <Navigate to='/match' />
-	if (empty && !getId) return <EmptyMatch />
+	const swipes = useSwipe({
+		onLeft: (e) => {
+			if (e.deltaX < -75) next()
+		},
+		onRight: (e) => {
+			if (e.deltaX > 75) prev()
+		},
+	})
+
+	if (mid === id) return <Navigate to='/match' />
+	if (empty) return <EmptyMatch />
 
 	return (
-		<Container data-testid='Match'>
+		<Swipeable data-testid='Match' {...swipes}>
 			<Swiper images={images} />
 			<Space />
-			<Content direction='column' align='start'>
+			<Content direction='column' align='start' >
 				<Stack self='stretch' gap={0.5} align='baseline'>
 					<Stack
 						align='center'
@@ -157,14 +139,14 @@ function Match() {
 						{!!partner.id && (
 							<>
 								<Typography variant='overline'>{t`match.and`}</Typography>
-								<Partner variant='h6' onClick={onPartnerClick}>{partner.name}</Partner>
+								<Partner variant='h6' onClick={onPartnerClick}>{pname}</Partner>
 							</>
 						)}
 					</Stack>
 					<Typography variant='body2'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
 				</Stack>
 				<Space height={0.5} />
-				<Typography variant='overline'>{distance} {t`match.away`}</Typography>
+				<Typography variant='overline'>{formatDistance(distance, t)} {t`match.away`}</Typography>
 				<Space height={0.5} />
 				<Fabs justify='between' self='stretch'>
 					<IconButton onClick={onNoClick}><RemoveCircleTwoToneIcon fontSize='large' color='secondary' /></IconButton>
@@ -187,7 +169,7 @@ function Match() {
 				>{t`report.report`}</Button>
 				<Space />
 			</Content>
-		</Container>
+		</Swipeable>
 	)
 }
 
