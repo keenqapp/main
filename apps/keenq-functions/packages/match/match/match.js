@@ -24,11 +24,14 @@ with current_member as (
 select
   matchable.id,
   matchable.distance,
+  matchable.images,
   match_type.type as match_type
-from current_member, lateral (
+from current_member, 
+  lateral (
        select
          members.id,
          members.name,
+         members.images,
          ST_DistanceSphere(
            current_member.point,
            members.point
