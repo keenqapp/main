@@ -9,6 +9,7 @@ export const matchgql = gql`
 			data {
 				id
 				distance
+				images
 				match_type
 			}
 		}

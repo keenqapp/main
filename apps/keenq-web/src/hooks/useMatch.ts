@@ -15,7 +15,7 @@ export function useMatch() {
 	const [ index, setIndex ] = useState(0)
 	const { id } = useCurrentMember()
 	const [ result, match ] = useQuery(matchgql, { id }, options)
-	//
+
 	const { data, fetching, error } = result
 	const queue = data?.match?.data
 	const empty = queue && queue.length === 0

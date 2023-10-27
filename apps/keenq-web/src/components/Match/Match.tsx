@@ -1,5 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import styled from '@emotion/styled'
+import { keyframes } from '@emotion/react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useMutation } from 'urql'
 
@@ -56,10 +57,27 @@ const Partner = styled(Typography)`
 	border-bottom: 1px solid currentColor;
 `
 
+const animation = keyframes`
+  0% {
+    opacity: 0.01;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+`
+
 const Swipeable = styled(Container)<{ transform: number }>`
 	transform: translateX(${({ transform }) => transform}px);
 	will-change: transform;
+	animation: ${animation} 0.2s ease-in-out;
+	position: relative;
 `
+
+// function Left() {
+// 	return ()
+// }
 
 function Match() {
 
@@ -118,13 +136,14 @@ function Match() {
 		onRight: (e) => {
 			if (e.deltaX > 75) prev()
 		},
+		speed: 0.5
 	})
 
 	if (mid === id) return <Navigate to='/match' />
-	if (empty) return <EmptyMatch />
+	if (empty || error) return <EmptyMatch />
 
 	return (
-		<Swipeable data-testid='Match' {...swipes}>
+		<Swipeable key={mid} data-testid='Match' {...swipes}>
 			<Swiper images={images} />
 			<Space />
 			<Content direction='column' align='start' >

@@ -17,14 +17,26 @@ const roomsOptions = {
 	}
 } as UseQueryOptions
 
+function cache(images: string[]) {
+	images.forEach(i => {
+		const img = new Image()
+		img.src = i
+	})
+}
+
 export function usePreload() {
 	const { id } = useCurrentMember()
 	const { position, permission, getPointAndLocation } = usePosition()
 	usePushes()
 
 	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
-	const [{ fetching: matchFetching, data, error }, match] = useQuery(matchgql, { id }, { pause: true })
+	const [{ fetching: matchFetching, data, error }, match] = useQuery(matchgql, { id })
 	const [ _, update ] = useUpdate(updatemembergql)
+
+	useEffect(() => {
+		const images = data?.match?.data?.map(i => i.images).flat().map(i => i.url) || []
+		cache(images)
+	}, [ data ])
 
 	useEffect(() => {
 		if (id && !matchFetching && !data && !error) match()
