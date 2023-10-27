@@ -1,5 +1,3 @@
-environment:
-  LOG_DESTINATIONS: '[{"logtail":{"token":"hxPc72ieowqPmDWLurhqG3qf"}}]'
 packages:
   - name: auth
     environment:
