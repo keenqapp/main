@@ -79,7 +79,7 @@ order by
     else 3
   end,
   matchable.distance
-limit 10
+limit 3
 offset :offset
 `
 

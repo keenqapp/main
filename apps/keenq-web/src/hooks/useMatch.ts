@@ -18,7 +18,6 @@ export function useMatch() {
 	const [ result, match ] = useQuery(matchgql, { id, offset: queue.length }, options)
 
 	const { data, fetching, error } = result
-	// const queue = data?.match?.data
 	const empty = data?.match?.data && data?.match?.data.length === 0
 
 	useEffect(() => {
@@ -37,11 +36,18 @@ export function useMatch() {
 	const partner = useMember(getPartner(member)?.id)
 
 	const next = () => {
-		index < queue?.length - 1 && setIndex(index + 1)
+		if (index < queue?.length - 1) {
+			console.log('--- useMatch.ts:40 -> next -> ', index)
+			setIndex(index + 1)
+			console.log('--- useMatch.ts:42 -> next -> ', index)
+
+		}
 	}
 
 	const prev = () => {
-		index > 0 && setIndex(index - 1)
+		if (index > 0) {
+			setIndex(index - 1)
+		}
 	}
 
 	console.log('--- useMatch.ts:48 -> useMatch -> ', queue)

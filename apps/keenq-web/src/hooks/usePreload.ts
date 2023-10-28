@@ -30,7 +30,7 @@ export function usePreload() {
 	usePushes()
 
 	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
-	const [{ fetching: matchFetching, data, error }, match] = useQuery(matchgql, { id })
+	const [{ fetching: matchFetching, data, error }, match] = useQuery(matchgql, { id, offset: 0 })
 	const [ _, update ] = useUpdate(updatemembergql)
 
 	useEffect(() => {
