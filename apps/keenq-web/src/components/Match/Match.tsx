@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
-import styled from '@emotion/styled'
 import { keyframes } from '@emotion/react'
+import styled from '@emotion/styled'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useMutation } from 'urql'
 
@@ -10,9 +10,13 @@ import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
+import ArrowCircleLeftTwoToneIcon from '@mui/icons-material/ArrowCircleLeftTwoTone'
+import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone'
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
+import SwipeLeftTwoToneIcon from '@mui/icons-material/SwipeLeftTwoTone';
+import SwipeRightTwoToneIcon from '@mui/icons-material/SwipeRightTwoTone';
 
 import { useModal } from '@/services/modals'
 import { ask } from '@/services/notifications'
@@ -75,9 +79,47 @@ const Swipeable = styled(Container)<{ transform: number }>`
 	position: relative;
 `
 
-// function Left() {
-// 	return ()
-// }
+const SLeft = styled.div`
+	position: absolute;
+	top: 50%;
+	left: -1rem;
+	transform: scale(${p => (p.transform / 75 + 0.25)});
+  opacity: ${p => p.transform / 75};
+	z-index: 1;
+`
+
+const SRight = styled.div`
+	position: absolute;
+	top: 50%;
+	right: -1rem;
+	transform: scale(${p => (p.transform / -75 + 0.25)});
+  opacity: ${p => p.transform / -75};
+	z-index: 1;
+`
+
+function Left({ transform }) {
+	return (
+		<SLeft transform={transform}><ArrowCircleLeftTwoToneIcon color='primary' fontSize='large' /></SLeft>
+	)
+}
+
+function Right({ transform }) {
+	return (
+		<SRight transform={transform}><ArrowCircleRightTwoToneIcon color='primary' fontSize='large' /></SRight>
+	)
+}
+
+const Move = styled(Stack)`
+	position: relative;
+	bottom: 3.5rem;
+`
+
+const Circle = styled.div`
+	background-color: rgba(255, 255, 255, 0.2);
+	border-radius: 5rem;
+	padding: 0.5rem;
+  backdrop-filter: blur(2px);
+`
 
 function Match() {
 
@@ -144,8 +186,20 @@ function Match() {
 
 	return (
 		<Swipeable key={mid} data-testid='Match' {...swipes}>
+			<Left transform={swipes.transform} />
+			<Right transform={swipes.transform} />
 			<Swiper images={images} />
-			<Space />
+			<Move>
+				<Space />
+				<Circle>
+					<SwipeLeftTwoToneIcon color='primary' fontSize='medium' />
+				</Circle>
+				<Space grow />
+				<Circle>
+					<SwipeRightTwoToneIcon color='primary' />
+				</Circle>
+				<Space />
+			</Move>
 			<Content direction='column' align='start' >
 				<Stack self='stretch' gap={0.5} align='baseline'>
 					<Stack
@@ -193,3 +247,26 @@ function Match() {
 }
 
 export default Match
+
+// function debounce(func, timeout = 300){
+// 	let timer;
+// 	return (...args) => {
+// 		clearTimeout(timer);
+// 		timer = setTimeout(() => { func.apply(this, args); }, timeout);
+// 	};
+// }
+//
+// function endpoints(builder) {
+// 	return {
+// 		fetchPeople: builder.query({
+// 			query: (filter) => {
+// 				return {
+// 					url: '/people',
+// 					method: 'GET',
+// 					params: filter,
+// 				};
+// 			},
+// 		}),
+// 	};
+// },
+// });
