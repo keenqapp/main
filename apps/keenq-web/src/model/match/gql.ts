@@ -2,8 +2,8 @@ import { gql } from 'urql'
 
 
 export const matchgql = gql`
-	query Match($id: String!) {
-		match(id: $id) {
+	query Match($id: String!, $offset: Int) {
+		match(id: $id, offset: $offset) {
 			id
 			success
 			data {

@@ -1,10 +1,11 @@
-import { object, string } from 'yup'
+import { object, string, number } from 'yup'
 
 import { getDb, getCreds, ensureCreds, success, error, validate } from './shared.js'
 
 
 const schema = object({
 	id: string().required(),
+	offset: number().default('0'),
 })
 
 const dbConfig = {
@@ -17,7 +18,7 @@ const dbConfig = {
 	pool: { min: 0, max: 2 }
 }
 
-const sql = (seen = false) => `
+const sql = `
 with current_member as (
   select * from members where members.id = :id
 )
@@ -78,12 +79,14 @@ order by
     else 3
   end,
   matchable.distance
-limit 3
+limit 10
+offset :offset
 `
 
-async function search(id, seen, db) {
+// TODO remove redundant code
+async function search(id, offset, db) {
 	try {
-		const result = await db.raw(sql(seen), { id })
+		const result = await db.raw(sql, { id, offset })
 		return result.rows
 	}
 	catch (e) {
@@ -91,8 +94,9 @@ async function search(id, seen, db) {
 	}
 }
 
-async function getMatch(id, db) {
-	let match = await search(id, false, db)
+// TODO remove redundant code
+async function getMatch(id, offset, db) {
+	let match = await search(id, offset, db)
 	if (match.length === 0) throw { reason: 'No match found' }
 	return match
 }
@@ -100,14 +104,14 @@ async function getMatch(id, db) {
 export async function main(body) {
 	let db
 	try {
-		const { id } = validate(body, schema)
+		const { id, offset } = validate(body, schema)
 
 	  db = getDb(dbConfig)
 
 		const creds = await getCreds(id, db)
 		await ensureCreds(creds, id)
 
-		const match = await getMatch(id, db)
+		const match = await getMatch(id, offset, db)
 
 		return success(match)
 	}

@@ -12,6 +12,7 @@ interface Equals {
 const equals: Equals = function equals(value: unknown, equals: unknown): boolean {
 	return $equals(value, equals)
 }
+
 function any(value: unknown, equals: unknown[]) {
 	if (!equals?.length) return false
 	return equals.some((item) => $equals(value, item))
@@ -28,7 +29,6 @@ export interface Dict extends Object {
 }
 
 declare global {
-
 
 	function pug(template: TemplateStringsArray): VNode
 
