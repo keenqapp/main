@@ -37,20 +37,14 @@ export function useMatch() {
 
 	const next = () => {
 		if (index < queue?.length - 1) {
-			console.log('--- useMatch.ts:40 -> next -> ', index)
 			setIndex(index + 1)
-			console.log('--- useMatch.ts:42 -> next -> ', index)
-
+			if (index + 1 === queue?.length - 1) match()
 		}
 	}
 
 	const prev = () => {
-		if (index > 0) {
-			setIndex(index - 1)
-		}
+		if (index > 0) setIndex(index - 1)
 	}
-
-	console.log('--- useMatch.ts:48 -> useMatch -> ', queue)
 
 	return {
 		member: { ...member, distance: current?.distance },
