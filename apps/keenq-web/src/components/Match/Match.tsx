@@ -1,6 +1,7 @@
 import { useEffect } from 'preact/hooks'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
+import { motion, useMotionValue, useTransform } from 'framer-motion'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useMutation } from 'urql'
 
@@ -15,8 +16,6 @@ import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwo
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone'
 import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
-import SwipeLeftTwoToneIcon from '@mui/icons-material/SwipeLeftTwoTone';
-import SwipeRightTwoToneIcon from '@mui/icons-material/SwipeRightTwoTone';
 
 import { useModal } from '@/services/modals'
 import { ask } from '@/services/notifications'
@@ -35,7 +34,6 @@ import Swiper from '@/components/Swiper'
 import { $unread } from '@/core/BottomTabs'
 import { useInsert } from '@/hooks/gql'
 import { useMatch } from '@/hooks/useMatch'
-import { useSwipe } from '@/hooks/useSwipe'
 import { formatDistance } from '@/utils/formatters'
 
 
@@ -72,53 +70,47 @@ const animation = keyframes`
   }
 `
 
-const Swipeable = styled(Container)<{ transform: number }>`
-	transform: translateX(${({ transform }) => transform}px);
-	will-change: transform;
-	animation: ${animation} 0.2s ease-in-out;
-	position: relative;
-`
-
 const SLeft = styled.div`
-	position: absolute;
+	position: fixed;
 	top: 50%;
-	left: -1rem;
-	transform: scale(${p => (p.transform / 75 + 0.25)});
-  opacity: ${p => p.transform / 75};
+	left: 1rem;
 	z-index: 1;
 `
 
 const SRight = styled.div`
 	position: absolute;
 	top: 50%;
-	right: -1rem;
-	transform: scale(${p => (p.transform / -75 + 0.25)});
-  opacity: ${p => p.transform / -75};
+	right: 1rem;
 	z-index: 1;
 `
 
-function Left({ transform }) {
+function Left({ x }) {
+	const scale = useTransform(() => x.get() / 75 + 0.25)
+	const opacity = useTransform(() => x.get() / 75)
 	return (
-		<SLeft transform={transform}><ArrowCircleLeftTwoToneIcon color='primary' fontSize='large' /></SLeft>
+		<SLeft>
+			<motion.div style={{ scale, opacity }}>
+				<ArrowCircleLeftTwoToneIcon color='primary' fontSize='large' />
+			</motion.div>
+		</SLeft>
 	)
 }
 
-function Right({ transform }) {
+function Right({ x }) {
+	const scale = useTransform(() => x.get() / -75 + 0.25)
+	const opacity = useTransform(() => x.get() / -75)
 	return (
-		<SRight transform={transform}><ArrowCircleRightTwoToneIcon color='primary' fontSize='large' /></SRight>
+		<SRight>
+			<motion.div style={{ scale, opacity }}>
+				<ArrowCircleRightTwoToneIcon color='primary' fontSize='large' />
+			</motion.div>
+		</SRight>
 	)
 }
 
-const Move = styled(Stack)`
+const SContainer = styled(Container)`
 	position: relative;
-	bottom: 3.5rem;
-`
-
-const Circle = styled.div`
-	background-color: rgba(255, 255, 255, 0.2);
-	border-radius: 5rem;
-	padding: 0.5rem;
-  backdrop-filter: blur(2px);
+	animation: ${animation} 0.3s ease-in-out;
 `
 
 function Match() {
@@ -171,78 +163,74 @@ function Match() {
 		redirect()
 	}
 
-	const swipes = useSwipe({
-		onLeft: (e) => {
-			if (e.deltaX < -75) next()
-		},
-		onRight: (e) => {
-			if (e.deltaX > 75) prev()
-		},
-		speed: 0.5
-	})
+	const x = useMotionValue(0)
+
+	const end = (e, i) => {
+		if (i.offset.x > 75) prev()
+		if (i.offset.x < -75) next()
+	}
 
 	if (mid === id) return <Navigate to='/match' />
 	if (empty || error) return <EmptyMatch />
 
 	return (
-		<Swipeable key={mid} data-testid='Match' {...swipes}>
-			<Left transform={swipes.transform} />
-			<Right transform={swipes.transform} />
-			<Swiper images={images} />
-			<Move>
-				<Space />
-				<Circle>
-					<SwipeLeftTwoToneIcon color='primary' fontSize='medium' />
-				</Circle>
-				<Space grow />
-				<Circle>
-					<SwipeRightTwoToneIcon color='primary' />
-				</Circle>
-				<Space />
-			</Move>
-			<Content direction='column' align='start' >
-				<Stack self='stretch' gap={0.5} align='baseline'>
-					<Stack
-						align='center'
-						justify='start'
-						gap={0.2}
-						wrap
-					>
-						<Typography variant='h5'>{name}</Typography>
-						{!!partner.id && (
-							<>
-								<Typography variant='overline'>{t`match.and`}</Typography>
-								<Partner variant='h6' onClick={onPartnerClick}>{pname}</Partner>
-							</>
-						)}
-					</Stack>
-					<Typography variant='body2'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
-				</Stack>
-				<Space height={0.5} />
-				<Typography variant='overline'>{formatDistance(distance, t)} {t`match.away`}</Typography>
-				<Space height={0.5} />
-				<Fabs justify='between' self='stretch'>
-					<IconButton onClick={onNoClick}><RemoveCircleTwoToneIcon fontSize='large' color='secondary' /></IconButton>
-					<IconButton onClick={onYesClick}><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
-				</Fabs>
-				<Space />
-				<Typography>{description}</Typography>
-				<Space height={2} />
-				<Stack gap={0.5} wrap>
-					{tags?.map((tag) => <Chip key={tag.id} label={tag.label} />)}
-				</Stack>
-				<Space height={2} />
-				<StyledDivider />
-				<Space />
-				<Button
-					startIcon={<ReportTwoToneIcon color='error' />}
-					onClick={onReportClick}
-					fullWidth
-					color='default'
-				>{t`report.report`}</Button>
-				<Space />
-			</Content>
-		</Swipeable>
+		<>
+			<Left x={x} />
+			<Right x={x} />
+			<motion.div
+				drag='x'
+				dragSnapToOrigin
+				style={{ x }}
+				onDragEnd={end}
+			>
+				<SContainer key={mid} data-testid='Match'>
+					<Swiper images={images} />
+					<Space height={0.5} />
+					<Content direction='column' align='start' >
+						<Stack self='stretch' gap={0.5} align='baseline'>
+							<Stack
+								align='center'
+								justify='start'
+								gap={0.2}
+								wrap
+							>
+								<Typography variant='h5'>{name}</Typography>
+								{!!partner.id && (
+									<>
+										<Typography variant='overline'>{t`match.and`}</Typography>
+										<Partner variant='h6' onClick={onPartnerClick}>{pname}</Partner>
+									</>
+								)}
+							</Stack>
+							<Typography variant='body2'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
+						</Stack>
+						<Space height={0.5} />
+						<Typography variant='overline'>{formatDistance(distance, t)} {t`match.away`}</Typography>
+						<Space height={0.5} />
+						<Fabs justify='between' self='stretch'>
+							<IconButton onClick={onNoClick}><RemoveCircleTwoToneIcon fontSize='large' color='secondary' /></IconButton>
+							<IconButton onClick={onYesClick}><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
+						</Fabs>
+						<Space />
+						<Typography>{description}</Typography>
+						<Space height={2} />
+						<Stack gap={0.5} wrap>
+							{tags?.map((tag) => <Chip key={tag.id} label={tag.label} />)}
+						</Stack>
+						<Space height={2} />
+						<StyledDivider />
+						<Space />
+						<Button
+							startIcon={<ReportTwoToneIcon color='error' />}
+							onClick={onReportClick}
+							fullWidth
+							color='default'
+						>{t`report.report`}</Button>
+						<Space />
+					</Content>
+				</SContainer>
+			</motion.div>
+		</>
 	)
 }
 
