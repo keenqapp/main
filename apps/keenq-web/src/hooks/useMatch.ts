@@ -30,10 +30,13 @@ export function useMatch() {
 	const { data, fetching, error } = result
 
 	useEffect(() => {
-		if (data?.match?.data !== true || (data?.match?.data && data?.match?.data.length === 0)) {
+		if (data?.match?.success !== true || (data?.match?.data && data?.match?.data.length === 0)) {
 			setEmpty(true)
 		}
-		else setQueue(prev => [...prev, ...data.match.data].uniq('id'))
+		else {
+			setEmpty(false)
+			setQueue(prev => [...prev, ...data.match.data].uniq('id'))
+		}
 	}, [ result ])
 
 	useEffect(() => {
