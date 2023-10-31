@@ -1,0 +1,12 @@
+{
+  "name": "keenq-api",
+  "packageManager": "yarn@4.0.1",
+  "type": "module",
+  "dependencies": {
+    "fastify": "^4.24.3"
+  },
+  "scripts": {
+    "dev": "fastify start -l info -P",
+    "start": "fastify start -l info -P"
+  }
+}

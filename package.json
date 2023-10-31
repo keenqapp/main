@@ -6,7 +6,8 @@
     "apps/keenq-functions/packages/**/*",
     "apps/keenq-web",
     "apps/keenq-landing",
-    "apps/keenq-admin"
+    "apps/keenq-admin",
+    "apps/keenq-api"
   ],
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@4.0.1"
 }
