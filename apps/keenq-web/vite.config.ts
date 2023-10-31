@@ -73,6 +73,8 @@ export default defineConfig(({ mode }) => ({
 			}
 		}),
 		sentryVitePlugin({
+			org: 'keenq',
+			project: 'keenq-web',
 			authToken: process.env.SENTRY_AUTH_TOKEN
 		})
 	],
