@@ -31,6 +31,7 @@ const $queue = atom<IQueueItem[]>([])
 export function useMatch() {
 	const queue = useStore($queue)
 	const [ empty, setEmpty ] = useState(false)
+
 	const { id: pid } = useParams()
 	const [ index, setIndex ] = useState(0)
 	const { id } = useCurrentMember()
@@ -41,10 +42,10 @@ export function useMatch() {
 
 	useEffect(() => {
 		if ((data?.match?.success !== true || (data?.match?.data && data?.match?.data.length === 0)) && queue.length === 0) {
-			setEmpty(true)
+			// setEmpty(true)
 		}
 		else {
-			setEmpty(false)
+			// setEmpty(false)
 			if (data?.match?.success) $queue.set([...queue, ...data.match.data].uniq('id'))
 		}
 	}, [ result ])
@@ -65,7 +66,7 @@ export function useMatch() {
 			if (index + 1 === queue?.length - 1) match()
 		}
 		else {
-			setEmpty(true)
+			// setEmpty(true)
 		}
 	}
 
@@ -74,14 +75,15 @@ export function useMatch() {
 	}
 
 	const matched = async (data) => {
-		const r = await _matched(data)
-		return r
+		return await _matched(data)
 	}
 
 	const reset = () => {
 		setIndex(0)
-		setEmpty(false)
+		// setEmpty(false)
 	}
+
+	const isEmpty = (!pid && empty)
 
 	return {
 		member: { ...member, distance: current?.distance },
@@ -89,7 +91,7 @@ export function useMatch() {
 		partner,
 		fetching,
 		error,
-		empty,
+		empty: isEmpty,
 		queue,
 		next,
 		prev,

@@ -2,9 +2,20 @@ import { object, string,  } from 'yup'
 import { generate } from 'random-words'
 import axios from 'axios'
 
+import * as Sentry from "@sentry/node";
+import { ProfilingIntegration } from "@sentry/profiling-node";
 
 import { getDb, ensureCreds, success, error, getId, validate, getCreds, transaction } from './shared.js'
 
+
+Sentry.init({
+	dsn: 'https://298bc1105eecdb8ff486fb16e1724ce0@o4506144731627520.ingest.sentry.io/4506145857142784',
+	integrations: [
+		new ProfilingIntegration(),
+	],
+	tracesSampleRate: 1.0,
+	profilesSampleRate: 1.0,
+});
 
 const schema = object({
 	authorId: string().required(),
@@ -53,8 +64,8 @@ async function check(authorId, memberId, type, db, trx) {
 		reason: 'Not full match',
 		match: `From: ${authorId} || To: ${memberId} || Type: ${type}`,
 		details: {
-			first,
-			second
+			first: first || null,
+			second: second || null,
 		}
 	}
 
