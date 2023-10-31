@@ -34,6 +34,7 @@ export function usePreload() {
 	const [ _, update ] = useUpdate(updatemembergql)
 
 	useEffect(() => {
+		if (data?.match?.success !== true) return
 		const images = data?.match?.data?.map(i => i.images).flat().map(i => i.url) || []
 		cache(images)
 	}, [ data ])

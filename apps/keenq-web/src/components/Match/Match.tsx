@@ -21,7 +21,7 @@ import { useModal } from '@/services/modals'
 import { ask } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
-import { addmatchgql, matchedgql, updatematchgql } from '@/model/match/gql'
+import { addmatchgql, updatematchgql } from '@/model/match/gql'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
@@ -33,9 +33,8 @@ import Swiper from '@/components/Swiper'
 
 import { $unread } from '@/core/BottomTabs'
 import { useInsert } from '@/hooks/gql'
-import { useMatch } from '@/hooks/useMatch'
-import { formatDistance } from '@/utils/formatters'
 import { useFormatDistance } from '@/hooks/useFormatDistance'
+import { useMatch } from '@/hooks/useMatch'
 
 
 const Content = styled(Stack)`
@@ -125,12 +124,12 @@ function Match() {
 
 	const [ , add ] = useInsert(addmatchgql)
 	const [ , update ] = useMutation(updatematchgql)
-	const [ , matched ] = useMutation(matchedgql)
 
-	const { member, partner, fetching, error, next, prev, empty } = useMatch()
+
+	const { member, partner, fetching, error, next, prev, empty, matched } = useMatch()
 	const { id: mid, name, images, gender, sexuality, distance, description, tags } = member
 	const { id: pid, name: pname } = partner
-	const formattedDistance = useFormatDistance(distance, mid)
+	const formattedDistance = useFormatDistance(distance!, mid)
 
 	useEffect(() => {
 		if (id && mid && !fetching && !error) {
@@ -151,10 +150,9 @@ function Match() {
 
 	const onYesClick = async () => {
 		if (!done) return onAcquaintanceOpen()
-		await update({ authorId: id, memberId: mid, data: { type: 'yes' } })
-		const { data } = await matched({ authorId: id, memberId: mid, type: 'yes' })
-		if (data?.matched.data.result) $unread.set(true)
 		next()
+		await update({ authorId: id, memberId: mid, data: { type: 'yes' } })
+		await matched({ authorId: id, memberId: mid, type: 'yes' })
 		ask()
 		redirect()
 	}
