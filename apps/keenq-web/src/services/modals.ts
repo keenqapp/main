@@ -40,7 +40,7 @@ export type ModalParams<N> = N extends keyof ModalParamsMap ? ModalParamsMap[N] 
 export interface ModalParamsMap {
 	roomInfoMember: { id: string }
 	message: IMessage
-	report: { id: string, entity: string }
+	report: { id: string, entity: string, from?: string }
 	addMemberToRoom: { id?: string, to: string }
 	roomInfo: IRoom
 	partnerRequest: { id: string }
