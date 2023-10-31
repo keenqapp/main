@@ -40,12 +40,12 @@ export function useMatch() {
 	const { data, fetching, error } = result
 
 	useEffect(() => {
-		if (data?.match?.success !== true || (data?.match?.data && data?.match?.data.length === 0)) {
+		if ((data?.match?.success !== true || (data?.match?.data && data?.match?.data.length === 0)) && queue.length === 0) {
 			setEmpty(true)
 		}
 		else {
 			setEmpty(false)
-			$queue.set([...queue, ...data.match.data].uniq('id'))
+			if (data?.match?.success) $queue.set([...queue, ...data.match.data].uniq('id'))
 		}
 	}, [ result ])
 
@@ -60,7 +60,7 @@ export function useMatch() {
 	const partner = useMember(getPartner(member)?.id)
 
 	const next = () => {
-		if (index < queue?.length - 1) {
+		if (index <= queue?.length - 1) {
 			setIndex(index + 1)
 			if (index + 1 === queue?.length - 1) match()
 		}
@@ -79,8 +79,8 @@ export function useMatch() {
 	}
 
 	const reset = () => {
-		setEmpty(false)
 		setIndex(0)
+		setEmpty(false)
 	}
 
 	return {

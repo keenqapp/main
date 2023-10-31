@@ -233,26 +233,3 @@ function Match() {
 }
 
 export default Match
-
-// function debounce(func, timeout = 300){
-// 	let timer;
-// 	return (...args) => {
-// 		clearTimeout(timer);
-// 		timer = setTimeout(() => { func.apply(this, args); }, timeout);
-// 	};
-// }
-//
-// function endpoints(builder) {
-// 	return {
-// 		fetchPeople: builder.query({
-// 			query: (filter) => {
-// 				return {
-// 					url: '/people',
-// 					method: 'GET',
-// 					params: filter,
-// 				};
-// 			},
-// 		}),
-// 	};
-// },
-// });
