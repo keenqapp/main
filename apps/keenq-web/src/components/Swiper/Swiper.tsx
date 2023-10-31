@@ -10,8 +10,6 @@ import Loadable from '@/ui/Loadable'
 import SwiperDots from '@/components/Swiper/SwiperDots'
 import { checkSnap } from '@/components/Swiper/utils'
 
-import { useSwipe } from '@/hooks/useSwipe'
-
 
 const SwiperContainer = styled.div`
   position: relative;
@@ -49,11 +47,6 @@ interface SwiperProps {
 	loading?: boolean
 	scrollOnAdd?: boolean
 }
-
-const Swipeable = styled(Container)<{ transform: number }>`
-	transform: translateX(${({ transform }) => transform}px);
-	will-change: transform;
-`
 
 function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd = false }: SwiperProps) {
 	const [ dot, setDot ] = useState(0)
@@ -95,10 +88,12 @@ function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd =
 		}
 	}
 
+	const sanitized = images?.filter(Boolean) || []
+
 	return (
 		<SwiperContainer>
 			<SwiperScroll data-testid='Swiper' ref={ref} onScroll={handleScroll}>
-				{images.filter(Boolean).map(({ id, url, date }) => (
+				{sanitized.map(({ id, url, date }) => (
 					<ImageContainer key={id+date}>
 						<Loadable loading={loading} fullHeight overlay>
 							<Image src={url} />
@@ -107,7 +102,7 @@ function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd =
 					</ImageContainer>
 				))}
 			</SwiperScroll>
-			{images.length > 1 && <SwiperDots length={images.length} current={dot} />}
+			{sanitized.length > 1 && <SwiperDots length={sanitized.length} current={dot} />}
 		</SwiperContainer>
 	)
 }

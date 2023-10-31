@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
+import { useStore } from '@nanostores/preact'
+import { atom } from 'nanostores'
 import { useParams } from 'react-router-dom'
 import { useMutation } from 'urql'
 
@@ -10,7 +12,13 @@ import { useQuery } from '@/hooks/gql'
 import { useMember } from '@/hooks/useMember'
 
 
-const options = { requestPolicy: 'cache-and-network', pause: true } as const
+const options = {
+	requestPolicy: 'cache-and-network',
+	pause: true,
+	context: {
+		additionalTypenames: ['matches']
+	},
+} as const
 
 interface IQueueItem {
 	id: string
@@ -18,8 +26,10 @@ interface IQueueItem {
 	images: IImage
 }
 
+const $queue = atom<IQueueItem[]>([])
+
 export function useMatch() {
-	const [ queue, setQueue ] = useState<IQueueItem[]>([])
+	const queue = useStore($queue)
 	const [ empty, setEmpty ] = useState(false)
 	const { id: pid } = useParams()
 	const [ index, setIndex ] = useState(0)
@@ -35,7 +45,7 @@ export function useMatch() {
 		}
 		else {
 			setEmpty(false)
-			setQueue(prev => [...prev, ...data.match.data].uniq('id'))
+			$queue.set([...queue, ...data.match.data].uniq('id'))
 		}
 	}, [ result ])
 
@@ -54,6 +64,9 @@ export function useMatch() {
 			setIndex(index + 1)
 			if (index + 1 === queue?.length - 1) match()
 		}
+		else {
+			setEmpty(true)
+		}
 	}
 
 	const prev = () => {
@@ -65,6 +78,11 @@ export function useMatch() {
 		return r
 	}
 
+	const reset = () => {
+		setEmpty(false)
+		setIndex(0)
+	}
+
 	return {
 		member: { ...member, distance: current?.distance },
 		matched,
@@ -72,7 +90,9 @@ export function useMatch() {
 		fetching,
 		error,
 		empty,
+		queue,
 		next,
 		prev,
+		reset
 	}
 }

@@ -1,3 +1,4 @@
+import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 
 import IconButton from '@mui/material/IconButton'
@@ -9,11 +10,10 @@ import VerifiedTwoToneIcon from '@mui/icons-material/VerifiedTwoTone'
 
 import { useModal } from '@/services/modals'
 
-import Stack from '@/ui/Stack'
-import Space from '@/ui/Space'
-
 import { IRoom, useCurrentRoom } from '@/model/room'
-import styled from '@emotion/styled'
+
+import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
 
 const Title = styled(Typography)`

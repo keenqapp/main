@@ -59,6 +59,7 @@
   "match": {
     "and": "and",
     "away": "away",
+    "back": "Back to matches",
     "empty": "For now, we don't have Matches for you.\n\nTry to find new members on events or rooms",
     "hi": "Hi!",
     "someDistance": "Some distance",

@@ -1,5 +1,13 @@
 import { gql } from 'urql'
 
+// export const matchfragment = gql`
+// 	fragment MatchFragment on matches {
+// 		id
+// 		distance
+// 		images
+// 		match_type
+// 	}
+// `
 
 export const matchgql = gql`
 	query Match($id: String!, $offset: Int) {

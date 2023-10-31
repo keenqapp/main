@@ -17,6 +17,14 @@ const roomsOptions = {
 	}
 } as UseQueryOptions
 
+const mathesOptions = {
+	requestPolicy: 'cache-and-network',
+	pause: true,
+	context: {
+		additionalTypenames: ['matches']
+	},
+} as const
+
 function cache(images: string[]) {
 	images.forEach(i => {
 		const img = new Image()
@@ -30,12 +38,12 @@ export function usePreload() {
 	usePushes()
 
 	const [{ fetching: roomsFetching }] = useQuery(roomsgql, null, roomsOptions)
-	const [{ fetching: matchFetching, data, error }, match] = useQuery(matchgql, { id, offset: 0 })
+	const [{ fetching: matchFetching, data, error }, match] = useQuery(matchgql, { id, offset: 0 }, mathesOptions)
 	const [ _, update ] = useUpdate(updatemembergql)
 
 	useEffect(() => {
 		if (data?.match?.success !== true) return
-		const images = data?.match?.data?.map(i => i.images).flat().map(i => i.url) || []
+		const images = data?.match?.data?.map(i => i.images).flat().filter(Boolean).map(i => i?.url) || []
 		cache(images)
 	}, [ data ])
 

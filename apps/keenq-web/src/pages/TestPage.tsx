@@ -73,15 +73,17 @@ const Item = styled(Stack)`
 	padding: 0.33rem 0;
 `
 
-const context = {
+const options = {
 	requestPolicy: 'cache-and-network',
-	additionalTypenames: ['matches'],
-}
+	context: {
+		additionalTypenames: ['matches'],
+	},
+} as const
 
 function MyMatchesItem({ id, member, type }: IMatch) {
 	const { id: mid } = useCurrentMember()
 	const [ , remove ] = useMutation(removematch)
-	const [ , refetchmy ] = useQuery(mymatches, { id: mid }, { context })
+	const [ , refetchmy ] = useQuery(mymatches, { id: mid }, options)
 	const onClick= async () => {
 		await remove({ id })
 		refetchmy()
@@ -100,7 +102,7 @@ function MyMatchesItem({ id, member, type }: IMatch) {
 function ToMeMatchesItem({ id, type, author }: IMatch) {
 	const { id: mid } = useCurrentMember()
 	const [ , remove ] = useMutation(removematch)
-	const [ , refetchtome ] = useQuery(tomematches, { id: mid })
+	const [ , refetchtome ] = useQuery(tomematches, { id: mid }, options)
 	const onClick= async () => {
 		await remove({ id })
 		refetchtome()
@@ -119,10 +121,13 @@ function ToMeMatchesItem({ id, type, author }: IMatch) {
 function TestPage() {
 	const { t } = useTranslate()
 	const { id, name } = useCurrentMember()
-	const [ myresult ] = useQuery(mymatches, { id }, { context })
-	const [ tomeresult ] = useQuery(tomematches, { id }, { context })
+	const [ myresult ] = useQuery(mymatches, { id }, options)
+	const [ tomeresult ] = useQuery(tomematches, { id }, options)
 	const myMatches = myresult.data?.matches || []
 	const toMeMatches = tomeresult.data?.matches || []
+
+	console.log('--- TestPage.tsx:127 -> TestPage -> ', myMatches)
+	console.log('--- TestPage.tsx:127 -> TestPage -> ', toMeMatches)
 
 	const error = () => {
 		throw new Error('Test error for Sentry')
@@ -140,7 +145,7 @@ function TestPage() {
 				<Space width={2} />
 				<Text variant='h6'>{t`test.toMe`}</Text>
 				<List
-					name='TestMyMatches'
+					name='TestToMeMatches'
 					data={toMeMatches}
 					render={ToMeMatchesItem}
 				/>
