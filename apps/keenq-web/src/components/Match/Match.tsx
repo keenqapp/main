@@ -35,6 +35,7 @@ import { $unread } from '@/core/BottomTabs'
 import { useInsert } from '@/hooks/gql'
 import { useMatch } from '@/hooks/useMatch'
 import { formatDistance } from '@/utils/formatters'
+import { useFormatDistance } from '@/hooks/useFormatDistance'
 
 
 const Content = styled(Stack)`
@@ -129,6 +130,7 @@ function Match() {
 	const { member, partner, fetching, error, next, prev, empty } = useMatch()
 	const { id: mid, name, images, gender, sexuality, distance, description, tags } = member
 	const { id: pid, name: pname } = partner
+	const formattedDistance = useFormatDistance(distance, mid)
 
 	useEffect(() => {
 		if (id && mid && !fetching && !error) {
@@ -205,7 +207,7 @@ function Match() {
 							<Typography variant='body2'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
 						</Stack>
 						<Space height={0.5} />
-						<Typography variant='overline'>{formatDistance(distance, t)} {t`match.away`}</Typography>
+						<Typography variant='overline'>{formattedDistance} {t`match.away`}</Typography>
 						<Space height={0.5} />
 						<Fabs justify='between' self='stretch'>
 							<IconButton onClick={onNoClick}><RemoveCircleTwoToneIcon fontSize='large' color='secondary' /></IconButton>
