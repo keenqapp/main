@@ -164,8 +164,11 @@ function ThemeProvider({ children }: { children: ComponentChildren }) {
 	useEffect(() => {
 		const vh = height * 0.01
 		document.documentElement.style.setProperty('--vh', `${vh}px`)
-		if (screen.orientation.unlock || screen.orientation.lock) {
-			screen.orientation?.lock?.('portrait')
+		if (screen.orientation.lock) {
+			try {
+				screen.orientation?.lock?.('portrait')
+			}
+			catch(e) {}
 		}
 	}, [height])
 	return (
