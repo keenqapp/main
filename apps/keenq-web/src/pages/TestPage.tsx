@@ -126,9 +126,6 @@ function TestPage() {
 	const myMatches = myresult.data?.matches || []
 	const toMeMatches = tomeresult.data?.matches || []
 
-	console.log('--- TestPage.tsx:127 -> TestPage -> ', myMatches)
-	console.log('--- TestPage.tsx:127 -> TestPage -> ', toMeMatches)
-
 	const error = () => {
 		throw new Error('Test error for Sentry')
 	}
