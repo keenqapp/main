@@ -164,7 +164,9 @@ function ThemeProvider({ children }: { children: ComponentChildren }) {
 	useEffect(() => {
 		const vh = height * 0.01
 		document.documentElement.style.setProperty('--vh', `${vh}px`)
-		screen.orientation?.lock?.('portrait')
+		if (screen.orientation.unlock || screen.orientation.lock) {
+			screen.orientation?.lock?.('portrait')
+		}
 	}, [height])
 	return (
 		<MUIThemeProvider theme={theme}>
