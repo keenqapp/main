@@ -1,4 +1,5 @@
 import preact from '@preact/preset-vite'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
 import path from 'path'
 import { defineConfig } from 'vite'
 import inspect from 'vite-plugin-inspect'
@@ -46,6 +47,9 @@ export default defineConfig(({ mode }) => ({
 	server: {
 		port: 9001
 	},
+	build: {
+		sourcemap: true,
+	},
 	plugins: [
 		VitePWA({
 			strategies: 'injectManifest',
@@ -67,6 +71,9 @@ export default defineConfig(({ mode }) => ({
 			babel: {
 				plugins: ['babel-plugin-transform-react-pug'],
 			}
+		}),
+		sentryVitePlugin({
+			authToken: process.env.SENTRY_AUTH_TOKEN
 		})
 	],
 	resolve: {

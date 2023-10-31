@@ -124,6 +124,10 @@ function TestPage() {
 	const myMatches = myresult.data?.matches || []
 	const toMeMatches = tomeresult.data?.matches || []
 
+	const error = () => {
+		throw new Error('Test error for Sentry')
+	}
+
 	return (
 		<Page data-testid='TestPage'>
 			<Container flex>
@@ -141,6 +145,7 @@ function TestPage() {
 					render={ToMeMatchesItem}
 				/>
 				<Button onClick={() => notify({ title: name + ' says:', body: 'I\'m cool' })}>Send notification to yourself</Button>
+				<Button onClick={error}>Error</Button>
 			</Container>
 		</Page>
 	)
