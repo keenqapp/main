@@ -7,12 +7,10 @@
   "scripts": {
     "start": "vite --host",
     "build": "vite build",
-    "preview": "vite preview",
-    "partytown": "partytown copylib public/~partytown"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.363.0",
-    "@builder.io/partytown": "^0.8.0",
     "@emotion/css": "^11.10.6",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
