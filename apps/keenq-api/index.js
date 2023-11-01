@@ -46,4 +46,4 @@ await app.register(env, envOptions)
 await app.register(fastifyAwilixPlugin, { disposeOnClose: true, disposeOnResponse: true })
 await app.register(routes)
 
-app.listen({ host: '0.0.0.0', port: 8080 })
+app.listen({ host: '0.0.0.0', port: process.env.PORT || 9003 })
