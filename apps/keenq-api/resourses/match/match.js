@@ -17,12 +17,13 @@ select
 	matchable.id,
 	matchable.distance,
 	matchable.images,
+	matchable.member_name,
 	match_type.type as match_type
 from current_member, 
 	lateral (
 		select
 			members.id,
-			members.name,
+			members.name as member_name,
 			members.images,
 			members.visible,
 			ST_DistanceSphere(
