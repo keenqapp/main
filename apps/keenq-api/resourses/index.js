@@ -4,7 +4,7 @@ import push from './push/index.js'
 import utils from './utils/index.js'
 
 export default function routes(app, _, done) {
-	app.get('/', async (req, res) => res.send({ ok: true, data: new Date().toISOString(), version: process.env.VERSION }))
+	app.get('/', async (req, res) => res.send({ ok: true, date: new Date().toISOString(), version: process.env.VERSION }))
 	app.register(match, { prefix: '/match' })
 	app.register(auth, { prefix: '/auth' })
 	app.register(push, { prefix: '/push' })
