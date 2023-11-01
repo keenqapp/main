@@ -10,10 +10,11 @@ import { gql } from 'urql'
 // `
 
 export const matchgql = gql`
-	query Match($id: String!, $offset: Int) {
-		match(id: $id, offset: $offset) {
+	query Match($id: String!, $offset: Int, $limit: Int) {
+		match(id: $id, offset: $offset, limit: $limit) {
 			id
 			success
+			total
 			data {
 				id
 				distance

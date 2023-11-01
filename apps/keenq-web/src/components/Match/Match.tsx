@@ -163,13 +163,17 @@ function Match() {
 
 	const x = useMotionValue(0)
 
-	const end = (e, i) => {
+	const end = (_: any, i: any) => {
 		if (i.offset.x > 75) prev()
 		if (i.offset.x < -75) next()
 	}
 
+	useEffect(() => {
+		if (empty) x.set(0)
+	}, [ empty ])
+
 	if (mid === id) return <Navigate to='/match' />
-	if (empty || error) return <EmptyMatch />
+	if (empty) return <EmptyMatch />
 
 	return (
 		<>

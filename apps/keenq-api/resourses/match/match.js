@@ -38,8 +38,12 @@ from current_member,
 		and members.done = true
 		and (
 			case
-				when (current_member.gender = 'male' and current_member.sexuality = 'hetero') then members.gender != 'male'
-				when (current_member.gender = 'female' and current_member.sexuality = 'hetero') then members.gender != 'female'
+          when (current_member.gender = 'male' and current_member.sexuality = 'hetero') then members.gender = 'female'
+          when (current_member.gender = 'male' and current_member.sexuality = 'flexible')
+              then (members.gender = 'female' or (members.gender = 'male' and members.sexuality != 'hetero'))
+          when (current_member.gender = 'female' and current_member.sexuality = 'hetero') then members.gender != 'female'
+          when (current_member.gender = 'female' and current_member.sexuality = 'flexible')
+              then (members.gender = 'male' or (members.gender = 'female' and members.sexuality != 'hetero'))
 				when current_member.gender is null then true
 				else true
 			end
@@ -76,7 +80,7 @@ offset :offset
 
 async function getMatches({ id, offset, limit }, db) {
 	const result = await db.raw(sql, { id, offset, limit })
-	if (result?.rows?.length === 0) throw { reason: 'No match found' }
+	if (result?.rows?.length === 0) return []
 	return result?.rows
 }
 

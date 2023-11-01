@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 import { atom } from 'nanostores'
 import { useParams } from 'react-router-dom'
@@ -27,32 +27,43 @@ interface IQueueItem {
 }
 
 const $queue = atom<IQueueItem[]>([])
+const $empty = atom<boolean>(false)
+const $index = atom<number>(0)
 
 export function useMatch() {
-	const queue = useStore($queue)
-	const [ empty, setEmpty ] = useState(false)
-
 	const { id: pid } = useParams()
-	const [ index, setIndex ] = useState(0)
+
+	const queue = useStore($queue)
+	const empty = useStore($empty)
+	const index = useStore($index)
+
 	const { id } = useCurrentMember()
-	const [ result, match ] = useQuery(matchgql, { id, offset: queue.length }, options)
+	const [ result, match ] = useQuery(matchgql, { id, offset: queue.length, limit: 3 }, options)
 	const [ , _matched ] = useMutation(matchedgql)
 
 	const { data, fetching, error } = result
 
 	useEffect(() => {
-		if ((data?.match?.success !== true || (data?.match?.data && data?.match?.data.length === 0)) && queue.length === 0) {
-			// setEmpty(true)
+		if (data?.match?.data && data?.match?.data.length === 0 && queue.length === 0) {
+			$empty.set(true)
 		}
 		else {
-			// setEmpty(false)
 			if (data?.match?.success) $queue.set([...queue, ...data.match.data].uniq('id'))
 		}
 	}, [ result ])
 
 	useEffect(() => {
-		if (!data && !pid && !empty && !fetching && !error && id) match()
+		if (!data && !pid && !empty && !fetching && !error && id) {
+			match()
+		}
 	}, [ result ])
+
+	useEffect(() => {
+		const max = queue?.length - 1
+		if (index > max) {
+			$index.set(max > -1 ? max : 0)
+		}
+	}, [ index ])
 
 	const current = queue?.[index]
 	const getId = pid || current?.id
@@ -61,29 +72,31 @@ export function useMatch() {
 	const partner = useMember(getPartner(member)?.id)
 
 	const next = () => {
-		if (index <= queue?.length - 1) {
-			setIndex(index + 1)
-			if (index + 1 === queue?.length - 1) match()
+		if (index + 1 <= queue?.length - 1) {
+			$index.set(index + 1)
+			if (index + 1 === queue?.length - 1) {
+				match()
+			}
 		}
 		else {
-			// setEmpty(true)
+			$empty.set(true)
 		}
 	}
 
 	const prev = () => {
-		if (index > 0) setIndex(index - 1)
+		if (index > 0) $index.set(index - 1)
 	}
 
-	const matched = async (data) => {
+	const matched = async (data: any) => {
 		return await _matched(data)
 	}
 
 	const reset = () => {
-		setIndex(0)
-		// setEmpty(false)
+		$index.set(0)
+		$empty.set(false)
 	}
 
-	const isEmpty = (!pid && empty)
+	const isEmpty = (!pid && empty) || (!pid && error && queue?.length === 0)
 
 	return {
 		member: { ...member, distance: current?.distance },
