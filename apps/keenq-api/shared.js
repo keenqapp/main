@@ -30,7 +30,8 @@ export function ensureCreds(creds, uid) {
 }
 
 export function success(data) {
-	return { success: true, data, ...(data ? { id: data?.id || data[0]?.id } : {}) }
+	const total = Array.isArray(data) ? data.length : 1
+	return { success: true, total, data, ...(data ? { id: data?.id || data[0]?.id } : {}) }
 }
 
 export function error(data) {
