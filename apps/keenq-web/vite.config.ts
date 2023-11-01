@@ -41,7 +41,7 @@ const manifest = {
 			type: 'image/png'
 		}
 	]
-}
+} as const
 
 export default defineConfig(({ mode }) => ({
 	server: {
