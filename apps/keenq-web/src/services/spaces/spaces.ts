@@ -25,14 +25,14 @@ export async function uploadImage(where: string, file: File, authorId?: string):
 			Key: `images/${where}/${resized.id}.webp`,
 			Body: resized.data,
 			Bucket:  import.meta.env.VITE_SPACES_BUCKET,
-			ACL: 'public-read',
+			ACL: 'public-read-write',
 			ContentType: 'image/webp',
 			Metadata: {
 				'Cache-Control': 'max-age=2628000, public',
 				'Last-Modified': new Date().toUTCString(),
 				'Author-Id': authorId || ''
 			}
-		}
+		} as const
 		await spaces.putObject(params)
 		return {
 			id: resized.id,

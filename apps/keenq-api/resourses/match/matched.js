@@ -2,7 +2,7 @@ import { object, string,  } from 'yup'
 import { generate } from 'random-words'
 import axios from 'axios'
 
-import { getDb, ensureCreds, success, error, getId, validate, getCreds, transaction } from './shared.js'
+import { ensureCreds, success, error, getId, validate, getCreds, transaction, getDb } from '../../shared.js'
 
 
 const schema = object({
@@ -10,16 +10,6 @@ const schema = object({
 	memberId: string().required(),
 	type: string().oneOf(['yes', 'no']).required(),
 })
-
-const config = {
-	client: 'pg',
-	connection: {
-		connectionString: process.env.DB_CONNECTION_STRING,
-		application_name: 'keenq-functions_match_matched',
-		ssl: { rejectUnauthorized: false },
-	},
-	pool: { min: 0, max: 2 }
-}
 
 function getPushProvider() {
 	return {
@@ -130,11 +120,9 @@ async function notify(author, member, room, provider) {
 	await provider.send(data)
 }
 
-export async function main(body) {
-	let db
+export default async function matched(body, db) {
 	try {
 		const { authorId, memberId, type } = validate(body, schema)
-	  db = getDb(config)
 		const provider = getPushProvider()
 
 		const [authorCreds, memberCreds] = await Promise.all([getCreds(authorId, db), getCreds(memberId, db)])
@@ -157,13 +145,9 @@ export async function main(body) {
 
 			return true
 		})
-
 		return success(m)
 	}
 	catch(e) {
 		return error(e)
-	}
-	finally {
-		db?.destroy()
 	}
 }

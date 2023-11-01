@@ -1,12 +1,31 @@
 {
   "name": "keenq-api",
-  "packageManager": "yarn@4.0.1",
   "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
-    "fastify": "^4.24.3"
+    "@fastify/awilix": "^4.0.0",
+    "@fastify/env": "^4.3.0",
+    "@sentry/node": "^7.77.0",
+    "@sentry/profiling-node": "^1.2.5",
+    "awilix": "^9.0.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.24.3",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.0.1",
+    "nanoid": "^5.0.2",
+    "nodemon": "^3.0.1",
+    "pg": "^8.11.3",
+    "random-words": "^2.0.0",
+    "twilio": "^4.19.0",
+    "web-push": "^3.6.6",
+    "yup": "^1.3.2"
   },
   "scripts": {
-    "dev": "fastify start -l info -P",
-    "start": "fastify start -l info -P"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   }
 }

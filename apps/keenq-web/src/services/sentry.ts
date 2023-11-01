@@ -11,4 +11,5 @@ Sentry.init({
 	tracesSampleRate: 1.0,
 	replaysSessionSampleRate: 1.0,
 	replaysOnErrorSampleRate: 1.0,
+	environment: import.meta.env.MODE,
 })
