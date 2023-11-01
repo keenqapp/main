@@ -33,7 +33,8 @@ const schema = {
 		VAPID_PRIVATE_KEY: true,
 		TWILIO_SERVICE_SID: true,
 		TWILIO_ACCOUNT_SID: true,
-		TWILIO_AUTH_TOKEN: true
+		TWILIO_AUTH_TOKEN: true,
+		VERSION: true
 	}
 }
 
