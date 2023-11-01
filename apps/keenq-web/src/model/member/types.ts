@@ -11,7 +11,7 @@ export interface IMember {
 	tags: ITag[]
 	images: IImage[]
 	linked?: IMemberPartner[]
-	visible?: boolean
+	visible?: string
 	done?: boolean
 	isTester?: boolean
 

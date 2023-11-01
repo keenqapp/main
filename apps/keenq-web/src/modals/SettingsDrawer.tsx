@@ -33,7 +33,7 @@ function SettingsDrawer() {
 	const { confirm } = useConfirm()
 	const [ , update ] = useUpdate(updatemembergql)
 
-	const onShowChange = () => update(id, { visible: !visible })
+	const onShowChange = (value: string) => update(id, { visible: value })
 
 	const onCloseClick = () => {
 		confirm({
@@ -52,8 +52,18 @@ function SettingsDrawer() {
 				<DrawerItem
 					icon={visible ? <VisibilityIcon color='primary' /> : <VisibilityOffIcon color='error' />}
 					text={t`settings.showMe`}
-					subtext={visible ? t`settings.visible` : t`settings.hidden`}
-					action={<Switch onChange={onShowChange} checked={visible || false} />}
+					action={(
+						<Select
+							native
+							defaultValue={visible}
+							onChange={(e: any) => onShowChange(e.target.value)}
+							variant='outlined'
+						>
+							<option value='everybody'>{t`settings.everybody`}</option>
+							<option value='matches'>{t`settings.matches`}</option>
+							<option value='nobody'>{t`settings.nobody`}</option>
+						</Select>
+					)}
 				/>
 				<DrawerItem
 					icon={<TranslateIcon color='primary' />}

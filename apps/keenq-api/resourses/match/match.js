@@ -24,6 +24,7 @@ from current_member,
 			members.id,
 			members.name,
 			members.images,
+			members.visible,
 			ST_DistanceSphere(
 				current_member.point,
 				members.point
@@ -34,7 +35,17 @@ from current_member,
 		where members.id != :id
 		and members."deletedAt" is null
 		and members."bannedAt" is null
-		and members.visible = true
+		and (
+			members.visible = 'everybody'
+			or (
+      	members.visible = 'matches'
+    		and exists (
+    			select 1
+					from matches
+					where matches."authorId" = members.id and matches."memberId" = :id
+				)
+			)
+		)
 		and members.done = true
 		and (
 			case

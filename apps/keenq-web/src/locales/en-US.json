@@ -162,8 +162,11 @@
   },
   "settings": {
     "close": "Close my account",
+    "everybody": "Everybody",
     "hidden": "If I am not visible i cant see others",
     "logout": "Logout",
+    "matches": "Matches",
+    "nobody": "Nobody",
     "showMe": "Show me",
     "visible": "I am visible to others"
   },
