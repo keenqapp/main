@@ -74,22 +74,10 @@ limit :limit
 offset :offset
 `
 
-// TODO remove redundant code
-async function search({ id, offset, limit }, db) {
-	try {
-		const result = await db.raw(sql, { id, offset, limit })
-		return result.rows
-	}
-	catch (e) {
-		throw e
-	}
-}
-
-// TODO remove redundant code
-async function getMatch({ id, offset, limit }, db) {
-	let match = await search({ id, offset, limit }, db)
-	if (match.length === 0) throw { reason: 'No match found' }
-	return match
+async function getMatches({ id, offset, limit }, db) {
+	const result = await db.raw(sql, { id, offset, limit })
+	if (result?.rows?.length === 0) throw { reason: 'No match found' }
+	return result?.rows
 }
 
 export default async function match(body, db) {
@@ -99,7 +87,7 @@ export default async function match(body, db) {
 		const creds = await getCreds(id, db)
 		await ensureCreds(creds, id)
 
-		const match = await getMatch({ id, offset, limit }, db)
+		const match = await getMatches({ id, offset, limit }, db)
 
 		return success(match)
 	}
