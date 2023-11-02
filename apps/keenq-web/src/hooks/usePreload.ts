@@ -43,7 +43,9 @@ export function usePreload() {
 
 	useEffect(() => {
 		if (data?.match?.success !== true) return
-		const images = data?.match?.data?.map(i => i.images).flat().filter(Boolean).map(i => i?.url) || []
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		const images = data?.match?.data?.map(i => i.images).flat().filter(Boolean).map((i) => i?.url) || []
 		cache(images)
 	}, [ data ])
 

@@ -4,6 +4,7 @@ import ru from 'date-fns/locale/ru'
 import { $locale } from '@/services/translate'
 
 import { formats } from '@/utils/phoneFormats'
+import * as url from 'url'
 
 
 let locale: Locale | undefined = undefined
@@ -92,4 +93,27 @@ export function asYouType(input: string): string {
 	}
 
 	return result
+}
+
+const r = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/gi
+
+export function parseStringForUrls(input?: string) {
+	if (!input) return []
+	const parts: string[] = []
+
+	const placeholder = '%%URL%%'
+	const replacedInput = input.replace(r, match => {
+		parts.push(match)
+		return placeholder
+	})
+
+	const splitParts = replacedInput.split(placeholder)
+	const combinedParts: { type: string, value: string}[] = []
+
+	splitParts.forEach((textPart, index) => {
+		if (textPart) combinedParts.push({ type: 'text', value: textPart })
+		if (parts[index]) combinedParts.push({ type: 'link', value: parts[index] })
+	})
+
+	return combinedParts
 }

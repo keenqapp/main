@@ -128,7 +128,7 @@ function Match() {
 		no,
 	} = useMatch()
 	const { id: mid, name, images, gender, sexuality, distance, description, tags } = member
-	const { id: pid, name: pname } = partner
+	const { name: pname } = partner
 	const formattedDistance = useFormatDistance(distance!, mid)
 
 	const onReportClick = () => onReportOpen({ id: mid, entity: 'member', from: 'match' })

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 
+import { Link } from '@mui/material'
 import Typography from '@mui/material/Typography'
 
 import { useTranslate } from '@/services/translate'
@@ -13,6 +14,9 @@ import Stack from '@/ui/Stack'
 import theme from '@/ui/theme'
 
 import { useIsAdmin } from '@/hooks/useIsAdmin'
+import { parseStringForUrls } from '@/utils/formatters'
+
+import Linkify from 'react-linkify'
 
 
 const MessageContainerContent = styled(Stack)`
@@ -23,9 +27,37 @@ const Text = styled(Typography)`
 	white-space: pre-wrap;
 `
 
+function https(url: string) {
+	if (url.startsWith('http://')) return url.replace('http://', 'https://')
+	if (url.startsWith('https://')) return url
+	return `https://${url}`
+}
+
+function Parts({ text, mid }: { text: string, mid: string }) {
+	const parts = parseStringForUrls(text)
+	const result = parts.map((part, index) => {
+		if (part.type === 'text') return part.value
+		if (part.type === 'link') return (
+			<Link
+				key={`${part.value}_${index}_${mid}`}
+				href={https(part.value)}
+				rel='noreferrer noopener'
+				color='secondary'
+				target='_blank'
+				underline={'none'}
+			>{part.value.replace(/^http(s)?:\/\//, '')}</Link>
+		)
+	})
+	return (
+		<Text>
+			{result}
+		</Text>
+	)
+}
+
 function PersonalMessageText(message: IMessage) {
 	const { t } = useTranslate()
-	const { authorId, author: { name: mname } } = message
+	const { id, authorId, author: { name: mname } } = message
 	const text = getText(message)
 
 	const preventSelection = (e: MouseEvent) => e.preventDefault()
@@ -58,7 +90,7 @@ function PersonalMessageText(message: IMessage) {
 					</Stack>
 				)
 				: null}
-			{text ? <Text>{text}</Text> : null}
+			{text ? <Parts text={text} mid={id} /> : null}
 		</MessageContainerContent>
 	)
 }
