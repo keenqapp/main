@@ -138,20 +138,14 @@ function Match() {
 		navigate(`/match/${partner.id}`)
 	}
 
-	function redirect() {
-		if (pid) navigate('/match')
-	}
-
 	const onYesClick = async () => {
 		if (!done) return onAcquaintanceOpen()
 		yes()
 		ask()
-		redirect()
 	}
 
 	const onNoClick = async () => {
 		no()
-		redirect()
 	}
 
 	const x = useMotionValue(0)

@@ -1,7 +1,7 @@
 import { useEffect } from 'preact/hooks'
 import { useStore } from '@nanostores/preact'
 import { atom } from 'nanostores'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation } from 'urql'
 
 import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
@@ -31,6 +31,7 @@ const $empty = atom<boolean>(false)
 const $index = atom<number>(0)
 
 export function useMatch() {
+	const navigate = useNavigate()
 	const { id: pid } = useParams()
 
 	const queue = useStore($queue)
@@ -55,7 +56,7 @@ export function useMatch() {
 	}, [ result ])
 
 	useEffect(() => {
-		if (!data && !pid && !empty && !fetching && !error && id) {
+		if (!data && !empty && !fetching && !error && id) {
 			match()
 		}
 	}, [ result ])
@@ -107,13 +108,15 @@ export function useMatch() {
 	const yes = async () => {
 		update({ authorId: id, memberId: mid, data: { type: 'yes' } })
 		matched({ authorId: id, memberId: mid, type: 'yes' })
-		next()
+		if (pid) navigate('/match')
+		else next()
 		$queue.set(queue.filter((item) => item.id !== mid))
 	}
 
 	const no = async () => {
 		update({ authorId: id, memberId: mid, data: { type: 'no' } })
-		next()
+		if (pid) navigate('/match')
+		else next()
 		$queue.set(queue.filter((item) => item.id !== mid))
 	}
 
