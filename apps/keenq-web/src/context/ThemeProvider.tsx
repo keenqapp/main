@@ -164,6 +164,8 @@ function ThemeProvider({ children }: { children: ComponentChildren }) {
 	useEffect(() => {
 		const vh = height * 0.01
 		document.documentElement.style.setProperty('--vh', `${vh}px`)
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		screen.orientation?.lock?.('portrait').catch((_: unknown) => {})
 	}, [ height ])
 	return (

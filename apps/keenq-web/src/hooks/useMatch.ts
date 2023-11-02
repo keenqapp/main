@@ -4,11 +4,11 @@ import { atom } from 'nanostores'
 import { useParams } from 'react-router-dom'
 import { useMutation } from 'urql'
 
-import { matchedgql, matchgql } from '@/model/match/gql'
+import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
 import { getPartner, useCurrentMember } from '@/model/member'
 import { IImage } from '@/model/other'
 
-import { useQuery } from '@/hooks/gql'
+import { useInsert, useQuery } from '@/hooks/gql'
 import { useMember } from '@/hooks/useMember'
 
 
@@ -40,6 +40,8 @@ export function useMatch() {
 	const { id } = useCurrentMember()
 	const [ result, match ] = useQuery(matchgql, { id, offset: queue.length, limit: 3 }, options)
 	const [ , _matched ] = useMutation(matchedgql)
+	const [ , update ] = useMutation(updatematchgql)
+	const [ , add ] = useInsert(addmatchgql)
 
 	const { data, fetching, error } = result
 
@@ -66,10 +68,16 @@ export function useMatch() {
 	}, [ index ])
 
 	const current = queue?.[index]
-	const getId = pid || current?.id
+	const mid = pid || current?.id
 
-	const member = useMember(getId)
+	const member = useMember(mid)
 	const partner = useMember(getPartner(member)?.id)
+
+	useEffect(() => {
+		if (id && mid && !fetching && !error) {
+			add({ authorId: id, memberId: mid, type: 'seen' })
+		}
+	}, [ mid, fetching, error, id ])
 
 	const next = () => {
 		if (index + 1 <= queue?.length - 1) {
@@ -96,6 +104,19 @@ export function useMatch() {
 		$empty.set(false)
 	}
 
+	const yes = async () => {
+		update({ authorId: id, memberId: mid, data: { type: 'yes' } })
+		matched({ authorId: id, memberId: mid, type: 'yes' })
+		next()
+		$queue.set(queue.filter((item) => item.id !== mid))
+	}
+
+	const no = async () => {
+		update({ authorId: id, memberId: mid, data: { type: 'no' } })
+		next()
+		$queue.set(queue.filter((item) => item.id !== mid))
+	}
+
 	const isEmpty = (!pid && empty) || (!pid && error && queue?.length === 0)
 
 	return {
@@ -108,6 +129,8 @@ export function useMatch() {
 		queue,
 		next,
 		prev,
-		reset
+		reset,
+		yes,
+		no
 	}
 }

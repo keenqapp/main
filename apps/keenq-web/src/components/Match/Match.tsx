@@ -3,7 +3,6 @@ import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
 import { Navigate, useNavigate } from 'react-router-dom'
-import { useMutation } from 'urql'
 
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -21,7 +20,6 @@ import { useModal } from '@/services/modals'
 import { ask } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
-import { addmatchgql, updatematchgql } from '@/model/match/gql'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
@@ -31,7 +29,6 @@ import Stack from '@/ui/Stack'
 import EmptyMatch from '@/components/Match/EmptyMatch'
 import Swiper from '@/components/Swiper'
 
-import { useInsert } from '@/hooks/gql'
 import { useFormatDistance } from '@/hooks/useFormatDistance'
 import { useMatch } from '@/hooks/useMatch'
 
@@ -83,7 +80,7 @@ const SRight = styled.div`
 	z-index: 1;
 `
 
-function Left({ x }) {
+function Left({ x }: any) {
 	const scale = useTransform(() => x.get() / 75 + 0.25)
 	const opacity = useTransform(() => x.get() / 75)
 	return (
@@ -95,7 +92,7 @@ function Left({ x }) {
 	)
 }
 
-function Right({ x }) {
+function Right({ x }: any) {
 	const scale = useTransform(() => x.get() / -75 + 0.25)
 	const opacity = useTransform(() => x.get() / -75)
 	return (
@@ -121,19 +118,18 @@ function Match() {
 	const navigate = useNavigate()
 	const { id, done } = useCurrentMember()
 
-	const [ , add ] = useInsert(addmatchgql)
-	const [ , update ] = useMutation(updatematchgql)
-
-	const { member, partner, fetching, error, next, prev, empty, matched } = useMatch()
+	const {
+		member,
+		partner,
+		next,
+		prev,
+		empty,
+		yes,
+		no,
+	} = useMatch()
 	const { id: mid, name, images, gender, sexuality, distance, description, tags } = member
 	const { id: pid, name: pname } = partner
 	const formattedDistance = useFormatDistance(distance!, mid)
-
-	useEffect(() => {
-		if (id && mid && !fetching && !error) {
-			add({ authorId: id, memberId: mid, type: 'seen' })
-		}
-	}, [ mid, fetching, error, id ])
 
 	const onReportClick = () => onReportOpen({ id: mid, entity: 'member', from: 'match' })
 
@@ -148,16 +144,13 @@ function Match() {
 
 	const onYesClick = async () => {
 		if (!done) return onAcquaintanceOpen()
-		next()
-		await update({ authorId: id, memberId: mid, data: { type: 'yes' } })
-		await matched({ authorId: id, memberId: mid, type: 'yes' })
+		yes()
 		ask()
 		redirect()
 	}
 
 	const onNoClick = async () => {
-		update({ authorId: id, memberId: mid, data: { type: 'no' } })
-		next()
+		no()
 		redirect()
 	}
 
