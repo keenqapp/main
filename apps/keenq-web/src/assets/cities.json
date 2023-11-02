@@ -110,5 +110,26 @@
     "id": "Istanbul",
     "latitude": 41.01384,
     "longitude": 28.94966
+  },
+  {
+    "country": "Montenegro",
+    "name": "Podgorica",
+    "id": "Podgorica",
+    "latitude": 42.441286,
+    "longitude": 19.262892
+  },
+  {
+    "country": "Serbia",
+    "name": "Belgrade",
+    "id": "Belgrade",
+    "latitude": 44.787197,
+    "longitude": 20.457273
+  },
+  {
+    "country": "Serbia",
+    "name": "Novi Sad",
+    "id": "Novi Sad",
+    "latitude": 45.267136,
+    "longitude": 19.833549
   }
 ]
