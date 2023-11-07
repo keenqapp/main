@@ -4,7 +4,7 @@ import { render } from 'preact'
 
 import '@/utils/polyfills'
 import App from '@/core/App'
-import '@/services/sentry'
+// import '@/services/sentry'
 
 
 // window.addEventListener('contextmenu', e => e.preventDefault())
