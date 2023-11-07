@@ -13,7 +13,7 @@ import { useMember } from '@/hooks/useMember'
 
 
 const options = {
-	requestPolicy: 'cache-and-network',
+	requestPolicy: 'network-only',
 	pause: true,
 	context: {
 		additionalTypenames: ['matches']
@@ -29,6 +29,10 @@ interface IQueueItem {
 const $queue = atom<IQueueItem[]>([])
 const $empty = atom<boolean>(false)
 const $index = atom<number>(0)
+
+$queue.subscribe((value) => {
+	$empty.set(value.length === 0)
+})
 
 export function useMatch() {
 	const navigate = useNavigate()
@@ -54,6 +58,10 @@ export function useMatch() {
 			if (data?.match?.success) $queue.set([...queue, ...data.match.data].uniq('id'))
 		}
 	}, [ result ])
+
+	useEffect(() => {
+		match()
+	}, [])
 
 	useEffect(() => {
 		if (!data && !empty && !fetching && !error && id) {
@@ -109,14 +117,12 @@ export function useMatch() {
 		update({ authorId: id, memberId: mid, data: { type: 'yes' } })
 		matched({ authorId: id, memberId: mid, type: 'yes' })
 		if (pid) navigate('/match')
-		else next()
 		$queue.set(queue.filter((item) => item.id !== mid))
 	}
 
 	const no = async () => {
 		update({ authorId: id, memberId: mid, data: { type: 'no' } })
 		if (pid) navigate('/match')
-		else next()
 		$queue.set(queue.filter((item) => item.id !== mid))
 	}
 
