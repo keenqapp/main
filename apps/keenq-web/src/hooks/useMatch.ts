@@ -39,7 +39,7 @@ export function useMatch() {
 	const index = useStore($index)
 
 	const { id } = useCurrentMember()
-	const [ result, match ] = useQuery(matchgql, { id, offset: queue.length, limit: 3 }, options)
+	const [ result, match ] = useQuery(matchgql, { id, offset: queue.length, limit: 100 }, options)
 	const [ , _matched ] = useMutation(matchedgql)
 	const [ , update ] = useMutation(updatematchgql)
 	const [ , add ] = useInsert(addmatchgql)

@@ -50,7 +50,8 @@
     "system-font-css": "^2.0.2",
     "tiny-storage-client": "^2.2.4",
     "urql": "^4.0.5",
-    "uuid-random": "^1.3.2"
+    "uuid-random": "^1.3.2",
+    "wouter-preact": "^2.12.1"
   },
   "devDependencies": {
     "@graphql-eslint/eslint-plugin": "^3.19.1",

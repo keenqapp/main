@@ -6,7 +6,7 @@ import { getCreds, ensureCreds, success, error, validate } from '../../shared.js
 const schema = object({
 	id: string().required(),
 	offset: number().default(0),
-	limit: number().default(3)
+	limit: number().default(100)
 })
 
 const sql = `
