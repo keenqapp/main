@@ -9,6 +9,7 @@ import { useTranslate } from '@/services/translate'
 
 import { useQuery } from '@/hooks/gql'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
+import { useDebounceEffect } from '@/hooks/useDebounceEffect'
 import { json } from '@/utils/utils'
 
 
@@ -181,12 +182,10 @@ export function useCitySearch(input = '') {
 	const { coords, location } = usePosition()
 	const [ result, get ] = useQuery(cities, { input, location, language: locale })
 
-	useAsyncEffect(async () => {
-		if (coords) {
-			await getPosition()
-		}
-		await get()
-	}, [ input ])
+	useDebounceEffect(async () => {
+		if (coords) getPosition()
+		if (input) get()
+	}, [ input, coords ])
 
 	return { fetching: result.fetching, data: result.data?.cities?.data || [] }
 }

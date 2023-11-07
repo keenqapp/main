@@ -42,7 +42,6 @@ function toCity({ description, structured_formatting }: ICity) {
 }
 
 function CitiesListItem(city: typeof json[number]) {
-	const { t } = useTranslate()
 	const { name, country, latitude, longitude } = city
 	const { on } = useModal('city')
 	const { id } = useCurrentMember()
@@ -63,7 +62,7 @@ function CitiesListItem(city: typeof json[number]) {
 		update(id, { location, point })
 	}
 
-	return <DrawerItem text={t('cities.' + name)} subtext={t('countries.' + country)} onClick={on(click)} />
+	return <DrawerItem text={name} subtext={country} onClick={on(click)} />
 }
 
 function ChooseCityDrawer() {
@@ -82,7 +81,9 @@ function ChooseCityDrawer() {
 	const { data, fetching } = useCitySearch(cityInput.value)
 	const cities = data.length > 0
 		? data.map(toCity)
-		: json.filter(({ name }) => name.toLowerCase().includes(cityInput.value.toLowerCase()))
+		: json
+			.filter(({ name }) => name.toLowerCase().includes(cityInput.value.toLowerCase()))
+			.map(city => ({ ...city, name: t('cities.' + city.name), country: t('countries.' + city.country) }))
 
 	return (
 		<Drawer data-testid='ChooseCityDrawer' name={name}>

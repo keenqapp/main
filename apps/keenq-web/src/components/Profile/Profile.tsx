@@ -28,6 +28,8 @@ import { IMemberPartner, membergql, updatemembergql } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
+import If from '@/ui/If'
+import IfElse from '@/ui/IfElse'
 import Space from '@/ui/Space'
 import Stack from '@/ui/Stack'
 import Upload from '@/ui/Upload'
@@ -38,8 +40,6 @@ import Swiper from '@/components/Swiper'
 import { useQuery, useUpdate } from '@/hooks/gql'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
-import If from '@/ui/If'
-import IfElse from '@/ui/IfElse'
 
 
 const Content = styled(Stack)`
@@ -322,7 +322,7 @@ function Profile() {
 					align='baseline'
 				>
 					<Typography variant='h6'>{t`profile.in`}</Typography>
-					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city ? t('cities.' + location.city) : t`profile.somecity`}</Typography>
+					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city || t`profile.somecity`}</Typography>
 					<Space grow />
 					<IconButton color='primary'><EditLocationTwoToneIcon /></IconButton>
 				</Stack>
