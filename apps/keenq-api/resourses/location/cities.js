@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+import { success, error } from '../../shared.js'
+
+
 
 const key = process.env.GOOGLE_MAPS_API_KEY
 const url = (params) => `https://maps.googleapis.com/maps/api/place/autocomplete/json?${params}`
@@ -22,10 +25,9 @@ async function getCity({ input, language, location }) {
 export default async function cities({ input, language, location }) {
 	try {
 		const data = await getCity({ input, language, location })
-		return { body: { success: true, data } }
+		return success(data)
 	}
 	catch(e) {
-		console.error(e)
-		return { body: { success: false, data: e } }
+		return error(e)
 	}
 }

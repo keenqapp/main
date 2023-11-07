@@ -1,14 +1,14 @@
 import { useEffect } from 'preact/hooks'
+import { persistentAtom } from '@nanostores/persistent'
 import { useStore } from '@nanostores/preact'
 import axios from 'axios'
 import { atom } from 'nanostores'
 import { gql } from 'urql'
 
-import { useCurrentMember } from '@/model/member/hooks'
+import { useTranslate } from '@/services/translate'
 
+import { useQuery } from '@/hooks/gql'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
-import { useDebounceMutation } from '@/hooks/useDebounceMutation'
-import { persistentAtom } from '@nanostores/persistent'
 import { json } from '@/utils/utils'
 
 
@@ -168,25 +168,24 @@ export function usePosition() {
 	}
 }
 
-const citiesWith = gql`
-	mutation GetCities($id: String!, $data: CitiesInput!) {
-		cities(id: $id, data: $data) {
+const cities = gql`
+	query GetCities($input: String!, $language: String!, $location: String) {
+		cities(input: $input, language: $language, location: $location) {
 			data
 		}
 	}
 `
 
 export function useCitySearch(input = '') {
-	const { id } = useCurrentMember()
+	const { locale } = useTranslate()
 	const { coords, location } = usePosition()
-	const [ result, get ] = useDebounceMutation(citiesWith)
+	const [ result, get ] = useQuery(cities, { input, location, language: locale })
 
 	useAsyncEffect(async () => {
-		console.log('--- location.ts:185 ->  -> ', coords)
 		if (coords) {
 			await getPosition()
-			await get(id, { input, location })
 		}
+		await get()
 	}, [ input ])
 
 	return { fetching: result.fetching, data: result.data?.cities?.data || [] }
