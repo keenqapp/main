@@ -17,6 +17,7 @@ import PhotoCameraTwoToneIcon from '@mui/icons-material/PhotoCameraTwoTone'
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
 import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone'
 import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
+import BeenhereTwoToneIcon from '@mui/icons-material/BeenhereTwoTone'
 
 import { $shouldRequest } from '@/services/location'
 import { useConfirm, useModal } from '@/services/modals'
@@ -165,7 +166,7 @@ function Profile() {
 
 	const { open: onLocationOpen } = useModal('location')
 	const { open: onTagsOpen } = useModal('tags')
-	const { open: onSettingsClick } = useModal('settings')
+	const { open: settings } = useModal('settings')
 	const { open: onGenderClick } = useModal('gender')
 	const { open: openAddPartner } = useModal('addPartner')
 	const { confirm } = useConfirm()
@@ -183,7 +184,7 @@ function Profile() {
 			maxlength: 24,
 		},
 		fullWidth: true,
-		onChange: (_:any, name: string) => update(id, { name }),
+		// onChange: (_:any, name: string) => update(id, { name }),
 	})
 
 	const descriptionInput = useInput({
@@ -192,7 +193,7 @@ function Profile() {
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
-		onChange: (_:any, description: string) => update(id, { description }),
+		// onChange: (_:any, description: string) => update(id, { description }),
 	})
 
 	const [ loading, setLoading ] = useState(false)
@@ -241,28 +242,34 @@ function Profile() {
 		}
 	}, [ isDone, done ])
 
+	const save = () => {
+		const data = {
+			name: nameInput.value,
+			description: descriptionInput.value,
+		}
+		update(id, data)
+	}
+
 	return (
 		<Container data-testid='Profile'>
 			<If cond={!isDone && done === false}>
 				<ProfileProgress />
 			</If>
 			<IfElse cond={images && images?.length > 0}>
-				<>
-					<SwiperContainer>
-						<Swiper
-							loading={loading}
-							images={images}
-							onScroll={onScroll}
-							buttons={<Buttons />}
-							scrollOnAdd
-						/>
-						<Stack justify='end'>
-							<Upload accept='image/*' onChange={onUploadChange}>
-								<AddButton startIcon={<PhotoCameraTwoToneIcon />} component='span'>{t`profile.addPhoto`}</AddButton>
-							</Upload>
-						</Stack>
-					</SwiperContainer>
-				</>
+				<SwiperContainer>
+					<Swiper
+						loading={loading}
+						images={images}
+						onScroll={onScroll}
+						buttons={<Buttons />}
+						scrollOnAdd
+					/>
+					<Stack justify='end'>
+						<Upload accept='image/*' onChange={onUploadChange}>
+							<AddButton startIcon={<PhotoCameraTwoToneIcon />} component='span'>{t`profile.addPhoto`}</AddButton>
+						</Upload>
+					</Stack>
+				</SwiperContainer>
 				<EmptyImages />
 			</IfElse>
 			<Space />
@@ -271,47 +278,41 @@ function Profile() {
 					<NameInput {...nameInput} />
 					<IconButton color='primary'><EditTwoToneIcon /></IconButton>
 				</Stack>
-				{partner
-					? (
-						<Stack onClick={onPartnerClick} gap={0.5} align='baseline'>
-							<Typography variant='h6'>{t`profile.and`}</Typography>
-							<Typography variant='overline'>{partner.name}</Typography>
-							<Space grow />
-							<IconButton color='secondary'><GroupRemoveTwoToneIcon /></IconButton>
-						</Stack>
-					)
-					: (
-						<Stack
-							justify='between'
-							onClick={onPartnerClick}
-							gap={0.5}
-							align='baseline'
-						>
-							<Typography variant='h6'>{t`profile.and`}</Typography>
-							<Typography variant='overline' color='#B2ADBB'>{t`profile.partner`}</Typography>
-							<Space grow />
-							<IconButton color='primary'><SupervisedUserCircleTwoToneIcon /></IconButton>
-						</Stack>
-					)}
+				<IfElse cond={!!partner}>
+					<Stack onClick={onPartnerClick} gap={0.5} align='baseline'>
+						<Typography variant='h6'>{t`profile.and`}</Typography>
+						<Typography variant='overline'>{partner?.name}</Typography>
+						<Space grow />
+						<IconButton color='secondary'><GroupRemoveTwoToneIcon /></IconButton>
+					</Stack>
+					<Stack
+						justify='between'
+						onClick={onPartnerClick}
+						gap={0.5}
+						align='baseline'
+					>
+						<Typography variant='h6'>{t`profile.and`}</Typography>
+						<Typography variant='overline' color='#B2ADBB'>{t`profile.partner`}</Typography>
+						<Space grow />
+						<IconButton color='primary'><SupervisedUserCircleTwoToneIcon /></IconButton>
+					</Stack>
+				</IfElse>
 				<Stack
 					justify='between'
 					onClick={onGenderClick}
 					gap={0.5}
 					align='baseline'
 				>
-					{gender && sexuality
-						? (
-							<>
-								<Typography variant='h6'>{t`profile.iam`}</Typography>
-								<Typography variant='overline'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
-							</>
-						)
-						: (
-							<>
-								<Typography variant='h6'>{t`profile.your`}</Typography>
-								<Typography variant='overline' color='#B2ADBB'>{t`profile.gs`}</Typography>
-							</>
-						)}
+					<IfElse cond={!!gender && !!sexuality}>
+						<>
+							<Typography variant='h6'>{t`profile.iam`}</Typography>
+							<Typography variant='overline'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
+						</>
+						<>
+							<Typography variant='h6'>{t`profile.your`}</Typography>
+							<Typography variant='overline' color='#B2ADBB'>{t`profile.gs`}</Typography>
+						</>
+					</IfElse>
 					<Space grow />
 					<IconButton color='primary'><InterestsTwoToneIcon /></IconButton>
 				</Stack>
@@ -334,9 +335,10 @@ function Profile() {
 				<Space />
 				<Stack justify='between' align={tags?.length > 0 ? 'start' : 'center'} onClick={onTagsClick}>
 					<Stack gap={0.5} wrap justify='start'>
-						{tags?.length > 0
-							? tags.map(({ id, label }) => <Chip key={id} label={label} />)
-							: <Typography color='#B2ADBB'>{t`profile.tags`}</Typography>}
+						<IfElse cond={tags?.length > 0}>
+							<>{tags.map(({ id, label }) => <Chip key={id} label={label} />)}</>
+							<Typography color='#B2ADBB'>{t`profile.tags`}</Typography>
+						</IfElse>
 					</Stack>
 					<IconButton color='primary'><TagTwoToneIcon /></IconButton>
 				</Stack>
@@ -344,9 +346,16 @@ function Profile() {
 				<Divider />
 				<Space />
 				<Button
+					variant='contained'
+					fullWidth
+					onClick={save}
+					startIcon={<BeenhereTwoToneIcon />}
+				>{t`profile.save`}</Button>
+				<Space />
+				<Button
 					variant='outlined'
 					fullWidth
-					onClick={onSettingsClick}
+					onClick={settings}
 					startIcon={<SettingsTwoToneIcon />}
 				>{t`profile.settings`}</Button>
 				<Space />
