@@ -21,11 +21,49 @@
     "verify": "Проверить код",
     "wasSent": "Код, который был послан на ваш номер"
   },
+  "cities": {
+    "Amsterdam": "Амстердам",
+    "Barcelona": "Барселона",
+    "Belgrade": "Белград",
+    "Berlin": "Берлин",
+    "Dubai": "Дубай",
+    "Haifa": "Хайфа",
+    "Istanbul": "Стамбул",
+    "London": "Лондон",
+    "Madrid": "Мадрид",
+    "Moscow": "Москва",
+    "Novi Sad": "Нови Сад",
+    "Paris": "Париж",
+    "Podgorica": "Подгорица",
+    "Prague": "Прага",
+    "Rome": "Рим",
+    "Saint-Petersburg": "Санкт-Петербург",
+    "Tbilisi": "Тбилиси",
+    "Tel-Aviv": "Тель-Авив",
+    "Vienna": "Вена"
+  },
   "confirm": {
     "no": "Нет",
     "text": "Это действие не может быть отменено",
     "title": "Вы уверены?",
     "yes": "Да"
+  },
+  "countries": {
+    "Austria": "Австрия",
+    "Czech Republic": "Чехия",
+    "France": "Франция",
+    "Georgia": "Грузия",
+    "Germany": "Германия",
+    "Israel": "Израиль",
+    "Italy": "Италия",
+    "Montenegro": "Черногория",
+    "Netherlands": "Нидерланды",
+    "Russia": "Россия",
+    "Serbia": "Сербия",
+    "Spain": "Испания",
+    "Turkiye": "Турция",
+    "United Arab Emirates": "Объединённые Арабские Эмираты",
+    "United Kingdom": "Великобритания"
   },
   "events": {
     "here": "Здесь вы сможите участвовать на мероприятиях",
@@ -51,7 +89,7 @@
     "ru-RU": "Русский"
   },
   "location": {
-    "chooseCity": "Выбери город",
+    "chooseCity": "Найди твой город",
     "denied": "Запрещено делиться локацией",
     "request": "Запросить разрешение",
     "useCurrent": "Использовать текущий"
@@ -192,43 +230,5 @@
     "edit": "Изменить",
     "no": "Нет",
     "yes": "Да"
-  },
-  "cities": {
-    "Moscow": "Москва",
-    "Saint-Petersburg": "Санкт-Петербург",
-    "Dubai": "Дубай",
-    "Vienna": "Вена",
-    "Prague": "Прага",
-    "Berlin": "Берлин",
-    "Madrid": "Мадрид",
-    "Barcelona": "Барселона",
-    "Paris": "Париж",
-    "London": "Лондон",
-    "Tbilisi": "Тбилиси",
-    "Haifa": "Хайфа",
-    "Tel-Aviv": "Тель-Авив",
-    "Rome": "Рим",
-    "Amsterdam": "Амстердам",
-    "Istanbul": "Стамбул",
-    "Podgorica": "Подгорица",
-    "Belgrade": "Белград",
-    "Novi Sad": "Нови Сад"
-  },
-  "contries": {
-    "Russia": "Россия",
-    "United Arab Emirates": "Объединённые Арабские Эмираты",
-    "Austria": "Австрия",
-    "Czech Republic": "Чехия",
-    "Germany": "Германия",
-    "Spain": "Испания",
-    "France": "Франция",
-    "United Kingdom": "Великобритания",
-    "Georgia": "Грузия",
-    "Israel": "Израиль",
-    "Italy": "Италия",
-    "Netherlands": "Нидерланды",
-    "Turkiye": "Турция",
-    "Montenegro": "Черногория",
-    "Serbia": "Сербия"
   }
 }

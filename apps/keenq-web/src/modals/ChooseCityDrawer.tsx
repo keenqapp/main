@@ -63,7 +63,7 @@ function CitiesListItem(city: typeof json[number]) {
 		update(id, { location, point })
 	}
 
-	return <DrawerItem text={t('cities.' + name)} subtext={t('cities.' + country)} onClick={on(click)} />
+	return <DrawerItem text={t('cities.' + name)} subtext={t('countries.' + country)} onClick={on(click)} />
 }
 
 function ChooseCityDrawer() {

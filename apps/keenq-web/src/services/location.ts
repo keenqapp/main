@@ -182,6 +182,7 @@ export function useCitySearch(input = '') {
 	const [ result, get ] = useDebounceMutation(citiesWith)
 
 	useAsyncEffect(async () => {
+		console.log('--- location.ts:185 ->  -> ', coords)
 		if (coords) {
 			await getPosition()
 			await get(id, { input, location })

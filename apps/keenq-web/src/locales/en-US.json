@@ -51,7 +51,7 @@
     "ru-RU": "Русский"
   },
   "location": {
-    "chooseCity": "Choose a city",
+    "chooseCity": "Search a city",
     "denied": "You have denied to share location",
     "request": "Request permission",
     "useCurrent": "Use your current city"
