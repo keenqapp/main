@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import uuid from 'uuid-random'
 
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -47,7 +46,6 @@ function TagsDrawer() {
 	} = useCurrentMember()
 	const [ { data } ] = useQuery(tagsgql)
 	const [ , update ] = useUpdate(updatemembergql)
-	const [ , create ] = useInsert(createtaggql)
 	const drawer = useModal('tags')
 
 	const { t } = useTranslate('tags')
@@ -76,12 +74,12 @@ function TagsDrawer() {
 
 	const onCreateClick = async () => {
 		tagInput.onClear()
-		const tag = {
-			id: uuid(),
-			label: tagInput.value
-		}
-		update(id, { tags: tags.copyPush(tag) })
-		create(tag)
+		// const tag = {
+		// 	id: uuid(),
+		// 	label: tagInput.value
+		// }
+		// update(id, { tags: tags.copyPush(tag) })
+		// create(tag)
 	}
 
 	const isExectExist = alltags.some(({ label }) => label === tagInput.value)
