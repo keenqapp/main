@@ -192,5 +192,43 @@
     "edit": "Изменить",
     "no": "Нет",
     "yes": "Да"
+  },
+  "cities": {
+    "Moscow": "Москва",
+    "Saint-Petersburg": "Санкт-Петербург",
+    "Dubai": "Дубай",
+    "Vienna": "Вена",
+    "Prague": "Прага",
+    "Berlin": "Берлин",
+    "Madrid": "Мадрид",
+    "Barcelona": "Барселона",
+    "Paris": "Париж",
+    "London": "Лондон",
+    "Tbilisi": "Тбилиси",
+    "Haifa": "Хайфа",
+    "Tel-Aviv": "Тель-Авив",
+    "Rome": "Рим",
+    "Amsterdam": "Амстердам",
+    "Istanbul": "Стамбул",
+    "Podgorica": "Подгорица",
+    "Belgrade": "Белград",
+    "Novi Sad": "Нови Сад"
+  },
+  "contries": {
+    "Russia": "Россия",
+    "United Arab Emirates": "Объединённые Арабские Эмираты",
+    "Austria": "Австрия",
+    "Czech Republic": "Чехия",
+    "Germany": "Германия",
+    "Spain": "Испания",
+    "France": "Франция",
+    "United Kingdom": "Великобритания",
+    "Georgia": "Грузия",
+    "Israel": "Израиль",
+    "Italy": "Италия",
+    "Netherlands": "Нидерланды",
+    "Turkiye": "Турция",
+    "Montenegro": "Черногория",
+    "Serbia": "Сербия"
   }
 }

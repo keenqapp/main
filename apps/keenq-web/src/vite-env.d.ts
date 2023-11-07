@@ -5,8 +5,10 @@ import {
 	ComponentChild,
 	createElement,
 	FunctionalComponent,
-	RenderableProps
+	RenderableProps, VNode
 } from 'preact'
+
+import React from 'react'
 
 export {
 	Attributes,
@@ -29,4 +31,18 @@ export {
 
 declare global {
 	type Timer = ReturnType<typeof setTimeout>
+}
+
+declare global {
+	namespace React {
+		interface ReactElement {
+			nodeName: any
+			attributes: any
+			children: any
+		}
+
+		interface ReactPortal extends ReactElement {
+			children?: VNode<any>;
+		}
+	}
 }

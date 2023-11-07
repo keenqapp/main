@@ -6,6 +6,7 @@ import ClearTwoToneIcon from '@mui/icons-material/ClearTwoTone'
 
 import { ICity, useCitySearch } from '@/services/location'
 import { useModal } from '@/services/modals'
+import { useTranslate } from '@/services/translate'
 
 import { updatemembergql } from '@/model/member'
 import { useCurrentMember } from '@/model/member/hooks'
@@ -41,6 +42,7 @@ function toCity({ description, structured_formatting }: ICity) {
 }
 
 function CitiesListItem(city: typeof json[number]) {
+	const { t } = useTranslate()
 	const { name, country, latitude, longitude } = city
 	const { on } = useModal('city')
 	const { id } = useCurrentMember()
@@ -61,14 +63,15 @@ function CitiesListItem(city: typeof json[number]) {
 		update(id, { location, point })
 	}
 
-	return <DrawerItem text={name} subtext={country} onClick={on(click)} />
+	return <DrawerItem text={t('cities.' + name)} subtext={t('cities.' + country)} onClick={on(click)} />
 }
 
 function ChooseCityDrawer() {
+	const { t } = useTranslate()
 	const { name } = useModal('city')
 
 	const cityInput = useInput({
-		label: 'Choose a city',
+		label: t`location.chooseCity`,
 		variant: 'outlined',
 		fullWidth: true,
 		InputProps: {

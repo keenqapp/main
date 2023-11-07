@@ -4,7 +4,6 @@ import ru from 'date-fns/locale/ru'
 import { $locale } from '@/services/translate'
 
 import { formats } from '@/utils/phoneFormats'
-import * as url from 'url'
 
 
 let locale: Locale | undefined = undefined

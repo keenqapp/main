@@ -38,6 +38,8 @@ import Swiper from '@/components/Swiper'
 import { useQuery, useUpdate } from '@/hooks/gql'
 import { useDebounceMutation } from '@/hooks/useDebounceMutation'
 import { isLengthLower, isNotEmpty, useInput } from '@/hooks/useInput'
+import If from '@/ui/If'
+import IfElse from '@/ui/IfElse'
 
 
 const Content = styled(Stack)`
@@ -241,9 +243,11 @@ function Profile() {
 
 	return (
 		<Container data-testid='Profile'>
-			{!isDone && done === false && <ProfileProgress />}
-			{images && images?.length > 0
-				? (
+			<If cond={!isDone && done === false}>
+				<ProfileProgress />
+			</If>
+			<IfElse cond={images && images?.length > 0}>
+				<>
 					<SwiperContainer>
 						<Swiper
 							loading={loading}
@@ -258,8 +262,9 @@ function Profile() {
 							</Upload>
 						</Stack>
 					</SwiperContainer>
-				)
-				: <EmptyImages />}
+				</>
+				<EmptyImages />
+			</IfElse>
 			<Space />
 			<Content direction='column' align='stretch'>
 				<Stack justify='between' onClick={onNameClick}>
@@ -317,7 +322,7 @@ function Profile() {
 					align='baseline'
 				>
 					<Typography variant='h6'>{t`profile.in`}</Typography>
-					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city ? location.city : t`profile.somecity`}</Typography>
+					<Typography variant='overline' color={location?.city ? 'default' : '#B2ADBB'}>{location?.city ? t('cities.' + location.city) : t`profile.somecity`}</Typography>
 					<Space grow />
 					<IconButton color='primary'><EditLocationTwoToneIcon /></IconButton>
 				</Stack>

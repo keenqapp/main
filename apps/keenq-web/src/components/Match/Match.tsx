@@ -2,7 +2,7 @@ import { useEffect } from 'preact/hooks'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -23,6 +23,7 @@ import { useTranslate } from '@/services/translate'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Container from '@/ui/Container'
+import If from '@/ui/If'
 import Space from '@/ui/Space'
 import Stack from '@/ui/Stack'
 
@@ -159,7 +160,8 @@ function Match() {
 		if (empty) x.set(0)
 	}, [ empty ])
 
-	if (mid === id) return <Navigate to='/match' />
+	const isSelf = id === mid
+
 	if (empty) return <EmptyMatch />
 
 	return (
@@ -184,22 +186,22 @@ function Match() {
 								wrap
 							>
 								<Typography variant='h5'>{name}</Typography>
-								{!!partner.id && (
-									<>
-										<Typography variant='overline'>{t`match.and`}</Typography>
-										<Partner variant='h6' onClick={onPartnerClick}>{pname}</Partner>
-									</>
-								)}
+								<If cond={!!partner.id}>
+									<Typography variant='overline'>{t`match.and`}</Typography>
+									<Partner variant='h6' onClick={onPartnerClick}>{pname}</Partner>
+								</If>
 							</Stack>
 							<Typography variant='body2'>{t`gender.${gender}`} {t`gender.${sexuality}`}</Typography>
 						</Stack>
 						<Space height={0.5} />
 						<Typography variant='overline'>{formattedDistance} {t`match.away`}</Typography>
 						<Space height={0.5} />
-						<Fabs justify='between' self='stretch'>
-							<IconButton onClick={onNoClick}><RemoveCircleTwoToneIcon fontSize='large' color='secondary' /></IconButton>
-							<IconButton onClick={onYesClick}><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
-						</Fabs>
+						<If cond={!isSelf}>
+							<Fabs justify='between' self='stretch'>
+								<IconButton onClick={onNoClick}><RemoveCircleTwoToneIcon fontSize='large' color='secondary' /></IconButton>
+								<IconButton onClick={onYesClick}><FavoriteTwoToneIcon fontSize='large' color='primary' /></IconButton>
+							</Fabs>
+						</If>
 						<Space />
 						<Typography>{description}</Typography>
 						<Space height={2} />
@@ -209,12 +211,14 @@ function Match() {
 						<Space height={2} />
 						<StyledDivider />
 						<Space />
-						<Button
-							startIcon={<ReportTwoToneIcon color='error' />}
-							onClick={onReportClick}
-							fullWidth
-							color='default'
-						>{t`report.report`}</Button>
+						<If cond={!isSelf}>
+							<Button
+								startIcon={<ReportTwoToneIcon color='error' />}
+								onClick={onReportClick}
+								fullWidth
+								color='default'
+							>{t`report.report`}</Button>
+						</If>
 						<Space />
 					</Content>
 				</SContainer>

@@ -9,14 +9,14 @@ import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
-import Stack from '@/ui/Stack'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
 
 function AcquaintanceDrawer() {
-	const { t } = useTranslate('acquaintance')
+	const { t } = useTranslate()
 	const navigate = useNavigate()
 	const { name, on } = useModal('acquaintance')
 
@@ -27,7 +27,7 @@ function AcquaintanceDrawer() {
 			<Container>
 				<Stack direction='column'>
 					<Card>
-						<Typography variant='overline' textAlign='center'>{t`before`}</Typography>
+						<Typography variant='overline' textAlign='center'>{t`acquaintance.before`}</Typography>
 					</Card>
 					<Space />
 					<Button startIcon={<BadgeTwoToneIcon />} onClick={on(doIt)}>{t`app.doit`}</Button>

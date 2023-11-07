@@ -16,8 +16,6 @@ import theme from '@/ui/theme'
 import { useIsAdmin } from '@/hooks/useIsAdmin'
 import { parseStringForUrls } from '@/utils/formatters'
 
-import Linkify from 'react-linkify'
-
 
 const MessageContainerContent = styled(Stack)`
   padding: 0.5rem 1rem;
