@@ -111,7 +111,7 @@ function TagsDrawer() {
 							))}
 							<Space />
 						</>
-						<Stack justify='center' direction='column'>
+						<Stack justify='center' direction='column' align='center' flex={1}>
 							<Space height={0.5} />
 							{/*<Typography variant='overline' textAlign='center'>{t`noTag`}</Typography>*/}
 							<Typography variant='overline' textAlign='center'>{t`tags.noTagNo`}</Typography>
