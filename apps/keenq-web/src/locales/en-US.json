@@ -181,6 +181,7 @@
     "find": "Find what you want",
     "max": "Max 16 characters",
     "noTag": "Seems no tags, you can create a new one",
+    "noTagNo": "Nothing found",
     "selected": "Selected"
   },
   "test": {
