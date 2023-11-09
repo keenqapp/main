@@ -1,6 +1,7 @@
 export interface ITag {
 	id: string
 	label: string
+	locale: 'ru-RU' | 'en-US'
 }
 
 export interface IImage {

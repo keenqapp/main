@@ -1,5 +1,5 @@
-import { useCallback } from 'preact/hooks'
-import { useStore } from '@nanostores/preact'
+import { useCallback } from 'react'
+import { useStore } from '@nanostores/react'
 import { atom, map } from 'nanostores'
 
 import { IMessage } from '@/model/message'
@@ -52,6 +52,9 @@ export interface UseModalOptions {
 }
 
 export const $modals = map<ModalsState>(modalsInit)
+// $modals.listen((state) => {
+// 	console.log('--- modals.ts:56 -> modals -> ', state)
+// })
 let params = {} as any
 
 export function useModal<N extends ModalKeys>(name: N, options?: UseModalOptions) {

@@ -1,7 +1,7 @@
-import { useMemo } from 'preact/hooks'
-import styled from '@emotion/styled'
-import { useStore } from '@nanostores/preact'
+import { useMemo } from 'react'
 import { Navigate, Outlet, useRouteError } from 'react-router-dom'
+import styled from '@emotion/styled'
+import { useStore } from '@nanostores/react'
 
 import { $isAuthed } from '@/services/auth'
 import { useTranslate } from '@/services/translate'

@@ -1,9 +1,10 @@
-import preact from '@preact/preset-vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
+import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 import { defineConfig } from 'vite'
 import inspect from 'vite-plugin-inspect'
 import { VitePWA } from 'vite-plugin-pwa'
+import svgr from 'vite-plugin-svgr'
 
 
 const manifest = {
@@ -67,25 +68,17 @@ export default defineConfig(({ mode }) => ({
 			},
 		}),
 		inspect(),
-		preact({
-			babel: {
-				plugins: ['babel-plugin-transform-react-pug'],
-			}
-		}),
+		react(),
+		svgr(),
 		sentryVitePlugin({
 			org: 'keenq',
 			project: 'keenq-web',
-			authToken: process.env.SENTRY_AUTH_TOKEN
+			authToken: process.env.SENTRY_AUTH_TOKEN,
 		})
 	],
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
-			react: 'preact/compat',
-			'@types/react': 'preact/compat',
-			'react-dom/test-utils': 'preact/test-utils',
-			'react-dom': 'preact/compat',
-			'react/jsx-runtime': 'preact/jsx-runtime',
 		}
 	}
 }))

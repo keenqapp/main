@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'preact/hooks'
-import styled from '@emotion/styled'
-import { useStore } from '@nanostores/preact'
-import { useSignal } from '@preact/signals'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import styled from '@emotion/styled'
+import { useStore } from '@nanostores/react'
 
 import LoadingButton from '@mui/lab/LoadingButton'
 import Button from '@mui/material/Button'
@@ -42,7 +41,7 @@ function LoginForm() {
 	const authError = useStore($authError)
 
 	const [ codeSent, setCodeSent ] = useState(false)
-	const loading = useSignal(false)
+	const [ loading, setLoading ] = useState(false)
 
 	const navigate = useNavigate()
 
@@ -97,24 +96,24 @@ function LoginForm() {
 
 	const onCodeSent = async () => {
 		if (!inputsHasError(phoneInput)) {
-			loading.value = true
+			setLoading(true)
 			codeInput.value = ''
 			await send(phoneInput.value.replace(/(?!^\+)\D/g, '')) && setCodeSent(true)
-			loading.value = false
+			setLoading(false)
 		}
 	}
 
 	const onVerify = async () => {
 		if (!inputsHasError(codeInput)) {
-			loading.value = true
+			setLoading(true)
 			await verify(phoneInput.value.replace(/(?!^\+)\D/g, ''), String(codeInput.value)) && navigate('/match')
-			loading.value = false
+			setLoading(false)
 		}
 	}
 
 	const onRetry = () => {
 		setCodeSent(false)
-		loading.value = false
+		setLoading(false)
 		phoneInput.onClear()
 		codeInput.onClear()
 	}
@@ -135,7 +134,7 @@ function LoginForm() {
 										<LoadingButton
 											id='send-code-button'
 											onClick={onCodeSent}
-											loading={loading.value}
+											loading={loading}
 											variant='outlined'
 										>{t`auth.send`}</LoadingButton>
 									</Stack>
@@ -148,7 +147,7 @@ function LoginForm() {
 									<Stack gap={2} alignItems='center'>
 										<LoadingButton
 											onClick={onVerify}
-											loading={loading.value}
+											loading={loading}
 											variant='outlined'
 											fullWidth
 										>{t`auth.verify`}</LoadingButton>

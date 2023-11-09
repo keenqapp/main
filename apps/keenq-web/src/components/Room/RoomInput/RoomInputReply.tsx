@@ -1,4 +1,4 @@
-import { useStore } from '@nanostores/preact'
+import { useStore } from '@nanostores/react'
 
 import IconButton from '@mui/material/IconButton'
 

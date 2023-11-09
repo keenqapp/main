@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useStore } from '@nanostores/preact'
+import { useStore } from '@nanostores/react'
 
 import IconButton from '@mui/material/IconButton'
 import Tab from '@mui/material/Tab'

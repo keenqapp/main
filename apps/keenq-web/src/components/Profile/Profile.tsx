@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import Button from '@mui/material/Button'
@@ -181,7 +181,7 @@ function Profile() {
 		validation: [isNotEmpty, isLengthLower(24)],
 		forceValid: true,
 		inputProps: {
-			maxlength: 24,
+			maxLength: 24,
 		},
 		fullWidth: true,
 		// onChange: (_:any, name: string) => update(id, { name }),
@@ -336,7 +336,7 @@ function Profile() {
 				<Stack justify='between' align={tags?.length > 0 ? 'start' : 'center'} onClick={onTagsClick}>
 					<Stack gap={0.5} wrap justify='start'>
 						<IfElse cond={tags?.length > 0}>
-							<>{tags.map(({ id, label }) => <Chip key={id} label={label} />)}</>
+							<>{tags?.map(({ id, label }) => <Chip key={id} label={label} />)}</>
 							<Typography color='#B2ADBB'>{t`profile.tags`}</Typography>
 						</IfElse>
 					</Stack>

@@ -1,6 +1,6 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect } from 'react'
 import { persistentAtom } from '@nanostores/persistent'
-import { useStore } from '@nanostores/preact'
+import { useStore } from '@nanostores/react'
 import axios from 'axios'
 import { atom } from 'nanostores'
 import { gql } from 'urql'

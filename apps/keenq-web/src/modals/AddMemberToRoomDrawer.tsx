@@ -1,6 +1,6 @@
-import { useMemo } from 'preact/hooks'
+import { useMemo } from 'react'
 import styled from '@emotion/styled'
-import { useStore } from '@nanostores/preact'
+import { useStore } from '@nanostores/react'
 import { atom } from 'nanostores'
 import { useMutation } from 'urql'
 

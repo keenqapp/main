@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
 import { useSubscription } from 'urql'

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef } from 'react'
 
 
 export function useDebounceEffect(fnc: any, deps: any[], delay: number = 500) {

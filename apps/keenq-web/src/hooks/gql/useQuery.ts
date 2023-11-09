@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnyVariables, useQuery as _useQuery, UseQueryArgs, UseQueryResponse } from 'urql'
 import uuid from 'uuid-random'
 

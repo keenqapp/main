@@ -1,4 +1,4 @@
-import { cloneElement, VNode } from 'preact'
+import { cloneElement, ReactNode } from 'react'
 
 import { Entity, UID } from '@/types/utility'
 
@@ -36,7 +36,7 @@ export function map<Input, Output>(fn: (input: Input) => Output) {
 // 	return (input: any[]) => console.log('--- utils.ts:36 ->  ->', key, _groupBy(input))
 // }
 
-export function toComponent<Input extends Entity>(render: (item: Input, index: number) => VNode<Input>) {
+export function toComponent<Input extends Entity>(render: (item: Input, index: number) => ReactNode<Input>) {
 	return (input: Input[]) => input
 		.map((item: Input, index: number) => {
 			const component = render(item, index)

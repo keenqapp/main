@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect } from 'react'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { motion, useMotionValue, useTransform } from 'framer-motion'

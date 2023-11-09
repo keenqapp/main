@@ -1,10 +1,11 @@
-import { VNode } from 'preact'
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { column } from '@/ui/css'
 
 import { Entity } from '@/types/utility'
+import IfElse from '@/ui/IfElse'
 
 
 const ListContainer = styled.div<{ height?: number }>`
@@ -21,7 +22,7 @@ const ScrollContainer = styled.div`
   z-index: 1;
 `
 
-const Scroll = styled.div`
+const Scroll = styled.div<{ height?: number }>`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -50,11 +51,11 @@ function Autosizer({ setHeight, name, debug }: { setHeight: (height: number) => 
 
 interface ListProps<P extends Entity, > {
 	data: P[]
-	render: (item: P, index: number) => VNode<P> | VNode
-	empty?: () => VNode
+	render: (item: P, index: number) => ReactNode
+	empty?: () => ReactNode
 	scrollRef?: any
 	className?: string
-	loading?: () => VNode
+	loading?: () => ReactNode
 	isLoading?: boolean
 	name?: string
 }
@@ -62,7 +63,7 @@ interface ListProps<P extends Entity, > {
 function List<T extends Entity>({ data = [], render, scrollRef, empty, className, name, ...rest }: ListProps<T>) {
 	const [ height, setHeight ] = useState(0)
 
-	if (data && data?.length < 1 && empty) return empty()
+	// if (data && data?.length < 1 && empty) return empty()
 
 	return (
 		<ListContainer data-testid='List'>

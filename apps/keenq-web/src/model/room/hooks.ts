@@ -1,4 +1,4 @@
-import { useMemo } from 'preact/hooks'
+import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { useCurrentMember } from '@/model/member/hooks'

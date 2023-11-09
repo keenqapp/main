@@ -32,19 +32,38 @@ interface UnderConstructionProps {
 // }
 
 function UnderConstruction({ text, subtext }: UnderConstructionProps) {
-	return pug`
-		Container(flex=1 horizontal=4)
-			Stack(
+	return (
+		<Container
+			data-testid='UnderConstruction'
+			flex={1}
+			horizontal={4}
+		>
+			<Stack
 				justify='center'
 				align='center'
 				direction='column'
-				flex=1
-				gap=1
-			)
-				HandymanTwoToneIcon(color='secondary')
-				Typography(variant='h5' align='center') #{text}
-				Typography(align='center') #{subtext}
-	`
+				flex={1}
+				gap={1}
+			>
+				<HandymanTwoToneIcon color='secondary' />
+				<Typography variant='h5' align='center'>{text}</Typography>
+				<Typography align='center'>{subtext}</Typography>
+			</Stack>
+		</Container>
+	)
+	// return pug`
+	// 	Container(flex=1 horizontal=4)
+	// 		Stack(
+	// 			justify='center'
+	// 			align='center'
+	// 			direction='column'
+	// 			flex=1
+	// 			gap=1
+	// 		)
+	// 			HandymanTwoToneIcon(color='secondary')
+	// 			Typography(variant='h5' align='center') #{text}
+	// 			Typography(align='center') #{subtext}
+	// `
 }
 
 export default UnderConstruction

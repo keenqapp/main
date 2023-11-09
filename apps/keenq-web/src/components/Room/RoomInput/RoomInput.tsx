@@ -1,6 +1,6 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect } from 'react'
 import styled from '@emotion/styled'
-import { useStore } from '@nanostores/preact'
+import { useStore } from '@nanostores/react'
 
 import IconButton from '@mui/material/IconButton'
 import TextField from '@mui/material/TextField'

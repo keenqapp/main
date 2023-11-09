@@ -1,5 +1,5 @@
-import { useEffect } from 'preact/hooks'
-import { useStore } from '@nanostores/preact'
+import { useEffect } from 'react'
+import { useStore } from '@nanostores/react'
 import { atom } from 'nanostores'
 
 

@@ -1,5 +1,4 @@
-import { ComponentChildren } from 'preact'
-import { forwardRef } from 'preact/compat'
+import { forwardRef, ReactNode } from 'react'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
@@ -18,7 +17,7 @@ const StyledContainer = styled.div<{ horizontal?: number, vertical?: number, fle
 `
 
 interface ContainerProps {
-  children: ComponentChildren,
+  children: ReactNode,
   'data-testid'?: string,
 	flex?: number | boolean
 	vertical?: number

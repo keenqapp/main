@@ -1,5 +1,5 @@
 import { ComponentChildren } from 'preact'
-import { useEffect } from 'preact/hooks'
+import { useEffect } from 'react'
 
 import GlobalStyles from '@mui/material/GlobalStyles'
 import { css, Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles'

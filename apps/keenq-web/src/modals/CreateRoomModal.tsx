@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'react'
 
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import Button from '@mui/material/Button'

@@ -1,4 +1,4 @@
-import { useEffect } from 'preact/hooks'
+import { useEffect } from 'react'
 
 import { usePosition } from '@/services/location'
 import { usePushes } from '@/services/notifications'

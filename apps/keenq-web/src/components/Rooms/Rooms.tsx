@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from 'preact/hooks'
-import { useStore } from '@nanostores/preact'
+import { useEffect, useMemo } from 'react'
+import { useStore } from '@nanostores/react'
 
 import { IRoom, roomsgql } from '@/model/room'
 

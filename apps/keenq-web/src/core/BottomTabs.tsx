@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'react'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { useStore } from '@nanostores/preact'
+import { useStore } from '@nanostores/react'
 import { atom } from 'nanostores'
 import { useLocation, useNavigate } from 'react-router-dom'
 

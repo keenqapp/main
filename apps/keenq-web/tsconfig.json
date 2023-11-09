@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsxImportSource": "preact",
+    "jsxImportSource": "react",
 
     /* Linting */
     "strict": true,
@@ -22,13 +22,8 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
-      "react": ["./node_modules/preact/compat/"],
-      "react-dom": ["./node_modules/preact/compat/"],
-      "@types/react": ["./node_modules/preact/compat/"],
-      "react/jsx-runtime": ["node_modules/preact/jsx-runtime/src/index.d.ts"]
     },
     "jsx": "react",
-    "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment",
     "allowSyntheticDefaultImports": true
   },

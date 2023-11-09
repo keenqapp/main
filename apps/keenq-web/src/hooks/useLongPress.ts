@@ -1,4 +1,4 @@
-import { useRef } from 'preact/hooks'
+import { useRef } from 'react'
 
 
 const LONG_PRESS_TIMEOUT = 300

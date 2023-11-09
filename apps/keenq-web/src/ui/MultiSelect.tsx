@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useState } from 'react'
 
 import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'

@@ -1,4 +1,4 @@
-import { cloneElement, VNode } from 'preact'
+import { cloneElement, ReactNode } from 'react'
 import $equals from 'fast-deep-equal'
 
 import 'large-small-dynamic-viewport-units-polyfill'
@@ -30,7 +30,7 @@ export interface Dict extends Object {
 
 declare global {
 
-	function pug(template: TemplateStringsArray): VNode
+	function pug(template: TemplateStringsArray): ReactNode
 
 	const equals: Equals
 
@@ -44,7 +44,7 @@ declare global {
 		last(): T | undefined
 		copySort(compareFn?: (a: T, b: T) => number): Array<T>
 		copyPush(item: T): Array<T>
-		toComponents<T>(render: (item: T, index: number) => VNode<T>): VNode[]
+		toComponents<T>(render: (item: T, index: number) => ReactNode): ReactNode[]
 		toIds(): string[]
 		excludeById(id: string | string[]): Array<T>
 	}
@@ -124,7 +124,7 @@ Object.defineProperty(Array.prototype, 'copyPush', {
 })
 
 Object.defineProperty(Array.prototype, 'toComponents', {
-	value: function<P extends Entity>(render: (item: P, index: number) => VNode<P>) {
+	value: function<P extends Entity>(render: (item: P, index: number) => ReactNode) {
 		return this
 			.map((item: P, index: number) => {
 				const component = render(item, index)

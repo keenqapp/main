@@ -4,10 +4,11 @@ import { ITag } from '@/model/other'
 
 
 export const tagsgql = gql<{ tags: ITag[] }>`
-	query GetTags {
+	query Tags {
 		tags {
 			id
 			label
+			locale
 		}
 	}
 `

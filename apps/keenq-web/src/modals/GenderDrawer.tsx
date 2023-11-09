@@ -1,4 +1,4 @@
-import { VNode } from 'preact'
+import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import Typography from '@mui/material/Typography'
@@ -40,7 +40,7 @@ const Icon = styled.div`
 interface GenderItemProps {
 	text: string,
 	active: boolean,
-	icon?: VNode,
+	icon?: ReactNode,
 	onClick: (text: string) => void
 	value: string
 }

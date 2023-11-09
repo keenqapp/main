@@ -1,4 +1,4 @@
-import { ComponentChildren, FunctionComponent } from 'preact'
+import { FunctionComponent, ReactNode } from 'react'
 
 import GqlProvider from '@/context/GqlProvider'
 import LocalizationProvider from '@/context/LocalizationProvider'
@@ -7,7 +7,7 @@ import ThemeProvider from '@/context/ThemeProvider'
 
 interface Props {
   contexts?: any[]
-  children?: ComponentChildren
+  children?: ReactNode
 }
 
 // 1. order of context is important

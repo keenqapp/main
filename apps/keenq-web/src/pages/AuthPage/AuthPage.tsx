@@ -1,4 +1,4 @@
-import { useStore } from '@nanostores/preact'
+import { useStore } from '@nanostores/react'
 import { Navigate, Outlet } from 'react-router-dom'
 
 import { $isAuthed } from '@/services/auth'

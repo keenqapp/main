@@ -1,6 +1,6 @@
-import { useCallback } from 'preact/hooks'
+import { useCallback } from 'react'
 import { persistentAtom } from '@nanostores/persistent'
-import { useStore } from '@nanostores/preact'
+import { useStore } from '@nanostores/react'
 import get from 'lodash-es/get'
 
 import en from '@/locales/en-US.json'

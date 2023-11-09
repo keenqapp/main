@@ -1,6 +1,6 @@
-import { useMemo } from 'preact/hooks'
-import styled from '@emotion/styled'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import styled from '@emotion/styled'
 
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
@@ -29,6 +29,7 @@ import EmptyMembers from '@/components/EmptyMembers'
 
 import { useInsert, useQuery } from '@/hooks/gql'
 import { useInput } from '@/hooks/useInput'
+import { Entity } from '@/types/utility'
 import { optional } from '@/utils/utils'
 
 
@@ -44,7 +45,7 @@ const MemberItemContainer = styled(Stack)`
 	padding: 0 1rem;
 `
 
-function MemberItem(member: IMember) {
+function MemberItem(member: IMember & Entity) {
 	const { id: mid, name } = member
 	const avatar = getAvatar(member)
 	const { id: cid } = useCurrentMember()
@@ -77,7 +78,7 @@ function AddPartnerDrawer() {
 	const { name } = useModal('addPartner')
 	const { id } = useCurrentMember()
 	const [ result ] = useQuery(contactsgql, { id }, { requestPolicy: 'cache-and-network' })
-	const members = useMemo(() => result.data?.matches.map((match: IMatch) => match.member) || [], [ result.data ])
+	const members = useMemo(() => result.data?.matches.map((match: IMatch) => match.member) || [], [ result ])
 
 	const nameInput = useInput({
 		label: t`find`,

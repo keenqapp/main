@@ -78,6 +78,7 @@ rules:
     - error
     - groups:
         - - "^preact"
+        - - "^react"
           - "^@?\\w"
         - - "^@mui"
         - - "^@mui/icons-material"

@@ -1,10 +1,8 @@
-import { cloneElement, VNode } from 'preact'
-import { useEffect, useRef, useState } from 'preact/hooks'
 import styled from '@emotion/styled'
+import { cloneElement, useEffect, useRef, useState } from 'react'
 
 import { IImage } from '@/model/other'
 
-import Container from '@/ui/Container'
 import Loadable from '@/ui/Loadable'
 
 import SwiperDots from '@/components/Swiper/SwiperDots'

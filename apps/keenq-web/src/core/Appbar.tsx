@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { useLocation, useNavigate } from 'react-router-dom'
 
 import AppBar from '@mui/material/AppBar'
 import Button from '@mui/material/Button'
@@ -59,7 +59,7 @@ const ColorLogo = styled(Logo)`
 
 const Version = styled.sub`
 	margin-top: 4px;
-	color:#999;
+	color: #999;
 	letter-spacing: 0.1rem;
 `
 
