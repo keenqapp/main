@@ -83,25 +83,19 @@ function RoomInput() {
 		multiline: true,
 		maxRows: 3,
 		onFocus: () => {
-			console.log('--- RoomInput.tsx:86 -> onFocus -> ', isIOS())
 			if (!isIOS()) return
-			const r = document.querySelector(':root')
+			const r = document.querySelector(':root') as HTMLElement
 			r?.style.setProperty('--main-position', 'fixed')
 			r?.style.setProperty('--safe-area', '0px')
 			r?.style.setProperty('--appbar-height', '0px')
 		},
-		onBlur: (e: any) => {
-			// console.log('--- RoomInput.tsx:92 -> onBlur -> ', e)
-			// e.preventDefault()
+		onBlur: () => {
 			if (!isIOS()) return
-			const r = document.querySelector(':root')
+			const r = document.querySelector(':root') as HTMLElement
 			r?.style.setProperty('--main-position', 'relative')
 			r?.style.setProperty('--safe-area', '20px')
 			r?.style.setProperty('--appbar-height', '56px')
 		},
-		// onMouseDown: (e: any) => {
-		// 	e.preventDefault()
-		// }
 	})
 
 	useAsyncEffect(async () => {

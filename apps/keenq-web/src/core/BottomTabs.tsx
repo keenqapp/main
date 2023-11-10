@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { useStore } from '@nanostores/react'
 import { atom } from 'nanostores'
-import { useLocation, useNavigate } from 'react-router-dom'
 
 import Badge from '@mui/material/Badge'
-import BottomNavigation from '@mui/material/BottomNavigation'
+import BottomNavigation, { BottomNavigationProps } from '@mui/material/BottomNavigation'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction'
 
 import BugReportIcon from '@mui/icons-material/BugReport'
@@ -20,7 +20,7 @@ import { useCurrentMember } from '@/model/member'
 import { isIOS, isPWA } from '@/utils/utils'
 
 
-const Nav = styled(BottomNavigation)`
+const Nav = styled(BottomNavigation)<BottomNavigationProps>`
   position: fixed;
   bottom: ${isIOS() && isPWA() ? 'var(--safe-area)' : '0'};
   left: 0;

@@ -42,7 +42,7 @@ const RoomMessagesContainer = styled.div`
   justify-content: stretch;
 `
 
-const RoomMessagesList = styled(List<IMessage>)<{ height: number }>`
+const RoomMessagesList = styled(List<IMessage>)`
 	gap: 0.1rem;
 `
 
@@ -61,7 +61,7 @@ function RoomMessages() {
 		}
 	}, [ result.data ])
 
-	const messages = usePipe(result.data?.messages || [], sort(byDate), reduce(enrich, []))
+	const messages: IMessage[] = usePipe(result.data?.messages || [], sort(byDate), reduce(enrich, []))
 
 	return (
 		<RoomMessagesContainer data-testid='RoomMessages'>

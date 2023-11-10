@@ -5,31 +5,31 @@ import { TextFieldProps } from '@mui/material/TextField'
 import { hasError as $hasError, Validator } from './validation'
 
 
-export interface Dict extends Object {
-  [key: string]: unknown;
+export interface Dict {
+  [key: string]: unknown
 }
 
-export type EmptyString = '';
+export type EmptyString = ''
 
 export interface UseInputProps extends Dict {
-  value?: string;
-  label?: string | Component<any, any>;
-  caption?: string;
-  // onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onChange?: any;
-  onFocus?: (e: any) => void;
-  onBlur?: () => void;
-  type?: string;
-  validation?: Validator | Validator[];
-  placeholder?: string;
-  helperText?: string;
-  translation?: (value: unknown) => string;
-	forceValid?: boolean;
+  value?: string
+  label?: string | Component<any, any>
+  caption?: string
+  // onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+  onChange?: any
+  onFocus?: (e: any) => void
+  onBlur?: (e: any) => void
+  type?: string
+  validation?: Validator | Validator[]
+  placeholder?: string
+  helperText?: string
+  translation?: (value: unknown) => string
+	forceValid?: boolean
 
   // To change displaying value in <input>
-  format?: (value: string, prev?: string) => string;
+  format?: (value: string, prev?: string) => string
   // To normalize displaying value after 'format' for to not duplicating formatted value
-  parse?: (value: string, prev?: string) => string;
+  parse?: (value: string, prev?: string) => string
 }
 
 export function useInput(props: UseInputProps) {
@@ -78,9 +78,7 @@ export function useInput(props: UseInputProps) {
 
 	// Automatically clear error on focus
 	const handleFocus = (e: any) => {
-		if (typeof onFocus === 'function') {
-			onFocus(e)
-		}
+		if (typeof onFocus === 'function') onFocus(e)
 		setError('')
 	}
 
@@ -116,10 +114,10 @@ export function useInput(props: UseInputProps) {
 	}
 
   type Result = typeof result
-  return result as Result & TextFieldProps
+  return result as Result & TextFieldProps & any
 }
 
-export type useInputReturnValue = ReturnType<typeof useInput>;
+export type useInputReturnValue = ReturnType<typeof useInput>
 
 export const inputsHasError = (...inputs: useInputReturnValue[]) => {
 	const checked = inputs.map((input) => input.validate())

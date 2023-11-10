@@ -1,5 +1,4 @@
-import { ComponentChildren } from 'preact'
-import { useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 import GlobalStyles from '@mui/material/GlobalStyles'
 import { css, Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_createMuiStrictModeTheme } from '@mui/material/styles'
@@ -160,7 +159,7 @@ const theme = unstable_createMuiStrictModeTheme({
 	}
 })
 
-function ThemeProvider({ children }: { children: ComponentChildren }) {
+function ThemeProvider({ children }: { children: ReactNode }) {
 	const height = useResizeHeight()
 	useEffect(() => {
 		const vh = height * 0.01

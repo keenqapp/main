@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
-import Button from '@mui/material/Button'
+import Button, { ButtonProps } from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Input from '@mui/material/Input'
 import Typography from '@mui/material/Typography'
 
+import BeenhereTwoToneIcon from '@mui/icons-material/BeenhereTwoTone'
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
 import EditLocationTwoToneIcon from '@mui/icons-material/EditLocationTwoTone'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
@@ -17,7 +18,6 @@ import PhotoCameraTwoToneIcon from '@mui/icons-material/PhotoCameraTwoTone'
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
 import SupervisedUserCircleTwoToneIcon from '@mui/icons-material/SupervisedUserCircleTwoTone'
 import TagTwoToneIcon from '@mui/icons-material/TagTwoTone'
-import BeenhereTwoToneIcon from '@mui/icons-material/BeenhereTwoTone'
 
 import { $shouldRequest } from '@/services/location'
 import { useConfirm, useModal } from '@/services/modals'
@@ -125,7 +125,7 @@ function EmptyImages() {
 	)
 }
 
-const AddButton = styled(Button)`
+const AddButton = styled(Button)<ButtonProps>`
   position: absolute;
   bottom: 1rem;
   right: 1rem;
@@ -184,7 +184,6 @@ function Profile() {
 			maxLength: 24,
 		},
 		fullWidth: true,
-		// onChange: (_:any, name: string) => update(id, { name }),
 	})
 
 	const descriptionInput = useInput({
@@ -193,7 +192,6 @@ function Profile() {
 		multiline: true,
 		disableUnderline: true,
 		fullWidth: true,
-		// onChange: (_:any, description: string) => update(id, { description }),
 	})
 
 	const [ loading, setLoading ] = useState(false)

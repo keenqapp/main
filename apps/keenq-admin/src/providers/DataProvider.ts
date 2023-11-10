@@ -9,7 +9,7 @@ export default function useDataProvider() {
 	useEffect(() => {
 		const buildDataProvider = async () => {
 			const dataProvider = await buildHasuraProvider({
-				clientOptions: { uri: 'https://api.keenq.app/v1/graphql', headers: { 'x-hasura-admin-secret': import.meta.env.VITE_HASURA_SECRET } },
+				clientOptions: { uri: 'https://graphql.keenq.app/v1/graphql', headers: { 'x-hasura-admin-secret': import.meta.env.VITE_HASURA_SECRET } },
 			})
 			setDataProvider(() => dataProvider)
 		}
