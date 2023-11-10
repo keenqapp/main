@@ -83,17 +83,25 @@ function RoomInput() {
 		multiline: true,
 		maxRows: 3,
 		onFocus: () => {
+			console.log('--- RoomInput.tsx:86 -> onFocus -> ', isIOS())
 			if (!isIOS()) return
 			const r = document.querySelector(':root')
 			r?.style.setProperty('--main-position', 'fixed')
+			r?.style.setProperty('--safe-area', '0px')
 			r?.style.setProperty('--appbar-height', '0px')
 		},
-		onBlur: () => {
+		onBlur: (e: any) => {
+			// console.log('--- RoomInput.tsx:92 -> onBlur -> ', e)
+			// e.preventDefault()
 			if (!isIOS()) return
 			const r = document.querySelector(':root')
 			r?.style.setProperty('--main-position', 'relative')
+			r?.style.setProperty('--safe-area', '20px')
 			r?.style.setProperty('--appbar-height', '56px')
-		}
+		},
+		// onMouseDown: (e: any) => {
+		// 	e.preventDefault()
+		// }
 	})
 
 	useAsyncEffect(async () => {
@@ -202,11 +210,11 @@ function RoomInput() {
 							{imagesToAdd.toFlatArray().map(file => <RoomInputNewFile key={file.id} {...file} />)}
 						</Stack>
 						<Stack justify='stretch' gap={1} align='end'>
-							<IconButton color='secondary' onClick={open} ><AttachFileTwoToneIcon /></IconButton>
+							<IconButton color='secondary' onClick={open}><AttachFileTwoToneIcon /></IconButton>
 							<Input {...textInput} />
 							{sending
 								? <IconButton color='primary'><Loading size={'1.5rem'} /></IconButton>
-								: <IconButton color='primary' onClick={onSendClick}><SendTwoToneIcon /></IconButton>}
+								: <IconButton color='primary' onClick={onSendClick} onMouseDown={e => { e.preventDefault() }}><SendTwoToneIcon /></IconButton>}
 						</Stack>
 					</>
 				)}

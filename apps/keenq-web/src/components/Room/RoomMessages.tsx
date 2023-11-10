@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import styled from '@emotion/styled'
 import { useParams } from 'react-router-dom'
+import styled from '@emotion/styled'
 import { useSubscription } from 'urql'
 
 import type { IMessage } from '@/model/message'

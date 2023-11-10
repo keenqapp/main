@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { MouseEventHandler, useCallback } from 'react'
 import { useStore } from '@nanostores/react'
 import { atom, map } from 'nanostores'
 
@@ -81,7 +81,7 @@ export function useModal<N extends ModalKeys>(name: N, options?: UseModalOptions
 		params: params as ModalParams<N>,
 		isOpen,
 		on,
-		open,
+		open: open as typeof open & MouseEventHandler,
 		close,
 		closeAll
 	}

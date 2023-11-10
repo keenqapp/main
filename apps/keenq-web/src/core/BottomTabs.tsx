@@ -22,7 +22,7 @@ import { isIOS, isPWA } from '@/utils/utils'
 
 const Nav = styled(BottomNavigation)`
   position: fixed;
-  bottom: ${isIOS() && isPWA() ? '20px' : '0'};
+  bottom: ${isIOS() && isPWA() ? 'var(--safe-area)' : '0'};
   left: 0;
   right: 0;
   background-color: rgba(255, 255, 255, 0.33);

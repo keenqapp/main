@@ -37,6 +37,7 @@ const globalStyles = css`
 		--appbar-height: 56px;
     --vertical-space: 44px;
     --main-position: relative;
+    --safe-area: 20px;
   }
   html {
     box-sizing: border-box;
