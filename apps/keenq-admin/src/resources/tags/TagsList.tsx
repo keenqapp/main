@@ -1,11 +1,41 @@
-import { Datagrid, DeleteButton, EditButton, List, SearchInput, TextField, useRecordContext } from 'react-admin'
+import {
+	Datagrid,
+	DeleteButton,
+	EditButton,
+	List,
+	SearchInput,
+	TextField,
+	useGetOne,
+	useRecordContext,
+	useUpdate } from 'react-admin'
 
-import Chip from '@mui/material/Chip'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+
+import Stack from '@/components/Stack.tsx'
 
 
 function TagsField() {
 	const record = useRecordContext()
-	return record.type.map((type: string) => <Chip key={type} label={type} />)
+	const [ update ] = useUpdate()
+	const { refetch } = useGetOne('tags', { id: record.id }, { enabled: false })
+
+	const onChange = async (e: any) => {
+		await update('tags', { id: record.id, data: { type: e.target.value } })
+		await refetch()
+	}
+
+	return (
+		<Select
+			multiple
+			value={record.type}
+			onChange={onChange}
+			style={{ minWidth: 200 }}
+		>
+			<MenuItem value='sensual'>Sensual</MenuItem>
+			<MenuItem value='interest'>Interest</MenuItem>
+		</Select>
+	)
 }
 
 
@@ -20,8 +50,10 @@ function TagsList() {
 				<TextField source='label' />
 				<TextField source='locale' />
 				<TagsField source='type' name='type' />
-				<EditButton />
-				<DeleteButton />
+				<Stack justify='end'>
+					<EditButton />
+					<DeleteButton />
+				</Stack>
 			</Datagrid>
 		</List>
 	)
