@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 
 import Button, { ButtonProps } from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
+import CircularProgress from '@mui/material/CircularProgress'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Input from '@mui/material/Input'
@@ -142,6 +143,7 @@ const SwiperContainer = styled.div`
 function Profile() {
 
 	const { t } = useTranslate()
+	const [ saving, setSaving ] = useState(false)
 
 	const {
 		id,
@@ -246,6 +248,8 @@ function Profile() {
 			description: descriptionInput.value,
 		}
 		update(id, data)
+		setSaving(true)
+		setTimeout(() => setSaving(false), 1000)
 	}
 
 	return (
@@ -347,7 +351,7 @@ function Profile() {
 					variant='contained'
 					fullWidth
 					onClick={save}
-					startIcon={<BeenhereTwoToneIcon />}
+					startIcon={saving ? <CircularProgress color='inherit' size='1rem' /> : <BeenhereTwoToneIcon />}
 				>{t`profile.save`}</Button>
 				<Space />
 				<Button

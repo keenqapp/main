@@ -5,6 +5,8 @@ import { css, Theme as MUITheme, ThemeProvider as MUIThemeProvider, unstable_cre
 
 import rawTheme from '@/ui/theme'
 
+import 'normalize.css'
+import 'system-font-css'
 import useResizeHeight from '@/hooks/useResizeHeight'
 
 
