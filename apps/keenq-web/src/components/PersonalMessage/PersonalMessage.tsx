@@ -1,8 +1,7 @@
-import { useState } from 'react'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { differenceInCalendarDays, isBefore, isToday, parseISO, startOfDay } from 'date-fns'
-import { SwipeEventData, useSwipeable } from 'react-swipeable'
+import { motion } from 'framer-motion'
 
 import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
@@ -23,7 +22,6 @@ import PersonalMessageTime from '@/components/PersonalMessage/PersonalMessageTim
 import { $messageReplyOrEditId } from '@/components/Room/RoomInput/state'
 
 import { formatDate } from '@/utils/formatters'
-import { useSwipe } from '@/hooks/useSwipe'
 
 
 const notSelfCss = css`
@@ -64,14 +62,12 @@ const selfCss = css`
   }
 `
 
-const MessageContainer = styled.div<{ isAuthor: boolean, isChannel: boolean, left: number }>`
-	padding: 0 1rem 0rem;
+const MessageContainer = styled(motion.div)<{ isAuthor: boolean, isChannel: boolean }>`
+	padding: 0 1rem 0;
   max-width: calc(100vw - ${p => p.isChannel ? 0 : 4}rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;
 	}
-	transform: translateX(${p => p.left}px);
-	will-change: transform;
 	${p => p.isAuthor ? selfCss : notSelfCss}
 `
 
@@ -95,35 +91,23 @@ function DateSeparator({ date, prevDate }: IMessage) {
 }
 
 function PersonalMessage(message: IMessage) {
-	const [ left, setLeft ] = useState(0)
 	const { authorId, content } = message
 	const { open } = useModal('message')
 	const isAuthor = useIsAuthor(authorId)
-	const { isChannel } = useCurrentRoom()
-
-	// const swipes = useSwipeable({
-	// 	onSwiping: (e: SwipeEventData) => {
-	// 		if (e.dir !== 'Left') return
-	// 		setLeft(e.deltaX)
-	// 		if (e.deltaX < -75) {
-	// 			setLeft(0)
-	// 			$messageReplyOrEditId.set({ mode: 'reply', id: message.id })
-	// 		}
-	// 	},
-	// 	onSwipedLeft: () => {
-	// 		setLeft(0)
-	// 	}
-	// })
-
-	const swipes = useSwipe({
-		onLeft: (e) => {
-			if (e.deltaX < -75) $messageReplyOrEditId.set({ mode: 'reply', id: message.id })
-		}
-	})
+	const { isChannel, isAdmin } = useCurrentRoom()
 
 	if (!content?.length) return null
 
 	const onMessageClick = () => open(message)
+
+	const end = (_: any, i: any) => {
+		if (i.offset.x < -30) $messageReplyOrEditId.set({ mode: 'reply', id: message.id })
+	}
+
+	const drag = () => {
+		if (!isChannel || (isChannel && isAdmin)) return { drag: 'x' }
+		return {}
+	}
 
 	return (
 		<>
@@ -134,8 +118,10 @@ function PersonalMessage(message: IMessage) {
 				isAuthor={isAuthor}
 				isChannel={isChannel}
 				onClick={onMessageClick}
-				left={left}
-				{...swipes}
+				dragSnapToOrigin
+				// style={{ x }}
+				onDragEnd={end}
+				{...drag()}
 			>
 				<Stack gap={0.5} align='end'>
 					<PersonalMessageAvatar {...message} />

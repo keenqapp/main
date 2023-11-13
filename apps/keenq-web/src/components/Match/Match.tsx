@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'

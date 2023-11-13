@@ -25,14 +25,14 @@ export function asReply(message?: IMessage) {
 
 function RoomInputReply() {
 	const messageReplyOrEditId = useStore($messageReplyOrEditId)
-	if (!messageReplyOrEditId.id) return null
 
 	const [ result ] = useQuery(messagegql, { id: messageReplyOrEditId.id })
 	const message = result.data?.messages_by_pk
-	if (!message) return null
 
 	const replay = asReply(message)
 	const isEdit = messageReplyOrEditId.mode === 'edit'
+
+	if (!messageReplyOrEditId.id) return null
 
 	return (
 		<Stack justify='start' gap={1}>
