@@ -57,8 +57,10 @@ async function ensureCredsAndMember(creds, phone, db) {
 		await db.table('credentials').insert({ phone, id, isTester: false })
 		await db.table('members').insert({ id, isTester: false })
 		await db.table('links').insert({ entityId: id, type: 'member', link: id  })
+		return true
 	}
 	if (creds?.bannedAt) throw 'Member is banned'
+	return false
 }
 
 async function save(phone, code, db) {
@@ -77,14 +79,14 @@ export default async function send(body, db) {
 		const { phone } = validate(body, schema)
 
 		const creds = await getCreds(phone, db)
-		await ensureCredsAndMember(creds, phone, db)
+		const isReg = await ensureCredsAndMember(creds, phone, db)
 
 		const provider = getProvider(phone)
 		const code = await provider.send()
 
 		await save(phone, code, db)
 
-		return success({ phone, code })
+		return success({ phone, isReg })
 	}
 	catch(e) {
 		return error(e)
