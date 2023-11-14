@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
+import styled from '@emotion/styled'
 
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
@@ -33,7 +33,7 @@ const Reactions = styled(Stack)`
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 `
 
-const StyledReaction = styled.div`
+const StyledReaction = styled.div<{ isSelected: boolean}>`
 	${p => p.isSelected && `background: ${theme.color.primaryLight};` };
 	padding: 0.5rem;
   border-radius: 8px;

@@ -15,6 +15,7 @@ import theme from '@/ui/theme'
 
 import PersonalMessageAvatar from '@/components/PersonalMessage/PersonalMessageAvatar'
 import PersonalMessageImages from '@/components/PersonalMessage/PersonalMessageImages'
+import PersonalMessageName from '@/components/PersonalMessage/PersonalMessageName'
 import PersonalMessageReactions from '@/components/PersonalMessage/PersonalMessageReactions'
 import PersonalMessageReply from '@/components/PersonalMessage/PersonalMessageReply'
 import PersonalMessageText from '@/components/PersonalMessage/PersonalMessageText'
@@ -26,6 +27,7 @@ import { formatDate } from '@/utils/formatters'
 
 const notSelfCss = css`
   align-self: flex-start;
+  // REFACTOR: put this to 'Wrap' component
 	& .PersonalMessageText {
     align-self: flex-start;
     border-radius: 1rem 1rem 1rem 0;
@@ -45,6 +47,7 @@ const notSelfCss = css`
 
 const selfCss = css`
   align-self: flex-end;
+	// REFACTOR: put this to 'Wrap' component
 	& .PersonalMessageText {
     align-self: flex-end;
     border-radius: 1rem 1rem 0 1rem;
@@ -76,6 +79,14 @@ const SeparateDate = styled.div`
 	padding-bottom: 1rem;
 `
 
+const Wrap = styled(Stack)`
+	padding: 0.5rem 0;
+	position: relative;
+	flex-direction: column;
+	gap: 0.5rem;
+	align-items: flex-start;
+`
+
 function DateSeparator({ date, prevDate }: IMessage) {
 	const { t } = useTranslate('messages')
 	const current = parseISO(date)
@@ -105,7 +116,7 @@ function PersonalMessage(message: IMessage) {
 	}
 
 	const drag = () => {
-		if (!isChannel || (isChannel && isAdmin)) return { drag: 'x' }
+		if (!isChannel || (isChannel && isAdmin)) return { drag: 'x' } as const
 		return {}
 	}
 
@@ -119,7 +130,6 @@ function PersonalMessage(message: IMessage) {
 				isChannel={isChannel}
 				onClick={onMessageClick}
 				dragSnapToOrigin
-				// style={{ x }}
 				onDragEnd={end}
 				{...drag()}
 			>
@@ -127,9 +137,12 @@ function PersonalMessage(message: IMessage) {
 					<PersonalMessageAvatar {...message} />
 					<Stack direction='column' gap={0.2} relative>
 						<PersonalMessageReply {...message} />
-						<PersonalMessageImages {...message} />
-						<PersonalMessageText {...message} />
-						<PersonalMessageReactions {...message} />
+						<Wrap className='PersonalMessageText'>
+							<PersonalMessageName {...message} />
+							<PersonalMessageImages {...message} />
+							<PersonalMessageText {...message} />
+							<PersonalMessageReactions {...message} />
+						</Wrap>
 						<PersonalMessageTime {...message} />
 					</Stack>
 				</Stack>
