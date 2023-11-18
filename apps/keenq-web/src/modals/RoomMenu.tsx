@@ -28,6 +28,7 @@ function RoomMenu() {
 	const { name, on } = useModal('room')
 	const { open: addMemberOpen } = useModal('addMemberToRoom')
 	const { open: openReport } = useModal('report')
+	const { open: openShare } = useModal('share')
 	const { confirm } = useConfirm()
 	const { id: memberId } = useCurrentMember()
 	const { id, isMember, isPersonal } = useCurrentRoom()
@@ -47,7 +48,9 @@ function RoomMenu() {
 		})
 	}
 
-	const shareClick = () => {}
+	const shareClick = () => {
+		openShare()
+	}
 
 	const roomClick = () => navigate(`/room/${id}/info`)
 	const profileClick = () => navigate(`/match/${id}`)

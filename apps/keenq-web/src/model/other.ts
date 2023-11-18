@@ -21,3 +21,11 @@ export interface ILocation {
 	latitude: number
 	timestamp: string
 }
+
+export interface ILink {
+	id: string
+	entityId: string
+	type: string
+	url: string
+	authorId: string
+}

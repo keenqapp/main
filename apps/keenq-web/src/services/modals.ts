@@ -30,7 +30,9 @@ const modalsInit = {
 	rooms: false,
 	createRoom: false,
 	install: false,
-	notifications: false
+	notifications: false,
+	share: false,
+	link: false,
 }
 
 export type ModalsState = typeof modalsInit

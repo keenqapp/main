@@ -14,7 +14,7 @@ import { json, timeout } from '@/utils/utils'
 export const $joinQueue = persistentAtom<Map<string, { id: string, link?: string }>>('$joinQueue', new Map(), json)
 // http://192.168.0.2:9001/room/keenq/sss/join
 
-$joinQueue.listen((value) => console.log('--- useShouldJoin.ts:19 ->  -> listen', value))
+// $joinQueue.listen((value) => console.log('--- useShouldJoin.ts:19 ->  -> listen', value))
 
 export default function useShouldJoin() {
 	const joinQueue = useStore($joinQueue)
@@ -33,12 +33,10 @@ export default function useShouldJoin() {
 	useAsyncEffect(async () => {
 		await timeout(1000)
 		if (shouldJoin && id) {
-			console.log('--- useShouldJoin.ts:36 ->  -> ', joinQueue, joinQueue.copyAdd(id, { id, link }))
 			if (!mid) $joinQueue.set(joinQueue.copyAdd(id, { id, link }))
 			else join({ memberId: mid, roomId: id, privateFor: id, link: link })
 		}
 		if (mid && joinQueue.size) {
-			console.log('--- useShouldJoin.ts:41 ->  -> ', 111)
 			joinQueue.forEach(async ({ id, link }) => {
 				join({ memberId: mid, roomId: id, privateFor: id, link: link })
 				$joinQueue.set(joinQueue.copyDelete(id))

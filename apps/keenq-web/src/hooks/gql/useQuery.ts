@@ -3,11 +3,14 @@ import { AnyVariables, useQuery as _useQuery, UseQueryArgs, UseQueryResponse } f
 import uuid from 'uuid-random'
 
 
-function usePrevious(value) {
+function usePrevious(value: any, debug?: string) {
 	const [ unique, setUnique ] = useState('')
-	const prev = useRef()
+	const prev = useRef<any>()
 	useEffect(() => {
-		if (!(value?.data === undefined && prev.current?.data === undefined) && equals(prev.current?.data, value?.data)) return
+		console.log('--- useQuery.ts:10 ->  -> 000', debug, value.stale)
+		console.log('--- useQuery.ts:10 ->  -> 111', debug, !(value?.data === undefined && prev.current?.data === undefined), equals(prev.current?.data, value?.data), !value.stale)
+		if (!(value?.data === undefined && prev.current?.data === undefined) && equals(prev.current?.data, value?.data) && !value.stale) return
+		console.log('--- useQuery.ts:11 ->  -> 222', debug, prev.current?.data, value?.data, equals(prev.current?.data, value?.data))
 		prev.current = value
 		setUnique(uuid())
 	}, [value])
@@ -20,13 +23,23 @@ export interface UseQueryOptions {
 	pause?: boolean
 }
 
-export function useQuery<D, V extends AnyVariables = AnyVariables>(query: UseQueryArgs<V, D>['query'], variables?: V | null, options?: UseQueryOptions): UseQueryResponse<D, V> | UseQueryResponse<D> {
+export function useQuery<D, V extends AnyVariables = AnyVariables>(query: UseQueryArgs<V, D>['query'], variables?: V | null, options?: UseQueryOptions, debug?: string): UseQueryResponse<D, V> | UseQueryResponse<D> {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	const [ _result, ...rest ] =  _useQuery({ query, ...(variables ? { variables } : {}), ...(options ? options : {}) })
-	const need = usePrevious(_result)
+	const need = usePrevious(_result, debug)
+
+	if (debug) {
+		console.log('--- useQuery.ts:34 -> useQuery -> need', debug, need)
+	}
+
 	const result = useMemo(() => _result, [ need ])
-	return [ result, ...rest ]
+
+	if (debug) {
+		console.log('--- useQuery.ts:34 -> useQuery -> result', debug, result.data)
+	}
+
+	return [ _result, ...rest ]
 }
 
 // export function useQuery<D, V extends AnyVariables = AnyVariables>(query: UseQueryArgs<V, D>['query'], variables?: V | null, options?: UseQueryOptions): UseQueryResponse<D, V> | UseQueryResponse<D> {

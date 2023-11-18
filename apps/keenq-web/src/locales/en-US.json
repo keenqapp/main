@@ -50,6 +50,10 @@
     "lang": "Language",
     "ru-RU": "Русский"
   },
+  "links": {
+    "copied": "Copied!",
+    "empty": "Nothing here yet"
+  },
   "location": {
     "chooseCity": "Search a city",
     "denied": "You have denied to share location",
@@ -193,8 +197,10 @@
   },
   "words": {
     "cancel": "Cancel",
+    "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
+    "empty": "Nothing here yet",
     "no": "No",
     "yes": "Yes"
   }
