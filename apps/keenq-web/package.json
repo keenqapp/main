@@ -77,5 +77,8 @@
     "vite-plugin-inspect": "^0.7.29",
     "vite-plugin-pwa": "^0.16.5",
     "vite-plugin-svgr": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
