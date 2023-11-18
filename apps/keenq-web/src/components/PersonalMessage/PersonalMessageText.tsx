@@ -65,8 +65,6 @@ function PersonalMessageText(message: IMessage) {
 			direction='column'
 			align='start'
 			gap={0.5}
-			// onMouseDown={preventSelection}
-			// onSelectStart={preventSelection}
 			wrap
 		>
 			{text ? <Parts text={text} mid={id} /> : null}

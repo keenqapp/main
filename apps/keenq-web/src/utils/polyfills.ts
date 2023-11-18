@@ -24,7 +24,7 @@ equals.any = any
 // @ts-ignore
 globalThis.equals = equals
 
-export interface Dict extends Object {
+export interface Dict {
   [key: string]: any
 }
 
@@ -33,6 +33,10 @@ declare global {
 	function pug(template: TemplateStringsArray): ReactNode
 
 	const equals: Equals
+
+	interface SerializableSet<T> extends Set<T> {
+		toJSON(): T[]
+	}
 
 	interface ArrayConstructor {
 		create(length: number): Array<number>;
@@ -208,3 +212,15 @@ async function checkStructureClone() {
 	}
 }
 checkStructureClone()
+
+
+class SerializableSet extends Set {
+	toJSON() {
+		console.log('--- polyfills.ts:214 -> toJSON -> ', 111)
+		return Array.from(this)
+	}
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+globalThis.SerializableSet = SerializableSet

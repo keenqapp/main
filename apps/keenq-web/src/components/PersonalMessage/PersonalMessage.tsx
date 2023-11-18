@@ -79,8 +79,8 @@ const SeparateDate = styled.div`
 	padding-bottom: 1rem;
 `
 
-const Wrap = styled(Stack)`
-	padding: 0.5rem 0;
+const Wrap = styled(Stack)<{ hasReactions: boolean }>`
+	padding: 0.5rem 0 ${p => p.hasReactions ? 1 : 0.5}rem;
 	position: relative;
 	flex-direction: column;
 	gap: 0.5rem;
@@ -102,7 +102,7 @@ function DateSeparator({ date, prevDate }: IMessage) {
 }
 
 function PersonalMessage(message: IMessage) {
-	const { authorId, content } = message
+	const { authorId, content, reactions } = message
 	const { open } = useModal('message')
 	const isAuthor = useIsAuthor(authorId)
 	const { isChannel, isAdmin } = useCurrentRoom()
@@ -137,7 +137,7 @@ function PersonalMessage(message: IMessage) {
 					<PersonalMessageAvatar {...message} />
 					<Stack direction='column' gap={0.2} relative>
 						<PersonalMessageReply {...message} />
-						<Wrap className='PersonalMessageText'>
+						<Wrap className='PersonalMessageText' hasReactions={reactions.length > 0}>
 							<PersonalMessageName {...message} />
 							<PersonalMessageImages {...message} />
 							<PersonalMessageText {...message} />

@@ -31,6 +31,7 @@ export interface IUseCurrentRoom {
 	isChannel: boolean
 	isPrivate: boolean
 	isPersonal: boolean
+	is404: boolean
 }
 
 export function useCurrentRoom() {
@@ -40,6 +41,7 @@ export function useCurrentRoom() {
 
 	const data = useMemo(() => {
 		const room = result.data?.rooms_by_pk || {} as IRoom
+		const is404 = room.id === undefined
 
 		const allMembers = result.data?.rooms_members || []
 		const allMembersIds = allMembers.map(rm => rm.memberId)
@@ -64,6 +66,7 @@ export function useCurrentRoom() {
 		const isPersonal = equals(room.type, 'personal')
 
 		return {
+			is404,
 			id,
 			room,
 			isMember,

@@ -4,6 +4,7 @@ import { useCurrentRoom } from '@/model/room'
 
 import IfElse from '@/ui/IfElse'
 
+import NoRoom from '@/components/Room/NoRoom'
 import PersonalRoomHeader from '@/components/Room/PersonalRoomHeader'
 import RoomBanned from '@/components/Room/RoomBanned'
 import RoomBottom from '@/components/Room/RoomBottom'
@@ -18,7 +19,8 @@ const StyledContainer = styled.div`
 `
 
 function Room() {
-	const { isBanned, isPersonal } = useCurrentRoom()
+	const { isBanned, isPersonal, is404 } = useCurrentRoom()
+	if (is404) return <NoRoom />
 	return (
 		<StyledContainer data-testid='Room'>
 			<IfElse cond={isPersonal}>

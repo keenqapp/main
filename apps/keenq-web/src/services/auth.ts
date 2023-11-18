@@ -15,9 +15,7 @@ const authKeys = {
 
 export const $id = persistentAtom<string>(authKeys.id, '')
 export const $isAuthed = computed($id, id => !!id)
-
 export const $accessToken = persistentAtom<string>(authKeys.accessToken, anonAccessToken)
-
 export const $authError = atom<string|null>(null)
 
 const sendgql = gql`

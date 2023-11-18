@@ -13,7 +13,6 @@ import VolumeUpTwoToneIcon from '@mui/icons-material/VolumeUpTwoTone'
 import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
-import { getidgql } from '@/model/gql'
 import { useCurrentMember } from '@/model/member'
 import { createroomgql } from '@/model/room'
 import { insertjoinroom } from '@/model/rooms_members'
@@ -21,11 +20,12 @@ import { insertjoinroom } from '@/model/rooms_members'
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
 import Drawer from '@/ui/Drawer'
-import Stack from '@/ui/Stack'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
-import { useInsert, useQuery } from '@/hooks/gql'
+import { useInsert } from '@/hooks/gql'
 import { inputsHasError, isNotEmpty, useInput } from '@/hooks/useInput'
+import { getId } from '@/utils/utils'
 
 
 function CreateRoomModal() {
@@ -34,7 +34,6 @@ function CreateRoomModal() {
 	const { id: memberId } = useCurrentMember()
 	const { name, open, on } = useModal('createRoom')
 	const [ type, setType ] = useState('private')
-	const [ result ] = useQuery(getidgql)
 	const [ , create ] = useInsert(createroomgql)
 	const [ , join ] = useInsert(insertjoinroom)
 
@@ -52,8 +51,7 @@ function CreateRoomModal() {
 
 	const click = async () => {
 		if (inputsHasError(nameInput)) return
-		const id = result.data?.getid.data.id
-		if (!id) return
+		const id = getId()
 		const object = {
 			id,
 			name: nameInput.value,

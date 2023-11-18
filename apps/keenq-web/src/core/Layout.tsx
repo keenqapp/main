@@ -16,6 +16,7 @@ import Text from '@/ui/Text'
 import Appbar from '@/core/Appbar'
 import BottomTabs from '@/core/BottomTabs'
 import { usePreload } from '@/hooks/usePreload'
+import useShouldJoin from '@/hooks/useShouldJoin'
 import Modals from '@/modals/Modals'
 import { isIOS, isPWA } from '@/utils/utils'
 
@@ -45,11 +46,12 @@ function Page404() {
 
 function Layout() {
 	const isAuthed = useStore($isAuthed)
-	const error = useRouteError()
-
-	if (!isAuthed) return <Navigate to='/auth/login' />
+	const error: any = useRouteError()
+	useShouldJoin()
 	const is404 = useMemo(() => error?.status === 404, [error])
 	const loading = usePreload()
+
+	if (!isAuthed) return <Navigate to='/auth/login' />
 
 	return (
 		<Wrap data-testid='Layout' isIOS={isIOS()} isPWA={isPWA()}>

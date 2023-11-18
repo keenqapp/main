@@ -1,4 +1,5 @@
 import { cloneElement, ReactNode } from 'react'
+import { customAlphabet } from 'nanoid'
 
 import { Entity, UID } from '@/types/utility'
 
@@ -36,11 +37,13 @@ export function map<Input, Output>(fn: (input: Input) => Output) {
 // 	return (input: any[]) => console.log('--- utils.ts:36 ->  ->', key, _groupBy(input))
 // }
 
-export function toComponent<Input extends Entity>(render: (item: Input, index: number) => ReactNode<Input>) {
+export function toComponent<Input extends Entity>(render: (item: Input, index: number) => ReactNode) {
 	return (input: Input[]) => input
 		.map((item: Input, index: number) => {
 			const component = render(item, index)
 			if (!component) return null
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
 			return cloneElement(component, { key: item.id })
 		})
 		.filter(Boolean)
@@ -103,9 +106,34 @@ export function loadScript(src: string, position: HTMLElement | null, id: string
 	position.appendChild(script)
 }
 
+function reviver(key: string, value: unknown) {
+	if (key === ''
+		&& typeof value === 'object'
+		&& value !== null
+		&& !Array.isArray(value)
+		// eslint-disable-next-line no-prototype-builtins
+		&& value.hasOwnProperty('$')
+	) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		return new Map(Object.entries(value['$']))
+	}
+	// if (key.startsWith('$')) {
+	// 	if (typeof value === 'object' && value !== null && !Array.isArray(value)) return new Map(Object.entries(value))
+	// 	if (Array.isArray(value)) return new Set(value)
+	// }
+	return value
+}
+
+function replacer(key: string, value: unknown) {
+	if (value instanceof Map && key !== '$') return { $: Object.fromEntries(value) }
+	if (value instanceof Set) return Array.from(value)
+	return value
+}
+
 export const json = {
-	encode: JSON.stringify,
-	decode: JSON.parse,
+	encode: (v: unknown) => JSON.stringify(v, replacer),
+	decode: (v: string) => JSON.parse(v, reviver),
 }
 
 export function isIOS() {
@@ -122,4 +150,13 @@ export function isIOS() {
 
 export function isPWA() {
 	return window.matchMedia('(display-mode: standalone)').matches
+}
+
+export function getId() {
+	const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+	return customAlphabet(alphabet, 8)()
+}
+
+export async function timeout(duration: number) {
+	return new Promise(resolve => setTimeout(resolve, duration))
 }

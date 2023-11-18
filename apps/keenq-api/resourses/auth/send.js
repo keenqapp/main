@@ -8,7 +8,7 @@ import { success, error, validate, getId, isTestPhone } from '../../shared.js'
 const url = (phone, code) => `https://sms.ru/sms/send?api_id=A80649CB-0FF7-B273-E2A3-64F7CCFE904D&to=${phone}&msg=Код+для+входа+в+ваш+keenq:+${code}&json=1`
 
 const schema = object({
-	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
+	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid')
 })
 
 function fromTo(min, max) {
@@ -50,7 +50,7 @@ async function getCreds(phone, db) {
 		.first()
 }
 
-async function ensureCredsAndMember(creds, phone, db) {
+async function ensureCredsAndMember({ creds, phone, db }) {
 	if (!creds) {
 		const isTester = isTestPhone(phone)
 		const id = getId()
@@ -79,14 +79,14 @@ export default async function send(body, db) {
 		const { phone } = validate(body, schema)
 
 		const creds = await getCreds(phone, db)
-		const isReg = await ensureCredsAndMember(creds, phone, db)
+		await ensureCredsAndMember({ creds, phone, db })
 
 		const provider = getProvider(phone)
 		const code = await provider.send()
 
 		await save(phone, code, db)
 
-		return success({ phone, isReg })
+		return success({ phone })
 	}
 	catch(e) {
 		return error(e)

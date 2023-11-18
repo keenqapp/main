@@ -135,6 +135,7 @@
     "makeOwner": "Make owner",
     "members": "members",
     "mute": "Mute",
+    "noRoom": "Such room not found",
     "remove": "Remove",
     "room": "Room",
     "share": "Share",
