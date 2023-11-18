@@ -23,7 +23,7 @@ function LinkMenu() {
 	const { t } = useTranslate()
 	const { name, params } = useModal('link')
 
-	const { url, entityId }: ILink = params
+	const { url, entityId }: Partial<ILink> = params
 
 	const click = async () => {
 		try {
