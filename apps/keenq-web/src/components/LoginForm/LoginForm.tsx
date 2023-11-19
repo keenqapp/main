@@ -17,6 +17,7 @@ import { $authError, useSend, useVerify } from '@/services/auth'
 import { useTranslate } from '@/services/translate'
 
 import Container from '@/ui/Container'
+import IfElse from '@/ui/IfElse'
 import Space from '@/ui/Space'
 
 import { inputsHasError, isNotEmpty, useInput, Validator, withErrorText } from '@/hooks/useInput'
@@ -38,7 +39,8 @@ function format(s: string, _: any) {
 
 const e: Validator = (i: string) => {
 	const err = withErrorText(isNotEmpty, 'auth.inputEmpty')
-	return err(i.replace('+', ''))
+	// return err(i.replace('+', ''))
+	return err(i)
 }
 
 function LoginForm() {
@@ -75,7 +77,8 @@ function LoginForm() {
 	})
 
 	const handleChange = ( _: any, code: string) => {
-		if (code.length === 4) {
+		const isRU = phoneInput.value.startsWith('+7')
+		if (code.length === (isRU ? 4 : 6)) {
 			setTimeout(() => {
 				codeInput.value = code
 				codeInput.inputRef.current.blur()
@@ -95,7 +98,7 @@ function LoginForm() {
 			pattern: '[0-9]*',
 		},
 		placeholder: t`auth.wasSent`,
-		validation: [isNotEmpty, e],
+		validation: [ isNotEmpty ],
 		error: authError,
 		onChange: handleChange,
 		onFocus: () => $authError.set(null)
@@ -132,41 +135,39 @@ function LoginForm() {
 				<Space height={2} />
 				<Card>
 					<StyledCardContent>
-						{!codeSent
-							? (
-								<>
-									<TextField {...phoneInput} />
-									<Space height={2} />
-									<Stack>
-										<LoadingButton
-											id='send-code-button'
-											onClick={onCodeSent}
-											loading={loading}
-											variant='outlined'
-										>{t`auth.send`}</LoadingButton>
-									</Stack>
-								</>
-							)
-							: (
-								<>
-									<TextField {...codeInput} />
-									<Space height={2} />
-									<Stack gap={2} alignItems='center'>
-										<LoadingButton
-											onClick={onVerify}
-											loading={loading}
-											variant='outlined'
-											fullWidth
-										>{t`auth.verify`}</LoadingButton>
-										<Button
-											color='secondary'
-											onClick={onRetry}
-											startIcon={<ChevronLeftTwoToneIcon />}
-											size='small'
-										>{t`auth.another`}</Button>
-									</Stack>
-								</>
-							)}
+						<IfElse cond={!codeSent}>
+							<>
+								<TextField {...phoneInput} />
+								<Space height={1} />
+								<Stack>
+									<LoadingButton
+										id='send-code-button'
+										onClick={onCodeSent}
+										loading={loading}
+										variant='outlined'
+									>{t`auth.send`}</LoadingButton>
+								</Stack>
+							</>
+							<>
+								<TextField {...codeInput} />
+								<Space height={0.5} />
+								<Stack gap={2} alignItems='center'>
+									<LoadingButton
+										id='send-code-button'
+										onClick={onVerify}
+										loading={loading}
+										variant='outlined'
+										fullWidth
+									>{t`auth.verify`}</LoadingButton>
+									<Button
+										color='secondary'
+										onClick={onRetry}
+										startIcon={<ChevronLeftTwoToneIcon />}
+										size='small'
+									>{t`auth.another`}</Button>
+								</Stack>
+							</>
+						</IfElse>
 					</StyledCardContent>
 				</Card>
 			</StyledStack>

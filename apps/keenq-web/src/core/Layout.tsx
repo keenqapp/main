@@ -8,6 +8,7 @@ import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
+import IfElse from '@/ui/IfElse'
 import Loadable from '@/ui/Loadable'
 import Space from '@/ui/Space'
 import Stack from '@/ui/Stack'
@@ -19,7 +20,6 @@ import { usePreload } from '@/hooks/usePreload'
 import useShouldJoin from '@/hooks/useShouldJoin'
 import Modals from '@/modals/Modals'
 import { isIOS, isPWA } from '@/utils/utils'
-import IfElse from '@/ui/IfElse'
 
 
 const Main = styled.main`
@@ -51,8 +51,6 @@ function Layout() {
 	const joining = useShouldJoin()
 	const is404 = useMemo(() => error?.status === 404, [error])
 	const loading = usePreload()
-
-	console.log('--- Layout.tsx:54 -> Layout -> ', joining, is404)
 
 	if (!isAuthed) return <Navigate to='/auth/login' />
 
