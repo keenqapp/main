@@ -48,7 +48,7 @@ function ShareDrawer() {
 	const { id: entityId } = useCurrentRoom()
 
 	const where = { type: { _eq: 'room' }, entityId: { _eq: entityId } }
-	const [ result, refetch ] = useQuery(linksgql, { where }, options, '=HERE=')
+	const [ result, refetch ] = useQuery(linksgql, { where }, options)
 	const [ , insert] = useInsert(insertlinksgql)
 	const [ , _remove ] = useMutation(removelinksgql)
 
@@ -69,7 +69,9 @@ function ShareDrawer() {
 		refetch()
 	}
 
-	const click = (id: string, url: string) => {
+	const click = (id: string | any, url: string) => {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		open({ id, type: 'room', entityId, url, authorId })
 	}
 

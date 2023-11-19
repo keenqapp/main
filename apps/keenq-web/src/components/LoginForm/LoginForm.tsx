@@ -19,7 +19,7 @@ import { useTranslate } from '@/services/translate'
 import Container from '@/ui/Container'
 import Space from '@/ui/Space'
 
-import { inputsHasError, isNotEmpty, useInput } from '@/hooks/useInput'
+import { inputsHasError, isNotEmpty, useInput, Validator, withErrorText } from '@/hooks/useInput'
 import { asYouType } from '@/utils/formatters'
 
 
@@ -34,6 +34,11 @@ const StyledStack = styled(Stack)`
 
 function format(s: string, _: any) {
 	return asYouType(s)
+}
+
+const e: Validator = (i: string) => {
+	const err = withErrorText(isNotEmpty, 'auth.inputEmpty')
+	return err(i.replace('+', ''))
 }
 
 function LoginForm() {
@@ -61,9 +66,10 @@ function LoginForm() {
 		fullWidth: true,
 		variant: 'outlined',
 		placeholder: t`auth.number`,
+		translation: t,
 		type: 'tel',
 		format: format,
-		validation: [isNotEmpty],
+		validation: [e],
 		error: authError,
 		onFocus: () => $authError.set(null),
 	})
@@ -83,12 +89,13 @@ function LoginForm() {
 		fullWidth: true,
 		variant: 'outlined',
 		type: 'text',
+		translation: t,
 		inputProps: {
 			inputmode:'numeric',
 			pattern: '[0-9]*',
 		},
 		placeholder: t`auth.wasSent`,
-		validation: [isNotEmpty],
+		validation: [isNotEmpty, e],
 		error: authError,
 		onChange: handleChange,
 		onFocus: () => $authError.set(null)

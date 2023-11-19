@@ -15,6 +15,8 @@
   "auth": {
     "another": "Use another phone number",
     "code": "Code",
+    "error": "We have an error",
+    "inputEmpty": "Input shouldn't be empty",
     "number": "Your phone number",
     "phone": "Phone",
     "send": "Send code",

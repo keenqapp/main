@@ -3,14 +3,11 @@ import { AnyVariables, useQuery as _useQuery, UseQueryArgs, UseQueryResponse } f
 import uuid from 'uuid-random'
 
 
-function usePrevious(value: any, debug?: string) {
+function usePrevious(value: any, _?: string) {
 	const [ unique, setUnique ] = useState('')
 	const prev = useRef<any>()
 	useEffect(() => {
-		console.log('--- useQuery.ts:10 ->  -> 000', debug, value.stale)
-		console.log('--- useQuery.ts:10 ->  -> 111', debug, !(value?.data === undefined && prev.current?.data === undefined), equals(prev.current?.data, value?.data), !value.stale)
 		if (!(value?.data === undefined && prev.current?.data === undefined) && equals(prev.current?.data, value?.data) && !value.stale) return
-		console.log('--- useQuery.ts:11 ->  -> 222', debug, prev.current?.data, value?.data, equals(prev.current?.data, value?.data))
 		prev.current = value
 		setUnique(uuid())
 	}, [value])

@@ -25,7 +25,7 @@ function RoomJoin() {
 
 	const onJoinClick = () => {
 		ask()
-		if (isSoftDeleted) updateJoin({ memberId: mid, roomId: rid })
+		if (isSoftDeleted) updateJoin({ memberId: mid, roomId: rid, deletedAt: null })
 		else insertJoin({ memberId: mid, roomId: rid, privateFor: rid })
 	}
 

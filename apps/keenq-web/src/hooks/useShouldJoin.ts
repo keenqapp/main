@@ -9,6 +9,7 @@ import { insertjoinroom } from '@/model/rooms_members'
 import { useInsert } from '@/hooks/gql'
 import useAsyncEffect from '@/hooks/useAsyncEffect'
 import { json, timeout } from '@/utils/utils'
+import { useState } from 'react'
 
 
 export const $joinQueue = persistentAtom<Map<string, { id: string, link?: string }>>('$joinQueue', new Map(), json)
@@ -17,6 +18,7 @@ export const $joinQueue = persistentAtom<Map<string, { id: string, link?: string
 // $joinQueue.listen((value) => console.log('--- useShouldJoin.ts:19 ->  -> listen', value))
 
 export default function useShouldJoin() {
+	const [ loading, setLoading ] = useState(false)
 	const joinQueue = useStore($joinQueue)
 	const { link, id } = useParams()
 	const { id: mid } = useCurrentMember()
@@ -26,8 +28,10 @@ export default function useShouldJoin() {
 	const [ , insertAction ] = useInsert(insertactiongql)
 
 	async function join({ memberId, roomId, privateFor, link }: { memberId: string, roomId: string, privateFor: string, link?: string }) {
-		const { data } = await insertJoin({ memberId, roomId, privateFor })
-		if (data) insertAction({ type: 'joinRoom', value: { link, memberId } })
+		setLoading(true)
+		const { data } = await insertJoin({ memberId, roomId, privateFor, deletedAt: null })
+		if (data) await insertAction({ type: 'joinRoom', value: { link, memberId } })
+		setLoading(false)
 	}
 
 	useAsyncEffect(async () => {
@@ -53,4 +57,6 @@ export default function useShouldJoin() {
 			}
 		}
 	}, [ mid ])
+
+	return loading
 }

@@ -13,7 +13,7 @@ export const leaveroom = gql`
 
 export const insertjoinroom = gql`
 	mutation InsertJoinRoom($object: rooms_members_insert_input!) {
-		insert_rooms_members_one(object: $object) {
+		insert_rooms_members_one(object: $object, on_conflict: {constraint: rooms_members_memberId_privateFor_key, where: {role: {_neq: "banned"}}, update_columns: deletedAt }) {
 			id
 		}
 	}

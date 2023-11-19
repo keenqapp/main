@@ -1,7 +1,7 @@
 // UTILS
 
 export interface Validator {
-  (...args: unknown[]): boolean;
+  (...args: any[]): boolean;
   errorText?: string;
 }
 

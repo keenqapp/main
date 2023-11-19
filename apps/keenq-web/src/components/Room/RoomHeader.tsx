@@ -54,7 +54,7 @@ function RoomHeader() {
 	const isPersonal = $isPersonal(room)
 
 	const navigate = useNavigate()
-	const onBack = () => navigate(-1)
+	const onBack = () => navigate('/room')
 
 	const onMenuClick = () => !isBanned && open()
 	const onNameClick = () => {

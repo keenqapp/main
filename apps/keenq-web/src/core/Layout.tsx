@@ -19,6 +19,7 @@ import { usePreload } from '@/hooks/usePreload'
 import useShouldJoin from '@/hooks/useShouldJoin'
 import Modals from '@/modals/Modals'
 import { isIOS, isPWA } from '@/utils/utils'
+import IfElse from '@/ui/IfElse'
 
 
 const Main = styled.main`
@@ -47,20 +48,23 @@ function Page404() {
 function Layout() {
 	const isAuthed = useStore($isAuthed)
 	const error: any = useRouteError()
-	useShouldJoin()
+	const joining = useShouldJoin()
 	const is404 = useMemo(() => error?.status === 404, [error])
 	const loading = usePreload()
+
+	console.log('--- Layout.tsx:54 -> Layout -> ', joining, is404)
 
 	if (!isAuthed) return <Navigate to='/auth/login' />
 
 	return (
 		<Wrap data-testid='Layout' isIOS={isIOS()} isPWA={isPWA()}>
-			<Loadable loading={loading && !is404} fullHeight>
+			<Loadable loading={(loading || joining) && !is404} fullHeight>
 				<Appbar />
 				<Main>
-					{is404
-						? <Page404 />
-						: <Outlet />}
+					<IfElse cond={is404}>
+						<Page404 />
+						<Outlet />
+					</IfElse>
 				</Main>
 				<BottomTabs />
 				<Modals />
