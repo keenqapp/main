@@ -1,6 +1,7 @@
 import http from 'axios'
 import { object, string } from 'yup'
 import client from 'twilio'
+import jwt from 'jsonwebtoken'
 
 import { success, error, validate, getId, isTestPhone } from '../../shared.js'
 
@@ -8,7 +9,8 @@ import { success, error, validate, getId, isTestPhone } from '../../shared.js'
 const url = (phone, code) => `https://sms.ru/sms/send?api_id=A80649CB-0FF7-B273-E2A3-64F7CCFE904D&to=${phone}&msg=Код+для+входа+в+ваш+keenq:+${code}&json=1`
 
 const schema = object({
-	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid')
+	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
+	token: string()
 })
 
 function fromTo(min, max) {
@@ -74,9 +76,14 @@ async function save(phone, code, db) {
 		.merge()
 }
 
+async function checkToken() {
+
+}
+
 export default async function send(body, db) {
 	try {
-		const { phone } = validate(body, schema)
+		const { phone, token } = validate(body, schema)
+
 
 		const creds = await getCreds(phone, db)
 		await ensureCredsAndMember({ creds, phone, db })

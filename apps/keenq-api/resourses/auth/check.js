@@ -1,21 +1,14 @@
 import jwt from 'jsonwebtoken'
-import { object, string, number } from 'yup'
-import client from 'twilio'
+import { object, string } from 'yup'
+import axios from 'axios'
 
 import { ensureCreds, success, error, validate, isTestPhone } from '../../shared.js'
 
 
 const schema = object({
 	phone: string().required().matches(/^\+[1-9]\d{10,14}$/, 'Phone number is not valid'),
-	code: string().required()
+	token: string().required()
 })
-
-function getProvider() {
-	return client(
-		process.env.TWILIO_ACCOUNT_SID,
-		process.env.TWILIO_AUTH_TOKEN
-	)
-}
 
 async function getCreds(phone, db) {
 	try {
@@ -31,30 +24,17 @@ async function getCreds(phone, db) {
 	}
 }
 
-async function checkCode(to, code, provider, db) {
-	if (isTestPhone(to)) return true
+const URL = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com'
 
-	const saved = await db.table('codes').select().where('phone', to).first()
-	if (!saved) throw { reason: 'error.noSaved' }
-	const savedCode = String(saved.code)
-
-	let success = false
-	if (savedCode.length === 4) {
-		if (savedCode === String(code)) success = true
-	}
-	else {
-		const result = await provider
-			.verify.v2.services(process.env.TWILIO_SERVICE_SID)
-			.verificationChecks
-			.create({ to, code })
-		if (result.status === 'approved') success = true
-	}
-	if (!success) throw { reason: 'error.wrongCreds' }
-	await db.table('codes').where('phone', to).del()
+async function checkToken(phone, token, db) {
+	if (isTestPhone(phone)) return true
+	const keys = Object.values((await axios.get(URL))?.data)
+	const result = jwt.verify(token, Buffer.from(keys[0]))
+	if (phone !== result.phone_number) throw { reason: 'auth.wrongCode' }
 	await db
 		.table('credentials')
 		.update({ verified: true, lastLoginAt: new Date().toISOString() })
-		.where('phone', to)
+		.where('phone', phone)
 		.where('deletedAt', null)
 }
 
@@ -82,15 +62,14 @@ async function generateJWT(user) {
 	}
 }
 
-export default async function verify(body, db) {
+export default async function check(body, db) {
 	try {
-		const { phone, code } = validate(body, schema)
+		const { phone, token } = validate(body, schema)
 
 		const creds = await getCreds(phone, db)
 		await ensureCreds(creds, phone)
 
-		const provider = getProvider()
-		await checkCode(phone, code, provider, db)
+		await checkToken(phone, token, db)
 
 		const accessToken = await generateJWT(creds)
 
