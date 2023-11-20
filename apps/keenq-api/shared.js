@@ -29,6 +29,19 @@ export function ensureCreds(creds, uid) {
 	if (creds?.bannedAt) throw { error: 'error.wrongCreds', reason: `${uid} is banned`  }
 }
 
+export async function ensureCredsAndMember({ creds, phone, db }) {
+	if (creds?.bannedAt) throw { reason: 'Member is banned' }
+	if (!creds) {
+		const isTester = isTestPhone(phone)
+		const id = getId()
+		await db.table('credentials').insert({ phone, id, isTester: false })
+		await db.table('members').insert({ id, isTester: false })
+		await db.table('links').insert({ entityId: id, type: 'member', url: id, authorId: 'keenq-api-check'  })
+		return true
+	}
+	return false
+}
+
 export function success(data) {
 	const total = Array.isArray(data) ? data.length : 1
 	return { success: true, total, data, ...(data ? { id: data?.id || data[0]?.id } : {}) }

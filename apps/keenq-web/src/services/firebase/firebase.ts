@@ -1,6 +1,9 @@
 import { initializeApp } from 'firebase/app'
 import { ConfirmationResult, getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+
 import { $authError } from '@/services/auth'
+
+import { timeout } from '@/utils/utils'
 
 
 const config = {
@@ -26,9 +29,10 @@ export async function send(phone: string) {
 		$phone = phone
 		return true
 	}
-	catch(e) {
+	catch(e: any) {
 		console.error('--- firebase.ts:33 -> send -> ', e)
-		$authError.set('auth.wrongPhone')
+		if (e.code === 'auth/too-many-requests') $authError.set('auth.tooManyRequests')
+		else $authError.set('auth.wrongPhone')
 		return false
 	}
 }
@@ -40,6 +44,7 @@ export async function verify(phone: string, code: string) {
 	}
 	try {
 		const result: any = await $result?.confirm(code)
+		await timeout(10)
 		return result?.user?.accessToken as string
 	}
 	catch(e) {

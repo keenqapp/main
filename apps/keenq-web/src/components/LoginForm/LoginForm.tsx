@@ -126,6 +126,9 @@ function LoginForm() {
 		setLoading(false)
 		phoneInput.onClear()
 		codeInput.onClear()
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		window.grecaptcha.reset()
 	}
 
 	return (

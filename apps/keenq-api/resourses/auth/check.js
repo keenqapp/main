@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { object, string } from 'yup'
 import axios from 'axios'
 
-import { ensureCreds, success, error, validate, isTestPhone } from '../../shared.js'
+import { ensureCreds, success, error, validate, isTestPhone, ensureCredsAndMember } from '../../shared.js'
 
 
 const schema = object({
@@ -28,8 +28,9 @@ const URL = 'https://www.googleapis.com/robot/v1/metadata/x509/securetoken@syste
 
 async function checkToken(phone, token, db) {
 	if (isTestPhone(phone)) return true
-	const keys = Object.values((await axios.get(URL))?.data)
-	const result = jwt.verify(token, Buffer.from(keys[0]))
+	const kid = jwt.decode(token, { complete: true })?.header.kid
+	const key = (await axios.get(URL))?.data?.[kid]
+	const result = jwt.verify(token, Buffer.from(key))
 	if (phone !== result.phone_number) throw { reason: 'auth.wrongCode' }
 	await db
 		.table('credentials')
@@ -67,7 +68,7 @@ export default async function check(body, db) {
 		const { phone, token } = validate(body, schema)
 
 		const creds = await getCreds(phone, db)
-		await ensureCreds(creds, phone)
+		await ensureCredsAndMember({ creds, phone, db })
 
 		await checkToken(phone, token, db)
 
