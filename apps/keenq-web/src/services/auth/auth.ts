@@ -43,7 +43,7 @@ async function apiVerify(phone: string, code: string, verify: any) {
 async function apiToken(phone: string, code: string, check: any) {
 	const token = await fbverify(phone, code)
 	const { data } = await check({ phone, token })
-	if (data?.verify?.success) {
+	if (data?.check?.success) {
 		$accessToken.set(data.check.data.accessToken)
 		$id.set(data.check.data.id)
 	}

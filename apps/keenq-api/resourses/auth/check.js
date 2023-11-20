@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import { object, string } from 'yup'
 import axios from 'axios'
 
-import { ensureCreds, success, error, validate, isTestPhone, ensureCredsAndMember } from '../../shared.js'
+import { success, error, validate, isTestPhone, ensureCredsAndMember } from '../../shared.js'
 
 
 const schema = object({
