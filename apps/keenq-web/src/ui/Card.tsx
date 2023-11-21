@@ -22,6 +22,7 @@ const colors = {
 
 const StyledCard = styled(MUICard)<{ color?: keyof typeof colors }>`
 	background: ${p => colors[p.color as any] || theme.color.primaryVeryLight};
+	align-self: stretch;
 `
 
 interface CardProps {

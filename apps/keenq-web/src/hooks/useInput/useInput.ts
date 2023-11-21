@@ -23,7 +23,7 @@ export interface UseInputProps extends Dict {
   validation?: Validator | Validator[]
   placeholder?: string
   helperText?: string
-  translation?: (value: unknown) => string
+  translation?: any
 	forceValid?: boolean
 
   // To change displaying value in <input>
@@ -44,7 +44,7 @@ export function useInput(props: UseInputProps) {
 		forceValid,
 		placeholder = '',
 		helperText,
-		translation = (input) => input as string,
+		translation = (input: any) => input as string,
 		format = (input) => input,
 		parse = (input) => input,
 		error: externalError,
