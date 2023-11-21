@@ -63,7 +63,7 @@ function getPayload(member) {
 		sub: member.id,
 		iat: Math.floor(Date.now() / 1000),
 		aud: 'keenq-web',
-		iss: 'keenq-api',
+		iss: 'keenq-functions',
 		'https://hasura.io/jwt/claims': {
 			'X-Hasura-User-Id': member.id,
 			'X-Hasura-Role': "member",
