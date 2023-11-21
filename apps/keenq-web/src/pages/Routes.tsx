@@ -45,7 +45,7 @@ const routes = createBrowserRouter([
 				element: <RoomInfoPage />,
 			},
 			{
-				path: '/room/:id/:link/:join',
+				path: '/room/:id/:url/:join',
 				element: <RoomPage />,
 			},
 			{

@@ -6,6 +6,7 @@ import { checktokengql, sendgql, verifycodegql } from '@/services/auth/gql'
 import { send as fbsend, signout, verify as fbverify } from '@/services/firebase'
 
 import { create } from '@/utils/storage'
+import { json } from '@/utils/utils'
 
 
 const anonAccessToken = import.meta.env.VITE_ANON_ACCESS_TOKEN as string
@@ -21,10 +22,12 @@ export const $isAuthed = computed($id, id => !!id)
 export const $accessToken = persistentAtom<string>(authKeys.accessToken, anonAccessToken)
 export const $authError = atom<string|null>(null)
 
+export const $isReg = persistentAtom('$isReg', false, json)
+
 async function apiSend(phone: string, send: any) {
 	const { data } = await send({ phone })
-	console.log('--- auth.ts:26 -> apiSend -> ', data)
 	if (!data?.send?.success) $authError.set(data?.send?.data.reason || 'auth.wrongPhone')
+	if (data?.send?.data.isReg) $isReg.set(true)
 	return data?.send?.success
 }
 

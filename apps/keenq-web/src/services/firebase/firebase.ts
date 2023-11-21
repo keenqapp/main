@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
-import { ConfirmationResult, getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import { ConfirmationResult, getAuth, RecaptchaVerifier, signInWithPhoneNumber, getAdditionalUserInfo } from 'firebase/auth'
 
-import { $authError } from '@/services/auth'
+import { $authError, $isReg } from '@/services/auth'
 
 import { timeout } from '@/utils/utils'
 
@@ -43,8 +43,10 @@ export async function verify(phone: string, code: string) {
 		return false
 	}
 	try {
-		const result: any = await $result?.confirm(code)
+		const result = await $result?.confirm(code)
 		await timeout(10)
+		const info = getAdditionalUserInfo(result!)
+		if (info?.isNewUser) $isReg.set(true)
 		return result?.user?.accessToken as string
 	}
 	catch(e) {
