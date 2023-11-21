@@ -24,7 +24,7 @@ const StyledCard = styled(MUICard)<{ color?: keyof typeof colors }>`
 
 interface CardProps {
 	color?: keyof typeof colors
-	align?: string
+	align?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'
 	self?: string
 	children: ReactNode
 	onClick?: () => void
