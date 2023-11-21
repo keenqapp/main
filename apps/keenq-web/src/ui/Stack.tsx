@@ -1,4 +1,4 @@
-import { ComponentChildren } from 'preact'
+import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 
@@ -12,7 +12,7 @@ interface StackProps {
 	wrap?: number | boolean
 	fullHeight?: boolean
 	direction?: 'row' | 'column'
-	children: ComponentChildren
+	children: ReactNode
 	self?: 'start' | 'end' | 'center' | 'baseline' | 'stretch'
 	relative?: boolean
 	[key: string]: any

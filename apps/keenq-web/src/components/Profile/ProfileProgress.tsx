@@ -1,4 +1,4 @@
-import { VNode } from 'preact'
+import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import Typography from '@mui/material/Typography'
@@ -16,14 +16,15 @@ import { useTranslate } from '@/services/translate'
 import { useCurrentMember } from '@/model/member/hooks'
 
 import Card from '@/ui/Card'
-import Stack from '@/ui/Stack'
+import Required from '@/ui/Required'
 import Space from '@/ui/Space'
+import Stack from '@/ui/Stack'
 
 
 const ProfileProgressContainer = styled.div`
 `
 
-function Done({ done, or }: { done: boolean, or: VNode }) {
+function Done({ done, or }: { done: boolean, or: ReactNode }) {
 	return done ? <CheckTwoToneIcon fontSize='small' color='primary' /> : or
 }
 
@@ -48,18 +49,22 @@ function ProfileProgress() {
 					<Stack gap={0.5} justify='start'>
 						<Done done={!!images && images.length > 0} or={<AddAPhotoTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.photo`}</Typography>
+						<Required />
 					</Stack>
 					<Stack gap={0.5} justify='start'>
 						<Done done={!!name} or={<TextFieldsTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.name`}</Typography>
+						<Required />
 					</Stack>
 					<Stack gap={0.5} justify='start'>
 						<Done done={!!gender && !!sexuality} or={<WcTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.identity`}</Typography>
+						<Required />
 					</Stack>
 					<Stack gap={0.5} justify='start'>
 						<Done done={!!location} or={<NotListedLocationTwoToneIcon fontSize='small' color='secondary' />} />
 						<Typography>{t`progress.location`}</Typography>
+						<Required />
 					</Stack>
 					<Stack gap={0.5} justify='start'>
 						<Done done={!!description} or={<SubjectTwoToneIcon fontSize='small' color='secondary' />} />

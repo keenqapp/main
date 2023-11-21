@@ -29,8 +29,11 @@ const StyledCardContent = styled(CardContent)`
 `
 
 const StyledStack = styled(Stack)`
+	flex-direction: column;
+	align-items: stretch;
 	height: ${p => p.height}px;
 	transition: height 300ms ease-in-out;
+	justify-content: center;
 `
 
 function format(s: string, _: any) {
@@ -135,26 +138,27 @@ function LoginForm() {
 		<Container data-testid='LoginForm' flex={1} horizontal={3}>
 			<StyledStack justifyContent='center' alignItems='stretch' height={height}>
 				<Typography variant='h4' align='center'>{t`app.keenq`}</Typography>
-				<Space height={2} />
+				<Space height={1} />
 				<Card>
 					<StyledCardContent>
 						<IfElse cond={!codeSent}>
 							<>
 								<TextField {...phoneInput} />
 								<Space height={1} />
-								<Stack>
+								<Stack self='stretch' justify='stretch'>
 									<LoadingButton
 										id='send-code-button'
 										onClick={onCodeSent}
 										loading={loading}
 										variant='outlined'
+										fullWidth
 									>{t`auth.send`}</LoadingButton>
 								</Stack>
 							</>
 							<>
 								<TextField {...codeInput} />
 								<Space height={0.5} />
-								<Stack gap={2} alignItems='center'>
+								<Stack gap={1} alignItems='center' direction='column'>
 									<LoadingButton
 										id='send-code-button'
 										onClick={onVerify}

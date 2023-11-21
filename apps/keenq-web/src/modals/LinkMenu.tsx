@@ -45,7 +45,7 @@ function LinkMenu() {
 					<Card onClick={click}>
 						<IfElse cond={!copied}>
 							<Stack>
-								<Text>{`keenq.app/room/${entityId}/${url}`}</Text>
+								<Text variant='overline'>{`keenq.app / ${url}`}</Text>
 								<IconButton color='secondary'><ContentCopyTwoToneIcon /></IconButton>
 							</Stack>
 							<Text variant='overline'>{t`links.copied`}</Text>

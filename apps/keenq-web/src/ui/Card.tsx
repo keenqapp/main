@@ -1,7 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import { ComponentChildren } from 'preact'
-
+import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import MUICard from '@mui/material/Card'
@@ -29,10 +26,11 @@ interface CardProps {
 	color?: keyof typeof colors
 	align?: string
 	self?: string
-	children: ComponentChildren
+	children: ReactNode
+	onClick?: () => void
 }
 
-function Card({ children, color, align, ...props }: CardProps) {
+function Card({ children, color, align = 'stretch', ...props }: CardProps) {
 	return (
 		<StyledCard data-testid='Card' color={color} {...props}>
 			<CardContent>

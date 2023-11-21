@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button'
 
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
 
 import { ask } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
@@ -29,7 +29,7 @@ function RoomJoin() {
 		else insertJoin({ memberId: mid, roomId: rid, privateFor: rid })
 	}
 
-	if (!done) return <Button onClick={() => navigate('/profile')} fullWidth endIcon={<ChevronLeftTwoToneIcon />}>{t`room.fill`}</Button>
+	if (!done) return <Button onClick={() => navigate('/profile')} fullWidth endIcon={<ChevronRightTwoToneIcon />}>{t`room.fill`}</Button>
 
 	return (
 		<Button onClick={onJoinClick} fullWidth>{t`room.join`}</Button>
