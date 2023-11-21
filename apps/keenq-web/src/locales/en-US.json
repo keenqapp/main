@@ -54,7 +54,8 @@
   },
   "links": {
     "copied": "Copied!",
-    "empty": "Nothing here yet"
+    "empty": "Nothing here yet",
+    "joined": "Joined:"
   },
   "location": {
     "chooseCity": "Search a city",

@@ -111,7 +111,9 @@ function LoginForm() {
 		if (!inputsHasError(phoneInput)) {
 			setLoading(true)
 			codeInput.value = ''
-			await send(phoneInput.value.replace(/(?!^\+)\D/g, '')) && setCodeSent(true)
+			await send(phoneInput.value.replace(/(?!^\+)\D/g, ''))
+
+			setCodeSent(true)
 			setLoading(false)
 		}
 	}
@@ -157,7 +159,7 @@ function LoginForm() {
 							</>
 							<>
 								<TextField {...codeInput} />
-								<Space height={0.5} />
+								<Space height={1} />
 								<Stack gap={1} alignItems='center' direction='column'>
 									<LoadingButton
 										id='send-code-button'

@@ -23,6 +23,7 @@ export const $authError = atom<string|null>(null)
 
 async function apiSend(phone: string, send: any) {
 	const { data } = await send({ phone })
+	console.log('--- auth.ts:26 -> apiSend -> ', data)
 	if (!data?.send?.success) $authError.set(data?.send?.data.reason || 'auth.wrongPhone')
 	return data?.send?.success
 }

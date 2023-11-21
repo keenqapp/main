@@ -2,7 +2,7 @@ import http from 'axios'
 import { object, string } from 'yup'
 import client from 'twilio'
 
-import { success, error, validate, getId, isTestPhone } from '../../shared.js'
+import { success, error, validate, ensureCredsAndMember } from '../../shared.js'
 
 
 const url = (phone, code) => `https://sms.ru/sms/send?api_id=A80649CB-0FF7-B273-E2A3-64F7CCFE904D&to=${phone}&msg=Код+для+входа+в+ваш+keenq:+${code}&json=1`
@@ -50,19 +50,6 @@ async function getCreds(phone, db) {
 		.first()
 }
 
-async function ensureCredsAndMember({ creds, phone, db }) {
-	if (!creds) {
-		const isTester = isTestPhone(phone)
-		const id = getId()
-		await db.table('credentials').insert({ phone, id, isTester: false })
-		await db.table('members').insert({ id, isTester: false })
-		await db.table('links').insert({ entityId: id, type: 'member', url: id, authorId: 'keenq-api-send'  })
-		return true
-	}
-	if (creds?.bannedAt) throw 'Member is banned'
-	return false
-}
-
 async function save(phone, code, db) {
 	return db
 		.table('codes')
@@ -79,14 +66,14 @@ export default async function send(body, db) {
 		const { phone } = validate(body, schema)
 
 		const creds = await getCreds(phone, db)
-		await ensureCredsAndMember({ creds, phone, db })
+		const isReg = await ensureCredsAndMember({ creds, phone, db })
 
 		const provider = getProvider(phone)
 		const code = await provider.send()
 
 		await save(phone, code, db)
 
-		return success({ phone })
+		return success({ phone, isReg })
 	}
 	catch(e) {
 		return error(e)

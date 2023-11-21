@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import QRCode from 'react-qr-code'
-import * as url from 'url'
 
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
@@ -14,9 +13,9 @@ import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone'
 import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
+import { ILink } from '@/model/links'
 import { insertlinksgql, linksgql, removelinksgql } from '@/model/links/gql'
 import { useCurrentMember } from '@/model/member'
-import { ILink } from '@/model/other'
 import { useCurrentRoom } from '@/model/room'
 
 import Card from '@/ui/Card'
@@ -84,13 +83,13 @@ function ShareDrawer() {
 
 	const copy = async () => {
 		try {
-			const http = `https://keenq.app/room/${entityId}/${url}/join`
-			navigator.clipboard?.writeText(http)
+			const http = `https://keenq.app/room/${entityId}/join`
+			navigator.clipboard.writeText(http)
 			setCopied(true)
 			setTimeout(() => setCopied(false), 2000)
 		}
 		catch(e) {
-			console.error('--- ShareDrawer.tsx:95 -> copy -> ', e)
+			console.error(e)
 		}
 	}
 

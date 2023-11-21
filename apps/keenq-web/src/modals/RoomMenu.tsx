@@ -18,6 +18,8 @@ import { removeroomgql, useCurrentRoom } from '@/model/room'
 import { leaveroom } from '@/model/rooms_members'
 
 import { Drawer, DrawerItem, DrawerList } from '@/ui/Drawer'
+import If from '@/ui/If'
+import IfElse from '@/ui/IfElse'
 
 import { useMutation } from '@/hooks/gql/useMutation'
 
@@ -73,65 +75,61 @@ function RoomMenu() {
 	return (
 		<Drawer data-testid='RoomMenu' name={name}>
 			<DrawerList>
-				{isMember && isPersonal && (
-					<DrawerItem
-						icon={<HighlightOffTwoToneIcon color='error' />}
-						text={t`words.delete`}
-						onClick={on(deleteClick)}
-					/>
-				)}
-				{isMember && !isPersonal && (
-					<DrawerItem
-						icon={<DeleteTwoToneIcon color='secondary' />}
-						text={t`room.leave`}
-						onClick={on(leaveClick)}
-					/>
-				)}
+				<If cond={isMember}>
+					<IfElse cond={isPersonal}>
+						<DrawerItem
+							icon={<HighlightOffTwoToneIcon color='error' />}
+							text={t`words.delete`}
+							onClick={on(deleteClick)}
+						/>
+						<DrawerItem
+							icon={<DeleteTwoToneIcon color='secondary' />}
+							text={t`room.leave`}
+							onClick={on(leaveClick)}
+						/>
+					</IfElse>
+				</If>
 				<DrawerItem
 					icon={<ReportTwoToneIcon color='error' />}
 					text={t`report.report`}
 					onClick={report}
 				/>
-				{isSub ? (
+				<IfElse cond={isSub}>
 					<DrawerItem
 						icon={<VolumeOffTwoToneIcon color='secondary' />}
 						text={t`room.mute`}
 						onClick={toggle}
 					/>
-				)
-					: (
-						<DrawerItem
-							icon={<VolumeUpTwoToneIcon color='primary' />}
-							text={t`room.unmute`}
-							onClick={toggle}
-						/>
-					)}
-
-				{isPersonal ? (
+					<DrawerItem
+						icon={<VolumeUpTwoToneIcon color='primary' />}
+						text={t`room.unmute`}
+						onClick={toggle}
+					/>
+				</IfElse>
+				<IfElse cond={isPersonal}>
 					<DrawerItem
 						icon={<ForumTwoToneIcon color='primary' />}
 						text={t`profile.profile`}
 						onClick={on(profileClick)}
 					/>
-				) : (
 					<DrawerItem
 						icon={<ForumTwoToneIcon color='primary' />}
 						text={t`room.room`}
 						onClick={on(roomClick)}
 					/>
-				)}
-				{!isPersonal && (
+				</IfElse>
+				<If cond={!isPersonal}>
 					<DrawerItem
 						icon={<PersonAddTwoToneIcon color='primary' />}
 						text={t`member.add`}
 						onClick={on(addMemberClick)}
 					/>
-				)}
-				<DrawerItem
-					icon={<ShareTwoToneIcon color='primary' />}
-					text={t`room.share`}
-					onClick={on(shareClick)}
-				/>
+					<DrawerItem
+						icon={<ShareTwoToneIcon color='primary' />}
+						text={t`room.share`}
+						onClick={on(shareClick)}
+					/>
+				</If>
 			</DrawerList>
 		</Drawer>
 	)

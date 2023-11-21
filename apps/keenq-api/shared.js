@@ -36,7 +36,7 @@ export async function ensureCredsAndMember({ creds, phone, db }) {
 		const id = getId()
 		await db.table('credentials').insert({ phone, id, isTester: false })
 		await db.table('members').insert({ id, isTester: false })
-		await db.table('links').insert({ entityId: id, type: 'member', url: id, authorId: 'keenq-api-check'  })
+		await db.table('links').insert({ entityId: id, type: 'member', url: id, authorId: 'keenq-api'  })
 		return true
 	}
 	return false

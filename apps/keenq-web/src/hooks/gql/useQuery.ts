@@ -36,7 +36,7 @@ export function useQuery<D, V extends AnyVariables = AnyVariables>(query: UseQue
 		console.log('--- useQuery.ts:34 -> useQuery -> result', debug, result.data)
 	}
 
-	return [ _result, ...rest ]
+	return [ result, ...rest ]
 }
 
 // export function useQuery<D, V extends AnyVariables = AnyVariables>(query: UseQueryArgs<V, D>['query'], variables?: V | null, options?: UseQueryOptions): UseQueryResponse<D, V> | UseQueryResponse<D> {
