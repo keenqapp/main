@@ -15,7 +15,7 @@ const config = {
 	appId: import.meta.env.VITE_appId,
 }
 
-const $app = initializeApp(config)
+const $app = initializeApp(config, 'keenq.app')
 const $auth = getAuth($app)
 const $verifier = new RecaptchaVerifier($auth, 'send-code-button', { size: 'invisible' })
 
