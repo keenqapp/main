@@ -1,12 +1,11 @@
 import { persistentAtom } from '@nanostores/persistent'
 import { atom, computed } from 'nanostores'
-import { gql, useMutation } from 'urql'
+import { useMutation } from 'urql'
 
-import { send as fbsend, verify as fbverify, signout } from '@/services/firebase'
-
-import { useQuery } from '@/hooks/gql'
-import { create } from '@/utils/storage'
 import { checktokengql, sendgql, verifycodegql } from '@/services/auth/gql'
+import { send as fbsend, signout, verify as fbverify } from '@/services/firebase'
+
+import { create } from '@/utils/storage'
 
 
 const anonAccessToken = import.meta.env.VITE_ANON_ACCESS_TOKEN as string
