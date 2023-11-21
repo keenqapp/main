@@ -6,7 +6,8 @@ export const sendgql = gql`
 		send(phone: $phone) {
 			success
 			data {
-				result
+				phone
+				isReg
 				reason
 			}
 		}
