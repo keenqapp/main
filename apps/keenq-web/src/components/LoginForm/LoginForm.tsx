@@ -111,9 +111,8 @@ function LoginForm() {
 		if (!inputsHasError(phoneInput)) {
 			setLoading(true)
 			codeInput.value = ''
-			await send(phoneInput.value.replace(/(?!^\+)\D/g, ''))
-
-			setCodeSent(true)
+			const result = await send(phoneInput.value.replace(/(?!^\+)\D/g, ''))
+			if (result) setCodeSent(true)
 			setLoading(false)
 		}
 	}
