@@ -7,17 +7,13 @@ import { useTranslate } from '@/services/translate'
 import { getroomsgql } from '@/model/room'
 
 import Card from '@/ui/Card'
-import Stack from '@/ui/Stack'
 import List from '@/ui/List'
+import Stack from '@/ui/Stack'
 
 import PublicRoomsItem from '@/components/Rooms/PublicRoomsItem'
 
 import { useQuery } from '@/hooks/gql'
 
-
-const RoomsList = styled(List)`
-	gap: 1.5rem
-`
 
 const RoomsEmptyContainer = styled(Stack)`
 	flex: 1;
@@ -28,7 +24,7 @@ const RoomsEmptyContainer = styled(Stack)`
 const Content = styled(Stack)`
 	padding: 0 2rem;
 	flex-direction: column;
-	justify-content: start;
+	justify-content: stretch;
 `
 
 function RoomsEmpty() {
@@ -47,7 +43,7 @@ function RoomsEmpty() {
 				</Card>
 				<Typography variant='h6'>{t`rooms.empty`}</Typography>
 			</Content>
-			<RoomsList
+			<List
 				data={result.data ? result.data?.rooms : []}
 				render={PublicRoomsItem}
 			/>

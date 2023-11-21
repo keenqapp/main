@@ -3,7 +3,7 @@ import { Navigate, Outlet, useRouteError } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { useStore } from '@nanostores/react'
 
-import { $id, $isAuthed } from '@/services/auth'
+import { $isAuthed } from '@/services/auth'
 import { useTranslate } from '@/services/translate'
 
 import Card from '@/ui/Card'
@@ -51,8 +51,6 @@ function Layout() {
 	const joining = useShouldJoin()
 	const is404 = useMemo(() => error?.status === 404, [error])
 	const loading = usePreload()
-
-	console.log('--- Layout.tsx:55 -> Layout -> ', isAuthed, $id.get())
 
 	if (!isAuthed) return <Navigate to='/auth/login' />
 

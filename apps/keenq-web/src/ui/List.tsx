@@ -5,7 +5,6 @@ import styled from '@emotion/styled'
 import { column } from '@/ui/css'
 
 import { Entity } from '@/types/utility'
-import IfElse from '@/ui/IfElse'
 
 
 const ListContainer = styled.div<{ height?: number }>`
@@ -63,7 +62,7 @@ interface ListProps<P extends Entity, > {
 function List<T extends Entity>({ data = [], render, scrollRef, empty, className, name, ...rest }: ListProps<T>) {
 	const [ height, setHeight ] = useState(0)
 
-	// if (data && data?.length < 1 && empty) return empty()
+	if (data && data?.length < 1 && empty) return empty()
 
 	return (
 		<ListContainer data-testid='List'>

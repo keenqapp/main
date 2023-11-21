@@ -40,10 +40,13 @@ function Rooms() {
 
 	const data = useMemo(() => {
 		const rooms = result.data?.rooms || []
+		console.log('--- Rooms.tsx:43 ->  -> ', rooms)
 		if (!showTabs) return addKeenq(rooms)
 		if (equals(tab, 'personal')) return rooms.filter(room => room.type === 'personal')
 		return addKeenq(rooms.filter(room => room.type !== 'personal'))
-	}, [ showTabs, tab, result.data ])
+	}, [ showTabs, tab, result ])
+
+	console.log('--- Rooms.tsx:50 -> Rooms -> ', data)
 
 	return (
 		<Container data-testid='Rooms' horizontal={0} flex>
