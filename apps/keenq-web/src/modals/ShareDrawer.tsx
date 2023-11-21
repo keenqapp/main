@@ -34,7 +34,7 @@ const options: UseQueryOptions = {
 	requestPolicy: 'cache-and-network',
 } as const
 
-function Link({ id, entityId, url, remove, click }: ILink & { remove: (id: string) => void, click: (id: string, url: string) => void }) {
+function Link({ id, url, remove, click }: ILink & { remove: (id: string) => void, click: (id: string, url: string) => void }) {
 	return (
 		<Stack key={id}>
 			<Stack justify='between' flex={1} onClick={() => click(id, url)}>

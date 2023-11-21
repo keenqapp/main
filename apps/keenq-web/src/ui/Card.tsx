@@ -17,8 +17,8 @@ const colors = {
 	'secondary.veryLight': theme.color.secondaryVeryLight,
 } as const
 
-const StyledCard = styled(MUICard)<{ color?: keyof typeof colors }>`
-	background: ${p => colors[p.color as any] || theme.color.primaryVeryLight};
+const StyledCard = styled(MUICard)<{ color: keyof typeof colors }>`
+	background: ${p => colors[p.color] || theme.color.primaryVeryLight};
 	align-self: stretch;
 `
 
@@ -32,7 +32,7 @@ interface CardProps {
 
 function Card({ children, color, align = 'stretch', ...props }: CardProps) {
 	return (
-		<StyledCard data-testid='Card' color={color} {...props}>
+		<StyledCard data-testid='Card' color={color as any} {...props}>
 			<CardContent>
 				<Stack direction='column' align={align}>
 					{children}
