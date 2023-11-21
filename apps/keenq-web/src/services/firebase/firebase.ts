@@ -7,12 +7,12 @@ import { timeout } from '@/utils/utils'
 
 
 const config = {
-	apiKey: import.meta.env.VITE_apiKey,
+	apiKey: import.meta.env.VITE_FB_API_KEY,
 	authDomain: 'keenqapp.firebaseapp.com',
 	projectId: 'keenqapp',
 	storageBucket: 'keenqapp.appspot.com',
 	messagingSenderId: '1026282770947',
-	appId: import.meta.env.VITE_appId,
+	appId: import.meta.env.VITE_FB_APP_ID,
 }
 
 const $app = initializeApp(config, 'keenq.app')
