@@ -20,22 +20,16 @@ export interface UseQueryOptions {
 	pause?: boolean
 }
 
+// function empty(data: any) {
+// 	return data ? {  } : {}
+// }
+
 export function useQuery<D, V extends AnyVariables = AnyVariables>(query: UseQueryArgs<V, D>['query'], variables?: V | null, options?: UseQueryOptions, debug?: string): UseQueryResponse<D, V> | UseQueryResponse<D> {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	const [ _result, ...rest ] =  _useQuery({ query, ...(variables ? { variables } : {}), ...(options ? options : {}) })
 	const need = usePrevious(_result, debug)
-
-	if (debug) {
-		console.log('--- useQuery.ts:34 -> useQuery -> need', debug, need)
-	}
-
 	const result = useMemo(() => _result, [ need ])
-
-	if (debug) {
-		console.log('--- useQuery.ts:34 -> useQuery -> result', debug, result.data)
-	}
-
 	return [ result, ...rest ]
 }
 

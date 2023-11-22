@@ -49,7 +49,7 @@ import { gql } from 'urql'
 // 	}
 // `
 
-export const joinedbylinkgql = gql<{ actions_aggregate: { aggregate: { count: number  } } }>`
+export const joinedbylinkgql = gql<{ actions_aggregate: { aggregate: { count: number } } }>`
 	query JoinedByLink($value: jsonb!) {
 		actions_aggregate(where: { type: { _eq: "joinRoom" }, value: { _contains: $value } }) {
 			aggregate {
@@ -59,8 +59,8 @@ export const joinedbylinkgql = gql<{ actions_aggregate: { aggregate: { count: nu
 	}
 `
 
-export const registredbylinkgql = gql<{ actions_aggregate: { aggregate: { count: number  } } }>`
-	query JoinedByLink($value: jsonb!) {
+export const registredbylinkgql = gql<{ actions_aggregate: { aggregate: { count: number } } }>`
+	query RegisteredByLink($value: jsonb!) {
 		actions_aggregate(where: { type: { _eq: "register" }, value: { _contains: $value } }) {
 			aggregate {
 				count

@@ -27,10 +27,10 @@ function LinkMenu() {
 	const { name, params } = useModal('link')
 	const { url, entityId }: Partial<ILink> = params
 
-	const [ jresult ] = useQuery(joinedbylinkgql, { url })
+	const [ jresult ] = useQuery(joinedbylinkgql, { value: { url } })
 	const jcount = jresult?.data?.actions_aggregate?.aggregate?.count || 0
 
-	const [ rresult ] = useQuery(registredbylinkgql, { url })
+	const [ rresult ] = useQuery(registredbylinkgql, { value: { url } })
 	const rcount = rresult?.data?.actions_aggregate?.aggregate?.count || 0
 
 
