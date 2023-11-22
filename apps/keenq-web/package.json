@@ -24,6 +24,7 @@
     "@sentry/react": "^7.77.0",
     "@sentry/vite-plugin": "^2.9.0",
     "@supersimplethings/resize-image-in-browser": "^1.0.6",
+    "@types/md5": "^2.3.5",
     "@ungap/structured-clone": "^1.2.0",
     "@urql/devtools": "^2.0.3",
     "@urql/exchange-graphcache": "^6.3.3",

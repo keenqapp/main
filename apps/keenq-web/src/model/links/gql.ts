@@ -41,12 +41,12 @@ export const removelinksgql = gql<{ links: ILink[] }>`
 	${linkfragment}
 `
 
-export const joinedbylinkgql = gql<{ links_aggregate: { aggregate: { count: number  } } }>`
-	query JoinedByLink($url: String!) {
-		links_aggregate(where: { url: { _eq: $url } }) {
-			aggregate {
-				count
-			}
-		}
-	}
-`
+// export const joinedbylinkgql = gql<{ links_aggregate: { aggregate: { count: number  } } }>`
+// 	query JoinedByLink($url: String!) {
+// 		links_aggregate(where: { url: { _eq: $url } }) {
+// 			aggregate {
+// 				count
+// 			}
+// 		}
+// 	}
+// `

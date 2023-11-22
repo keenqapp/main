@@ -8,7 +8,8 @@ import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone'
 import { useModal } from '@/services/modals'
 import { useTranslate } from '@/services/translate'
 
-import { ILink, joinedbylinkgql } from '@/model/links'
+import { joinedbylinkgql, registredbylinkgql } from '@/model/actions'
+import { ILink } from '@/model/links'
 
 import Card from '@/ui/Card'
 import Container from '@/ui/Container'
@@ -24,10 +25,14 @@ function LinkMenu() {
 	const [ copied, setCopied ] = useState(false)
 	const { t } = useTranslate()
 	const { name, params } = useModal('link')
-	const [ result ] = useQuery(joinedbylinkgql)
-	const count = result?.data?.links_aggregate?.aggregate?.count || 0
-
 	const { url, entityId }: Partial<ILink> = params
+
+	const [ jresult ] = useQuery(joinedbylinkgql, { url })
+	const jcount = jresult?.data?.actions_aggregate?.aggregate?.count || 0
+
+	const [ rresult ] = useQuery(registredbylinkgql, { url })
+	const rcount = rresult?.data?.actions_aggregate?.aggregate?.count || 0
+
 
 	const click = async () => {
 		try {
@@ -49,7 +54,11 @@ function LinkMenu() {
 						<Stack direction='column' self='stretch' align='stretch'>
 							<Stack>
 								<Text variant='overline'>{t`links.joined`}</Text>
-								<Text>{count}</Text>
+								<Text>{jcount}</Text>
+							</Stack>
+							<Stack>
+								<Text variant='overline'>{t`links.registered`}</Text>
+								<Text>{rcount}</Text>
 							</Stack>
 						</Stack>
 					</Card>

@@ -1,3 +1,4 @@
+import md5 from 'md5'
 import { gql } from 'urql'
 
 import client from '@/providers/urql'
@@ -29,5 +30,6 @@ export type LogType = 'joinRoom' | 'register' | 'test'
 
 export function log(type: LogType, value: any) {
 	const provider = graphqlLogProvider
-	_log(provider, { type, value })
+	const hash = md5(JSON.stringify(value))
+	_log(provider, { type, value, hash })
 }
