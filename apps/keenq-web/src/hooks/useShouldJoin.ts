@@ -33,10 +33,10 @@ export default function useShouldJoin() {
 	const shouldJoin = m.pathname.includes('/join')
 	const [ , insertJoin ] = useInsert(insertjoinroom)
 
-	async function join({ memberId, roomId, url, ts }: { memberId: string, roomId: string, url?: string, ts: string }) {
+	async function join({ memberId, roomId, url }: { memberId: string, roomId: string, url?: string }) {
 		setLoading(true)
 		const { data } = await insertJoin({ memberId, roomId, privateFor: roomId, deletedAt: null })
-		if (data) log('joinRoom', { roomId, url, memberId, ts })
+		if (data) log('joinRoom', { roomId, url, memberId })
 		setLoading(false)
 	}
 
@@ -44,12 +44,11 @@ export default function useShouldJoin() {
 		await timeout(1000)
 		if (shouldJoin && roomId) {
 			if (!memberId) $joinQueue.set(joinQueue.copyAdd(roomId, { roomId, url, ts: new Date().toISOString() }))
-			else join({ memberId, roomId, url: url, ts: new Date().toISOString() })
+			else join({ memberId, roomId, url: url })
 		}
 		if (memberId && joinQueue.size) {
-			console.log('--- useShouldJoin.ts:50 ->  -> ', $sortedJoinQueue.get())
-			for await (const { url, ts, roomId } of $sortedJoinQueue.get()) {
-				join({ memberId, roomId, url, ts })
+			for await (const { url, roomId } of $sortedJoinQueue.get()) {
+				join({ memberId, roomId, url })
 				$joinQueue.set(joinQueue.copyDelete(roomId))
 				await timeout(10)
 			}
