@@ -9,6 +9,7 @@ import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
 import RemoveCircleTwoToneIcon from '@mui/icons-material/RemoveCircleTwoTone'
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone'
 
+import { log } from '@/services/log'
 import { notify } from '@/services/notifications'
 import { useTranslate } from '@/services/translate'
 
@@ -130,6 +131,10 @@ function TestPage() {
 		throw new Error('Test error for Sentry')
 	}
 
+	const lll = () => {
+		log('test', { some: 111 })
+	}
+
 	return (
 		<Page data-testid='TestPage'>
 			<Container flex>
@@ -148,6 +153,7 @@ function TestPage() {
 				/>
 				<Button onClick={() => notify({ title: name + ' says:', body: 'I\'m cool' })}>Send notification to yourself</Button>
 				<Button onClick={error}>Error</Button>
+				<Button onClick={lll}>Log</Button>
 			</Container>
 		</Page>
 	)

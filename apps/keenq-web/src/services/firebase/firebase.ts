@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
-import { ConfirmationResult, getAuth, RecaptchaVerifier, signInWithPhoneNumber, getAdditionalUserInfo } from 'firebase/auth'
+import { ConfirmationResult, getAuth, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 
-import { $authError, $isReg } from '@/services/auth'
+import { $authError } from '@/services/auth'
 
 import { timeout } from '@/utils/utils'
 
@@ -19,14 +19,15 @@ const $app = initializeApp(config, 'keenq.app')
 const $auth = getAuth($app)
 const $verifier = new RecaptchaVerifier($auth, 'send-code-button', { size: 'invisible' })
 
-let $phone: string | null = null
+// eslint-disable-next-line unused-imports/no-unused-vars
+// let $phone: string | null = null
 let $result: ConfirmationResult | null = null
 
 export async function send(phone: string) {
 	try {
 		const result = await signInWithPhoneNumber($auth, phone, $verifier)
 		$result = result
-		$phone = phone
+		// $phone = phone
 		return true
 	}
 	catch(e: any) {
@@ -37,16 +38,16 @@ export async function send(phone: string) {
 	}
 }
 
-export async function verify(phone: string, code: string) {
-	if (phone !== $phone) {
-		$authError.set('auth.wrongPhone')
-		return false
-	}
+export async function verify(_: string, code: string) {
+	// if (phone !== $phone) {
+	// 	$authError.set('auth.wrongPhone')
+	// 	return false
+	// }
 	try {
 		const result = await $result?.confirm(code)
 		await timeout(10)
-		const info = getAdditionalUserInfo(result!)
-		if (info?.isNewUser) $isReg.set(true)
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		return result?.user?.accessToken as string
 	}
 	catch(e) {

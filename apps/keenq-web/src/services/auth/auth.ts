@@ -7,6 +7,8 @@ import { send as fbsend, signout, verify as fbverify } from '@/services/firebase
 
 import { create } from '@/utils/storage'
 import { json } from '@/utils/utils'
+import { $joinQueue, $sortedJoinQueue } from '@/hooks/useShouldJoin'
+import { log } from '@/services/log'
 
 
 const anonAccessToken = import.meta.env.VITE_ANON_ACCESS_TOKEN as string
@@ -22,12 +24,13 @@ export const $isAuthed = computed($id, id => !!id)
 export const $accessToken = persistentAtom<string>(authKeys.accessToken, anonAccessToken)
 export const $authError = atom<string|null>(null)
 
-export const $isReg = persistentAtom('$isReg', false, json)
-
 async function apiSend(phone: string, send: any) {
 	const { data } = await send({ phone })
 	if (!data?.send?.success) $authError.set(data?.send?.data.reason || 'auth.wrongPhone')
-	if (data?.send?.data.isReg) $isReg.set(true)
+	if (data?.send?.data.isReg && $joinQueue.get().size) {
+		const { url, ts } = $sortedJoinQueue.get().first() || {}
+		log('register', { phone, url, ts })
+	}
 	return data?.send?.success
 }
 

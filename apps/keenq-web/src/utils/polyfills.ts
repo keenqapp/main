@@ -46,6 +46,7 @@ declare global {
 		create(length: number): Array<number>
 		uniq(property?: string, flat?: boolean): Array<T>;
 		last(): T | undefined
+		first(): T | undefined
 		copySort(compareFn?: (a: T, b: T) => number): Array<T>
 		copyPush(item: T): Array<T>
 		toComponents<T>(render: (item: T, index: number) => ReactNode): ReactNode[]
@@ -100,9 +101,16 @@ Object.defineProperty(Array, 'create', {
 	}
 })
 
+Object.defineProperty(Array.prototype, 'first', {
+	value: function() {
+		if (!this || this.length === 0) return undefined
+		return this[0]
+	}
+})
+
 Object.defineProperty(Array.prototype, 'last', {
 	value: function() {
-		if (this.length === 0) return undefined
+		if (!this || this.length === 0) return undefined
 		return this[this.length - 1]
 	}
 })
@@ -133,6 +141,8 @@ Object.defineProperty(Array.prototype, 'toComponents', {
 			.map((item: P, index: number) => {
 				const component = render(item, index)
 				if (!component) return null
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
 				return cloneElement(component, { key: item.id })
 			})
 			.filter(Boolean)
