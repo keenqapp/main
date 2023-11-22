@@ -31,7 +31,7 @@ function PersonalMessageAvatar(message: IMessage) {
 	if (!shouldShow) return <EmptyAvatar />
 
 	return (
-		<StyledAvatar data-testid='PersonalMessageAvatar' src={images?.[0]?.url} alt={name}  />
+		<StyledAvatar data-testid='PersonalMessageAvatar' src={images?.[0]?.url || `https://api.dicebear.com/7.x/personas/svg?seed=${id}`} alt={name}  />
 	)
 }
 
