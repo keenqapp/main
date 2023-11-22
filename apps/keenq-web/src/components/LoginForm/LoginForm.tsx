@@ -22,6 +22,7 @@ import Stack from '@/ui/Stack'
 
 import { inputsHasError, isNotEmpty, useInput, Validator, withErrorText } from '@/hooks/useInput'
 import { asYouType } from '@/utils/formatters'
+import { $sortedJoinQueue } from '@/hooks/useShouldJoin'
 
 
 const StyledCardContent = styled(CardContent)`
@@ -120,7 +121,10 @@ function LoginForm() {
 	const onVerify = async () => {
 		if (!inputsHasError(codeInput)) {
 			setLoading(true)
-			await verify(phoneInput.value.replace(/(?!^\+)\D/g, ''), String(codeInput.value)) && navigate('/match')
+			const result = await verify(phoneInput.value.replace(/(?!^\+)\D/g, ''), String(codeInput.value))
+			if (!result) return setLoading(false)
+			if ($sortedJoinQueue.get().length) navigate(`/room/${$sortedJoinQueue.get()[0].roomId}`)
+			else navigate('/match')
 			setLoading(false)
 		}
 	}

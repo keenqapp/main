@@ -41,8 +41,8 @@ export function useCurrentRoom() {
 
 	const data = useMemo(() => {
 		const room = result.data?.rooms_by_pk || {} as IRoom
-		// const is404 = room.id === undefined
-		const is404 = false
+		const is404 = room.id === undefined
+		// const is404 = false
 
 		const allMembers = result.data?.rooms_members || []
 		const allMembersIds = allMembers.map(rm => rm.memberId)
