@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/node'
 import { ProfilingIntegration } from '@sentry/profiling-node'
 import env from '@fastify/env'
 import { fastifyAwilixPlugin } from '@fastify/awilix'
+import cors from '@fastify/cors'
 
 import 'dotenv/config'
 
@@ -45,6 +46,7 @@ const envOptions = {
 
 await app.register(env, envOptions)
 await app.register(fastifyAwilixPlugin, { disposeOnClose: true, disposeOnResponse: true })
+await app.register(cors, { origin: [ 'http://localhost:5173', 'https://calc.cheap' ] })
 await app.register(routes)
 
 app.listen({ host: '0.0.0.0', port: process.env.PORT || 9003 })
