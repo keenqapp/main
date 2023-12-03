@@ -160,10 +160,7 @@ function Match() {
 	}
 
 	useEffect(() => {
-		if (empty) {
-			x.set(0)
-			console.log('Match.tsx ---> 777 ---> 164: ', )
-		}
+		if (empty) x.set(0)
 	}, [ empty ])
 
 	const isSelf = id === mid

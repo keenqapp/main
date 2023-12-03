@@ -52,13 +52,13 @@ export function useMatch() {
 
 	const { data, fetching, error } = result
 
+	// console.log('useMatch.ts ---> useMatch ---> 55: ', result, data?.match?.data)
+
 	useEffect(() => {
-		if (data?.match?.data && data?.match?.data.length === 0 && queue.length === 0) return $empty.set(true)
-		if (data?.match?.success) return $queue.set([...queue, ...data.match.data].uniq('id'))
+		if (data?.match?.success && !result?.stale) $queue.set([...queue, ...data.match.data].uniq('id'))
 	}, [ result ])
 
 	useEffect(() => {
-		console.log('useMatch.ts --->  ---> 61: ', 555)
 		match()
 	}, [])
 
@@ -95,7 +95,6 @@ export function useMatch() {
 			}
 		}
 		else {
-			console.log('useMatch.ts ---> next ---> 99: ', 999)
 			$empty.set(true)
 			$force.set(true)
 		}
@@ -117,7 +116,7 @@ export function useMatch() {
 
 	const yes = async () => {
 		update({ authorId: id, memberId: mid, data: { type: 'yes' } })
-		matched({ authorId: id, memberId: mid, type: 'yes' })
+		await matched({ authorId: id, memberId: mid, type: 'yes' })
 		if (pid) navigate('/match')
 		$queue.set(queue.filter((item) => item.id !== mid))
 	}
@@ -129,8 +128,6 @@ export function useMatch() {
 	}
 
 	const isEmpty = (!pid && empty) || (!pid && error && queue?.length === 0)
-
-	console.log('useMatch.ts ---> useMatch ---> 133: ', queue)
 
 	return {
 		member: { ...member, distance: current?.distance },
