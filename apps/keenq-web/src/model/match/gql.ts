@@ -47,6 +47,7 @@ export const matchedgql = gql`
 			id
 			success
 			data {
+				reason
 				result
 			}
 		}

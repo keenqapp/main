@@ -132,18 +132,19 @@ export default async function matched(body, db) {
 		let m
 
 		const result = await transaction(db, async trx => {
-			await check(authorId, memberId, type, db, trx)
-			const room = await getRoom(authorId, memberId, db, trx)
-			await add(authorId, memberId, room, db, trx)
-
-			const author = await getMember(authorId, db)
-			const member = await getMember(memberId, db)
-			m = { member, author }
-			await hi(room, db, trx)
-
-			await notify(author, member, room, provider)
-
-			return true
+			try {
+				await check(authorId, memberId, type, db, trx)
+				const room = await getRoom(authorId, memberId, db, trx)
+				await add(authorId, memberId, room, db, trx)
+				const author = await getMember(authorId, db)
+				const member = await getMember(memberId, db)
+				m = { member, author }
+				await hi(room, db, trx)
+				await notify(author, member, room, provider)
+				return true
+			} catch (error) {
+				return false
+			}
 		})
 		return success(m)
 	}

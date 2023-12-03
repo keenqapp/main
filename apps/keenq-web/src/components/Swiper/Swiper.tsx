@@ -1,5 +1,5 @@
+import { cloneElement, ReactNode, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import { cloneElement, useEffect, useRef, useState } from 'react'
 
 import { IImage } from '@/model/other'
 
@@ -40,7 +40,7 @@ const Image = styled.img`
 
 interface SwiperProps {
 	images: IImage[]
-	buttons?: VNode
+	buttons?: ReactNode
 	onScroll?: any
 	loading?: boolean
 	scrollOnAdd?: boolean
@@ -78,6 +78,8 @@ function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd =
 	}, [ images.length ])
 
 	const handleScroll = (e: any) => {
+		e.preventDefault()
+		e.stopPropagation()
 		if (ref.current) {
 			requestAnimationFrame(() => {
 				const newDot = Math.round(e.target!.scrollTop / ref.current!.scrollHeight * images.length)
@@ -90,13 +92,18 @@ function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd =
 
 	return (
 		<SwiperContainer>
-			<SwiperScroll data-testid='Swiper' ref={ref} onScroll={handleScroll}>
+			<SwiperScroll
+				data-testid='Swiper'
+				ref={ref}
+				onScroll={handleScroll}
+				onPointerDownCapture={e => e.stopPropagation()}
+			>
 				{sanitized.map(({ id, url, date }) => (
 					<ImageContainer key={id+date}>
 						<Loadable loading={loading} fullHeight overlay>
 							<Image src={url} />
 						</Loadable>
-						{buttons && cloneElement(buttons, { id })}
+						{buttons && cloneElement(buttons as any, { id })}
 					</ImageContainer>
 				))}
 			</SwiperScroll>

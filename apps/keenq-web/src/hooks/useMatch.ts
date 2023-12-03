@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useStore } from '@nanostores/react'
 import { atom } from 'nanostores'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation } from 'urql'
 
 import { addmatchgql, matchedgql, matchgql, updatematchgql } from '@/model/match/gql'
@@ -28,6 +28,7 @@ interface IQueueItem {
 
 const $queue = atom<IQueueItem[]>([])
 const $empty = atom<boolean>(false)
+const $force = atom<boolean>(false)
 const $index = atom<number>(0)
 
 $queue.subscribe((value) => {
@@ -40,6 +41,7 @@ export function useMatch() {
 
 	const queue = useStore($queue)
 	const empty = useStore($empty)
+	const force = useStore($force)
 	const index = useStore($index)
 
 	const { id } = useCurrentMember()
@@ -51,15 +53,12 @@ export function useMatch() {
 	const { data, fetching, error } = result
 
 	useEffect(() => {
-		if (data?.match?.data && data?.match?.data.length === 0 && queue.length === 0) {
-			$empty.set(true)
-		}
-		else {
-			if (data?.match?.success) $queue.set([...queue, ...data.match.data].uniq('id'))
-		}
+		if (data?.match?.data && data?.match?.data.length === 0 && queue.length === 0) return $empty.set(true)
+		if (data?.match?.success) return $queue.set([...queue, ...data.match.data].uniq('id'))
 	}, [ result ])
 
 	useEffect(() => {
+		console.log('useMatch.ts --->  ---> 61: ', 555)
 		match()
 	}, [])
 
@@ -96,7 +95,9 @@ export function useMatch() {
 			}
 		}
 		else {
+			console.log('useMatch.ts ---> next ---> 99: ', 999)
 			$empty.set(true)
+			$force.set(true)
 		}
 	}
 
@@ -111,6 +112,7 @@ export function useMatch() {
 	const reset = () => {
 		$index.set(0)
 		$empty.set(false)
+		$force.set(false)
 	}
 
 	const yes = async () => {
@@ -128,6 +130,8 @@ export function useMatch() {
 
 	const isEmpty = (!pid && empty) || (!pid && error && queue?.length === 0)
 
+	console.log('useMatch.ts ---> useMatch ---> 133: ', queue)
+
 	return {
 		member: { ...member, distance: current?.distance },
 		matched,
@@ -135,6 +139,8 @@ export function useMatch() {
 		fetching,
 		error,
 		empty: isEmpty,
+		force,
+		index,
 		queue,
 		next,
 		prev,

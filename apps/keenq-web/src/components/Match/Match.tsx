@@ -108,6 +108,7 @@ function Right({ x }: any) {
 const SContainer = styled(Container)`
 	position: relative;
 	animation: ${animation} 0.3s ease-in-out;
+	//overflow-y: hidden;
 `
 
 function Match() {
@@ -120,11 +121,13 @@ function Match() {
 	const { id, done } = useCurrentMember()
 
 	const {
+		index,
 		member,
 		partner,
 		next,
 		prev,
 		empty,
+		force,
 		yes,
 		no,
 	} = useMatch()
@@ -157,12 +160,15 @@ function Match() {
 	}
 
 	useEffect(() => {
-		if (empty) x.set(0)
+		if (empty) {
+			x.set(0)
+			console.log('Match.tsx ---> 777 ---> 164: ', )
+		}
 	}, [ empty ])
 
 	const isSelf = id === mid
 
-	if (empty) return <EmptyMatch />
+	if (empty || force) return <EmptyMatch />
 
 	return (
 		<>
@@ -171,6 +177,8 @@ function Match() {
 			<motion.div
 				drag='x'
 				dragSnapToOrigin
+				dragConstraints={{ ...(index === 0 ? { right: 0 } : {}) }}
+				dragElastic={0.1}
 				style={{ x }}
 				onDragEnd={end}
 			>

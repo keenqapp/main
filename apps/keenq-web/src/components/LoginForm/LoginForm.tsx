@@ -21,8 +21,9 @@ import Space from '@/ui/Space'
 import Stack from '@/ui/Stack'
 
 import { inputsHasError, isNotEmpty, useInput, Validator, withErrorText } from '@/hooks/useInput'
-import { asYouType } from '@/utils/formatters'
+import useLoadingFor from '@/hooks/useLoadingFor'
 import { $sortedJoinQueue } from '@/hooks/useShouldJoin'
+import { asYouType } from '@/utils/formatters'
 
 
 const StyledCardContent = styled(CardContent)`
@@ -52,7 +53,7 @@ function LoginForm() {
 	const authError = useStore($authError)
 
 	const [ codeSent, setCodeSent ] = useState(false)
-	const [ loading, setLoading ] = useState(false)
+	// const [ loading, setLoading ] = useState(false)
 
 	const navigate = useNavigate()
 
@@ -110,28 +111,27 @@ function LoginForm() {
 
 	const onCodeSent = async () => {
 		if (!inputsHasError(phoneInput)) {
-			setLoading(true)
 			codeInput.value = ''
 			const result = await send(phoneInput.value.replace(/(?!^\+)\D/g, ''))
 			if (result) setCodeSent(true)
-			setLoading(false)
 		}
 	}
+
+	const [ loadingSent, executeSent  ] = useLoadingFor(onCodeSent)
 
 	const onVerify = async () => {
 		if (!inputsHasError(codeInput)) {
-			setLoading(true)
 			const result = await verify(phoneInput.value.replace(/(?!^\+)\D/g, ''), String(codeInput.value))
-			if (!result) return setLoading(false)
+			if (!result) return
 			if ($sortedJoinQueue.get().length) navigate(`/room/${$sortedJoinQueue.get()[0].roomId}`)
 			else navigate('/match')
-			setLoading(false)
 		}
 	}
 
+	const [ loadingVerify, executeVerify  ] = useLoadingFor(onVerify)
+
 	const onRetry = () => {
 		setCodeSent(false)
-		setLoading(false)
 		phoneInput.onClear()
 		codeInput.onClear()
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -153,8 +153,8 @@ function LoginForm() {
 								<Stack self='stretch' justify='stretch'>
 									<LoadingButton
 										id='send-code-button'
-										onClick={onCodeSent}
-										loading={loading}
+										onClick={executeSent}
+										loading={loadingSent}
 										variant='outlined'
 										fullWidth
 									>{t`auth.send`}</LoadingButton>
@@ -166,8 +166,8 @@ function LoginForm() {
 								<Stack gap={1} alignItems='center' direction='column'>
 									<LoadingButton
 										id='send-code-button'
-										onClick={onVerify}
-										loading={loading}
+										onClick={executeVerify}
+										loading={loadingVerify}
 										variant='outlined'
 										fullWidth
 									>{t`auth.verify`}</LoadingButton>

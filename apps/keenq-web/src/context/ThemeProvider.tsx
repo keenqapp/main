@@ -56,6 +56,7 @@ const globalStyles = css`
     font-family: serif;
     color: ${rawTheme.color.base};
     background-color:#fefefe;
+		overflow: hidden;
   }
   a {
     text-decoration: none;

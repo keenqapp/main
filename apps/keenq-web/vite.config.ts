@@ -16,6 +16,7 @@ const manifest = {
 	name: 'keenq',
 	short_name: 'keenq',
 	description: 'Dating app for special as you',
+	orientation: 'portrait',
 	icons: [
 		{
 			src: '/keenq.svg',
@@ -24,22 +25,14 @@ const manifest = {
 		{
 			src: '/icon-192x192.png',
 			sizes: '192x192',
-			type: 'image/png'
-		},
-		{
-			src: '/icon-256x256.png',
-			sizes: '256x256',
-			type: 'image/png'
-		},
-		{
-			src: '/icon-384x384.png',
-			sizes: '384x384',
-			type: 'image/png'
+			type: 'image/png',
+			purpose: 'any maskable'
 		},
 		{
 			src: '/icon-512x512.png',
 			sizes: '512x512',
-			type: 'image/png'
+			type: 'image/png',
+			purpose: 'any maskable'
 		}
 	]
 } as const
@@ -61,6 +54,8 @@ export default defineConfig(({ mode }) => ({
 				globPatterns: ['**/*.{woff,woff2,png,jpeg,webm,svg}']
 			},
 			registerType: 'autoUpdate',
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
 			manifest,
 			manifestFilename: 'manifest.json',
 			devOptions: {
