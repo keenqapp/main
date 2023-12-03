@@ -22,13 +22,13 @@ import { isIOS, isPWA } from '@/utils/utils'
 
 const Nav = styled(BottomNavigation)<BottomNavigationProps>`
   position: fixed;
-  bottom: ${isIOS() && isPWA() ? 'var(--safe-area)' : '0'};
+  bottom: 0;
 	padding-bottom: ${isIOS() && isPWA() ? 'var(--safe-area)' : '0'};
   left: 0;
   right: 0;
   background-color: rgba(255, 255, 255, 0.33);
   backdrop-filter: blur(6px);
-	height: var(--vertical-space);
+	height: ${isIOS() && isPWA() ? 'calc(var(--safe-area) + var(--vertical-space))' : 'var(--vertical-space)'} ;
 `
 
 const appear = keyframes`
