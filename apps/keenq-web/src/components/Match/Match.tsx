@@ -170,7 +170,6 @@ function Match() {
 	}
 
 	useEffect(() => {
-		console.log('Match.tsx --->  ---> 173: ', empty)
 		if (empty) x.set(0)
 	}, [ empty ])
 
@@ -179,14 +178,13 @@ function Match() {
 	if (empty || force) return <EmptyMatch />
 
 	const dragConstraints = { ...(index === 0 ? { right: 0 } : {}) }
-	console.log('Match.tsx ---> Match ---> 178: ', dragging)
 
 	return (
 		<>
 			<Left x={x} />
 			<Right x={x} />
 			<motion.div
-				drag
+				drag='x'
 				dragSnapToOrigin
 				dragConstraints={dragConstraints}
 				dragElastic={0.1}
