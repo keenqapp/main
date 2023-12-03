@@ -125,7 +125,7 @@ export default async function matched(body, db) {
 		const { authorId, memberId, type } = validate(body, schema)
 		const provider = getPushProvider()
 
-		const [authorCreds, memberCreds] = await Promise.all([getCreds(authorId, db), getCreds(memberId, db)])
+		const [authorCreds, memberCreds] = await Promise.all([ getCreds(authorId, db), getCreds(memberId, db) ])
 		await ensureCreds(authorCreds, authorId)
 		await ensureCreds(memberCreds, memberId)
 
@@ -142,7 +142,11 @@ export default async function matched(body, db) {
 				await hi(room, db, trx)
 				await notify(author, member, room, provider)
 				return true
-			} catch (error) {
+			} catch (e) {
+				m = {
+					authorId, memberId,
+					error: e, result: 'Some error'
+				}
 				return false
 			}
 		})
