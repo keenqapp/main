@@ -20,6 +20,7 @@ import Logo from '@/assets/Logo'
 
 const StyledAppBar = styled(AppBar)`
   height: var(--appbar-height);
+	transition: height 0.2s ease-in-out;
   background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(6px);
   color: ${({ theme }) => theme.palette.primary.contrastText};

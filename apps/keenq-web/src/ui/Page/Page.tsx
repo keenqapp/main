@@ -8,7 +8,7 @@ import Loading from '@/core/Loading'
 import { isPWA } from '@/utils/utils'
 
 
-const StyledPage = styled.div<{ animation: PageProps['animation'], duration: PageProps['duration'] }>`
+const StyledPage = styled.div<{ animation?: PageProps['animation'], duration?: PageProps['duration'] }>`
   min-height: calc(100 * var(--vh) - var(--appbar-height) - var(--vertical-space) ${isPWA() ? '- var(--safe-area)' : ''});
   animation: ${p => getKeyframes(p.animation)} ${p => p.duration}ms ease-in-out 1;
 	width: 100vw;

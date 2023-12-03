@@ -11,6 +11,7 @@ import { checkSnap } from '@/components/Swiper/utils'
 
 const SwiperContainer = styled.div`
   position: relative;
+	z-index: 100;
 `
 
 const SwiperScroll = styled.div`
@@ -22,6 +23,7 @@ const SwiperScroll = styled.div`
 	overflow: scroll;
 	scroll-snap-type: y mandatory;
   scroll-snap-stop: always;
+	-webkit-overflow-scrolling: touch;
 `
 
 const ImageContainer = styled.div`
@@ -90,13 +92,19 @@ function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd =
 
 	const sanitized = images?.filter(Boolean) || []
 
+	const sss = e => {
+		e.preventDefault()
+		e.stopPropagation()
+		console.log('Swiper.tsx ---> sss ---> 96: ', 111)
+	}
+
 	return (
 		<SwiperContainer>
 			<SwiperScroll
 				data-testid='Swiper'
 				ref={ref}
 				onScroll={handleScroll}
-				onPointerDownCapture={e => e.stopPropagation()}
+				onPointerDownCapture={sss}
 			>
 				{sanitized.map(({ id, url, date }) => (
 					<ImageContainer key={id+date}>

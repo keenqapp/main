@@ -56,6 +56,7 @@ const globalStyles = css`
     font-family: serif;
     color: ${rawTheme.color.base};
     background-color:#fefefe;
+	  //-webkit-overflow-scrolling: touch;
 		overflow: hidden;
   }
   a {

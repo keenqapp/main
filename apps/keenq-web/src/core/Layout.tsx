@@ -20,15 +20,25 @@ import { usePreload } from '@/hooks/usePreload'
 import useShouldJoin from '@/hooks/useShouldJoin'
 import Modals from '@/modals/Modals'
 import { isIOS, isPWA } from '@/utils/utils'
+import { $dragging } from '@/components/Match/Match'
 
 
 const Main = styled.main`
-  padding-bottom: var(--vertical-space);
+  //padding-bottom: calc(var(--vertical-space) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
   position: var(--main-position);
 	bottom: 0;
+	height: calc(100vh - var(--appbar-height) - var(--vertical-space) - env(safe-area-inset-bottom));
+	overflow-y: auto;
+	// overflow-y: ${p => p.dragging ? 'hidden' : 'auto'};
+	-webkit-overflow-scrolling: touch;
 `
 
-const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>``
+const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>`
+	
+`
+
+
 
 function Page404() {
 	const { t } = useTranslate()
@@ -46,6 +56,7 @@ function Page404() {
 }
 
 function Layout() {
+	const dragging = useStore($dragging)
 	const isAuthed = useStore($isAuthed)
 	const error: any = useRouteError()
 	const joining = useShouldJoin()
@@ -54,11 +65,17 @@ function Layout() {
 
 	if (!isAuthed) return <Navigate to='/auth/login' />
 
+	const fff = (e) => {
+		// e.preventDefault()
+		// e.stopPropagation()
+		// console.log('Layout.tsx ---> fff ---> 62: ', 'fffff', 22222)
+	}
+
 	return (
 		<Wrap data-testid='Layout' isIOS={isIOS()} isPWA={isPWA()}>
 			<Loadable loading={(loading || joining) && !is404} fullHeight>
 				<Appbar />
-				<Main>
+				<Main onScroll={fff} dragging={dragging}>
 					<IfElse cond={is404}>
 						<Page404 />
 						<Outlet />

@@ -2,7 +2,9 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
+import { useStore } from '@nanostores/react'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
+import { atom } from 'nanostores'
 
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
@@ -108,12 +110,15 @@ function Right({ x }: any) {
 const SContainer = styled(Container)`
 	position: relative;
 	animation: ${animation} 0.3s ease-in-out;
-	//overflow-y: hidden;
 `
+
+export const $dragging = atom(false) 
 
 function Match() {
 
 	const { t } = useTranslate()
+
+	const dragging = useStore($dragging)
 
 	const { open: onReportOpen } = useModal('report')
 	const { open: onAcquaintanceOpen } = useModal('acquaintance')
@@ -157,9 +162,15 @@ function Match() {
 	const end = (_: any, i: any) => {
 		if (i.offset.x > 75) prev()
 		if (i.offset.x < -75) next()
+		$dragging.set(false)
+	}
+
+	const start = (e, i) => {
+		$dragging.set(true)
 	}
 
 	useEffect(() => {
+		console.log('Match.tsx --->  ---> 173: ', empty)
 		if (empty) x.set(0)
 	}, [ empty ])
 
@@ -167,17 +178,22 @@ function Match() {
 
 	if (empty || force) return <EmptyMatch />
 
+	const dragConstraints = { ...(index === 0 ? { right: 0 } : {}) }
+	console.log('Match.tsx ---> Match ---> 178: ', dragging)
+
 	return (
 		<>
 			<Left x={x} />
 			<Right x={x} />
 			<motion.div
-				drag='x'
+				drag
 				dragSnapToOrigin
-				dragConstraints={{ ...(index === 0 ? { right: 0 } : {}) }}
+				dragConstraints={dragConstraints}
 				dragElastic={0.1}
 				style={{ x }}
+				onDragStart={start}
 				onDragEnd={end}
+				dragDirectionLock
 			>
 				<SContainer key={mid} data-testid='Match'>
 					<Swiper images={images} />
