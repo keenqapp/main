@@ -13,7 +13,7 @@ import { useMember } from '@/hooks/useMember'
 
 
 const options = {
-	requestPolicy: 'network-only',
+	requestPolicy: 'cache-and-network',
 	pause: true,
 	context: {
 		additionalTypenames: ['matches']
@@ -52,8 +52,6 @@ export function useMatch() {
 
 	const { data, fetching, error } = result
 
-	// console.log('useMatch.ts ---> useMatch ---> 55: ', result, data?.match?.data)
-
 	useEffect(() => {
 		if (data?.match?.success && !result?.stale) $queue.set([...queue, ...data.match.data].uniq('id'))
 	}, [ result ])
@@ -78,6 +76,7 @@ export function useMatch() {
 	const current = queue?.[index]
 	const mid = pid || current?.id
 
+	// TODO add wait for loading of member and partner
 	const member = useMember(mid)
 	const partner = useMember(getPartner(member)?.id)
 
@@ -127,7 +126,7 @@ export function useMatch() {
 		$queue.set(queue.filter((item) => item.id !== mid))
 	}
 
-	const isEmpty = (!pid && empty) || (!pid && error && queue?.length === 0)
+	const isEmpty = (!pid && empty && !fetching) || (!pid && error && queue?.length === 0)
 
 	return {
 		member: { ...member, distance: current?.distance },

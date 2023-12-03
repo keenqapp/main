@@ -1,5 +1,6 @@
-import { cloneElement, ReactNode } from 'react'
+import { cloneElement, ReactNode, useEffect, useRef, useState } from 'react'
 import { customAlphabet } from 'nanoid'
+import uuid from 'uuid-random'
 
 import { Entity, UID } from '@/types/utility'
 
@@ -159,4 +160,18 @@ export function getId() {
 
 export async function timeout(duration: number) {
 	return new Promise(resolve => setTimeout(resolve, duration))
+}
+
+export function usePrevious(value: any, _?: string) {
+	const [ unique, setUnique ] = useState('')
+	const prev = useRef<any>()
+	useEffect(() => {
+		if (_ === '111') {
+			console.log('utils.ts --->  ---> 169: ', prev.current?.data, value?.data,  prev.current?.data === value?.data)
+		}
+		if (!(value?.data === undefined && prev.current?.data === undefined) && equals(prev.current?.data, value?.data) && !value.stale) return
+		prev.current = value
+		setUnique(uuid())
+	}, [value])
+	return unique
 }
