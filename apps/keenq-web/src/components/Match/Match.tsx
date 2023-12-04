@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { useStore } from '@nanostores/react'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
 import { atom } from 'nanostores'
 
@@ -118,8 +117,6 @@ function Match() {
 
 	const { t } = useTranslate()
 
-	const dragging = useStore($dragging)
-
 	const { open: onReportOpen } = useModal('report')
 	const { open: onAcquaintanceOpen } = useModal('acquaintance')
 	const navigate = useNavigate()
@@ -162,11 +159,9 @@ function Match() {
 	const end = (_: any, i: any) => {
 		if (i.offset.x > 75) prev()
 		if (i.offset.x < -75) next()
-		$dragging.set(false)
 	}
 
 	const start = (e, i) => {
-		$dragging.set(true)
 	}
 
 	useEffect(() => {
