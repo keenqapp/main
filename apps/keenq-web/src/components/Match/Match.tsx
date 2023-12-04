@@ -119,7 +119,7 @@ const CountWrap = styled.div`
 	position: fixed;
 	left: 0;
 	right: 0;
-	bottom: var(--nav-height);
+	bottom: calc(var(--nav-height) + var(--safe-area));
 	z-index: 1;
 	display: flex;
 	justify-content: center;
@@ -127,6 +127,9 @@ const CountWrap = styled.div`
 	width: 8rem;
 	margin: 0 auto;
 	overflow: hidden;
+	background-color: rgba(255, 255, 255, 0.33);
+	backdrop-filter: blur(6px);
+	padding: 1px 0 0.5rem;
 `
 
 const CountContainer = styled.div`
@@ -292,7 +295,7 @@ function Match() {
 								color='default'
 							>{t`report.report`}</Button>
 						</If>
-						<Space />
+						<Space height={2} />
 					</Content>
 				</SContainer>
 			</motion.div>

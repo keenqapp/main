@@ -8,6 +8,7 @@ import rawTheme from '@/ui/theme'
 import 'normalize.css'
 import 'system-font-css'
 import useResizeHeight from '@/hooks/useResizeHeight'
+import { isIOS, isPWA } from '@/utils/utils'
 
 
 declare module '@emotion/react' {
@@ -39,7 +40,7 @@ const globalStyles = css`
 		--nav-height: 44px;
     --vertical-space: 44px;
     --main-position: relative;
-    --safe-area: 20px;
+    --safe-area: ${isIOS() && isPWA() ? '20px' : '0px'};
   }
   html {
     box-sizing: border-box;
