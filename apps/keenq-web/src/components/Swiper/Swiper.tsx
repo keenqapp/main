@@ -94,7 +94,7 @@ function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd =
 
 	const sanitized = images?.filter(Boolean) || []
 
-	const sss = e => {
+	const sss = (e: any) => {
 		e.preventDefault()
 		e.stopPropagation()
 	}
