@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { keyframes } from '@emotion/react'
+import { css, keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
 import { motion, useMotionValue, useTransform } from 'framer-motion'
 import { atom } from 'nanostores'
 
+import { Portal } from '@mui/base/Portal'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Divider from '@mui/material/Divider'
@@ -27,6 +28,7 @@ import Container from '@/ui/Container'
 import If from '@/ui/If'
 import Space from '@/ui/Space'
 import Stack from '@/ui/Stack'
+import theme from '@/ui/theme'
 
 import EmptyMatch from '@/components/Match/EmptyMatch'
 import Swiper from '@/components/Swiper'
@@ -70,14 +72,14 @@ const animation = keyframes`
 
 const SLeft = styled.div`
 	position: fixed;
-	top: 50%;
+	top: 50dvh;
 	left: 1rem;
 	z-index: 1;
 `
 
 const SRight = styled.div`
-	position: absolute;
-	top: 50%;
+	position: fixed;
+	top: 50dvh;
 	right: 1rem;
 	z-index: 1;
 `
@@ -111,23 +113,57 @@ const SContainer = styled(Container)`
 	animation: ${animation} 0.3s ease-in-out;
 `
 
+export const $dragging = atom(false)
+
 const CountWrap = styled.div`
 	position: fixed;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	bottom: var(--nav-height);
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 8rem;
+	margin: 0 auto;
+	overflow: hidden;
 `
 
+const CountContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+	transform: translateX(${p => p.index * -1 + p.count / 2 - 0.5}rem);
+`
 
-export const $dragging = atom(false)
+const active = css`
+	width: 1.5rem;
+`
 
-function Count({ x }) {
-	console.log('Match.tsx ---> Count ---> 125: ', x)
-	const arr = Array.create(9)
-	console.log('Match.tsx ---> Count ---> 127: ', arr)
+const not = css`
+	width: 0.5rem;
+`
+
+const Dot = styled.div<{ active: boolean }>`
+	flex: 0 0 auto;
+	background: ${theme.color.primary};
+	opacity: 0.7;
+	height: 0.5rem;
+	border-radius: 1rem;
+	transition: width 300ms ease-in-out;
+  position: relative;
+	z-index: 2;
+	${p => p.active ? active : not};
+`
+
+function Count({ x, index, count }: any) {
+	const arr = Array.create(count)
 	return (
 		<CountWrap>
-			333
+			<CountContainer index={index} count={count}>
+				{arr.map(item => <Dot key={item} active={index === item} />)}
+			</CountContainer>
 		</CountWrap>
 	)
 }
@@ -143,6 +179,7 @@ function Match() {
 
 	const {
 		index,
+		count,
 		member,
 		partner,
 		next,
@@ -180,8 +217,8 @@ function Match() {
 		if (i.offset.x < -75) next()
 	}
 
-	const start = (e, i) => {
-	}
+	// const start = (e, i) => {
+	// }
 
 	useEffect(() => {
 		if (empty) x.set(0)
@@ -195,15 +232,18 @@ function Match() {
 
 	return (
 		<>
-			<Left x={x} />
-			<Right x={x} />
+			<Portal>
+				<Left x={x} />
+				<Right x={x} />
+				<Count x={x} index={index} count={count} />
+			</Portal>
 			<motion.div
 				drag='x'
 				dragSnapToOrigin
 				dragConstraints={dragConstraints}
 				dragElastic={0.1}
 				style={{ x }}
-				onDragStart={start}
+				// onDragStart={start}
 				onDragEnd={end}
 				dragDirectionLock
 			>

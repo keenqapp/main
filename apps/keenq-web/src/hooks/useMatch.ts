@@ -136,6 +136,7 @@ export function useMatch() {
 		error,
 		empty: isEmpty,
 		force,
+		count: queue?.length,
 		index,
 		queue,
 		next,

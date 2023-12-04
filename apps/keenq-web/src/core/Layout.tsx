@@ -68,7 +68,7 @@ function Layout() {
 	// }
 
 	const fff = (e: any) => {
-		console.log('Layout.tsx ---> fff ---> 74: 222222222', e)
+		// console.log('Layout.tsx ---> fff ---> 74: 222222222', e)
 	}
 
 	return (
