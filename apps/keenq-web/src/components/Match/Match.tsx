@@ -111,7 +111,26 @@ const SContainer = styled(Container)`
 	animation: ${animation} 0.3s ease-in-out;
 `
 
-export const $dragging = atom(false) 
+const CountWrap = styled.div`
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+`
+
+
+export const $dragging = atom(false)
+
+function Count({ x }) {
+	console.log('Match.tsx ---> Count ---> 125: ', x)
+	const arr = Array.create(9)
+	console.log('Match.tsx ---> Count ---> 127: ', arr)
+	return (
+		<CountWrap>
+			333
+		</CountWrap>
+	)
+}
 
 function Match() {
 

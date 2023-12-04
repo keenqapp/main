@@ -27,8 +27,10 @@ const Main = styled.main`
   position: var(--main-position);
 	bottom: 0;
 	height: calc(100vh - var(--appbar-height) - var(--vertical-space) - env(safe-area-inset-bottom));
-	overflow-y: auto;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	-webkit-overflow-scrolling: auto;
+	touch-action: pan-y;
 `
 
 const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>`

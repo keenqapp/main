@@ -36,6 +36,7 @@ declare module '@mui/material/styles' {
 const globalStyles = css`
   :root {
 		--appbar-height: 56px;
+		--nav-height: 44px;
     --vertical-space: 44px;
     --main-position: relative;
     --safe-area: 20px;
