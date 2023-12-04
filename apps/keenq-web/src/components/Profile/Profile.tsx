@@ -134,6 +134,7 @@ const AddButton = styled(Button)<ButtonProps>`
   backdrop-filter: blur(2px);
 	flex: 1;
 	white-space: nowrap;
+	z-index: 101;
 `
 
 const SwiperContainer = styled.div`

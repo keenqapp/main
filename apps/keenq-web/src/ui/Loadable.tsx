@@ -1,4 +1,4 @@
-import { ComponentChildren, VNode } from 'preact'
+import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import CircularProgress from '@mui/material/CircularProgress'
@@ -6,8 +6,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 
 interface Props {
   loading: boolean
-  children: ComponentChildren
-  loader? : VNode
+  children: ReactNode
+  loader? : ReactNode
 	fullHeight?: boolean
 	overlay?: boolean
 }

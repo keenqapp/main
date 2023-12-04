@@ -23,11 +23,13 @@ const SwiperScroll = styled.div`
 	overflow: scroll;
 	scroll-snap-type: y mandatory;
   scroll-snap-stop: always;
-	-webkit-overflow-scrolling: touch;
+	-webkit-overflow-scrolling: auto;
 `
 
 const ImageContainer = styled.div`
 	position: relative;
+	-webkit-overflow-scrolling: auto;
+	margin: 0;
 `
 
 const Image = styled.img`
@@ -95,7 +97,6 @@ function Swiper({ images = [], buttons, onScroll, loading = false, scrollOnAdd =
 	const sss = e => {
 		e.preventDefault()
 		e.stopPropagation()
-		console.log('Swiper.tsx ---> sss ---> 96: ', 111)
 	}
 
 	return (
