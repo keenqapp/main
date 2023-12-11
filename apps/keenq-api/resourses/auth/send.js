@@ -2,7 +2,7 @@ import http from 'axios'
 import { object, string } from 'yup'
 import client from 'twilio'
 
-import { success, error, validate, ensureCredsAndMember } from '../../shared.js'
+import { success, error, validate, ensureCredsAndMember, isTestPhone } from '../../shared.js'
 
 
 const url = (phone, code) => `https://sms.ru/sms/send?api_id=A80649CB-0FF7-B273-E2A3-64F7CCFE904D&to=${phone}&msg=Код+для+входа+в+ваш+keenq:+${code}&json=1`
@@ -21,6 +21,9 @@ function getCode() {
 
 // TODO move all crap to adapter
 function getProvider(phone) {
+	if (isTestPhone(phone)) return {
+		send: getCode
+	}
 	if (phone.startsWith('+7')) return {
 		send: async () => {
 			const code = getCode()
