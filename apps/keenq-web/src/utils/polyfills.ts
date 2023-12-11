@@ -45,10 +45,13 @@ declare global {
 	interface Array<T>{
 		create(length: number): Array<number>
 		uniq(property?: string, flat?: boolean): Array<T>;
-		last(): T | undefined
-		first(): T | undefined
+		first<T>(number?: number): T | T[] | undefined
+		last(number?: number): T | T[] | undefined
+		min(): T
+		max(): T
 		copySort(compareFn?: (a: T, b: T) => number): Array<T>
 		copyPush(item: T): Array<T>
+		copy(): Array<T>
 		toComponents<T>(render: (item: T, index: number) => ReactNode): ReactNode[]
 		toIds(): string[]
 		excludeById(id: string | string[]): Array<T>
@@ -102,22 +105,42 @@ Object.defineProperty(Array, 'create', {
 })
 
 Object.defineProperty(Array.prototype, 'first', {
-	value: function() {
+	value: function<T>(number?: number) {
 		if (!this || this.length === 0) return undefined
-		return this[0]
+		if (number) return this.slice(0, number) satisfies T[]
+		return this[0] satisfies T
 	}
 })
 
 Object.defineProperty(Array.prototype, 'last', {
-	value: function() {
+	value: function<T>(number?: number) {
 		if (!this || this.length === 0) return undefined
-		return this[this.length - 1]
+		if (number) return this.slice(-number) satisfies T[]
+		return this[this.length - 1] satisfies T
+	}
+})
+
+Object.defineProperty(Array.prototype, 'min', {
+	value: function() {
+		return Math.min.apply(null, this)
+	}
+})
+
+Object.defineProperty(Array.prototype, 'max', {
+	value: function() {
+		return Math.max.apply(null, this)
 	}
 })
 
 Object.defineProperty(Array.prototype, 'excludeById', {
 	value: function(id: string | string[]) {
 		return this.filter((item: Entity) => Array.isArray(id) ? !id.includes(item.id) : item.id !== id)
+	}
+})
+
+Object.defineProperty(Array.prototype, 'copy', {
+	value: function() {
+		return structuredClone(this)
 	}
 })
 

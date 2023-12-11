@@ -67,11 +67,12 @@ const selfCss = css`
 
 const MessageContainer = styled(motion.div)<{ isAuthor: boolean, isChannel: boolean }>`
 	padding: 0 1rem 0;
+	margin-bottom: 0.2rem;
   max-width: calc(100vw - ${p => p.isChannel ? 0 : 4}rem);
   & .MuiTypography-caption {
 		padding: 0 0.5rem;
 	}
-	${p => p.isAuthor ? selfCss : notSelfCss}
+	${p => p.isAuthor ? selfCss : notSelfCss};
 `
 
 const SeparateDate = styled.div`

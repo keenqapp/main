@@ -16,7 +16,7 @@ import { reduce, sort } from '@/utils/utils'
 
 
 function byDate(a: IMessage, b: IMessage) {
-	return new Date(a.date) >= new Date(b.date) ? 1 : -1
+	return new Date(a.date) >= new Date(b.date) ? -1 : 1
 }
 function enrich(acc: IMessage[], message: IMessage, index: number, data: IMessage[]) {
 	const prev = data[index - 1]
@@ -67,9 +67,9 @@ function RoomMessages() {
 		<RoomMessagesContainer data-testid='RoomMessages'>
 			<RoomMessagesList
 				name='RoomMessages'
-				scrollRef={ref}
 				data={messages}
 				render={RoomMessage}
+				reversed
 			/>
 		</RoomMessagesContainer>
 	)

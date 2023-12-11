@@ -7,36 +7,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 import svgr from 'vite-plugin-svgr'
 
 
-const manifest = {
-	theme_color: '#fff',
-	background_color: '#fff',
-	display: 'standalone',
-	scope: '/',
-	start_url: '/',
-	name: 'keenq',
-	short_name: 'keenq',
-	description: 'Dating app for special as you',
-	orientation: 'portrait',
-	icons: [
-		{
-			src: '/keenq.svg',
-			type: 'image/svg+xml'
-		},
-		{
-			src: '/icon-192x192.png',
-			sizes: '192x192',
-			type: 'image/png',
-			purpose: 'any maskable'
-		},
-		{
-			src: '/icon-512x512.png',
-			sizes: '512x512',
-			type: 'image/png',
-			purpose: 'any maskable'
-		}
-	]
-} as const
-
 export default defineConfig(({ mode }) => ({
 	server: {
 		port: 9001
@@ -54,9 +24,35 @@ export default defineConfig(({ mode }) => ({
 				globPatterns: ['**/*.{woff,woff2,png,jpeg,webm,svg}']
 			},
 			registerType: 'autoUpdate',
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
-			manifest,
+			manifest: {
+				theme_color: '#fff',
+				background_color: '#fff',
+				display: 'standalone',
+				scope: '/',
+				start_url: '/',
+				name: 'keenq',
+				short_name: 'keenq',
+				description: 'Dating app for special as you',
+				orientation: 'portrait',
+				icons: [
+					{
+						src: '/keenq.svg',
+						type: 'image/svg+xml'
+					},
+					{
+						src: mode === 'development' ? '/icon-512x512_dev.png' : '/icon-192x192.png',
+						sizes: '192x192',
+						type: 'image/png',
+						purpose: 'any maskable'
+					},
+					{
+						src: mode === 'development' ? '/icon-512x512_dev.png' : '/icon-512x512.png',
+						sizes: '512x512',
+						type: 'image/png',
+						purpose: 'any maskable'
+					}
+				]
+			},
 			manifestFilename: 'manifest.json',
 			devOptions: {
 				enabled: mode === 'development'

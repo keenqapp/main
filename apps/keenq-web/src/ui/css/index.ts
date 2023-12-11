@@ -8,15 +8,31 @@ export const column = css`
 `
 
 const appears = keyframes`
-    0% {
-        opacity: 0.01;
-        transform: translateY(25px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	0% {
+		opacity: 0.01;
+		transform: translateY(25px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
 `
+
+const disappears = keyframes`
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0.01;
+		transform: translateY(25px);
+	}
+`
+
 export const appear = css`
   animation: ${appears} 0.3s ease-in-out;
+`
+
+export const disappear = css`
+  animation: ${disappears} 0.3s ease-in-out;
 `
