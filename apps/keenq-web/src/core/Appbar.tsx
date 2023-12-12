@@ -23,7 +23,6 @@ const StyledAppBar = styled(AppBar)`
 	transition: height 0.2s ease-in-out;
   background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(6px);
-  color: ${({ theme }) => theme.palette.primary.contrastText};
   box-shadow: none;
 	position: relative;
 	overflow: hidden;

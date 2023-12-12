@@ -1,4 +1,4 @@
-import { ComponentChildren, VNode } from 'preact'
+import { ReactNode } from 'react'
 import styled from '@emotion/styled'
 
 import IconButton from '@mui/material/IconButton'
@@ -31,10 +31,10 @@ export interface DrawerItemProps {
 	text?: string
 	subtext?: string
 	onClick?: () => void
-	icon?: VNode
+	icon?: ReactNode
 	color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
-	children?: ComponentChildren
-	action?: VNode
+	children?: ReactNode
+	action?: ReactNode
 	className?: string
 	disabled?: boolean
 }
@@ -56,7 +56,7 @@ export function DrawerItem({ text, icon, onClick, color, subtext, children, acti
 }
 
 interface DrawerProps {
-	children: ComponentChildren
+	children: ReactNode
 	name: ModalKeys
 	fullHeight?: boolean
 }
