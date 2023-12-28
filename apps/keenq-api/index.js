@@ -46,7 +46,7 @@ const envOptions = {
 
 await app.register(env, envOptions)
 await app.register(fastifyAwilixPlugin, { disposeOnClose: true, disposeOnResponse: true })
-await app.register(cors, { origin: [ 'http://localhost:8001', 'https://calc.cheap', 'https://calque.app' ] })
+await app.register(cors, { origin: [ 'http://localhost:8001', 'https://calc.cheap', 'https://calque.app', /192.168./ ] })
 await app.register(routes)
 
 app.listen({ host: '0.0.0.0', port: process.env.PORT || 9003 })
