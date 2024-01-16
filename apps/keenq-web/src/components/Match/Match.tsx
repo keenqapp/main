@@ -119,7 +119,7 @@ const CountWrap = styled.div`
 	position: fixed;
 	left: 0;
 	right: 0;
-	bottom: calc(var(--nav-height) + var(--safe-area));
+	bottom: calc(var(--space) + env(safe-area-inset-bottom));
 	z-index: 1;
 	display: flex;
 	justify-content: center;
@@ -129,10 +129,10 @@ const CountWrap = styled.div`
 	overflow: hidden;
 	background-color: rgba(255, 255, 255, 0.33);
 	backdrop-filter: blur(6px);
-	padding: 1px 0 0.5rem;
+	padding: 4px 0.5rem;
 `
 
-const CountContainer = styled.div`
+const CountContainer = styled.div<{  index: number, count: number }>`
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -160,7 +160,7 @@ const Dot = styled.div<{ active: boolean }>`
 	${p => p.active ? active : not};
 `
 
-function Count({ x, index, count }: any) {
+function Count({ index, count }: any) {
 	const arr = Array.create(count)
 	return (
 		<CountWrap>

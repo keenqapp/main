@@ -5,6 +5,16 @@ import 'large-small-dynamic-viewport-units-polyfill'
 import { Entity } from '@/types/utility'
 
 
+async function checkStructureClone() {
+	if (!('structuredClone' in self || 'structuredClone' in globalThis)) {
+		const structuredClone = await import('@ungap/structured-clone')
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		globalThis.structuredClone = structuredClone
+	}
+}
+checkStructureClone()
+
 interface Equals {
 	(value: unknown, equals: unknown): boolean
 	any(value: unknown, equals: unknown[]): boolean
@@ -235,17 +245,6 @@ Object.defineProperty(Map.prototype, 'toFlatArray', {
 		return [...this.values()]
 	}
 })
-
-async function checkStructureClone() {
-	if (!('structuredClone' in self || 'structuredClone' in globalThis)) {
-		const structuredClone = await import('@ungap/structured-clone')
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		globalThis.structuredClone = structuredClone
-	}
-}
-checkStructureClone()
-
 
 class SerializableSet extends Set {
 	toJSON() {

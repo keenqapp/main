@@ -1,4 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { sentryVitePlugin } from '@sentry/vite-plugin'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 import { defineConfig } from 'vite'
@@ -9,7 +12,7 @@ import svgr from 'vite-plugin-svgr'
 
 export default defineConfig(({ mode }) => ({
 	server: {
-		port: 9001
+		port: 9001,
 	},
 	build: {
 		sourcemap: true,
@@ -65,7 +68,8 @@ export default defineConfig(({ mode }) => ({
 			org: 'keenq',
 			project: 'keenq-web',
 			authToken: process.env.SENTRY_AUTH_TOKEN,
-		})
+		}),
+		// basicSsl(),
 	],
 	resolve: {
 		alias: {

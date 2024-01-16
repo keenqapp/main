@@ -19,13 +19,17 @@ import Logo from '@/assets/Logo'
 
 
 const StyledAppBar = styled(AppBar)`
-  height: var(--appbar-height);
+  height: var(--space);
 	transition: height 0.2s ease-in-out;
   background-color: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(6px);
   box-shadow: none;
 	position: relative;
 	overflow: hidden;
+`
+
+const StyledToolbar = styled(Toolbar)`
+	min-height: var(--space);
 `
 
 const fadeInTop = keyframes`
@@ -41,7 +45,7 @@ const fadeInTop = keyframes`
 
 const HomeButton = styled(Button)`
   animation: ${fadeInTop} 300ms ease-in-out 1;
-	font: 2rem keenq, serif;
+	font: 1.9rem keenq, serif;
 	color: black;
 	text-transform: none;
 `
@@ -58,7 +62,6 @@ const ColorLogo = styled(Logo)`
 `
 
 const Version = styled.sub`
-	margin-top: 4px;
 	color: #999;
 	letter-spacing: 0.1rem;
 `
@@ -81,7 +84,7 @@ export default function Appbar() {
 
 	return (
 		<StyledAppBar data-testid='Appbar'>
-			<Toolbar>
+			<StyledToolbar>
 				<ColorLogo color={color} />
 				<HomeButton>{'keenq'}</HomeButton>
 				<Version>{v}</Version>
@@ -89,7 +92,7 @@ export default function Appbar() {
 				<IconButton onClick={onClick} color={isProfile ? 'primary' : 'secondary'}>
 					<AccountCircleTwoToneIcon />
 				</IconButton>
-			</Toolbar>
+			</StyledToolbar>
 		</StyledAppBar>
 	)
 }

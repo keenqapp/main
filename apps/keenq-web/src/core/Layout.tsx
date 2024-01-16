@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Navigate, Outlet, useRouteError } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { useStore } from '@nanostores/react'
@@ -23,14 +23,11 @@ import { isIOS, isPWA } from '@/utils/utils'
 
 
 const Main = styled.main`
-  padding-bottom: env(safe-area-inset-bottom);
   position: var(--main-position);
+	padding-bottom: var(--tabs);
 	bottom: 0;
-	height: calc(100vh - var(--appbar-height) - var(--vertical-space) - env(safe-area-inset-bottom));
-	overflow-y: scroll;
+	overflow-y: hidden;
 	overflow-x: hidden;
-	-webkit-overflow-scrolling: auto;
-	touch-action: pan-y;
 `
 
 const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>`
@@ -60,22 +57,25 @@ function Layout() {
 	const loading = usePreload()
 
 	if (!isAuthed) return <Navigate to='/auth/login' />
-
-	// const fff = (e) => {
-	// 	// e.preventDefault()
-	// 	// e.stopPropagation()
-	// 	// console.log('Layout.tsx ---> fff ---> 62: ', 'fffff', 22222)
-	// }
-
-	const fff = (e: any) => {
-		// console.log('Layout.tsx ---> fff ---> 74: 222222222', e)
+	
+	const stop = (e: any) => {
+		e.preventDefault()
+		e.stopPropagation()
+		e.stopImmediatePropagation()
+		console.log('Layout.tsx ---> fff ---> 74: 222222222', e.target)
 	}
 
 	return (
-		<Wrap data-testid='Layout' isIOS={isIOS()} isPWA={isPWA()}>
+		<Wrap
+			data-testid='Layout'
+			isIOS={isIOS()}
+			isPWA={isPWA()}
+			// onPointerDownCapture={stop}
+			// onTouchMove={stop}
+		>
 			<Loadable loading={(loading || joining) && !is404} fullHeight>
 				<Appbar />
-				<Main onPointerDownCapture={fff}>
+				<Main>
 					<IfElse cond={is404}>
 						<Page404 />
 						<Outlet />

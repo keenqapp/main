@@ -10,6 +10,8 @@ import 'system-font-css'
 import useResizeHeight from '@/hooks/useResizeHeight'
 import { isIOS, isPWA } from '@/utils/utils'
 
+import './variables.css'
+
 
 declare module '@emotion/react' {
 	// eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -35,31 +37,20 @@ declare module '@mui/material/styles' {
 }
 
 const globalStyles = css`
-  :root {
-		--appbar-height: 56px;
-		--nav-height: 44px;
-    --vertical-space: 44px;
-    --main-position: relative;
-    --safe-area: ${isIOS() && isPWA() ? '20px' : '0px'};
-  }
-  html {
-    box-sizing: border-box;
-    width: 100vw;
-    user-select: none;
-    scroll-behavior: smooth;
-  }
   @media print {
     html,
     body {
       display: none;
     }
   }
+	html, body {
+		//height: calc(100 * var(--vh));
+		//overflow: hidden;
+	}
   body {
     font-family: serif;
     color: ${rawTheme.color.base};
     background-color:#fefefe;
-	  //-webkit-overflow-scrolling: touch;
-		overflow: hidden;
   }
   a {
     text-decoration: none;
@@ -173,6 +164,10 @@ function ThemeProvider({ children }: { children: ReactNode }) {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		screen.orientation?.lock?.('portrait').catch((_: unknown) => {})
+		document.documentElement.style.setProperty('--window-inner-height', `${window.innerHeight}px`)
+		window.addEventListener('resize', () => {
+			document.documentElement.style.setProperty('--window-inner-height', `${window.innerHeight}px`)
+		})
 	}, [ height ])
 	return (
 		<MUIThemeProvider theme={theme}>

@@ -84,17 +84,17 @@ function RoomInput() {
 		maxRows: 3,
 		onFocus: () => {
 			if (!isIOS()) return
+			console.log('RoomInput.tsx ---> onFocus ---> 87: ', 222)
 			const r = document.querySelector(':root') as HTMLElement
 			r?.style.setProperty('--main-position', 'fixed')
-			r?.style.setProperty('--safe-area', '0px')
-			r?.style.setProperty('--appbar-height', '0px')
+			r?.style.setProperty('--opened', '1')
 		},
 		onBlur: () => {
 			if (!isIOS()) return
+			console.log('RoomInput.tsx ---> onBlur ---> 93: ', 111)
 			const r = document.querySelector(':root') as HTMLElement
 			r?.style.setProperty('--main-position', 'relative')
-			r?.style.setProperty('--safe-area', '20px')
-			r?.style.setProperty('--appbar-height', '56px')
+			r?.style.setProperty('--opened', '0')
 		},
 	})
 

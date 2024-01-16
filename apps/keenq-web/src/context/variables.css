@@ -1,0 +1,12 @@
+:root {
+	--main-position: relative;
+	--space: 44px;
+	--vh: 1dvh;
+
+	--opened: 0;
+	--not-opened: calc(1 - var(--opened));
+
+	--save-area: calc(var(--not-opened) * env(safe-area-inset-bottom));
+	--appbar: calc(var(--not-opened) * var(--space));
+	--tabs: calc(var(--save-area) + var(--space));
+}

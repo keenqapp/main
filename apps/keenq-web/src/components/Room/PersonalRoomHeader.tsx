@@ -1,5 +1,5 @@
-import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
+import styled from '@emotion/styled'
 
 import Avatar from '@mui/material/Avatar'
 import IconButton from '@mui/material/IconButton'
@@ -22,8 +22,8 @@ import { useQuery } from '@/hooks/gql'
 
 
 const RoomInfoContainer = styled(Stack)`
-	height: var(--vertical-space);
-  padding: 0 1rem 4px;
+	height: var(--space);
+  padding: 4px 1rem 4px;
 `
 
 function PersonalRoomHeader() {

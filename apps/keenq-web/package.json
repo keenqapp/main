@@ -31,6 +31,7 @@
     "@urql/devtools": "^2.0.3",
     "@urql/exchange-graphcache": "^6.3.3",
     "@urql/exchange-persisted": "^4.0.0",
+    "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@vitejs/plugin-react-swc": "^3.4.1",
     "axios": "^1.4.0",
     "date-fns": "^2.29.3",
