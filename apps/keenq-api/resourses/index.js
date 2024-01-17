@@ -3,6 +3,8 @@ import auth from './auth/index.js'
 import push from './push/index.js'
 import utils from './utils/index.js'
 import location from './location/index.js'
+import other from './other/index.js'
+
 
 export default function routes(app, _, done) {
 	app.get('/', async (req, res) => res.send({ ok: true, date: new Date().toISOString(), version: process.env.VERSION }))
@@ -11,5 +13,6 @@ export default function routes(app, _, done) {
 	app.register(push, { prefix: '/push' })
 	app.register(utils, { prefix: '/utils' })
 	app.register(location, { prefix: '/location' })
+	app.register(other, { prefix: '/other' })
 	done()
 }

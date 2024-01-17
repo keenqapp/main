@@ -9,6 +9,7 @@ import 'dotenv/config'
 
 import './services/db.js'
 import routes from './resourses/index.js'
+import limit from '@fastify/rate-limit'
 
 
 Sentry.init({
@@ -44,9 +45,18 @@ const envOptions = {
 	dotenv: true
 }
 
+const origin = [
+	'http://localhost:8001',
+	'https://calc.cheap',
+	'https://calque.app',
+	'https://arkana.app',
+	/192.168./
+]
+
 await app.register(env, envOptions)
+await app.register(limit, { max: 5, timeWindow: 1000, global: false })
 await app.register(fastifyAwilixPlugin, { disposeOnClose: true, disposeOnResponse: true })
-await app.register(cors, { origin: [ 'http://localhost:8001', 'https://calc.cheap', 'https://calque.app', /192.168./ ] })
+await app.register(cors, { origin })
 await app.register(routes)
 
 app.listen({ host: '0.0.0.0', port: process.env.PORT || 9003 })
