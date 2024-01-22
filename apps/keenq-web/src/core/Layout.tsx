@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Navigate, Outlet, useRouteError } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { useStore } from '@nanostores/react'
@@ -19,7 +19,6 @@ import BottomTabs from '@/core/BottomTabs'
 import { usePreload } from '@/hooks/usePreload'
 import useShouldJoin from '@/hooks/useShouldJoin'
 import Modals from '@/modals/Modals'
-import { isIOS, isPWA } from '@/utils/utils'
 
 
 const Main = styled.main`
@@ -30,7 +29,7 @@ const Main = styled.main`
 	overflow-x: hidden;
 `
 
-const Wrap = styled.div<{ isIOS: boolean, isPWA: boolean }>`
+const Wrap = styled.div`
 	
 `
 
@@ -58,21 +57,8 @@ function Layout() {
 
 	if (!isAuthed) return <Navigate to='/auth/login' />
 	
-	const stop = (e: any) => {
-		e.preventDefault()
-		e.stopPropagation()
-		e.stopImmediatePropagation()
-		console.log('Layout.tsx ---> fff ---> 74: 222222222', e.target)
-	}
-
 	return (
-		<Wrap
-			data-testid='Layout'
-			isIOS={isIOS()}
-			isPWA={isPWA()}
-			// onPointerDownCapture={stop}
-			// onTouchMove={stop}
-		>
+		<Wrap data-testid='Layout'>
 			<Loadable loading={(loading || joining) && !is404} fullHeight>
 				<Appbar />
 				<Main>

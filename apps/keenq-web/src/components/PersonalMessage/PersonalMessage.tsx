@@ -41,7 +41,8 @@ const notSelfCss = css`
     border-radius: 1rem 1rem 1rem 0;
   }
 	& .reaction-container {
-		right: 0.2rem;
+		left: 0.3rem;
+		transform-origin: left;
 	}
 `
 
@@ -61,7 +62,8 @@ const selfCss = css`
     border-radius: 1rem 1rem 0 1rem;
   }
   & .reaction-container {
-    left: 0.3rem;
+    right: 0.3rem;
+	  transform-origin: right;
   }
 `
 

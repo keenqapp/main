@@ -34,7 +34,7 @@ import { optional } from '@/utils/utils'
 
 
 const StyledContainer = styled(Container)`
-  height: calc(100vh - var(--vertical-space) * 4);
+  height: calc(var(--100vh) - var(--space) * 4);
 `
 
 const MembersList = styled(List)`
@@ -43,6 +43,7 @@ const MembersList = styled(List)`
 
 const MemberItemContainer = styled(Stack)`
 	padding: 0 1rem;
+	margin-bottom: 1rem;
 `
 
 function MemberItem(member: IMember & Entity) {

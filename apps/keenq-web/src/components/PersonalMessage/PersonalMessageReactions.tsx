@@ -7,7 +7,7 @@ import { IMessage, IMessageReactionCount, shouldShowCheck } from '@/model/messag
 import Stack from '@/ui/Stack'
 
 import { usePipe } from '@/hooks/usePipe'
-import { sort, toComponent } from '@/utils/utils'
+import { first, sort, toComponent } from '@/utils/utils'
 
 
 const PersonalMessageReactionsContainer = styled(Stack)`
@@ -15,7 +15,6 @@ const PersonalMessageReactionsContainer = styled(Stack)`
 	z-index: 2;
 	bottom: -0.75rem;
 	transform: scale(0.8);
-	transform-origin: center;
 `
 
 const Reaction = styled(Stack)`
@@ -48,8 +47,7 @@ function PersonalMessageReaction({ emoji, count }: IMessageReactionCount) {
 
 function PersonalMessageReactions(message: IMessage) {
 	const { reactions } = message
-	// const result = usePipe(reactions, count, sort(max), first(3), toComponent(PersonalMessageReaction))
-	const result = usePipe(reactions, count, sort(max), toComponent(PersonalMessageReaction))
+	const result = usePipe(reactions, count, sort(max), first(10), toComponent(PersonalMessageReaction))
 	const shouldShow = shouldShowCheck(message)
 	return (
 		<PersonalMessageReactionsContainer

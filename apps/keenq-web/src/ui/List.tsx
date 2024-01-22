@@ -118,8 +118,6 @@ function List<T extends Entity>({ data = [], render, empty, className, name, rev
 
 	const items = virtualizer.getVirtualItems()
 
-	console.log('List.tsx ---> List ---> 121: ', items)
-
 	return (
 		<ListContainer data-testid="List">
 			<motion.div animate={show ? 'visible' : 'hidden'} variants={variants} className='fabs'>

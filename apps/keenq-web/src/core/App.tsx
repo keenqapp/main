@@ -5,7 +5,6 @@ import Router from '@/pages/Routes'
 function App() {
 	return (
 		<CombinedContext>
-			{/*<Partytown />*/}
 			<Router />
 		</CombinedContext>
 	)
