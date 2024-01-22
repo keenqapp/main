@@ -2,6 +2,7 @@
 	--main-position: relative;
 	--space: 44px;
 	--vh: 1dvh;
+	--100vh: calc(var(--vh, 1dvh) * 100);
 
 	--opened: 0;
 	--not-opened: calc(1 - var(--opened));

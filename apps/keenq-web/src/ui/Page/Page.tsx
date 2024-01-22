@@ -5,11 +5,10 @@ import styled from '@emotion/styled'
 import { getKeyframes } from '@/ui/Page/animations'
 
 import Loading from '@/core/Loading'
-import { isPWA } from '@/utils/utils'
 
 
 const StyledPage = styled.div<{ animation?: PageProps['animation'], duration?: PageProps['duration'] }>`
-  min-height: calc(100 * var(--vh) - var(--appbar) - var(--tabs));
+  min-height: calc(var(--100vh) - var(--appbar) - var(--tabs));
   animation: ${p => getKeyframes(p.animation)} ${p => p.duration}ms ease-in-out 1;
 	width: 100vw;
 	display: flex;
